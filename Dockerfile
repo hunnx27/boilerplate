@@ -3,16 +3,10 @@ FROM amazoncorretto:11
 RUN mkdir -p /usr/src
 WORKDIR /usr/src
 
-COPY .mvn .mvn
-COPY mvnw .
-COPY pom.xml .
-COPY src src
-RUN ./mvnw clean package
-
 # set volume for mount
 VOLUME ["/usr/src"]
 
 ARG JAR_FILE_PATH=target/*.jar
 COPY ${JAR_FILE_PATH} app.jar
 ENV TZ=Asia/Seoul
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom -Duser.timezone=${TZ}", "-Dfile.encoding=UTF-8" ,"-jar","/app.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom -Duser.timezone=${TZ}", "-Dfile.encoding=UTF-8" ,"-jar","app.jar"]
