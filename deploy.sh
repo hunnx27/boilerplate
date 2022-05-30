@@ -68,30 +68,30 @@ msg "DEPLOY ONZ BACK-END API SERVER"
 
 msg "\nScript executed from :"
 pwd
-
-VERSION_NUMBER=$(expr substr $(git rev-parse --verify HEAD) 1 7)
+str="$(git rev-parse --verify HEAD)"
+VERSION_NUMBER=${str:1:7}
 
 maven_package=$(mvn clean -Dmaven.test.skip=true package)
 if ! [ "${maven_package}" ]; then
-    die "${RED}maven install FAIL${NOFORMAT}"
+    die "${RED}maven package FAIL${NOFORMAT}"
 fi
-msg "${GREEN}maven install success${NOFORMAT}"
+msg "${GREEN}maven package success${NOFORMAT}"
 
-docker_build=$(docker image build -t onz-be:${VERSION_NUMBER} .)
-if ! [ "${docker_build}" ]; then
-    die "Docker image build fail. ${YELLOW}check Dockerfile or Docker images${NOFORMAT}"
-fi
+docker_build=$(time docker build -t onz-be:${VERSION_NUMBER} .)
+#if ! [ "${docker_build}" ]; then
+#    die "Docker image build fail. ${YELLOW}check Dockerfile or Docker images${NOFORMAT}"
+#fi
 msg "${GREEN}Docker image build success${NOFORMAT}"
 
-mgs "docker rm onz-be old version"
+msg "docker rm onz-be old version"
 docker rm --force onz-be
 
-mgs "docker run"
+msg "docker run"
 docker_run=$(docker run -e "SPRING_PROFILES_ACTIVE=dev" -d -p 8080:8080 --name onz-be onz-be:${VERSION_NUMBER})
-if ! [ "${docker_run}"]; then
+if ! [ "${docker_run}" ]; then
   die "Docker Run FAILED"
 fi
 msg "${GREEN}Docker container run success${NOFORMAT}"
 
-msg "ONZ BACK-END SERVER TAG : ${TAG}"
+msg "ONZ BACK-END SERVER TAG : ${VERSION_NUMBER}"
 msg "================================================================================="
