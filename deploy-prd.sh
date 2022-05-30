@@ -70,7 +70,7 @@ msg "\nScript executed from :"
 pwd
 
 COUNT=$(docker images "onz-be:${now}*" | wc -l)
-VERSION_NUMBER="${now}-${COUNT//[[:space:]]/}"
+VERSION_NUMBER="${now}-${COUNT}"
 
 echo ${VERSION_NUMBER}
 
