@@ -29,5 +29,16 @@ public class YearAmtReivew extends BaseEntity {
     private String annYn;
 
 
+    public YearAmtReivew() {
+    }
+
+    public YearAmtReivew(Long idxNo, Review review, Amt amt, EtcAmt etcAmt, String annYn) {
+        this.idxNo = idxNo;
+        this.review = review;
+        this.amt = amt;
+        this.etcAmt = etcAmt;
+        this.annYn = annYn;
+    }
+
 
 }

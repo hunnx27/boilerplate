@@ -15,4 +15,12 @@ public class Amt {
     private int amt;
     @Size(max=11)
     private int amtOld;
+
+    public Amt() {
+    }
+
+    public Amt(int amt, int amtOld) {
+        this.amt = amt;
+        this.amtOld = amtOld;
+    }
 }

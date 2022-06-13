@@ -36,4 +36,17 @@ public class CompanyReview extends BaseEntity {
     @Size(max=200)
     private String reviewJumsu;
 
+    public CompanyReview() {
+    }
+
+    public CompanyReview(Long idxNo, Review review, AdminTxt adminTxt, Images images, String txt, String grade, String state, String reviewJumsu) {
+        this.idxNo = idxNo;
+        this.review = review;
+        this.adminTxt = adminTxt;
+        this.images = images;
+        this.txt = txt;
+        this.grade = grade;
+        this.state = state;
+        this.reviewJumsu = reviewJumsu;
+    }
 }

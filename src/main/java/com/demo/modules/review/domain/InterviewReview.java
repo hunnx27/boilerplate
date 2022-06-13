@@ -24,4 +24,14 @@ public class InterviewReview extends BaseEntity {
     private Items items;
     @Embedded
     private QNAs qNAs;
+
+    public InterviewReview() {
+    }
+
+    public InterviewReview(Long idxNo, Review review, Items items, QNAs qNAs) {
+        this.idxNo = idxNo;
+        this.review = review;
+        this.items = items;
+        this.qNAs = qNAs;
+    }
 }

@@ -14,4 +14,12 @@ public class Topchoice {
     @Size(max=1)
     private String topchoiceYn;
     private ZonedDateTime topchoiceDt;
+
+    public Topchoice() {
+    }
+
+    public Topchoice(String topchoiceYn, ZonedDateTime topchoiceDt) {
+        this.topchoiceYn = topchoiceYn;
+        this.topchoiceDt = topchoiceDt;
+    }
 }

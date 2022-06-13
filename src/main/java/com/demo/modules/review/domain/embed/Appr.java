@@ -16,4 +16,13 @@ public class Appr {
     @Size(max=50)
     private String apprId;
     private ZonedDateTime apprDt;
+
+    public Appr() {
+    }
+
+    public Appr(String apprTxt, String apprId, ZonedDateTime apprDt) {
+        this.apprTxt = apprTxt;
+        this.apprId = apprId;
+        this.apprDt = apprDt;
+    }
 }

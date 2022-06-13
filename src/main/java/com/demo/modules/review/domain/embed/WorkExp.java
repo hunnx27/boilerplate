@@ -14,4 +14,12 @@ public class WorkExp {
     private int workExp;
     @Size(max=1)
     private String workExpOpenYn;
+
+    public WorkExp() {
+    }
+
+    public WorkExp(int workExp, String workExpOpenYn) {
+        this.workExp = workExp;
+        this.workExpOpenYn = workExpOpenYn;
+    }
 }

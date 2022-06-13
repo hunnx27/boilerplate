@@ -16,4 +16,13 @@ public class AdminTxt {
     private ZonedDateTime adminTxtDt;
     @Size(max=50)
     private String adminTxtId;
+
+    public AdminTxt() {
+    }
+
+    public AdminTxt(String adminTxt, ZonedDateTime adminTxtDt, String adminTxtId) {
+        this.adminTxt = adminTxt;
+        this.adminTxtDt = adminTxtDt;
+        this.adminTxtId = adminTxtId;
+    }
 }

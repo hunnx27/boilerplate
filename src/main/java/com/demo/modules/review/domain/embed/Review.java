@@ -23,4 +23,16 @@ public class Review extends BaseEntity {
     private Topchoice topchoice;
     @Embedded
     private Appr appr;
+
+    public Review() {
+    }
+
+    public Review(String id, int code, String state, WorkExp workExp, Topchoice topchoice, Appr appr) {
+        this.id = id;
+        this.code = code;
+        this.state = state;
+        this.workExp = workExp;
+        this.topchoice = topchoice;
+        this.appr = appr;
+    }
 }
