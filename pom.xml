@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com</groupId>
-    <artifactId>plates</artifactId>
+    <artifactId>onz</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>plates</name>
-    <description>plates</description>
+    <name>onz</name>
+    <description>OneAndZip</description>
     <properties>
         <java.version>11</java.version>
         <maven.test.skip>true</maven.test.skip>
