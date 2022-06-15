@@ -11,7 +11,7 @@
     <groupId>com</groupId>
     <artifactId>onz</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>onz</name>
+    <name>oneandzip_bo</name>
     <description>OneAndZip</description>
     <properties>
         <java.version>11</java.version>
