@@ -1,4 +1,4 @@
-package com.demo.config.security.oauth2;
+package com.onz.config.security.oauth2;
 
 import java.util.Arrays;
 
