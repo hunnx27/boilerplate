@@ -1,4 +1,4 @@
-package com.onz.modules.organization.application.request;
+package com.onz.modules.organization.web.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;

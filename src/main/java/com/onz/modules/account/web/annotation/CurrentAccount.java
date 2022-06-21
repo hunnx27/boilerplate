@@ -1,4 +1,4 @@
-package com.onz.modules.account;
+package com.onz.modules.account.web.annotation;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 

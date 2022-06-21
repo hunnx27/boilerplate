@@ -1,7 +1,7 @@
 package com.onz.modules.education.infra;
 
 import com.onz.modules.account.domain.QAccount;
-import com.onz.modules.education.application.request.EducationSearchRequest;
+import com.onz.modules.education.web.dto.request.EducationSearchRequest;
 import com.onz.modules.education.domain.Education;
 import com.onz.modules.education.domain.QEducation;
 import com.onz.common.enums.YN;

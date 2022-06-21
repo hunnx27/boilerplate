@@ -1,11 +1,12 @@
 package com.onz.modules.account.application;
 
-import com.onz.modules.account.application.request.AccountUpdateRequest;
+import com.onz.modules.account.web.dto.AccountConverter;
+import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.common.enums.Role;
 import com.onz.modules.education.application.EducationService;
 import com.onz.modules.education.domain.Education;
 import com.onz.modules.education.infra.EducationRepository;
-import com.onz.modules.account.application.request.AccountSearchRequest;
+import com.onz.modules.account.web.dto.request.AccountSearchRequest;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.infra.AccountRepository;
 import com.onz.common.enums.YN;

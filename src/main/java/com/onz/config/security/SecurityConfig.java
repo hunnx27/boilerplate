@@ -1,12 +1,9 @@
 package com.onz.config.security;
 
 import com.onz.common.web.filter.ExceptionFilterHandler;
-import com.onz.modules.auth.web.JwtFilter;
-import com.onz.modules.auth.web.AccessDeniedHandlerImpl;
-import com.onz.modules.auth.web.JwtAuthenticationEntryPointImpl;
+import com.onz.modules.auth.web.*;
+import com.onz.modules.auth.web.JwtAuthenticationRequestFilter;
 import com.onz.modules.auth.application.util.JwtProvider;
-import com.onz.modules.auth.web.OAuth2AuthenticationFailureHandler;
-import com.onz.modules.auth.web.OAuth2AuthenticationSuccessHandler;
 import com.onz.modules.auth.application.CustomOAuth2UserService;
 import com.onz.modules.auth.infra.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.onz.modules.auth.application.UserDetailServiceImpl;
@@ -73,9 +70,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .userInfoEndpoint()
             .userService(customOAuth2UserService);
 
-        http.addFilterBefore(new JwtFilter(jwtProvider),
+        http.addFilterBefore(new JwtAuthenticationRequestFilter(jwtProvider),
             UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(new ExceptionFilterHandler(), JwtFilter.class);
+        http.addFilterBefore(new ExceptionFilterHandler(), JwtAuthenticationRequestFilter.class);
     }
 
     @Override

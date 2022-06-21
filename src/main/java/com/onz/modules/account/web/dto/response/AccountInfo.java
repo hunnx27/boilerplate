@@ -1,4 +1,4 @@
-package com.onz.modules.account.application.response;
+package com.onz.modules.account.web.dto.response;
 
 import com.onz.common.enums.YN;
 import lombok.Getter;

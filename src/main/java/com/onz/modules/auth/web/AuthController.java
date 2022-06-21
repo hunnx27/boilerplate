@@ -4,6 +4,7 @@ import com.onz.modules.auth.application.util.CookieUtils;
 import com.onz.modules.auth.application.UserDetailServiceImpl;
 import com.onz.modules.auth.application.util.JwtProvider;
 import com.onz.modules.auth.web.dto.request.LoginRequest;
+import com.onz.modules.auth.web.dto.response.AuthResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,9 +44,8 @@ public class AuthController {
 
         String token = jwtProvider.createToken(authentication);
         response.setHeader("Authorization", token);
-
         CookieUtils.addCookie(response, "Authorization", token, 180);
 
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(new AuthResponse(token));
     }
 }

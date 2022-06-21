@@ -13,11 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class JwtFilter extends OncePerRequestFilter {
+public class JwtAuthenticationRequestFilter extends OncePerRequestFilter {
 
     private final JwtProvider provider;
 
-    public JwtFilter(JwtProvider provider) {
+    public JwtAuthenticationRequestFilter(JwtProvider provider) {
         this.provider = provider;
     }
 
@@ -29,17 +29,10 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             String jwt = getJwtFromRequest(request);
             if (StringUtils.hasLength(jwt) && provider.validateToken(jwt)) {
-//                Authentication authentication1 = provider.getAuthentication(jwt);
                 UsernamePasswordAuthenticationToken authentication1 = provider.getAuthentication(
                     jwt);
-
                 authentication1.setDetails(
-                    new WebAuthenticationDetailsSource().buildDetails(request));
-//                String userName = authentication1.getName();
-//
-//                UserAuthentication authentication = new UserAuthentication(userName, null, authentication1.getAuthorities());
-//                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
+                        new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication1);
             } else {
                 if (!StringUtils.hasText(jwt)) {

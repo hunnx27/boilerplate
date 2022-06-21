@@ -1,7 +1,7 @@
 package com.onz.modules.account.infra;
 
 import com.onz.modules.account.domain.Account;
-import com.onz.modules.account.application.request.AccountSearchRequest;
+import com.onz.modules.account.web.dto.request.AccountSearchRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

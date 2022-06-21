@@ -1,8 +1,8 @@
 package com.onz.modules.review.infra;
 
 import com.onz.common.enums.YN;
-import com.onz.modules.organization.application.request.OrganizationSearchRequest;
-import com.onz.modules.organization.application.request.OrganizationUpdateRequest;
+import com.onz.modules.organization.web.dto.request.OrganizationSearchRequest;
+import com.onz.modules.organization.web.dto.request.OrganizationUpdateRequest;
 import com.onz.modules.organization.domain.Organization;
 import com.onz.modules.organization.domain.QOrganization;
 import com.querydsl.core.BooleanBuilder;

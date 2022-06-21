@@ -1,7 +1,7 @@
 package com.onz.modules.review.application;
 
-import com.onz.modules.organization.application.request.OrganizationSearchRequest;
-import com.onz.modules.organization.application.request.OrganizationUpdateRequest;
+import com.onz.modules.organization.web.dto.request.OrganizationSearchRequest;
+import com.onz.modules.organization.web.dto.request.OrganizationUpdateRequest;
 import com.onz.modules.organization.domain.Organization;
 import com.onz.modules.organization.infra.OrganizationRepository;
 import lombok.RequiredArgsConstructor;

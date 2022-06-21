@@ -1,7 +1,7 @@
 package com.onz.modules.education.application;
 
-import com.onz.modules.education.application.request.EducationSearchRequest;
-import com.onz.modules.education.application.request.EducationUpdateRequest;
+import com.onz.modules.education.web.dto.request.EducationSearchRequest;
+import com.onz.modules.education.web.dto.request.EducationUpdateRequest;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.infra.AccountRepository;
 import com.onz.modules.education.domain.Education;

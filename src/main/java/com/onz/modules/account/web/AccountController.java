@@ -1,10 +1,10 @@
 package com.onz.modules.account.web;
 
-import com.onz.modules.account.CurrentAccount;
+import com.onz.modules.account.web.annotation.CurrentAccount;
 import com.onz.modules.account.application.AccountService;
-import com.onz.modules.account.application.request.AccountCreateRequest;
-import com.onz.modules.account.application.request.AccountSearchRequest;
-import com.onz.modules.account.application.request.AccountUpdateRequest;
+import com.onz.modules.account.web.dto.request.AccountCreateRequest;
+import com.onz.modules.account.web.dto.request.AccountSearchRequest;
+import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.modules.account.domain.Account;
 import com.onz.common.web.BaseApiController;
 import lombok.RequiredArgsConstructor;

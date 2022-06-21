@@ -1,6 +1,6 @@
-package com.onz.modules.account.application;
+package com.onz.modules.account.web.dto;
 
-import com.onz.modules.account.application.request.AccountUpdateRequest;
+import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.modules.account.domain.Account;
 import org.mapstruct.*;
 

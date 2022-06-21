@@ -1,4 +1,4 @@
-package com.onz.modules.account.application.request;
+package com.onz.modules.account.web.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

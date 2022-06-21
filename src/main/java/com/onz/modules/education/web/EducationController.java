@@ -2,9 +2,9 @@ package com.onz.modules.education.web;
 
 import com.onz.common.web.BaseApiController;
 import com.onz.modules.education.application.EducationService;
-import com.onz.modules.education.application.request.EducationCreateRequest;
-import com.onz.modules.education.application.request.EducationSearchRequest;
-import com.onz.modules.education.application.request.EducationUpdateRequest;
+import com.onz.modules.education.web.dto.request.EducationCreateRequest;
+import com.onz.modules.education.web.dto.request.EducationSearchRequest;
+import com.onz.modules.education.web.dto.request.EducationUpdateRequest;
 import com.onz.modules.education.domain.Education;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
