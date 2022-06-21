@@ -4,7 +4,7 @@ import com.onz.modules.account.domain.QAccount;
 import com.onz.modules.education.application.request.EducationSearchRequest;
 import com.onz.modules.education.domain.Education;
 import com.onz.modules.education.domain.QEducation;
-import com.onz.modules.common.type.YN;
+import com.onz.common.enums.YN;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.JPQLQuery;

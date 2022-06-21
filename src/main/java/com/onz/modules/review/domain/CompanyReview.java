@@ -1,6 +1,6 @@
 package com.onz.modules.review.domain;
 
-import com.onz.modules.common.domain.BaseEntity;
+import com.onz.common.domain.BaseEntity;
 import com.onz.modules.review.domain.embed.AdminTxt;
 import com.onz.modules.review.domain.embed.Images;
 import com.onz.modules.review.domain.embed.Review;

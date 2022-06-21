@@ -1,6 +1,6 @@
 package com.onz.modules.organization.application.request;
 
-import com.onz.modules.common.domain.Address;
+import com.onz.common.domain.Address;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

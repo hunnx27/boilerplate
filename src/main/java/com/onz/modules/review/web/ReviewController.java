@@ -1,7 +1,7 @@
 package com.onz.modules.review.web;
 
 import com.onz.modules.account.domain.Account;
-import com.onz.modules.common.web.BaseApiController;
+import com.onz.common.web.BaseApiController;
 import com.onz.modules.organization.application.OrganizationService;
 import com.onz.modules.organization.application.request.OrganizationCreateRequest;
 import com.onz.modules.organization.application.request.OrganizationSearchRequest;

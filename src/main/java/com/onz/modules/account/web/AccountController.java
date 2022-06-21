@@ -6,7 +6,7 @@ import com.onz.modules.account.application.request.AccountCreateRequest;
 import com.onz.modules.account.application.request.AccountSearchRequest;
 import com.onz.modules.account.application.request.AccountUpdateRequest;
 import com.onz.modules.account.domain.Account;
-import com.onz.modules.common.web.BaseApiController;
+import com.onz.common.web.BaseApiController;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;

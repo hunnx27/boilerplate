@@ -1,14 +1,14 @@
 package com.onz.modules.account.application;
 
 import com.onz.modules.account.application.request.AccountUpdateRequest;
-import com.onz.modules.common.type.Role;
+import com.onz.common.enums.Role;
 import com.onz.modules.education.application.EducationService;
 import com.onz.modules.education.domain.Education;
 import com.onz.modules.education.infra.EducationRepository;
 import com.onz.modules.account.application.request.AccountSearchRequest;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.infra.AccountRepository;
-import com.onz.modules.common.type.YN;
+import com.onz.common.enums.YN;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

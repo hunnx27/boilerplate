@@ -1,6 +1,6 @@
 package com.onz.modules.account.web;
 
-import com.onz.config.security.UserDetailServiceImpl;
+import com.onz.modules.auth.application.UserDetailServiceImpl;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
 import lombok.RequiredArgsConstructor;

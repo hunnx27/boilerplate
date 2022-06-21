@@ -1,8 +1,9 @@
 package com.onz.modules.account.domain;
 
+import com.onz.modules.account.domain.enums.RestrictionProvider;
 import com.onz.modules.account.application.request.AccountUpdateRequest;
-import com.onz.modules.common.type.Role;
-import com.onz.modules.common.domain.BaseEntity;
+import com.onz.common.enums.Role;
+import com.onz.common.domain.BaseEntity;
 import com.onz.modules.education.domain.Education;
 import com.onz.modules.organization.domain.Organization;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -44,6 +45,9 @@ public class Account extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Enumerated(EnumType.STRING)
+    private RestrictionProvider provider;
 
     @ManyToMany(mappedBy = "accounts")
     @JsonBackReference

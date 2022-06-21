@@ -1,9 +1,9 @@
 package com.onz.modules.organization.domain;
 
 import com.onz.modules.account.domain.Account;
-import com.onz.modules.common.domain.Address;
-import com.onz.modules.common.domain.BaseEntity;
-import com.onz.modules.common.type.YN;
+import com.onz.common.domain.Address;
+import com.onz.common.domain.BaseEntity;
+import com.onz.common.enums.YN;
 import java.time.ZonedDateTime;
 import lombok.Getter;
 import lombok.Setter;

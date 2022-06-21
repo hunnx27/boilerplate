@@ -1,6 +1,6 @@
 package com.onz.modules.education.web;
 
-import com.onz.modules.common.web.BaseApiController;
+import com.onz.common.web.BaseApiController;
 import com.onz.modules.education.application.EducationService;
 import com.onz.modules.education.application.request.EducationCreateRequest;
 import com.onz.modules.education.application.request.EducationSearchRequest;

@@ -1,6 +1,6 @@
 package com.onz.modules.account.application.response;
 
-import com.onz.modules.common.type.YN;
+import com.onz.common.enums.YN;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

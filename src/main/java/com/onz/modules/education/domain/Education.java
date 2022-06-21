@@ -1,7 +1,7 @@
 package com.onz.modules.education.domain;
 
 import com.onz.modules.account.domain.Account;
-import com.onz.modules.common.domain.BaseEntity;
+import com.onz.common.domain.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,9 +1,9 @@
 package com.onz.modules.auth.web;
 
-import com.onz.common.util.CookieUtils;
-import com.onz.config.security.UserDetailServiceImpl;
-import com.onz.config.security.jwt.JwtProvider;
-import com.onz.modules.auth.application.request.LoginRequest;
+import com.onz.modules.auth.application.util.CookieUtils;
+import com.onz.modules.auth.application.UserDetailServiceImpl;
+import com.onz.modules.auth.application.util.JwtProvider;
+import com.onz.modules.auth.web.dto.request.LoginRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

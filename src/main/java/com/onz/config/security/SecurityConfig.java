@@ -1,14 +1,15 @@
 package com.onz.config.security;
 
-import com.onz.common.filter.ExceptionFilterHandler;
-import com.onz.common.filter.JwtFilter;
-import com.onz.config.security.exception.AccessDeniedHandlerImpl;
-import com.onz.config.security.exception.JwtAuthenticationEntryPointImpl;
-import com.onz.config.security.jwt.JwtProvider;
-import com.onz.config.security.oauth2.OAuth2AuthenticationFailureHandler;
-import com.onz.config.security.oauth2.OAuth2AuthenticationSuccessHandler;
-import com.onz.config.security.oauth2.CustomOAuth2UserService;
-import com.onz.config.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.onz.common.web.filter.ExceptionFilterHandler;
+import com.onz.modules.auth.web.JwtFilter;
+import com.onz.modules.auth.web.AccessDeniedHandlerImpl;
+import com.onz.modules.auth.web.JwtAuthenticationEntryPointImpl;
+import com.onz.modules.auth.application.util.JwtProvider;
+import com.onz.modules.auth.web.OAuth2AuthenticationFailureHandler;
+import com.onz.modules.auth.web.OAuth2AuthenticationSuccessHandler;
+import com.onz.modules.auth.application.CustomOAuth2UserService;
+import com.onz.modules.auth.infra.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.onz.modules.auth.application.UserDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,6 +1,6 @@
 package com.onz.modules.organization.application.request;
 
-import com.onz.modules.common.application.request.BasePageRequest;
+import com.onz.common.web.dto.request.BasePageRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

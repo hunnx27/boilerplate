@@ -1,6 +1,6 @@
 package com.onz.modules.organization.infra;
 
-import com.onz.modules.common.type.YN;
+import com.onz.common.enums.YN;
 import com.onz.modules.organization.application.request.OrganizationSearchRequest;
 import com.onz.modules.organization.application.request.OrganizationUpdateRequest;
 import com.onz.modules.organization.domain.Organization;

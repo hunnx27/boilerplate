@@ -3,7 +3,7 @@ package com.onz.modules.account.infra;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.QAccount;
 import com.onz.modules.account.application.request.AccountSearchRequest;
-import com.onz.modules.common.type.YN;
+import com.onz.common.enums.YN;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.JPQLQuery;

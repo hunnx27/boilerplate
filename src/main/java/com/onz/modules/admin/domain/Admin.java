@@ -1,7 +1,7 @@
 package com.onz.modules.admin.domain;
 
-import com.onz.modules.common.domain.BaseEntity;
-import com.onz.modules.common.type.Role;
+import com.onz.common.domain.BaseEntity;
+import com.onz.common.enums.Role;
 import java.time.ZonedDateTime;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

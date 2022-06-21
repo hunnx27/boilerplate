@@ -1,6 +1,6 @@
 package com.onz.modules.account.domain;
 
-import com.onz.modules.common.type.Role;
+import com.onz.common.enums.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
