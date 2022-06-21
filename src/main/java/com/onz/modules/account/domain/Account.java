@@ -1,7 +1,7 @@
 package com.onz.modules.account.domain;
 
 import com.onz.modules.account.domain.enums.RestrictionProvider;
-import com.onz.modules.account.application.request.AccountUpdateRequest;
+import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.common.enums.Role;
 import com.onz.common.domain.BaseEntity;
 import com.onz.modules.education.domain.Education;
@@ -47,7 +47,7 @@ public class Account extends BaseEntity {
     private Role role;
 
     @Enumerated(EnumType.STRING)
-    private RestrictionProvider provider;
+    private RestrictionProvider provider = RestrictionProvider.LOCAL;
 
     @ManyToMany(mappedBy = "accounts")
     @JsonBackReference
