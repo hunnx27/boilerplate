@@ -1,5 +1,7 @@
 package com.onz.config.security.exception;
 
+import com.onz.common.enums.ErrorCode;
+import com.onz.common.vo.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -17,11 +19,12 @@ public class JwtAuthenticationEntryPointImpl implements AuthenticationEntryPoint
     public void commence(HttpServletRequest request, HttpServletResponse response,
         AuthenticationException authException) throws IOException {
         log.error("Responding with unauthorized error. Message - {}", authException.getMessage());
-
-        String attribute = (String) request.getAttribute("unauthorization.code");
-
-        request.setAttribute("response.failure.code", attribute);
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, attribute);
+//
+//        String attribute = (String) request.getAttribute("unauthorization.code");
+//
+//        request.setAttribute("response.failure.code", attribute);
+//        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, attribute);
+        throw new CustomException(ErrorCode.INVALID_AUTH_TOKEN);
 
     }
 }

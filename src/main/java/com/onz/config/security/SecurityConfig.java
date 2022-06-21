@@ -1,5 +1,6 @@
 package com.onz.config.security;
 
+import com.onz.common.filter.ExceptionFilterHandler;
 import com.onz.common.filter.JwtFilter;
 import com.onz.config.security.exception.AccessDeniedHandlerImpl;
 import com.onz.config.security.exception.JwtAuthenticationEntryPointImpl;
@@ -73,6 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.addFilterBefore(new JwtFilter(jwtProvider),
             UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new ExceptionFilterHandler(), JwtFilter.class);
     }
 
     @Override

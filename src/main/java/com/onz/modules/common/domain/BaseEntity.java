@@ -1,5 +1,6 @@
 package com.onz.modules.common.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.onz.modules.common.type.YN;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,10 +20,12 @@ public class BaseEntity {
 
     @CreationTimestamp
     @Column(updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private ZonedDateTime createdAt;
 
     @UpdateTimestamp
     @Column(insertable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private ZonedDateTime modifiedAt;
 
     @Enumerated(EnumType.STRING)
