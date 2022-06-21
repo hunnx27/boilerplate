@@ -33,14 +33,14 @@ public class ErrorResponse implements Serializable {
         return toResponseEntity(errorCode, null);
     }
 
-    public static ResponseEntity<ErrorResponse> toResponseEntity(ErrorCode errorCode, String message) {
+    public static ResponseEntity<ErrorResponse> toResponseEntity(ErrorCode errorCode, String... args){
         return ResponseEntity
                 .status(errorCode.getHttpStatus())
                 .body(ErrorResponse.builder()
                         .status(errorCode.getHttpStatus().value())
                         .error(errorCode.getHttpStatus().name())
                         .code(errorCode.name())
-                        .message(message != null ? message : errorCode.getDetail())
+                        .message(String.format(errorCode.getDetail(), args))
                         .build()
                 );
     }

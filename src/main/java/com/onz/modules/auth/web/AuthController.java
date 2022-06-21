@@ -1,5 +1,7 @@
 package com.onz.modules.auth.web;
 
+import com.onz.common.enums.ErrorCode;
+import com.onz.common.exception.CustomException;
 import com.onz.modules.auth.application.util.CookieUtils;
 import com.onz.modules.auth.application.UserDetailServiceImpl;
 import com.onz.modules.auth.application.util.JwtProvider;
@@ -12,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +35,7 @@ public class AuthController {
 
         UserDetails principal = userDetailService.loadUserByUsername(loginRequest.getName());
         if (!passwordEncoder.matches(loginRequest.getPassword(), principal.getPassword())) {
-            throw new UsernameNotFoundException("invalid Password");
+            throw new CustomException(ErrorCode.INVALID_PASSWORD);
         }
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(principal,
