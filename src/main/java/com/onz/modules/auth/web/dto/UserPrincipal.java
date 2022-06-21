@@ -1,7 +1,8 @@
-package com.onz.modules.account.domain;
+package com.onz.modules.auth.web.dto;
 
-import com.onz.common.enums.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.onz.common.enums.Role;
+import com.onz.modules.account.domain.Account;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,26 +11,29 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 
 @Getter
-public class UserAccount extends User implements OAuth2User, UserDetails {
+public class UserPrincipal extends User implements OAuth2User, UserDetails {
 
     private final Account account;
 
     private Map<String, Object> attributes;
 
-    public UserAccount(Account account) {
+    public UserPrincipal(Account account) {
         super(account.getName(),
             account.getPassword(),
-            Collections.singleton(new SimpleGrantedAuthority(Role.USER.getRole())));
+            Collections.singleton(new SimpleGrantedAuthority(account.getRole().getRole())));
         this.account = account;
     }
 
-    public UserAccount(Account account, String password) {
+    public UserPrincipal(Account account, String password) {
         super(account.getEmail(),
             password,
-            Collections.singleton(new SimpleGrantedAuthority(Role.USER.getRole())));
+            Collections.singleton(new SimpleGrantedAuthority(account.getRole().getRole())));
         this.account = account;
     }
 
@@ -96,16 +100,14 @@ public class UserAccount extends User implements OAuth2User, UserDetails {
      * @param account
      * @return
      */
-    public static UserAccount to(Account account) {
+    public static UserPrincipal to(Account account) {
         String password;
-        // TODO: 2022/05/23 데이터 마이그레이션 시 아래 이메일 인증필드를 사용할 수 있는지 확인 필요
-//        if(account.isEmailVerified())
         if (StringUtils.hasText(account.getPassword())) {
             password = account.getPassword();
         } else {
             password = "";
         }
 
-        return new UserAccount(account, password);
+        return new UserPrincipal(account, password);
     }
 }

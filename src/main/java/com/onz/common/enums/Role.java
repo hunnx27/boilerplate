@@ -1,5 +1,8 @@
 package com.onz.common.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Role {
     SUPER_ADMIN("ROLE_SUPER_ADMIN,ROLE_ADMIN"),
     ADMIN("ROLE_ADMIN"),
@@ -9,9 +12,5 @@ public enum Role {
 
     Role(String role) {
         this.role = role;
-    }
-
-    public String getRole() {
-        return this.role;
     }
 }

@@ -1,7 +1,7 @@
 package com.onz;
 
 import com.onz.modules.account.domain.Account;
-import com.onz.modules.account.domain.UserAccount;
+import com.onz.modules.auth.web.dto.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,8 +26,8 @@ public class MainController {
     @GetMapping("/")
     public void main(HttpServletRequest req, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof UserAccount) {
-            Account account = ((UserAccount) authentication.getPrincipal()).getAccount();
+        if (authentication != null && authentication.getPrincipal() instanceof UserPrincipal) {
+            Account account = ((UserPrincipal) authentication.getPrincipal()).getAccount();
             log.info(String.valueOf(account));
         }
         log.info(String.valueOf(req));

@@ -3,8 +3,8 @@ package com.onz.modules.auth.application;
 import com.onz.common.enums.ErrorCode;
 import com.onz.common.exception.CustomException;
 import com.onz.modules.account.domain.Account;
-import com.onz.modules.account.domain.UserAccount;
 import com.onz.modules.account.infra.AccountRepository;
+import com.onz.modules.auth.web.dto.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +31,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
             //throw new UsernameNotFoundException(String.format("계정정보가 없습니다. %s",nameOrEmail));
             throw new CustomException(ErrorCode.MEMBER_NOT_FOUND, new String[]{nameOrEmail});
         }
-        return UserAccount.to(account);
+        return UserPrincipal.to(account);
     }
 }

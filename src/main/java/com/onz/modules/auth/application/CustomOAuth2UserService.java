@@ -1,8 +1,8 @@
 package com.onz.modules.auth.application;
 
 import com.onz.modules.account.domain.Account;
-import com.onz.modules.account.domain.UserAccount;
 import com.onz.modules.account.infra.AccountRepository;
+import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.auth.web.dto.oauth.OAuthAttributes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,10 +42,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         Account account = saveOrUpdate(of);
 
-        return UserAccount.to(account);
-//        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(Role.USER.name())),
-//                of.getAttributes(),
-//                of.getNameAttributeKey());
+        return UserPrincipal.to(account);
     }
 
     private Account saveOrUpdate(OAuthAttributes of) {
