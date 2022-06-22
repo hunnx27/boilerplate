@@ -30,7 +30,7 @@ public class ErrorResponse implements Serializable {
     private final String message;
 
     public static ResponseEntity<ErrorResponse> toResponseEntity(ErrorCode errorCode) {
-        return toResponseEntity(errorCode, null);
+        return toResponseEntity(errorCode, new String[]{""});
     }
 
     public static ResponseEntity<ErrorResponse> toResponseEntity(ErrorCode errorCode, String... args){
@@ -52,11 +52,11 @@ public class ErrorResponse implements Serializable {
         this.message = errorCode.getDetail();
     }
 
-    public ErrorResponse(ErrorCode errorCode, String message) {
+    public ErrorResponse(ErrorCode errorCode, String... args) {
         this.status = errorCode.getHttpStatus().value();
         this.error = errorCode.getHttpStatus().name();
         this.code = errorCode.name();
-        this.message = message;
+        this.message = String.format(errorCode.getDetail(), args);
     }
 
     public String convertToJSON() {

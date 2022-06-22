@@ -24,7 +24,7 @@ public class JwtAuthenticationEntryPointImpl implements AuthenticationEntryPoint
 //
 //        request.setAttribute("response.failure.code", attribute);
 //        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, attribute);
-        throw new CustomException(ErrorCode.INVALID_AUTH_TOKEN);
+        throw new CustomException(ErrorCode.INVALID_AUTH_TOKEN_DETAIL, new String[]{authException.getMessage()});
 
     }
 }

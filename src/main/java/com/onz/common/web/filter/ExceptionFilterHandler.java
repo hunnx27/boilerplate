@@ -26,18 +26,18 @@ public class ExceptionFilterHandler extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch(CustomException e){
             log.error("Spring Security Filter Chain Custom Exception:", e);
-            setErrorResponse(e.getErrorCode(), response, e.getErrorCode().getDetail());
+            setErrorResponse(e.getErrorCode(), response, e.getArgs());
         } catch(Exception e) {
             log.error("Spring Security Filter Chain Exception:", e);
-            setErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR, response, e.getMessage());
+            setErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR_DETAIL, response, new String[]{e.getMessage()});
         }
 
     }
 
-    public void setErrorResponse(ErrorCode errorCode, HttpServletResponse response, String message) {
+    public void setErrorResponse(ErrorCode errorCode, HttpServletResponse response, String... args) {
         response.setStatus(errorCode.getHttpStatus().value());
         response.setContentType("application/json");
-        ErrorResponse errorReponse = new ErrorResponse(errorCode, message);
+        ErrorResponse errorReponse = new ErrorResponse(errorCode, args);
         try {
             String json = errorReponse.convertToJSON();
             log.error(json);
