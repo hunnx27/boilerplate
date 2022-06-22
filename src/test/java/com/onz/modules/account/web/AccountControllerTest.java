@@ -76,7 +76,7 @@ class AccountControllerTest {
             .andDo(print())
             .andExpect(status().isOk());
 
-        Account account = accountRepository.findByEmail(map.get("email"));
+        Account account = accountRepository.findByEmail(map.get("email")).get();
         ModelMapper modelMapper = new ModelMapper();
         Account compare = modelMapper.map(map, Account.class);
         assertEquals(account.getEmail(), compare.getEmail());

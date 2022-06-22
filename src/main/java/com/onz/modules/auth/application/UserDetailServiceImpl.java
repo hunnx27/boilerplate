@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -22,7 +24,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String nameOrEmail) throws CustomException {
-        Account account = accountRepository.findByEmail(nameOrEmail);
+        Account account = accountRepository.findByEmail(nameOrEmail).get();
         if (account == null) {
             account = accountRepository.findByName(nameOrEmail);
         }
@@ -31,6 +33,14 @@ public class UserDetailServiceImpl implements UserDetailsService {
             //throw new UsernameNotFoundException(String.format("계정정보가 없습니다. %s",nameOrEmail));
             throw new CustomException(ErrorCode.MEMBER_NOT_FOUND, new String[]{nameOrEmail});
         }
-        return UserPrincipal.to(account);
+        return UserPrincipal.create(account);
+    }
+
+    @Transactional
+    public UserDetails loadUserById(Long id) {
+        Account account = accountRepository.findById(id).orElseThrow(
+                () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND, new String[]{String.valueOf(id)}));
+
+        return UserPrincipal.create(account);
     }
 }

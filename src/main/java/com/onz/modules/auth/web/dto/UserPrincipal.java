@@ -11,66 +11,81 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
 
-@Getter
-public class UserPrincipal extends User implements OAuth2User, UserDetails {
-
-    private final Account account;
-
+public class UserPrincipal implements OAuth2User, UserDetails {
+    private Long id;
+    private String email;
+    private String password;
+    private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
-    public UserPrincipal(Account account) {
-        super(account.getName(),
-            account.getPassword(),
-            Collections.singleton(new SimpleGrantedAuthority(account.getRole().getRole())));
-        this.account = account;
+    public UserPrincipal(Long id, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.authorities = authorities;
     }
 
-    public UserPrincipal(Account account, String password) {
-        super(account.getEmail(),
-            password,
-            Collections.singleton(new SimpleGrantedAuthority(account.getRole().getRole())));
-        this.account = account;
+    public static UserPrincipal create(Account account) {
+        List<GrantedAuthority> authorities = Collections.
+                singletonList(new SimpleGrantedAuthority(account.getRole().getRole()));
+
+        return new UserPrincipal(
+                account.getId(),
+                account.getEmail(),
+                account.getPassword(),
+                authorities
+        );
+    }
+
+    public static UserPrincipal create(Account account, Map<String, Object> attributes) {
+        UserPrincipal userPrincipal = UserPrincipal.create(account);
+        userPrincipal.setAttributes(attributes);
+        return userPrincipal;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     @Override
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String getPassword() {
-        return super.getPassword();
+        return password;
     }
 
     @Override
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String getUsername() {
-        return super.getUsername();
+        return email;
     }
 
     @Override
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    public boolean isEnabled() {
-        return true;
-    }
-
-    @Override
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
     @Override
@@ -83,31 +98,7 @@ public class UserPrincipal extends User implements OAuth2User, UserDetails {
     }
 
     @Override
-    public Collection<GrantedAuthority> getAuthorities() {
-        ArrayList<GrantedAuthority> authList = new ArrayList<>();
-        authList.add(new SimpleGrantedAuthority(account.getRole().getRole()));
-        return authList;
-    }
-
-    @Override
     public String getName() {
-        return account.getName();
-    }
-
-    /**
-     * OAUth2 로그인 시 비밀번호가 없기때문에 그대로 password가 null인채로 User클래스에 담게되면 에러가 발생함.
-     * 이를 방지하기 위해 OAUth2일 시 password를 ""로 담는다.
-     * @param account
-     * @return
-     */
-    public static UserPrincipal to(Account account) {
-        String password;
-        if (StringUtils.hasText(account.getPassword())) {
-            password = account.getPassword();
-        } else {
-            password = "";
-        }
-
-        return new UserPrincipal(account, password);
+        return String.valueOf(id);
     }
 }

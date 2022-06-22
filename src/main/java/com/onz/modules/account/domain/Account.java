@@ -1,6 +1,6 @@
 package com.onz.modules.account.domain;
 
-import com.onz.modules.account.domain.enums.RestrictionProvider;
+import com.onz.modules.account.domain.enums.AuthProvider;
 import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.common.enums.Role;
 import com.onz.common.domain.BaseEntity;
@@ -9,6 +9,7 @@ import com.onz.modules.organization.domain.Organization;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -47,7 +48,7 @@ public class Account extends BaseEntity {
     private Role role;
 
     @Enumerated(EnumType.STRING)
-    private RestrictionProvider provider = RestrictionProvider.LOCAL;
+    private AuthProvider provider = AuthProvider.local;
 
     @ManyToMany(mappedBy = "accounts")
     @JsonBackReference
@@ -60,11 +61,13 @@ public class Account extends BaseEntity {
     @OneToOne(mappedBy = "director", fetch = FetchType.LAZY)
     private Organization director;
 
-    public Account(String name, String email, String picture) {
+    @Builder
+    public Account(String name, String email, String picture, Role role, AuthProvider provider) {
         this.name = name;
         this.email = email;
         this.profileImage = picture;
-        this.role = Role.USER;
+        this.role = role;
+        this.provider = provider;
     }
 
     public void setUpdateData(AccountUpdateRequest account) {
@@ -82,13 +85,5 @@ public class Account extends BaseEntity {
         }
 
         return this;
-    }
-
-    public Account toAccount(OAuth2User oAuth2User) {
-        Map<String, Object> attributes = oAuth2User.getAttributes();
-        return new Account(
-            (String) attributes.get("name"),
-            (String) attributes.get("email"),
-            (String) attributes.get("picture"));
     }
 }

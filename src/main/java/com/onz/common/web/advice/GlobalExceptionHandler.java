@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
 @Slf4j
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler {
 
     /**
      * 사용자 정의 Exception

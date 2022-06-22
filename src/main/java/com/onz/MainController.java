@@ -27,8 +27,8 @@ public class MainController {
     public void main(HttpServletRequest req, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserPrincipal) {
-            Account account = ((UserPrincipal) authentication.getPrincipal()).getAccount();
-            log.info(String.valueOf(account));
+            UserPrincipal userPrincipal = ((UserPrincipal) authentication.getPrincipal());
+            log.info(String.valueOf(userPrincipal));
         }
         log.info(String.valueOf(req));
         log.info(String.valueOf(model));
