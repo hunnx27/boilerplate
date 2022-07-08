@@ -33,6 +33,8 @@ public class JwtAuthenticationRequestFilter extends OncePerRequestFilter {
                     jwt);
                 authentication1.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request));
+
+                // @AuthenticationPrincipal에서 데이터 뺄 수 있음.
                 SecurityContextHolder.getContext().setAuthentication(authentication1);
             } else {
                 if (!StringUtils.hasText(jwt)) {

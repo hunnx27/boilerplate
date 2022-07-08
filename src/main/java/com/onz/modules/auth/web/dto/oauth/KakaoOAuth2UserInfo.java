@@ -16,20 +16,20 @@ public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
         return String.valueOf(attributes.get("id"));
     }
 
-    @Override
-    public String getName() {
-        return (String)profile.get("nickname");
-    }
-
-    @Override
-    public String getEmail() {
-        return (String)kakaoAccount.get("email");
-    }
-
-    @Override
-    public String getPicture() {
-        return (String)profile.get("profile_image_url");
-    }
+//    @Override
+//    public String getName() {
+//        return (String)profile.get("nickname");
+//    }
+//
+//    @Override
+//    public String getEmail() {
+//        return (String)kakaoAccount.get("email");
+//    }
+//
+//    @Override
+//    public String getPicture() {
+//        return (String)profile.get("profile_image_url");
+//    }
 
     @Override
     public String getrRegistrationId() {

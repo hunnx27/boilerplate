@@ -2,10 +2,7 @@ package com.onz.modules.auth.application.util;
 
 
 import com.onz.modules.account.domain.enums.AuthProvider;
-import com.onz.modules.auth.web.dto.oauth.GoogleOAuth2UserInfo;
-import com.onz.modules.auth.web.dto.oauth.KakaoOAuth2UserInfo;
-import com.onz.modules.auth.web.dto.oauth.NaverOAuth2UserInfo;
-import com.onz.modules.auth.web.dto.oauth.OAuth2UserInfo;
+import com.onz.modules.auth.web.dto.oauth.*;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 
 import java.util.Map;
@@ -18,8 +15,10 @@ public class OAuth2UserInfoFactory {
             return new KakaoOAuth2UserInfo(attributes, registrationId);
         } else if (registrationId.equalsIgnoreCase(AuthProvider.naver.toString())) {
             return new NaverOAuth2UserInfo(attributes, registrationId);
-//        } else if (registrationId.equalsIgnoreCase(AuthProvider.facebook.toString())) {
-//            return new FacebookOAuth2UserInfo(attributes);
+        } else if (registrationId.equalsIgnoreCase(AuthProvider.apple.toString())) {
+            return new AppleOAuth2UserInfo(attributes, registrationId);
+        } else if (registrationId.equalsIgnoreCase(AuthProvider.facebook.toString())) {
+            return new FacebookOAuth2UserInfo(attributes, registrationId);
 //        } else if (registrationId.equalsIgnoreCase(AuthProvider.github.toString())) {
 //            return new GithubOAuth2UserInfo(attributes);
         } else {

@@ -85,7 +85,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     // 기존 USER -> OAuth2 방식으로 덮어쓰기..
     private Account updateExistingUser(Account existingUser, OAuth2UserInfo oAuth2UserInfo) {
-        existingUser.update(oAuth2UserInfo.getName(), oAuth2UserInfo.getPicture());
+        existingUser.update(oAuth2UserInfo.getrRegistrationId());
         return accountRepository.save(existingUser);
     }
 

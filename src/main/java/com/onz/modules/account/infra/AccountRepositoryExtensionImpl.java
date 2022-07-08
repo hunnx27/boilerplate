@@ -140,7 +140,7 @@ public class AccountRepositoryExtensionImpl extends QuerydslRepositorySupport im
 
     @Override
     public Optional<Account> findByPlainUserId3(String plainUserId) {
-        QAccount m = QAccount.account;
+        QAccount m = new QAccount("m");
 
         SimpleTemplate st = Expressions.template(String.class, "SHA2(AES_ENCRYPT({0}, concat('ONZ!@#', m.gubn, m.snsType)),512)", plainUserId);
         Account findAccount = qf

@@ -1,12 +1,13 @@
 package com.onz.modules.account.web;
 
-import com.onz.modules.account.web.annotation.CurrentAccount;
+import com.onz.modules.account.web.annotation.CurrentPrincipal;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.web.dto.request.AccountCreateRequest;
 import com.onz.modules.account.web.dto.request.AccountSearchRequest;
 import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.modules.account.domain.Account;
 import com.onz.common.web.BaseApiController;
+import com.onz.modules.auth.web.dto.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -15,7 +16,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -71,7 +74,10 @@ public class AccountController extends BaseApiController {
     }
 
     @GetMapping("/accounts/me")
-    public ResponseEntity<?> me(@CurrentAccount Account account) {
-        return ResponseEntity.ok(accountService.findOne(account.getId()));
+//    public ResponseEntity<?> me(@CurrentPrincipal UserPrincipal principal) {
+    public ResponseEntity<?> me(@AuthenticationPrincipal UserPrincipal up) {
+
+        return ResponseEntity.ok(accountService.findOne(up.getId()));
+//        return ResponseEntity.ok(new Account());
     }
 }

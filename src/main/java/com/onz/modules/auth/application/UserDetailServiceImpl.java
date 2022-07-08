@@ -24,19 +24,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserDetails loadUserByUsername(String userId) throws CustomException {
-        //FIXME AuthProvider 제거해야함..
-        //FIXME AuthProvider 제거해야함..
-        //FIXME AuthProvider 제거해야함..
-        //FIXME AuthProvider 제거해야함..
-        //FIXME AuthProvider 제거해야함..
+    public UserDetails loadUserByUsername(String encodedUserId) throws CustomException {
 //        Account account = accountRepository.findByPlainUserId(userId, AuthProvider.local).get();
-//        Account account = accountRepository.findByPlainUserId2(userId).get();
-        Account account = accountRepository.findByPlainUserId3(userId).get();
+        Account account = accountRepository.findByEncodedUserId2(encodedUserId).get();
 
         if (account == null) {
             //throw new UsernameNotFoundException(String.format("계정정보가 없습니다. %s",nameOrEmail));
-            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND, new String[]{userId});
+            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND, new String[]{encodedUserId});
         }
         return UserPrincipal.create(account);
     }

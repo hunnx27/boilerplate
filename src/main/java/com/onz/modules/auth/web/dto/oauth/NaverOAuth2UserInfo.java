@@ -15,20 +15,20 @@ public class NaverOAuth2UserInfo extends OAuth2UserInfo{
         return (String) response.get("id");
     }
 
-    @Override
-    public String getName() {
-        return (String) response.get("name");
-    }
-
-    @Override
-    public String getEmail() {
-        return (String) response.get("email");
-    }
-
-    @Override
-    public String getPicture() {
-        return (String) response.get("profile_image");
-    }
+//    @Override
+//    public String getName() {
+//        return (String) response.get("name");
+//    }
+//
+//    @Override
+//    public String getEmail() {
+//        return (String) response.get("email");
+//    }
+//
+//    @Override
+//    public String getPicture() {
+//        return (String) response.get("profile_image");
+//    }
 
     @Override
     public String getrRegistrationId() {

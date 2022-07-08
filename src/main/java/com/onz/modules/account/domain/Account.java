@@ -94,7 +94,8 @@ public class Account extends BaseEntity {
     public void setUpdateData(AccountUpdateRequest account) {
         byte[] encode = new byte[0];
         try {
-            encode = MysqlAESUtil.encryptoByte("ONZ!@#", account.getUserId());
+            String key = String.format("%s%s%s", "ONZ!@#", this.gubn.getCode(), this.snsType.getCode());
+            encode = MysqlAESUtil.encryptoByte(key, userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -102,9 +103,10 @@ public class Account extends BaseEntity {
         this.userId = encodedUserId;
     }
 
-    public Account update(String name, String picture) {
-        if (Objects.isNull(this.role)) {
-            this.role = Role.USER;
+    public Account update(String registrationId) {
+        AuthProvider snsType = AuthProvider.valueOf(registrationId);
+        if (Objects.isNull(this.snsType)) {
+            this.snsType = snsType;
         }
         return this;
     }
