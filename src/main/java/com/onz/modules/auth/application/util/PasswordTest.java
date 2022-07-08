@@ -24,7 +24,7 @@ public class PasswordTest {
 			System.out.println(rs3);
 			
 			
-			byte[] encode = MysqlAESUtil.encryptoByte("key", "hello");
+			byte[] encode = MysqlAESUtil.encryptoByte("ONZ!@#", "hello");
 			String rs4 = MysqlSHA2Util.getSHA512(encode);
 			System.out.println(rs4);
 			//563e20e114427e68e234d19220f054bedf9ca287d6cb8b1237b2f3b7cd63532d7ea866a7b456470fab964a31c503e3a7099d424a2dddf10f54183a2835163829

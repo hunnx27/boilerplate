@@ -21,12 +21,11 @@ public class WithAccountSecurityContextFactory implements WithSecurityContextFac
     public SecurityContext createSecurityContext(WithAccount annotation) {
         String name = annotation.value();
         Account account = new Account();
-        account.setName(name);
-        account.setEmail(name + "@test.com");
+        account.setUserId(name + "@test.com");
         account.setPassword("test");
         accountService.create(account);
 
-        UserDetails userDetails = userDetailService.loadUserByUsername(account.getName());
+        UserDetails userDetails = userDetailService.loadUserByUsername(account.getUserId());
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
             userDetails, userDetails.getPassword(), userDetails.getAuthorities());
         SecurityContext context = SecurityContextHolder.createEmptyContext();

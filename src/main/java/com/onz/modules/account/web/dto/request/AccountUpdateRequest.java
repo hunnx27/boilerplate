@@ -11,7 +11,7 @@ public class AccountUpdateRequest {
 
     private Long id;
     private String name;
-    private String email;
+    private String userId;
     private String age;
     private String location;
 

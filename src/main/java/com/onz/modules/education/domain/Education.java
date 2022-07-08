@@ -23,7 +23,7 @@ public class Education extends BaseEntity {
     private String name;
     private String subject;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "education_account",
         joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "education_id", referencedColumnName = "id")

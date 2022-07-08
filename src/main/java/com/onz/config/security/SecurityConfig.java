@@ -67,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .baseUri("/oauth2/authorization")
             .authorizationRequestRepository(cookieAuthorizationRequestRepository())
             .and().redirectionEndpoint()
-                .baseUri("/login/oauth2/callback/*") // OAuth 응답시 처리 설정
+                .baseUri("/login/oauth2/code/*") // OAuth 응답시 처리 설정
             .and()
             .userInfoEndpoint()
             .userService(customOAuth2UserService);

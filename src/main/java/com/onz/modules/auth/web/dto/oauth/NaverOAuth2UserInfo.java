@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class NaverOAuth2UserInfo extends OAuth2UserInfo{
     Map<String, Object> response = new HashMap<>();
-    public NaverOAuth2UserInfo(Map<String, Object> attributes) {
-        super(attributes);
+    public NaverOAuth2UserInfo(Map<String, Object> attributes, String registrationId) {
+        super(attributes, registrationId);
         response = (Map<String, Object>) attributes.get("response");
     }
 
@@ -28,5 +28,10 @@ public class NaverOAuth2UserInfo extends OAuth2UserInfo{
     @Override
     public String getPicture() {
         return (String) response.get("profile_image");
+    }
+
+    @Override
+    public String getrRegistrationId() {
+        return (String) registrationId;
     }
 }

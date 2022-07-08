@@ -1,9 +1,14 @@
 package com.onz.modules.account.domain;
 
 import com.onz.modules.account.domain.enums.AuthProvider;
+import com.onz.modules.account.domain.enums.AuthProviderConverter;
+import com.onz.modules.account.domain.enums.Gubn;
+import com.onz.modules.account.domain.enums.GubnConverter;
 import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.common.enums.Role;
 import com.onz.common.domain.BaseEntity;
+import com.onz.modules.auth.application.util.MysqlAESUtil;
+import com.onz.modules.auth.application.util.MysqlSHA2Util;
 import com.onz.modules.education.domain.Education;
 import com.onz.modules.organization.domain.Organization;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -15,7 +20,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.persistence.*;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -31,24 +42,26 @@ public class Account extends BaseEntity {
     @GeneratedValue
     private Long id;
 
-    private String name;
-
-    @JsonIgnore
-    private String password;
     @NotNull
     @Column(unique = true)
-    private String email;
-    private String age;
-    private String location;
+    private String userId;
+    @JsonIgnore
+    private String password;
 
-    private boolean isEmailVerified;
-    private String profileImage;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Enumerated(EnumType.STRING)
-    private AuthProvider provider = AuthProvider.local;
+    //@Enumerated(EnumType.STRING)
+    @Convert(converter = AuthProviderConverter.class)
+    private AuthProvider snsType = AuthProvider.local;
+
+    //@Enumerated(EnumType.STRING)
+    @Convert(converter = GubnConverter.class)
+    private Gubn gubn = Gubn.PARENT;
+
+    private long point;
+
 
     @ManyToMany(mappedBy = "accounts")
     @JsonBackReference
@@ -62,28 +75,37 @@ public class Account extends BaseEntity {
     private Organization director;
 
     @Builder
-    public Account(String name, String email, String picture, Role role, AuthProvider provider) {
-        this.name = name;
-        this.email = email;
-        this.profileImage = picture;
+    public Account(String userId, Gubn gubn, Role role, AuthProvider provider) {
+        this.gubn = gubn;
+        this.snsType = provider;
         this.role = role;
-        this.provider = provider;
+
+        byte[] encode = new byte[0];
+        try {
+            String key = String.format("%s%s%s", "ONZ!@#", this.gubn.getCode(), this.snsType.getCode());
+            encode = MysqlAESUtil.encryptoByte(key, userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String encodedUserId = MysqlSHA2Util.getSHA512(encode);
+        this.userId = encodedUserId;
     }
 
     public void setUpdateData(AccountUpdateRequest account) {
-        this.name = account.getName();
-        this.email = account.getEmail();
-        this.age = account.getAge();
-        this.location = account.getLocation();
+        byte[] encode = new byte[0];
+        try {
+            encode = MysqlAESUtil.encryptoByte("ONZ!@#", account.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String encodedUserId = MysqlSHA2Util.getSHA512(encode);
+        this.userId = encodedUserId;
     }
 
     public Account update(String name, String picture) {
-        this.name = name;
-        this.profileImage = picture;
         if (Objects.isNull(this.role)) {
             this.role = Role.USER;
         }
-
         return this;
     }
 }

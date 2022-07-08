@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 public class AccountSearchRequest {
 
     private String name;
-    private String email;
+    private String userId;
 }

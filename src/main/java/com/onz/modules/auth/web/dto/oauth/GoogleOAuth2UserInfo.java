@@ -3,8 +3,8 @@ package com.onz.modules.auth.web.dto.oauth;
 import java.util.Map;
 
 public class GoogleOAuth2UserInfo extends OAuth2UserInfo {
-    public GoogleOAuth2UserInfo(Map<String, Object> attributes) {
-        super(attributes);
+    public GoogleOAuth2UserInfo(Map<String, Object> attributes, String registrationId) {
+        super(attributes, registrationId);
     }
     @Override
     public String getId() {
@@ -21,5 +21,10 @@ public class GoogleOAuth2UserInfo extends OAuth2UserInfo {
     @Override
     public String getPicture() {
         return (String) attributes.get("picture");
+    }
+
+    @Override
+    public String getrRegistrationId() {
+        return (String) registrationId;
     }
 }

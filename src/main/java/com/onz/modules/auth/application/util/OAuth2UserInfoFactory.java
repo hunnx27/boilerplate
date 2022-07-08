@@ -13,11 +13,11 @@ import java.util.Map;
 public class OAuth2UserInfoFactory {
     public static OAuth2UserInfo getOAuth2UserInfo(String registrationId, Map<String, Object> attributes) {
         if(registrationId.equalsIgnoreCase(AuthProvider.google.toString())) {
-            return new GoogleOAuth2UserInfo(attributes);
+            return new GoogleOAuth2UserInfo(attributes, registrationId);
         } else if (registrationId.equalsIgnoreCase(AuthProvider.kakao.toString())) {
-            return new KakaoOAuth2UserInfo(attributes);
+            return new KakaoOAuth2UserInfo(attributes, registrationId);
         } else if (registrationId.equalsIgnoreCase(AuthProvider.naver.toString())) {
-            return new NaverOAuth2UserInfo(attributes);
+            return new NaverOAuth2UserInfo(attributes, registrationId);
 //        } else if (registrationId.equalsIgnoreCase(AuthProvider.facebook.toString())) {
 //            return new FacebookOAuth2UserInfo(attributes);
 //        } else if (registrationId.equalsIgnoreCase(AuthProvider.github.toString())) {

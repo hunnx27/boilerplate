@@ -15,14 +15,14 @@ import java.util.*;
 
 public class UserPrincipal implements OAuth2User, UserDetails {
     private Long id;
-    private String email;
+    private String userId;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
-    public UserPrincipal(Long id, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(Long id, String userId, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
-        this.email = email;
+        this.userId = userId;
         this.password = password;
         this.authorities = authorities;
     }
@@ -33,7 +33,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
 
         return new UserPrincipal(
                 account.getId(),
-                account.getEmail(),
+                account.getUserId(),
                 account.getPassword(),
                 authorities
         );
@@ -49,8 +49,8 @@ public class UserPrincipal implements OAuth2User, UserDetails {
         return id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUserId() {
+        return userId;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return userId;
     }
 
     @Override

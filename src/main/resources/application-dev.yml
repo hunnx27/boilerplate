@@ -1,3 +1,6 @@
+server:
+  port: 9101
+
 spring:
   datasource:
     url: jdbc:mysql:aws://db-onz-dev-2022.cmrfdf0pzgad.ap-northeast-2.rds.amazonaws.com:3306/plates?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
@@ -16,12 +19,14 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
         show_sql: true
         format_sql: true
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        #dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: com.onz.config.CustomMysqlDialect
+
   config:
     activate:
       on-profile: dev

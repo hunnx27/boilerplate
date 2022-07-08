@@ -3,7 +3,10 @@ package com.onz.modules.auth.application;
 import com.onz.common.enums.Role;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.enums.AuthProvider;
+import com.onz.modules.account.domain.enums.Gubn;
 import com.onz.modules.account.infra.AccountRepository;
+import com.onz.modules.auth.application.util.MysqlAESUtil;
+import com.onz.modules.auth.application.util.MysqlSHA2Util;
 import com.onz.modules.auth.application.util.OAuth2UserInfoFactory;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.auth.web.dto.oauth.OAuth2UserInfo;
@@ -42,18 +45,23 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
-        if(ObjectUtils.isEmpty(oAuth2UserInfo.getEmail())) {
+
+        if(ObjectUtils.isEmpty(oAuth2UserInfo.getId())) {
             throw new OAuth2AuthenticationException("Email not found from OAuth2 provider");
         }
-        Optional<Account> userOptional = accountRepository.findByEmail(oAuth2UserInfo.getEmail());
+        AuthProvider snsType = AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId());
+//        Optional<Account> userOptional = accountRepository.findByPlainUserId(oAuth2UserInfo.getId(), snsType);
+//        Optional<Account> userOptional = accountRepository.findByPlainUserId2(oAuth2UserInfo.getId());
+        Optional<Account> userOptional = accountRepository.findByPlainUserId3(oAuth2UserInfo.getId());
         Account account;
         if(userOptional.isPresent()) {
             account = userOptional.get();
 
             // 신규 사용자의 provider와 기등록된 사용자의 provider가 다르면 오류 출력!
-            if(!account.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
+            if(!account.getSnsType().equals(snsType)) {
+                log.error("동일한 이메일주소가 다른 소셜계정으로 가입되어있습니다.");
                 throw new OAuth2AuthenticationException("Looks like you're signed up with " +
-                        account.getProvider() + " account. Please use your " + account.getProvider() +
+                        account.getSnsType() + " account. Please use your " + account.getSnsType() +
                         " account to login.");
             }
 
@@ -68,9 +76,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         Account user = Account.builder()
                 .provider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))
-                .name(oAuth2UserInfo.getName())
-                .email(oAuth2UserInfo.getEmail())
-                .picture(oAuth2UserInfo.getPicture())
+                .userId(oAuth2UserInfo.getId())
+                .gubn(Gubn.TEACHER)
                 .role(Role.USER)
                 .build();
         return accountRepository.save(user);

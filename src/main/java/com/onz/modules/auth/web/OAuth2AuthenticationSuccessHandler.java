@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -71,7 +72,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String token = provider.createToken(authentication);
 
         return UriComponentsBuilder.fromUriString(targetUrl)
-            .queryParam("token", token)
+                .queryParam("token", token)
+                .queryParam("userId", authentication.getName())
+                .queryParam("snsType", ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId())
             .build().toString();
     }
 
