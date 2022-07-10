@@ -7,14 +7,22 @@ import java.util.NoSuchElementException;
 public class GubnConverter implements AttributeConverter<Gubn, String> {
     @Override
     public String convertToDatabaseColumn(Gubn gubn) {
-        return gubn.getCode();
+        String gubnCode = "";
+        if(gubn != null){
+            gubnCode = gubn.getCode();
+        }
+        return gubnCode;
     }
 
     @Override
     public Gubn convertToEntityAttribute(String dbData) {
-        return EnumSet.allOf(Gubn.class).stream()
-                .filter(e->e.getCode().equals(dbData))
-                .findAny()
-                .orElseThrow(()-> new NoSuchElementException());
+        Gubn gubn = null;
+        if(dbData != null){
+            gubn = EnumSet.allOf(Gubn.class).stream()
+                    .filter(e->e.getCode().equals(dbData))
+                    .findAny()
+                    .orElseThrow(()-> new NoSuchElementException());
+        }
+        return gubn;
     }
 }

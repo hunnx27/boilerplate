@@ -1,5 +1,6 @@
 package com.onz.modules.account.domain;
 
+import com.onz.common.enums.YN;
 import com.onz.modules.account.domain.enums.AuthProvider;
 import com.onz.modules.account.domain.enums.AuthProviderConverter;
 import com.onz.modules.account.domain.enums.Gubn;
@@ -62,6 +63,7 @@ public class Account extends BaseEntity {
 
     private long point;
 
+    private String temp;
 
     @ManyToMany(mappedBy = "accounts")
     @JsonBackReference
@@ -79,28 +81,40 @@ public class Account extends BaseEntity {
         this.gubn = gubn;
         this.snsType = provider;
         this.role = role;
+        this.temp = userId; // userId 임시보관.
 
-        byte[] encode = new byte[0];
-        try {
-            String key = String.format("%s%s%s", "ONZ!@#", this.gubn.getCode(), this.snsType.getCode());
-            encode = MysqlAESUtil.encryptoByte(key, userId);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(gubn != null) {
+            // Final Step;
+            byte[] encode = new byte[0];
+            try {
+                String key = String.format("%s%s%s", "ONZ!@#", this.gubn.getCode(), this.snsType.getCode());
+                encode = MysqlAESUtil.encryptoByte(key, userId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            String encodedUserId = MysqlSHA2Util.getSHA512(encode);
+            this.userId = encodedUserId;
+        }else{
+            // First Step
+            this.userId = userId; // plained UserId;
         }
-        String encodedUserId = MysqlSHA2Util.getSHA512(encode);
-        this.userId = encodedUserId;
     }
 
     public void setUpdateData(AccountUpdateRequest account) {
-        byte[] encode = new byte[0];
-        try {
-            String key = String.format("%s%s%s", "ONZ!@#", this.gubn.getCode(), this.snsType.getCode());
-            encode = MysqlAESUtil.encryptoByte(key, userId);
-        } catch (Exception e) {
-            e.printStackTrace();
+        String userId = account.getUserId();
+        this.temp = userId;
+
+        if(userId !=null){
+            byte[] encode = new byte[0];
+            try {
+                String key = String.format("%s%s%s", "ONZ!@#", this.gubn.getCode(), this.snsType.getCode());
+                encode = MysqlAESUtil.encryptoByte(key, userId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            String encodedUserId = MysqlSHA2Util.getSHA512(encode);
+            this.userId = encodedUserId;
         }
-        String encodedUserId = MysqlSHA2Util.getSHA512(encode);
-        this.userId = encodedUserId;
     }
 
     public Account update(String registrationId) {
