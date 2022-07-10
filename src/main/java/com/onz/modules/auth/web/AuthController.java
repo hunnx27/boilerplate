@@ -6,8 +6,10 @@ import com.onz.modules.auth.application.util.CookieUtils;
 import com.onz.modules.auth.application.UserDetailServiceImpl;
 import com.onz.modules.auth.application.util.JwtProvider;
 import com.onz.modules.auth.web.dto.request.LoginRequest;
+import com.onz.modules.auth.web.dto.request.SignupRequest;
 import com.onz.modules.auth.web.dto.response.AuthResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
 
     private final UserDetailServiceImpl userDetailService;
@@ -48,5 +51,17 @@ public class AuthController {
         CookieUtils.addCookie(response, "Authorization", token, 180);
 
         return ResponseEntity.ok(new AuthResponse(token));
+    }
+
+    @PostMapping("/auth/oauth2/signup")
+    public ResponseEntity<?> oauth2Signup(HttpServletResponse response,
+                                          @RequestBody SignupRequest signupRequest){
+
+        log.info("id : {}", signupRequest.getSocialId());
+        log.info("gubn : {}", signupRequest.getGubnCode());
+        log.info("agree : {}", signupRequest.getAgree());
+        log.info("snstype {}", signupRequest.getSnsTypeCode());
+
+        return ResponseEntity.ok(signupRequest);
     }
 }
