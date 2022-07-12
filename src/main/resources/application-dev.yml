@@ -16,6 +16,9 @@ spring:
       driver-class-name: ${spring.datasource.driver-class-name}
       data-source-properties:
         rewriteBatchedStatements: true
+    # 기초데이터 SQL 경로 설정
+    #schema: classpath:schema.sql
+    #data: classpath:data.sql
 
   jpa:
     hibernate:
@@ -26,6 +29,10 @@ spring:
         format_sql: true
         #dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         dialect: com.onz.config.CustomMysqlDialect
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
 
   config:
     activate:

@@ -1,12 +1,15 @@
 package com.onz.modules.account.application;
 
 import com.onz.modules.account.web.dto.AccountConverter;
+import com.onz.modules.account.web.dto.request.AccountSearchRequest;
+import com.onz.modules.account.domain.enums.AuthProvider;
+import com.onz.modules.account.domain.enums.Gubn;
 import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.common.enums.Role;
+import com.onz.modules.auth.web.dto.request.SignupRequest;
 import com.onz.modules.education.application.EducationService;
 import com.onz.modules.education.domain.Education;
 import com.onz.modules.education.infra.EducationRepository;
-import com.onz.modules.account.web.dto.request.AccountSearchRequest;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.infra.AccountRepository;
 import com.onz.common.enums.YN;
@@ -69,6 +72,17 @@ public class AccountService {
     public List<Education> educations(Long id) {
         Account account = accountRepository.findById(id).orElseThrow();
         return educationRepository.findEducationsByAccounts(account);
+    }
+
+    public Account getNewUser(SignupRequest signupRequest){
+        Account user = Account.builder()
+                .userId(signupRequest.getSocialId())
+                .gubn(Gubn.of(signupRequest.getGubnCode()))
+                .provider(AuthProvider.of(signupRequest.getSnsTypeCode()))
+                .role(Role.USER)
+                .build();
+        accountRepository.save(user);
+        return user;
     }
 
 

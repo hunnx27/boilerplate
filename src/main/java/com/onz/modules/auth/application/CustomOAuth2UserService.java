@@ -3,10 +3,7 @@ package com.onz.modules.auth.application;
 import com.onz.common.enums.Role;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.enums.AuthProvider;
-import com.onz.modules.account.domain.enums.Gubn;
 import com.onz.modules.account.infra.AccountRepository;
-import com.onz.modules.auth.application.util.MysqlAESUtil;
-import com.onz.modules.auth.application.util.MysqlSHA2Util;
 import com.onz.modules.auth.application.util.OAuth2UserInfoFactory;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.auth.web.dto.oauth.OAuth2UserInfo;
@@ -17,7 +14,6 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;

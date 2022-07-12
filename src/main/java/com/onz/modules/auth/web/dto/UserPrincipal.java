@@ -1,16 +1,10 @@
 package com.onz.modules.auth.web.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.onz.common.enums.Role;
-import com.onz.common.enums.YN;
 import com.onz.modules.account.domain.Account;
-import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
 

@@ -1,11 +1,10 @@
 package com.onz.modules.account.domain;
 
-import com.onz.common.enums.YN;
+import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.modules.account.domain.enums.AuthProvider;
 import com.onz.modules.account.domain.enums.AuthProviderConverter;
 import com.onz.modules.account.domain.enums.Gubn;
 import com.onz.modules.account.domain.enums.GubnConverter;
-import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.common.enums.Role;
 import com.onz.common.domain.BaseEntity;
 import com.onz.modules.auth.application.util.MysqlAESUtil;
@@ -19,17 +18,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.persistence.*;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
