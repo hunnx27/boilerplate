@@ -113,7 +113,7 @@ public class Account extends BaseEntity {
 
     public void setUpdateMyinfo(AccountMyinfoUpdateRequest req){
         if(myinfo==null) myinfo = new Myinfo();
-        myinfo.setIntrsOrg(req.getIntrsOrgName()!=null? IntrsOrg.ofName(req.getIntrsOrgName()) : null);
+        myinfo.setIntrsOrg(req.getIntrsOrgName()!=null? IntrsOrg.valueOf(req.getIntrsOrgName()) : null);
         myinfo.setBirthYYYY(req.getBirthYYYY());
         myinfo.setIntrsZone(req.getIntrsZone());
         myinfo.setMajorSchool(req.getMajorSchool());
