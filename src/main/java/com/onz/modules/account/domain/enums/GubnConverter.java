@@ -17,7 +17,7 @@ public class GubnConverter implements AttributeConverter<Gubn, String> {
     @Override
     public Gubn convertToEntityAttribute(String dbData) {
         Gubn gubn = null;
-        if(dbData != null){
+        if(dbData != null && !"".equals(dbData)){
             gubn = EnumSet.allOf(Gubn.class).stream()
                     .filter(e->e.getCode().equals(dbData))
                     .findAny()

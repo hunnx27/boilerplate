@@ -1,6 +1,9 @@
 package com.onz.modules.account.application;
 
+import com.onz.modules.account.domain.embed.Myinfo;
+import com.onz.modules.account.domain.enums.IntrsOrg;
 import com.onz.modules.account.web.dto.AccountConverter;
+import com.onz.modules.account.web.dto.request.AccountMyinfoUpdateRequest;
 import com.onz.modules.account.web.dto.request.AccountSearchRequest;
 import com.onz.modules.account.domain.enums.AuthProvider;
 import com.onz.modules.account.domain.enums.Gubn;
@@ -23,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -69,6 +73,17 @@ public class AccountService {
         return true;
     }
 
+    public Account updateMyItem(Long id, AccountMyinfoUpdateRequest req){
+        Optional<Account> accountOpt = accountRepository.findById(id);
+        Account rsAccount = null;
+        if(!accountOpt.isEmpty()){
+            Account account = accountOpt.get();
+            account.setUpdateMyinfo(req);
+            rsAccount = accountRepository.save(account);
+        }
+        return rsAccount;
+    }
+
     public List<Education> educations(Long id) {
         Account account = accountRepository.findById(id).orElseThrow();
         return educationRepository.findEducationsByAccounts(account);
@@ -83,6 +98,14 @@ public class AccountService {
                 .build();
         accountRepository.save(user);
         return user;
+    }
+
+    public Account getMember(){
+        Account account = new Account();
+        Myinfo myinfo = new Myinfo();
+        myinfo.setIntrsOrg(IntrsOrg.valueOf("ALL"));
+        account.setMyinfo(myinfo);
+        return null;
     }
 
 

@@ -3,6 +3,7 @@ package com.onz.modules.account.web;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.web.dto.request.AccountCreateRequest;
+import com.onz.modules.account.web.dto.request.AccountMyinfoUpdateRequest;
 import com.onz.modules.account.web.dto.request.AccountSearchRequest;
 import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.common.web.BaseApiController;
@@ -78,5 +79,11 @@ public class AccountController extends BaseApiController {
         AccountResponse ressponse = new AccountResponse(accountService.findOne(up.getId()));
         return ResponseEntity.ok(ressponse);
 //        return ResponseEntity.ok(new Account());
+    }
+
+    @PutMapping("/accounts/me/myinfo")
+    public ResponseEntity<?> getMyinfo(@AuthenticationPrincipal UserPrincipal up, @RequestBody AccountMyinfoUpdateRequest request) {
+        Account account = accountService.updateMyItem(up.getId(), request);
+        return ResponseEntity.ok(account);
     }
 }

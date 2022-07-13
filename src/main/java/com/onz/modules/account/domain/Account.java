@@ -1,10 +1,9 @@
 package com.onz.modules.account.domain;
 
+import com.onz.modules.account.domain.embed.Myinfo;
+import com.onz.modules.account.domain.enums.*;
+import com.onz.modules.account.web.dto.request.AccountMyinfoUpdateRequest;
 import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
-import com.onz.modules.account.domain.enums.AuthProvider;
-import com.onz.modules.account.domain.enums.AuthProviderConverter;
-import com.onz.modules.account.domain.enums.Gubn;
-import com.onz.modules.account.domain.enums.GubnConverter;
 import com.onz.common.enums.Role;
 import com.onz.common.domain.BaseEntity;
 import com.onz.modules.auth.application.util.MysqlAESUtil;
@@ -53,6 +52,10 @@ public class Account extends BaseEntity {
     private Gubn gubn = Gubn.PARENT;
 
     private long point;
+
+    @Embedded
+    private Myinfo myinfo; // 내정보
+
 
     private String temp;
 
@@ -106,6 +109,15 @@ public class Account extends BaseEntity {
             String encodedUserId = MysqlSHA2Util.getSHA512(encode);
             this.userId = encodedUserId;
         }
+    }
+
+    public void setUpdateMyinfo(AccountMyinfoUpdateRequest req){
+        if(myinfo==null) myinfo = new Myinfo();
+        myinfo.setIntrsOrg(req.getIntrsOrgName()!=null? IntrsOrg.ofName(req.getIntrsOrgName()) : null);
+        myinfo.setBirthYYYY(req.getBirthYYYY());
+        myinfo.setIntrsZone(req.getIntrsZone());
+        myinfo.setMajorSchool(req.getMajorSchool());
+        myinfo.setMajorDepartment(req.getMajorDepartment());
     }
 
     public Account update(String registrationId) {

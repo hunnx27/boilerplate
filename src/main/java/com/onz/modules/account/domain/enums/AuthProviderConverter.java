@@ -12,9 +12,13 @@ public class AuthProviderConverter implements AttributeConverter<AuthProvider, S
 
     @Override
     public AuthProvider convertToEntityAttribute(String dbData) {
-        return EnumSet.allOf(AuthProvider.class).stream()
-                .filter(e->e.getCode().equals(dbData))
-                .findAny()
-                .orElseThrow(()-> new NoSuchElementException());
+        AuthProvider authProvider = null;
+        if(dbData != null && !"".equals(dbData)){
+            authProvider = EnumSet.allOf(AuthProvider.class).stream()
+                    .filter(e->e.getCode().equals(dbData))
+                    .findAny()
+                    .orElseThrow(()-> new NoSuchElementException());
+        }
+        return authProvider;
     }
 }
