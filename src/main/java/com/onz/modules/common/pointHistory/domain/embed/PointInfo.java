@@ -16,7 +16,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class PointInfo {
     @Convert(converter = PointTableConverter.class)
-    private PointTable pointTable;
+    private PointTable code;
     private long totAmt;
     private int amt;
     private String description;
@@ -26,9 +26,10 @@ public class PointInfo {
     }
 
     public PointInfo(PointTable pointTable, Account account) {
-        this.pointTable = pointTable;
+        this.code = pointTable;
         this.totAmt = account.getPoint() + pointTable.getAmt();
         this.amt = pointTable.getAmt();
         this.description = pointTable.getCodeName();
+        account.setPoint(this.totAmt); // account테이블도 totAmt를 Account의 point 컬럼에 Update해줌.
     }
 }

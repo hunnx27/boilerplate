@@ -10,6 +10,8 @@ import com.onz.modules.auth.application.util.JwtProvider;
 import com.onz.modules.auth.web.dto.request.LoginRequest;
 import com.onz.modules.auth.web.dto.request.SignupRequest;
 import com.onz.modules.auth.web.dto.response.AuthResponse;
+import com.onz.modules.common.pointHistory.application.PointHistoryService;
+import com.onz.modules.common.pointHistory.domain.enums.PointTable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,7 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final AccountService accountService;
+    private final PointHistoryService pointHistoryService;
 
     @PostMapping("/auth/login")
     public ResponseEntity<?> login(HttpServletResponse response,
@@ -69,10 +72,13 @@ public class AuthController {
         log.info("checkSignupPrivacy {}", signupRequest.getCheckSignupPrivacy());
 
         // 1. Account 등록
-        Account user = accountService.getNewUser(signupRequest);
+        Account account = accountService.getNewUser(signupRequest);
+
+        // 2. 회원가입 후 서비스 처리
+        afterJoinService(account);
 
         // 2. Account 조회
-        UserDetails principal = userDetailService.loadUserByUsername(user.getUserId());
+        UserDetails principal = userDetailService.loadUserByUsername(account.getUserId());
 
         // 3. Authentication 저장
         Authentication authentication = new UsernamePasswordAuthenticationToken(principal,
@@ -87,5 +93,13 @@ public class AuthController {
         response.setHeader("Authorization", token);
         CookieUtils.addCookie(response, "Authorization", token, 180);
         return ResponseEntity.ok(new AuthResponse(token));
+    }
+
+    /**
+     * 회원가입후 서비스 처리
+     */
+    private void afterJoinService(Account account){
+        // 회원가입 최초 포인트(+3000point)
+        accountService.createMyPointHistories(account, PointTable.WELCOME_JOIN);
     }
 }

@@ -9,6 +9,8 @@ import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.common.web.BaseApiController;
 import com.onz.modules.account.web.dto.response.AccountResponse;
 import com.onz.modules.auth.web.dto.UserPrincipal;
+import com.onz.modules.common.pointHistory.web.dto.request.PointHistorySearchRequest;
+import com.onz.modules.common.pointHistory.web.dto.response.PointHistoryResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -85,5 +87,11 @@ public class AccountController extends BaseApiController {
     public ResponseEntity<?> getMyinfo(@AuthenticationPrincipal UserPrincipal up, @RequestBody AccountMyinfoUpdateRequest request) {
         Account account = accountService.updateMyItem(up.getId(), request);
         return ResponseEntity.ok(account);
+    }
+    @GetMapping("/accounts/me/pointHistories")
+    public ResponseEntity<?> getMyPointHistories(@AuthenticationPrincipal UserPrincipal up) {
+        // FIXME Pageable추가 필수
+        Page<PointHistoryResponse> list = accountService.getMyPointHistories(up.getId());
+        return ResponseEntity.ok(list);
     }
 }

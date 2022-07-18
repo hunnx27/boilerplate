@@ -10,6 +10,11 @@ import com.onz.modules.account.domain.enums.Gubn;
 import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.common.enums.Role;
 import com.onz.modules.auth.web.dto.request.SignupRequest;
+import com.onz.modules.common.pointHistory.domain.PointHistory;
+import com.onz.modules.common.pointHistory.domain.enums.PointTable;
+import com.onz.modules.common.pointHistory.infra.PointHistoryRepository;
+import com.onz.modules.common.pointHistory.web.dto.request.PointHistorySearchRequest;
+import com.onz.modules.common.pointHistory.web.dto.response.PointHistoryResponse;
 import com.onz.modules.education.application.EducationService;
 import com.onz.modules.education.domain.Education;
 import com.onz.modules.education.infra.EducationRepository;
@@ -19,6 +24,7 @@ import com.onz.common.enums.YN;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -39,6 +46,7 @@ public class AccountService {
     private final EducationRepository educationRepository;
     private final EducationService educationService;
     private final PasswordEncoder passwordEncoder;
+    private final PointHistoryRepository pointHistoryRepository;
 
     public Account create(Account account) {
         account.setPassword(passwordEncoder.encode(account.getPassword()));
@@ -106,6 +114,22 @@ public class AccountService {
         myinfo.setIntrsOrg(IntrsOrg.valueOf("ALL"));
         account.setMyinfo(myinfo);
         return null;
+    }
+
+    public void createMyPointHistories(Account account, PointTable pointTable){
+//        Account account = accountRepository.findById(id).orElseGet(null);
+//        if(account != null){
+            pointHistoryRepository.save(new PointHistory(account, pointTable));
+//        }
+    }
+
+    // FIXME Pageable 추가 필수
+    // 이력 조회
+    public Page<PointHistoryResponse> getMyPointHistories(Long accountId) {
+        Pageable pageable = Pageable.ofSize(1000).first();
+        Page<PointHistory> pageList = pointHistoryRepository.findByAccountId(accountId, pageable);
+        List<PointHistoryResponse> rs = pageList.get().map(PointHistoryResponse::new).collect(Collectors.toList());
+        return new PageImpl<>(rs);
     }
 
 
