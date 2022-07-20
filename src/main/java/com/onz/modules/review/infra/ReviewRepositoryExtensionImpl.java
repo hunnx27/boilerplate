@@ -39,12 +39,6 @@ public class ReviewRepositoryExtensionImpl extends QuerydslRepositorySupport imp
         if (StringUtils.hasText(organizationSearchRequest.getName())) {
             where.and(organization.name.eq(organizationSearchRequest.getName()));
         }
-        if (StringUtils.hasText(organizationSearchRequest.getAddress())) {
-            where.and(
-                organization.address.city.like("%" + organizationSearchRequest.getAddress() + "%")
-                    .or(organization.address.street.like(
-                        "%" + organizationSearchRequest.getAddress() + "%")));
-        }
 
         JPQLQuery<Organization> result = from(organization)
             .where(where);
