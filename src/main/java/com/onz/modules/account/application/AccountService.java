@@ -1,19 +1,18 @@
 package com.onz.modules.account.application;
 
 import com.onz.modules.account.domain.embed.Myinfo;
-import com.onz.modules.account.domain.enums.IntrsOrg;
+import com.onz.common.enums.InterestOrg;
 import com.onz.modules.account.web.dto.AccountConverter;
 import com.onz.modules.account.web.dto.request.AccountMyinfoUpdateRequest;
 import com.onz.modules.account.web.dto.request.AccountSearchRequest;
 import com.onz.modules.account.domain.enums.AuthProvider;
-import com.onz.modules.account.domain.enums.Gubn;
+import com.onz.common.enums.Gubn;
 import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.common.enums.Role;
 import com.onz.modules.auth.web.dto.request.SignupRequest;
 import com.onz.modules.common.pointHistory.domain.PointHistory;
 import com.onz.modules.common.pointHistory.domain.enums.PointTable;
 import com.onz.modules.common.pointHistory.infra.PointHistoryRepository;
-import com.onz.modules.common.pointHistory.web.dto.request.PointHistorySearchRequest;
 import com.onz.modules.common.pointHistory.web.dto.response.PointHistoryResponse;
 import com.onz.modules.education.application.EducationService;
 import com.onz.modules.education.domain.Education;
@@ -92,6 +91,13 @@ public class AccountService {
         return rsAccount;
     }
 
+    public Account deleteMeSoft(Long id){
+        Account account = accountRepository.findById(id).orElseThrow();
+        account.setIsDelete(YN.Y);
+        accountRepository.save(account);
+        return account;
+    }
+
     public List<Education> educations(Long id) {
         Account account = accountRepository.findById(id).orElseThrow();
         return educationRepository.findEducationsByAccounts(account);
@@ -111,7 +117,7 @@ public class AccountService {
     public Account getMember(){
         Account account = new Account();
         Myinfo myinfo = new Myinfo();
-        myinfo.setIntrsOrg(IntrsOrg.valueOf("ALL"));
+        myinfo.setInterestOrg(InterestOrg.valueOf("ALL"));
         account.setMyinfo(myinfo);
         return null;
     }

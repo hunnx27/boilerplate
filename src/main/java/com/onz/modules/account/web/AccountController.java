@@ -1,5 +1,6 @@
 package com.onz.modules.account.web;
 
+import com.onz.common.enums.YN;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.web.dto.request.AccountCreateRequest;
@@ -22,6 +23,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -81,6 +84,13 @@ public class AccountController extends BaseApiController {
         AccountResponse ressponse = new AccountResponse(accountService.findOne(up.getId()));
         return ResponseEntity.ok(ressponse);
 //        return ResponseEntity.ok(new Account());
+    }
+
+    @DeleteMapping("/accounts/me")
+    public ResponseEntity<?> deleteMe(@AuthenticationPrincipal UserPrincipal up) {
+        Account account = accountService.deleteMeSoft(up.getId());
+        AccountResponse ressponse = new AccountResponse();
+        return ResponseEntity.ok(account);
     }
 
     @PutMapping("/accounts/me/myinfo")

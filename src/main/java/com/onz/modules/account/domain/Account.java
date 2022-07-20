@@ -1,5 +1,8 @@
 package com.onz.modules.account.domain;
 
+import com.onz.common.enums.Gubn;
+import com.onz.common.enums.GubnConverter;
+import com.onz.common.enums.InterestOrg;
 import com.onz.modules.account.domain.embed.Myinfo;
 import com.onz.modules.account.domain.enums.*;
 import com.onz.modules.account.web.dto.request.AccountMyinfoUpdateRequest;
@@ -113,9 +116,9 @@ public class Account extends BaseEntity {
 
     public void setUpdateMyinfo(AccountMyinfoUpdateRequest req){
         if(myinfo==null) myinfo = new Myinfo();
-        myinfo.setIntrsOrg(req.getIntrsOrgName()!=null? IntrsOrg.valueOf(req.getIntrsOrgName()) : null);
+        myinfo.setInterestOrg(req.getInterestOrgName()!=null? InterestOrg.valueOf(req.getInterestOrgName()) : null);
         myinfo.setBirthYYYY(req.getBirthYYYY());
-        myinfo.setIntrsZone(req.getIntrsZone());
+        myinfo.setInterestZone(req.getInterestZone());
         myinfo.setMajorSchool(req.getMajorSchool());
         myinfo.setMajorDepartment(req.getMajorDepartment());
     }

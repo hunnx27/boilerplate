@@ -1,15 +1,14 @@
 package com.onz.modules.account.web.dto.response;
 
 import com.onz.common.enums.Role;
+import com.onz.common.enums.YN;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.embed.Myinfo;
 import com.onz.modules.account.domain.enums.AuthProvider;
-import com.onz.modules.account.domain.enums.Gubn;
+import com.onz.common.enums.Gubn;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.Embedded;
 
 @Getter
 @Setter
@@ -23,6 +22,7 @@ public class AccountResponse {
     private long point;
     private Gubn gubn;
     private Myinfo myinfo;
+    private YN isDelete;
 
     public AccountResponse(Account account) {
         this.id = account.getId();
@@ -32,5 +32,6 @@ public class AccountResponse {
         this.point = account.getPoint();
         this.gubn = account.getGubn();
         this.myinfo = account.getMyinfo();
+        this.isDelete = account.getIsDelete();
     }
 }

@@ -3,7 +3,7 @@ package com.onz.modules.account.infra;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.QAccount;
 import com.onz.modules.account.domain.enums.AuthProvider;
-import com.onz.modules.account.domain.enums.Gubn;
+import com.onz.common.enums.Gubn;
 import com.onz.modules.account.web.dto.request.AccountSearchRequest;
 import com.onz.common.enums.YN;
 import com.onz.modules.auth.application.util.MysqlAESUtil;
@@ -140,13 +140,14 @@ public class AccountRepositoryExtensionImpl extends QuerydslRepositorySupport im
     public Optional<Account> findByPlainUserId3(String plainUserId) {
         QAccount m = new QAccount("m");
 
+        BooleanBuilder where = new BooleanBuilder();
         SimpleTemplate st = Expressions.template(String.class, "SHA2(AES_ENCRYPT({0}, concat('ONZ!@#', m.gubn, m.snsType)),512)", plainUserId);
+        where.and(st.eq(m.userId));
+//        where.and(m.isDelete.eq(YN.N));
         Account findAccount = qf
                 .select(m)
                 .from(m)
-                .where(
-                        st.eq(m.userId)
-                )
+                .where(where)
                 .fetchOne();
 
         Optional<Account> optionalAccount = Optional.ofNullable(findAccount);
