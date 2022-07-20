@@ -1,4 +1,4 @@
-package com.onz.modules.account.domain.enums;
+package com.onz.common.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,18 +13,18 @@ import java.util.stream.Stream;
  */
 @Getter
 @AllArgsConstructor
-public enum IntrsOrg {
+public enum InterestOrg {
     all("TT","전체"),
     kindergarten("CT", "유치원"),
     daycarecenter("PT", "어린이집"),
     ;
     private static final Map<String, String> CODE_MAP = Collections.unmodifiableMap(
-            Stream.of(values()).collect(Collectors.toMap(IntrsOrg::getCode, IntrsOrg::name)));
+            Stream.of(values()).collect(Collectors.toMap(InterestOrg::getCode, InterestOrg::name)));
 
     private String code;
     private String desc;
 
-    public static IntrsOrg of(final String code){
-        return IntrsOrg.valueOf(CODE_MAP.get(code));
+    public static InterestOrg of(final String code){
+        return InterestOrg.valueOf(CODE_MAP.get(code));
     }
 }

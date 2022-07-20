@@ -1,4 +1,4 @@
-package com.onz.modules.account.domain.enums;
+package com.onz.common.enums;
 
 import javax.persistence.AttributeConverter;
 import java.util.EnumSet;

@@ -1,12 +1,12 @@
-package com.onz.modules.account.domain.enums;
+package com.onz.common.enums;
 
 import javax.persistence.AttributeConverter;
 import java.util.EnumSet;
 import java.util.NoSuchElementException;
 
-public class IntrsOrgConverter implements AttributeConverter<IntrsOrg, String> {
+public class InterestOrgConverter implements AttributeConverter<InterestOrg, String> {
     @Override
-    public String convertToDatabaseColumn(IntrsOrg intrsOrg) {
+    public String convertToDatabaseColumn(InterestOrg intrsOrg) {
         String intrsOrgCoe = "";
         if(intrsOrg != null){
             intrsOrgCoe = intrsOrg.getCode();
@@ -15,10 +15,10 @@ public class IntrsOrgConverter implements AttributeConverter<IntrsOrg, String> {
     }
 
     @Override
-    public IntrsOrg convertToEntityAttribute(String dbData) {
-        IntrsOrg intrsOrg = null;
+    public InterestOrg convertToEntityAttribute(String dbData) {
+        InterestOrg intrsOrg = null;
         if( dbData != null && !"".equals(dbData) ){
-            intrsOrg = EnumSet.allOf(IntrsOrg.class).stream()
+            intrsOrg = EnumSet.allOf(InterestOrg.class).stream()
                     .filter(e->e.getCode().equals(dbData))
                     .findAny()
                     .orElseThrow(()-> new NoSuchElementException());

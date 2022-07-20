@@ -1,4 +1,4 @@
-package com.onz.modules.account.domain.enums;
+package com.onz.common.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 @Getter
 @AllArgsConstructor
 public enum Gubn {
-    TEACHER("A"),
+    TEACHER("S"),
     PARENT("I")
     ;
     private static final Map<String, String> CODE_MAP = Collections.unmodifiableMap(
