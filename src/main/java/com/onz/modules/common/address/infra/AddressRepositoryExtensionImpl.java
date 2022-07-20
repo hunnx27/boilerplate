@@ -1,7 +1,7 @@
 package com.onz.modules.common.address.infra;
 
-import com.onz.common.domain.QAddress;
 import com.onz.modules.common.address.domain.Address;
+import com.onz.modules.common.address.domain.QAddress;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -24,23 +24,21 @@ public class AddressRepositoryExtensionImpl extends QuerydslRepositorySupport im
     }
 
 
-//    @Override
-    public List<Address> findByAddressSido() {
+    @Override
+    public List<Address> findByAddressGroupBySidoCide() {
         // QueryDSL
         QAddress address = new QAddress("address");
 
         // 조건생성
         BooleanBuilder where = new BooleanBuilder();
-//        where.and(account.userId.eq(encodedUserId));
 
         // 쿼리생성
-//        List<Address> findedAddress = qf.selectFrom(address)
-//                .where(where)
-//                .groupBy()
-//                .fetchAll();
-
-
-        return null;
+        List<Address> rList = qf.selectFrom(address)
+                                .where(where)
+                                .groupBy(address.sidoCode)
+                                .orderBy(address.sidoCode.asc())
+                                .fetch();
+        return rList;
     }
 
 
