@@ -2,9 +2,9 @@ package com.onz.modules.common.pointHistory.infra;
 
 import com.onz.common.enums.YN;
 import com.onz.modules.common.pointHistory.domain.PointHistory;
-import com.onz.modules.pointHistory.domain.QPoint;
+import com.onz.modules.common.pointHistory.domain.QPointHistory;
+import com.onz.modules.common.pointHistory.infra.PointHistoryRepositoryExtension;
 import com.onz.modules.common.pointHistory.web.dto.request.PointHistorySearchRequest;
-import com.onz.modules.common.pointHistory.web.dto.request.PointHistoryUpdateRequest;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.JPQLQuery;
@@ -25,28 +25,15 @@ public class PointHistoryRepositoryExtensionImpl extends QuerydslRepositorySuppo
     }
 
     @Override
-    public PageImpl<PointHistory> list(PointHistorySearchRequest pointSearchRequest) {
-        QPoint point = QPoint.point;
+    public PageImpl<PointHistory> list(PointHistorySearchRequest pointHistorySearchRequest) {
+        QPointHistory pointHistory = QPointHistory.pointHistory;
 
-        final Pageable pageable = pointSearchRequest.getPageable();
+        final Pageable pageable = pointHistorySearchRequest.getPageable();
 
         BooleanBuilder where = new BooleanBuilder();
-        where.and(point.isDelete.eq(YN.N));
+        where.and(pointHistory.isDelete.eq(YN.N));
 
-        if (StringUtils.hasText(pointSearchRequest.getCode())) {
-            where.and(point.code.eq(pointSearchRequest.getCode()));
-        }
-        if (StringUtils.hasText(pointSearchRequest.getName())) {
-            where.and(point.name.eq(pointSearchRequest.getName()));
-        }
-        if (StringUtils.hasText(pointSearchRequest.getAddress())) {
-            where.and(
-                point.address.city.like("%" + pointSearchRequest.getAddress() + "%")
-                    .or(point.address.street.like(
-                        "%" + pointSearchRequest.getAddress() + "%")));
-        }
-
-        JPQLQuery<PointHistory> result = from(point)
+        JPQLQuery<PointHistory> result = from(pointHistory)
             .where(where);
 
         JPQLQuery<PointHistory> query = getQuerydsl().applyPagination(pageable, result);

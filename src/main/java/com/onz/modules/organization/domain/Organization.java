@@ -1,7 +1,6 @@
 package com.onz.modules.organization.domain;
 
 import com.onz.modules.account.domain.Account;
-import com.onz.common.domain.Address;
 import com.onz.common.domain.BaseEntity;
 import com.onz.common.enums.YN;
 import java.time.ZonedDateTime;
@@ -23,8 +22,6 @@ public class Organization extends BaseEntity {
 
     private String code;
     private String name;
-    @Embedded
-    private Address address;
     private int totalMemberCount;
     private int currentMemberCount;
 

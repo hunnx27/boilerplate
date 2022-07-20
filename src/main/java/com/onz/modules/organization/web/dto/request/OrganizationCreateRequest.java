@@ -1,6 +1,5 @@
 package com.onz.modules.organization.web.dto.request;
 
-import com.onz.common.domain.Address;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,8 +13,6 @@ public class OrganizationCreateRequest {
 
     private String code;
     private String name;
-    @Embedded
-    private Address address;
     private String lat;
     private String lng;
     private int totalMemberCount;

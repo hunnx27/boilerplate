@@ -1,8 +1,6 @@
 package com.onz.modules.common.pointHistory.domain.embed;
 
 import com.onz.modules.account.domain.Account;
-import com.onz.modules.account.domain.enums.IntrsOrg;
-import com.onz.modules.account.domain.enums.IntrsOrgConverter;
 import com.onz.modules.common.pointHistory.domain.enums.PointTable;
 import com.onz.modules.common.pointHistory.domain.enums.PointTableConverter;
 import lombok.Getter;
