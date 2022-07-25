@@ -22,7 +22,8 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+#      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
@@ -39,6 +40,9 @@ spring:
       on-profile: dev
     import: oauth2.yml
 
+  servlet.multipart:
+    max-file-size: 10MB # total file size cannot exceed 10MB.
+    max-request-size: 20MB # total request size for a multipart/form-data cannot exceed 20MB.
 #logging:
 #  level:
 #    org.hibernate.SQL: debug
@@ -57,4 +61,7 @@ logging:
 onz:
   jwt:
     secret: UFMgZFP4ciZDx/FfK3U16X6Mm3M=
+
+file:
+  path: D:\develop
 
