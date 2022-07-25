@@ -7,7 +7,9 @@ import com.onz.common.enums.GubnConverter;
 import com.onz.common.enums.YN;
 import com.onz.common.enums.InterestOrg;
 import com.onz.common.enums.InterestOrgConverter;
+import com.onz.common.util.dto.AttachDto;
 import com.onz.modules.account.domain.Account;
+import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.counsel.domain.embed.Images;
 import com.onz.modules.counsel.domain.enums.CounselState;
 import com.onz.modules.counsel.domain.enums.JobGubn;
@@ -17,41 +19,41 @@ import com.onz.modules.counsel.web.dto.request.CounselCreateRequest;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 public class Counsel extends BaseEntity {
     @Id
-    @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Size(max=50)
-    private Long idxNo;
+    @GeneratedValue
+    private Long id;
     @Convert(converter = GubnConverter.class)
     private Gubn gubn = Gubn.PARENT;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private JobGubn jobGubn;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private QnaGubn qnaGubn;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private CounselState counselState;
     @Column(updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private ZonedDateTime counselStateAt;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private YN openYn;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private YN shortOpenYn;
     @Convert(converter = InterestOrgConverter.class)
     private InterestOrg interestOrg; // 관심 기관
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private QnaItem qnaItem;
 
-    private long answerCnt;
+    private long reportCnt;
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
@@ -60,22 +62,49 @@ public class Counsel extends BaseEntity {
     @Embedded
     private Images images;
 
+    private String inputTag;
+
     public Counsel() {
     }
 
     @Builder
-    public Counsel(CounselCreateRequest req) {
-        this.gubn = req.getGubn();
-        this.jobGubn = req.getJobGubn();
-        this.qnaGubn = req.getQnaGubn();
-        this.counselState = req.getCounselState();
-        this.counselStateAt = req.getCounselStateAt();
-        this.openYn = req.getOpenYn();
+    public Counsel(CounselCreateRequest req, Account account) {
+        this.account = account;
+        this.gubn = account.getGubn();
+        this.jobGubn = JobGubn.J;
+        this.qnaGubn = QnaGubn.Q;
+        this.counselState = CounselState.R;
+        this.openYn = YN.Y;
         this.shortOpenYn = req.getShortOpenYn();
-        this.interestOrg = req.getInterestOrg();
+        this.interestOrg = req.getInterestOrgName();
         this.qnaItem = req.getQnaItem();
-        this.answerCnt = req.getAnswerCnt();
         this.txt = req.getTxt();
-        this.images = req.getImages();
+        String inputTag = "";
+        if(req.getAddedTagData()!=null){
+            String[] tagArr = req.getAddedTagData().split(",");
+            for(int i=0; i<tagArr.length; i++){
+                if(i!=0) inputTag += " ";
+                inputTag += "#" + tagArr[i];
+            }
+            this.inputTag = inputTag;
+        }
+
+    }
+
+    public void setImages(List<AttachDto> filelist){
+        Images embedImages = new Images();
+        if(filelist!=null && filelist.size()>0){
+            for(int i=0; i<filelist.size(); i++){
+                AttachDto atttach = filelist.get(i);
+                switch(i){
+                    case 0: embedImages.setImage1(atttach.getFilePath());break;
+                    case 1: embedImages.setImage2(atttach.getFilePath());break;
+                    case 2: embedImages.setImage3(atttach.getFilePath());break;
+                    case 3: embedImages.setImage4(atttach.getFilePath());break;
+                    case 4: embedImages.setImage5(atttach.getFilePath());break;
+                }
+            }
+            this.images = embedImages;
+        }
     }
 }

@@ -1,7 +1,9 @@
 package com.onz.modules.counsel.web.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.onz.common.enums.*;
+import com.onz.modules.account.domain.Account;
 import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.domain.embed.Images;
 import com.onz.modules.counsel.domain.enums.CounselState;
@@ -17,48 +19,35 @@ import javax.persistence.Convert;
 import javax.persistence.Embedded;
 import javax.persistence.Enumerated;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class CounselResponse {
 
-    @Convert(converter = GubnConverter.class)
-    private Gubn gubn = Gubn.PARENT;
-    @Enumerated
-    private JobGubn jobGubn;
-    @Enumerated
-    private QnaGubn qnaGubn;
-    @Enumerated
-    private CounselState counselState;
-    @Column(updatable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private ZonedDateTime counselStateAt;
-    @Enumerated
-    private YN openYn;
-    @Enumerated
-    private YN shortOpenYn;
-    @Convert(converter = InterestOrgConverter.class)
-    private InterestOrg interestOrg; // 관심 기관
-    @Enumerated
-    private QnaItem qnaItem;
-    private long answerCnt;
+    private Long id;
+    private String counselStateCode;
+    private String counselStateName;
+    private String gubnName;
+    private String inputTag;
     private String txt;
-    @Embedded
-    private Images images;
+    private String createDate;
+    private long reportCnt;
+    private Long accountId;
+    @JsonProperty(value="isMine")
+    private boolean isMine;
 
-    public CounselResponse(Counsel counsel) {
-        this.gubn = counsel.getGubn();
-        this.jobGubn = counsel.getJobGubn();
-        this.qnaGubn = counsel.getQnaGubn();
-        this.counselState = counsel.getCounselState();
-        this.counselStateAt = counsel.getCounselStateAt();
-        this.openYn = counsel.getOpenYn();
-        this.shortOpenYn = counsel.getShortOpenYn();
-        this.interestOrg = counsel.getInterestOrg();
-        this.qnaItem = counsel.getQnaItem();
-        this.answerCnt = counsel.getAnswerCnt();
+    public CounselResponse(Counsel counsel, Account me) {
+        this.id = counsel.getId();
+        this.counselStateCode = counsel.getCounselState()!=null ? counsel.getCounselState().name() : "";
+        this.counselStateName = counsel.getCounselState()!=null ? counsel.getCounselState().getName() : "";
+        this.gubnName = counsel.getGubn()!=null? counsel.getGubn().getName() : "";
+        this.inputTag = counsel.getInputTag();
         this.txt = counsel.getTxt();
-        this.images = counsel.getImages();
+        this.reportCnt = counsel.getReportCnt();
+        this.createDate = counsel.getCreatedAt()!=null? counsel.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")) : "";
+        this.accountId = counsel.getAccount().getId();
+        this.isMine = (counsel.getAccount().getId() == me.getId());
     }
 }
