@@ -1,8 +1,7 @@
-package com.onz.modules.counsel.web.dto.request;
+package com.onz.modules.counsel.web.dto.request.counsel;
 
-import com.onz.common.enums.InterestOrg;
-import com.onz.common.enums.YN;
-import com.onz.modules.counsel.domain.enums.QnaItem;
+import com.onz.common.enums.*;
+import com.onz.modules.counsel.domain.enums.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,16 +12,15 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CounselACreateRequest {
+public class CounselQCreateRequest {
 
     List<MultipartFile> files;
     private String addedTagData;
     private InterestOrg interestOrgName; // 관심 기관
-    private String interestZone;
+    private String relatedZone;
     private QnaItem qnaItem;
     private String txt;
     private YN shortOpenYn;
-    private Long parentCounselId;
 
     // 자동처리
 //    @Convert(converter = GubnConverter.class)

@@ -1,4 +1,4 @@
-package com.onz.modules.counsel.infra.Counsel;
+package com.onz.modules.counsel.infra.counsel;
 
 
 import com.onz.modules.counsel.domain.Counsel;

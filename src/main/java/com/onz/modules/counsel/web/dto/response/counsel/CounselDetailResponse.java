@@ -1,4 +1,4 @@
-package com.onz.modules.counsel.web.dto.response;
+package com.onz.modules.counsel.web.dto.response.counsel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.onz.modules.account.domain.Account;

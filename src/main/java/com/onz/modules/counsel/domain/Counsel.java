@@ -14,7 +14,10 @@ import com.onz.modules.counsel.domain.enums.CounselState;
 import com.onz.modules.counsel.domain.enums.JobGubn;
 import com.onz.modules.counsel.domain.enums.QnaGubn;
 import com.onz.modules.counsel.domain.enums.QnaItem;
-import com.onz.modules.counsel.web.dto.request.CounselQCreateRequest;
+import com.onz.modules.counsel.web.dto.request.counsel.CounselACreateRequest;
+import com.onz.modules.counsel.web.dto.request.counsel.CounselAUpdateRequest;
+import com.onz.modules.counsel.web.dto.request.counsel.CounselQCreateRequest;
+import com.onz.modules.counsel.web.dto.request.counsel.CounselQUpdateRequest;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -51,6 +54,8 @@ public class Counsel extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private QnaItem qnaItem;
 
+    private String relatedZone; //관련된 지역코드(시)
+
     private long reportCnt;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
@@ -81,6 +86,7 @@ public class Counsel extends BaseEntity {
         this.interestOrg = req.getInterestOrgName();
         this.qnaItem = req.getQnaItem();
         this.txt = req.getTxt();
+        this.relatedZone = req.getRelatedZone();
         String inputTag = this.qnaItem.getTag();
         if(req.getAddedTagData()!=null && !"".equals(req.getAddedTagData())){
             String[] tagArr = req.getAddedTagData().split(",");
@@ -90,6 +96,51 @@ public class Counsel extends BaseEntity {
 
         }
         this.inputTag = inputTag;
+    }
+
+    public void updateCounsel(CounselQUpdateRequest req, Account account){
+//        this.account = account;
+//        this.gubn = account.getGubn();
+//        this.jobGubn = JobGubn.J;
+//        this.qnaGubn = QnaGubn.Q;
+//        this.counselState = CounselState.R;
+        this.openYn = YN.Y;
+        this.shortOpenYn = req.getShortOpenYn();
+        this.interestOrg = req.getInterestOrgName();
+        this.relatedZone = req.getRelatedZone();
+        this.qnaItem = req.getQnaItem();
+        this.txt = req.getTxt();
+        String inputTag = this.qnaItem.getTag();
+        if(req.getAddedTagData()!=null && !"".equals(req.getAddedTagData())){
+            String[] tagArr = req.getAddedTagData().split(",");
+            for(int i=0; i<tagArr.length; i++){
+                inputTag += " #" + tagArr[i];
+            }
+        }
+        this.inputTag = inputTag;
+    }
+
+    public void updateAnswerCounsel(CounselAUpdateRequest req, Account account){
+//        this.account = account;
+//        this.gubn = account.getGubn();
+//        this.jobGubn = JobGubn.J;
+//        this.qnaGubn = QnaGubn.Q;
+//        this.counselState = CounselState.R;
+        this.openYn = YN.Y;
+        this.txt = req.getTxt();
+    }
+
+    @Builder
+    public Counsel(CounselACreateRequest req, Account account) {
+        this.account = account;
+        this.gubn = account.getGubn();
+        this.jobGubn = JobGubn.J;
+        this.qnaGubn = QnaGubn.A;
+        this.counselState = CounselState.R;
+        this.openYn = YN.Y;
+        this.shortOpenYn = YN.N;
+        this.txt = req.getTxt();
+        this.parentCounsel = req.getParentCounsel();
     }
 
     public void setImages(List<AttachDto> filelist){

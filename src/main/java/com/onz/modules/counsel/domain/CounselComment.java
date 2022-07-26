@@ -3,8 +3,8 @@ package com.onz.modules.counsel.domain;
 import com.onz.common.domain.BaseEntity;
 import com.onz.common.enums.Gubn;
 import com.onz.modules.account.domain.Account;
-import com.onz.modules.counsel.domain.Counsel;
-import com.onz.modules.counsel.domain.enums.RecommandGubn;
+import com.onz.modules.counsel.web.dto.request.counselComment.CounselCommentCreateRequest;
+import com.onz.modules.counsel.web.dto.request.counselComment.CounselCommentUpdateRequest;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class CounselAnswerComment extends BaseEntity {
+public class CounselComment extends BaseEntity {
     @Id
     @GeneratedValue
     private Long id;
@@ -28,7 +28,12 @@ public class CounselAnswerComment extends BaseEntity {
     private String txt;
 
 
-    public CounselAnswerComment() {
+    public CounselComment() {
     }
 
+    public CounselComment(CounselCommentCreateRequest req, Account account) {
+    }
+
+    public void updateCounselComment(CounselCommentUpdateRequest req, Account account){
+    }
 }

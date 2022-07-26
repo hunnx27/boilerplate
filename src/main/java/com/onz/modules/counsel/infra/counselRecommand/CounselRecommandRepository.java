@@ -1,7 +1,6 @@
-package com.onz.modules.counsel.infra.CounselRecommand;
+package com.onz.modules.counsel.infra.counselRecommand;
 
 
-import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.domain.CounselRecommand;
 import org.springframework.data.jpa.repository.JpaRepository;
 

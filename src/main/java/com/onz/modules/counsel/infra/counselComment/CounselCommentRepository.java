@@ -1,12 +1,11 @@
-package com.onz.modules.counsel.infra.CounselAnswerComment;
+package com.onz.modules.counsel.infra.counselComment;
 
 
-import com.onz.modules.counsel.domain.Counsel;
-import com.onz.modules.counsel.domain.CounselAnswerComment;
+import com.onz.modules.counsel.domain.CounselComment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CounselAnswerCommentRepository extends JpaRepository<CounselAnswerComment, Long>,
-        CounselAnswerCommentRepositoryExtension {
+public interface CounselCommentRepository extends JpaRepository<CounselComment, Long>,
+        CounselCommentRepositoryExtension {
 
 //    List<Counsel> findByParentCounselId(Long parentCounselId);
 //    @Query("select c from Counsel c where c.qnaGubn='A' and c.parentCounsel.id = :parentCounselId")
