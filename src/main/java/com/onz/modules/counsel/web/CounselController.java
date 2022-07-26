@@ -45,6 +45,13 @@ public class CounselController extends BaseApiController {
         return result;
     }
 
+    @GetMapping("/counsel/answer/{id}")
+    public List<CounselListResponse> answerList(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long id, Pageable pageable){
+        List<CounselListResponse> result = counselService.answerList(id, pageable, me);
+        return result;
+    }
+
+
 //    @PatchMapping("/counsel/{id}")
 //    public void update(@PathVariable Long id,
 //        @RequestBody OrganizationUpdateRequest updateRequest) {

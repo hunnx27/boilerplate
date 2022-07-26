@@ -6,7 +6,7 @@ import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.counsel.domain.Counsel;
-import com.onz.modules.counsel.infra.CounselRepository;
+import com.onz.modules.counsel.infra.Counsel.CounselRepository;
 import com.onz.modules.counsel.web.dto.request.CounselQCreateRequest;
 import com.onz.modules.counsel.web.dto.response.CounselDetailResponse;
 import com.onz.modules.counsel.web.dto.response.CounselListResponse;
@@ -67,6 +67,14 @@ public class CounselService {
             Account account = accountService.findOne(me.getId());
             result = new CounselDetailResponse(counsel, account);
         }
+        return result;
+    }
+
+    public List<CounselListResponse> answerList(Long id, Pageable pageable, UserPrincipal me){
+        Account account = accountService.findOne(me.getId());
+        //List<Counsel> list = counselRepository.findAll(pageable).get().collect(Collectors.toList());
+        List<Counsel> list = counselRepository.findAnswerList(id, pageable);
+        List<CounselListResponse> result = list.stream().map(counsel->new CounselListResponse(counsel, account)).collect(Collectors.toList());
         return result;
     }
 

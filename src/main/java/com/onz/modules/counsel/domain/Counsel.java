@@ -52,7 +52,7 @@ public class Counsel extends BaseEntity {
     private QnaItem qnaItem;
 
     private long reportCnt;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account account;
     @Size(max=1000)
@@ -62,7 +62,7 @@ public class Counsel extends BaseEntity {
 
     private String inputTag;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName="id", name = "parent_counsel_id")
     private Counsel parentCounsel;
 
