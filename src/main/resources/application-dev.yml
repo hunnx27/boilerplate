@@ -51,7 +51,7 @@ spring:
 logging:
   level:
     root: info
-    org.hibernate.SQL: debug
+    #org.hibernate.SQL: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace
     reactor:
       netty:
