@@ -7,19 +7,14 @@ import com.onz.modules.account.domain.Account;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.infra.CounselRepository;
-import com.onz.modules.counsel.web.dto.request.CounselCreateRequest;
-import com.onz.modules.counsel.web.dto.response.CounselResponse;
-import com.onz.modules.organization.domain.Organization;
-import com.onz.modules.organization.infra.OrganizationRepository;
-import com.onz.modules.organization.web.dto.request.OrganizationSearchRequest;
-import com.onz.modules.organization.web.dto.request.OrganizationUpdateRequest;
+import com.onz.modules.counsel.web.dto.request.CounselQCreateRequest;
+import com.onz.modules.counsel.web.dto.response.CounselDetailResponse;
+import com.onz.modules.counsel.web.dto.response.CounselListResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,15 +37,15 @@ public class CounselService {
         CounselService.this.counselRepository.save(counsel);
     }
 
-    public void create(CounselCreateRequest counselCreateRequest, UserPrincipal me) {
+    public void create(CounselQCreateRequest counselQCreateRequest, UserPrincipal me) {
         Account one = accountService.findOne(me.getId());
-        Counsel counsel = new Counsel(counselCreateRequest, one);
+        Counsel counsel = new Counsel(counselQCreateRequest, one);
         Counsel saved = counselRepository.save(counsel);
 
         // Image File Upload
-        if(counselCreateRequest.getFiles()!=null && counselCreateRequest.getFiles().size()>0){
+        if(counselQCreateRequest.getFiles()!=null && counselQCreateRequest.getFiles().size()>0){
             try {
-                List<AttachDto> rs = fileUtil.uploadFiles(counselCreateRequest.getFiles(), saved.getId());
+                List<AttachDto> rs = fileUtil.uploadFiles(counselQCreateRequest.getFiles(), saved.getId());
                 saved.setImages(rs);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -58,10 +53,20 @@ public class CounselService {
         }
     }
 
-    public List<CounselResponse> list(Pageable pageable, UserPrincipal me){
+    public List<CounselListResponse> list(Pageable pageable, UserPrincipal me){
         Account account = accountService.findOne(me.getId());
         List<Counsel> list = counselRepository.findAll(pageable).get().collect(Collectors.toList());
-        List<CounselResponse> result = list.stream().map(counsel->new CounselResponse(counsel, account)).collect(Collectors.toList());
+        List<CounselListResponse> result = list.stream().map(counsel->new CounselListResponse(counsel, account)).collect(Collectors.toList());
+        return result;
+    }
+
+    public CounselDetailResponse detail(Long id, UserPrincipal me){
+        Counsel counsel = counselRepository.findById(id).orElse(null);
+        CounselDetailResponse result = null;
+        if(counsel != null){
+            Account account = accountService.findOne(me.getId());
+            result = new CounselDetailResponse(counsel, account);
+        }
         return result;
     }
 

@@ -9,17 +9,15 @@ import com.onz.common.enums.InterestOrg;
 import com.onz.common.enums.InterestOrgConverter;
 import com.onz.common.util.dto.AttachDto;
 import com.onz.modules.account.domain.Account;
-import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.counsel.domain.embed.Images;
 import com.onz.modules.counsel.domain.enums.CounselState;
 import com.onz.modules.counsel.domain.enums.JobGubn;
 import com.onz.modules.counsel.domain.enums.QnaGubn;
 import com.onz.modules.counsel.domain.enums.QnaItem;
-import com.onz.modules.counsel.web.dto.request.CounselCreateRequest;
+import com.onz.modules.counsel.web.dto.request.CounselQCreateRequest;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -64,11 +62,15 @@ public class Counsel extends BaseEntity {
 
     private String inputTag;
 
+    @ManyToOne
+    @JoinColumn(referencedColumnName="id", name = "parent_counsel_id")
+    private Counsel parentCounsel;
+
     public Counsel() {
     }
 
     @Builder
-    public Counsel(CounselCreateRequest req, Account account) {
+    public Counsel(CounselQCreateRequest req, Account account) {
         this.account = account;
         this.gubn = account.getGubn();
         this.jobGubn = JobGubn.J;
@@ -79,16 +81,15 @@ public class Counsel extends BaseEntity {
         this.interestOrg = req.getInterestOrgName();
         this.qnaItem = req.getQnaItem();
         this.txt = req.getTxt();
-        String inputTag = "";
-        if(req.getAddedTagData()!=null){
+        String inputTag = this.qnaItem.getTag();
+        if(req.getAddedTagData()!=null && !"".equals(req.getAddedTagData())){
             String[] tagArr = req.getAddedTagData().split(",");
             for(int i=0; i<tagArr.length; i++){
-                if(i!=0) inputTag += " ";
-                inputTag += "#" + tagArr[i];
+                inputTag += " #" + tagArr[i];
             }
-            this.inputTag = inputTag;
-        }
 
+        }
+        this.inputTag = inputTag;
     }
 
     public void setImages(List<AttachDto> filelist){
