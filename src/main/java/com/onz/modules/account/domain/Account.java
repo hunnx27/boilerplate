@@ -62,11 +62,11 @@ public class Account extends BaseEntity {
 
     private String temp;
 
-    @ManyToMany(mappedBy = "accounts")
+    @ManyToMany(mappedBy = "accounts", fetch = FetchType.LAZY)
     @JsonBackReference
     private Set<Education> educations = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Organization organization;
 
     @JsonIgnore

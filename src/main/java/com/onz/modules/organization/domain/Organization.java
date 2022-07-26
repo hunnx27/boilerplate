@@ -25,7 +25,7 @@ public class Organization extends BaseEntity {
     private int totalMemberCount;
     private int currentMemberCount;
 
-    @OneToMany(mappedBy = "organization")
+    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
     @OrderBy("createdAt")
     private List<Account> accounts = new ArrayList<>();
 

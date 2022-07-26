@@ -21,7 +21,7 @@ public class PointHistory extends BaseEntity {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account account;
 
@@ -42,7 +42,7 @@ public class PointHistory extends BaseEntity {
 //    private int totalMemberCount;
 //    private int currentMemberCount;
 //
-//    @OneToMany(mappedBy = "organization")
+//    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
 //    @OrderBy("createdAt")
 //    private List<Account> accounts = new ArrayList<>();
 //

@@ -1,4 +1,4 @@
-package com.onz.modules.admin.domain;
+package com.onz.modules.account.domain;
 
 import com.onz.common.domain.BaseEntity;
 import com.onz.common.enums.Role;
