@@ -1,13 +1,9 @@
 package com.onz.modules.counsel.web;
 
 import com.onz.modules.auth.web.dto.UserPrincipal;
-import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.domain.CounselComment;
-import com.onz.modules.counsel.web.dto.request.counsel.CounselACreateRequest;
-import com.onz.modules.counsel.web.dto.request.counsel.CounselAUpdateRequest;
 import com.onz.modules.counsel.web.dto.request.counselComment.CounselCommentCreateRequest;
 import com.onz.modules.counsel.web.dto.request.counselComment.CounselCommentUpdateRequest;
-import com.onz.modules.counsel.web.dto.response.counsel.CounselListResponse;
 import com.onz.modules.counsel.web.dto.response.counselComment.CounselCommentListResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
