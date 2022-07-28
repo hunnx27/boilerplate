@@ -69,9 +69,9 @@ public class CounselController extends BaseApiController {
      *
      */
 
-    @GetMapping("/counsel/answer/{id}")
-    public List<CounselListResponse> answerList(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long id, Pageable pageable){
-        List<CounselListResponse> result = counselService.answerList(id, pageable, me);
+    @GetMapping("/counsel/{counselId}/answer")
+    public List<CounselListResponse> answerList(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long counselId, Pageable pageable){
+        List<CounselListResponse> result = counselService.answerList(counselId, pageable, me);
         return result;
     }
 

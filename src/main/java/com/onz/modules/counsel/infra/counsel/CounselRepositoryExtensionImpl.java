@@ -1,5 +1,6 @@
 package com.onz.modules.counsel.infra.counsel;
 
+import com.onz.common.enums.YN;
 import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.domain.QCounsel;
 import com.onz.modules.counsel.domain.enums.QnaGubn;
@@ -10,6 +11,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public class CounselRepositoryExtensionImpl extends QuerydslRepositorySupport implements
@@ -28,6 +30,20 @@ public class CounselRepositoryExtensionImpl extends QuerydslRepositorySupport im
         BooleanBuilder where = new BooleanBuilder();
         where.and(counsel.qnaGubn.eq(QnaGubn.A));
         where.and(counsel.parentCounsel.id.eq(parentCounselId));
+        JPQLQuery<Counsel> result = from(counsel).where(where);
+        JPQLQuery<Counsel> query = getQuerydsl().applyPagination(pageable, result);
+        QueryResults<Counsel> fetchResults = query.fetchResults();
+        return fetchResults.getResults();
+    }
+
+    @Override
+    public List<Counsel> findCounselList(Pageable pageable) {
+        QCounsel counsel = QCounsel.counsel;
+        BooleanBuilder where = new BooleanBuilder();
+        where.and(counsel.qnaGubn.eq(QnaGubn.Q));
+        where.and(counsel.openYn.eq(YN.Y));
+        where.and(counsel.isDelete.eq(YN.N));
+        where.and(counsel.shortOpenYn.eq(YN.N).or(counsel.createdAt.goe(ZonedDateTime.now().minusDays(1))));
         JPQLQuery<Counsel> result = from(counsel).where(where);
         JPQLQuery<Counsel> query = getQuerydsl().applyPagination(pageable, result);
         QueryResults<Counsel> fetchResults = query.fetchResults();

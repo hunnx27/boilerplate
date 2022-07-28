@@ -59,7 +59,7 @@ public class CounselService {
 
     public List<CounselListResponse> list(Pageable pageable, UserPrincipal me){
         Account account = accountService.findOne(me.getId());
-        List<Counsel> list = counselRepository.findAll(pageable).get().collect(Collectors.toList());
+        List<Counsel> list = counselRepository.findCounselList(pageable);
         List<CounselListResponse> result = list.stream().map(counsel->new CounselListResponse(counsel, account)).collect(Collectors.toList());
         return result;
     }
@@ -103,10 +103,10 @@ public class CounselService {
         return counsel;
     }
 
-    public List<CounselListResponse> answerList(Long id, Pageable pageable, UserPrincipal me){
+    public List<CounselListResponse> answerList(Long counselId, Pageable pageable, UserPrincipal me){
         Account account = accountService.findOne(me.getId());
         //List<Counsel> list = counselRepository.findAll(pageable).get().collect(Collectors.toList());
-        List<Counsel> list = counselRepository.findAnswerList(id, pageable);
+        List<Counsel> list = counselRepository.findAnswerList(counselId, pageable);
         List<CounselListResponse> result = list.stream().map(counsel->new CounselListResponse(counsel, account)).collect(Collectors.toList());
         return result;
     }
@@ -116,6 +116,8 @@ public class CounselService {
         Long parentCounselId = counselACreateRequest.getParentCounselId();
         if(parentCounselId!=-1){
             Counsel parentCounsel = counselRepository.findById(parentCounselId).orElseGet(null);
+            long cnt = counselRepository.countByParentCounselId(parentCounselId);
+            parentCounsel.setReportCnt(cnt++);
             counselACreateRequest.setParentCounsel(parentCounsel);
         }
         Counsel counsel = new Counsel(counselACreateRequest, account);
