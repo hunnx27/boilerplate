@@ -53,14 +53,14 @@ public class CounselController extends BaseApiController {
 
     @PutMapping("/counsel/{id}")
     public ResponseEntity<?> updateCounsel(@AuthenticationPrincipal UserPrincipal up, CounselQUpdateRequest counselQUpdateRequest, @PathVariable Long id) {
-        Counsel counsel = counselService.updateCounsel(id, counselQUpdateRequest, up);
-        return ResponseEntity.ok(counsel);
+        CounselDetailResponse counselDetail = counselService.updateCounsel(id, counselQUpdateRequest, up);
+        return ResponseEntity.ok(counselDetail);
     }
 
     @DeleteMapping("/counsel/{id}")
     public ResponseEntity<?> deleteCounsel(@PathVariable Long id) {
         Counsel counsel = counselService.deleteCounselSoft(id);
-        return ResponseEntity.ok(counsel);
+        return ResponseEntity.ok(new CounselDetailResponse(counsel));
     }
 
     /**

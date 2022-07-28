@@ -45,6 +45,7 @@ public class CounselCommentController {
                                            @PathVariable Long id) {
         CounselComment counselComment = counselCommentService.updateCounselComment(id, counselCommentUpdateRequest, up);
         return ResponseEntity.ok(counselComment);
+
     }
 
     @DeleteMapping("/counsel/comment/{id}")

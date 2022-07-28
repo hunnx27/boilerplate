@@ -74,7 +74,7 @@ public class CounselService {
         return result;
     }
 
-    public Counsel updateCounsel(Long id, CounselQUpdateRequest counselQUpdateRequest, UserPrincipal me){
+    public CounselDetailResponse updateCounsel(Long id, CounselQUpdateRequest counselQUpdateRequest, UserPrincipal me){
         Account account = accountService.findOne(me.getId());
         Counsel counsel = counselRepository.findById(id).get();
         counsel.updateCounsel(counselQUpdateRequest, account);
@@ -92,7 +92,8 @@ public class CounselService {
                 e.printStackTrace();
             }
         }
-        return saved;
+
+        return new CounselDetailResponse(saved, account);
     }
 
     public Counsel deleteCounselSoft(Long id){

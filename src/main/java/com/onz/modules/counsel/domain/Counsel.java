@@ -25,7 +25,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -108,13 +111,22 @@ public class Counsel extends BaseEntity {
         this.shortOpenYn = req.getShortOpenYn();
         this.interestOrg = req.getInterestOrgName();
         this.relatedZone = req.getRelatedZone();
-        this.qnaItem = req.getQnaItem();
         this.txt = req.getTxt();
+
+        // 기존 QnaItemTag 백업
+        List<String> tempQnaItemTagList = this.qnaItem!=null?
+                Arrays.stream(this.qnaItem.getTag().split(" ")).map(tag->tag.replaceAll("#","")).collect(Collectors.toList())
+                : new ArrayList<>();
+        // 신규 QnsItem 업데이트
+        this.qnaItem = req.getQnaItem();
         String inputTag = this.qnaItem.getTag();
         if(req.getAddedTagData()!=null && !"".equals(req.getAddedTagData())){
             String[] tagArr = req.getAddedTagData().split(",");
-            for(int i=0; i<tagArr.length; i++){
-                inputTag += " #" + tagArr[i];
+            // 기존태그 필터링
+            String[] filteredArr = Arrays.stream(tagArr).filter(tag-> !tempQnaItemTagList.contains(tag)).toArray(String[]::new);
+            //신규
+            for(int i=0; i<filteredArr.length; i++){
+                inputTag += " #" + filteredArr[i];
             }
         }
         this.inputTag = inputTag;
