@@ -4,10 +4,8 @@ import com.onz.common.web.BaseApiController;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.counsel.application.CounselService;
 import com.onz.modules.counsel.domain.Counsel;
-import com.onz.modules.counsel.web.dto.request.counsel.CounselACreateRequest;
-import com.onz.modules.counsel.web.dto.request.counsel.CounselAUpdateRequest;
-import com.onz.modules.counsel.web.dto.request.counsel.CounselQCreateRequest;
-import com.onz.modules.counsel.web.dto.request.counsel.CounselQUpdateRequest;
+import com.onz.modules.counsel.web.dto.request.counsel.*;
+import com.onz.modules.counsel.web.dto.response.CounselAnswerListResponse;
 import com.onz.modules.counsel.web.dto.response.counsel.CounselDetailResponse;
 import com.onz.modules.counsel.web.dto.response.counsel.CounselListResponse;
 import lombok.RequiredArgsConstructor;
@@ -70,8 +68,8 @@ public class CounselController extends BaseApiController {
      */
 
     @GetMapping("/counsel/{counselId}/answer")
-    public List<CounselListResponse> answerList(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long counselId, Pageable pageable){
-        List<CounselListResponse> result = counselService.answerList(counselId, pageable, me);
+    public List<CounselAnswerListResponse> answerList(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long counselId, Pageable pageable){
+        List<CounselAnswerListResponse> result = counselService.answerList(counselId, pageable, me);
         return result;
     }
 
@@ -83,14 +81,21 @@ public class CounselController extends BaseApiController {
     @PutMapping("/counsel/answer/{id}")
     public ResponseEntity<?> updateAnswer(@AuthenticationPrincipal UserPrincipal up, CounselAUpdateRequest counselAUpdateRequest, @PathVariable Long id) {
         Counsel counsel = counselService.updateAnswer(id, counselAUpdateRequest, up);
-        return ResponseEntity.ok(counsel);
+        return ResponseEntity.ok(new CounselDetailResponse(counsel));
     }
 
     @DeleteMapping("/counsel/answer/{id}")
     public ResponseEntity<?> deleteAnswer(@PathVariable Long id) {
         Counsel counsel = counselService.deleteAnswerSoft(id);
-        return ResponseEntity.ok(counsel);
+        return ResponseEntity.ok(new CounselDetailResponse(counsel));
     }
+
+    @PutMapping("/counsel/answer/{id}/adopt")
+    public ResponseEntity<?> updateAnswerAdopt(@AuthenticationPrincipal UserPrincipal up, @RequestBody CounselAAdoptRequest counselAAdoptRequest, @PathVariable Long id) {
+        Counsel counsel = counselService.updateAnswerAdopt(id, counselAAdoptRequest, up);
+        return ResponseEntity.ok(new CounselDetailResponse(counsel));
+    }
+
 
 //    @PatchMapping("/counsel/{id}")
 //    public void update(@PathVariable Long id,

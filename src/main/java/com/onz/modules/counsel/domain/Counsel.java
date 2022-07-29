@@ -14,10 +14,7 @@ import com.onz.modules.counsel.domain.enums.CounselState;
 import com.onz.modules.counsel.domain.enums.JobGubn;
 import com.onz.modules.counsel.domain.enums.QnaGubn;
 import com.onz.modules.counsel.domain.enums.QnaItem;
-import com.onz.modules.counsel.web.dto.request.counsel.CounselACreateRequest;
-import com.onz.modules.counsel.web.dto.request.counsel.CounselAUpdateRequest;
-import com.onz.modules.counsel.web.dto.request.counsel.CounselQCreateRequest;
-import com.onz.modules.counsel.web.dto.request.counsel.CounselQUpdateRequest;
+import com.onz.modules.counsel.web.dto.request.counsel.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -69,6 +66,8 @@ public class Counsel extends BaseEntity {
     private Images images;
 
     private String inputTag;
+
+    private String commentTxt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName="id", name = "parent_counsel_id")
@@ -140,6 +139,15 @@ public class Counsel extends BaseEntity {
 //        this.counselState = CounselState.R;
         this.openYn = YN.Y;
         this.txt = req.getTxt();
+    }
+
+    public void updateAnswerAdopt(CounselAAdoptRequest req){
+        this.counselState = CounselState.A;
+        this.commentTxt = req.getCommentTxt();
+        this.parentCounsel = req.getParentCounsel();
+    }
+    public void updateCounselAdopted(){
+        this.counselState = CounselState.A;
     }
 
     @Builder

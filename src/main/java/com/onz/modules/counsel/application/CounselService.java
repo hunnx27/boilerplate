@@ -8,10 +8,8 @@ import com.onz.modules.account.domain.Account;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.infra.counsel.CounselRepository;
-import com.onz.modules.counsel.web.dto.request.counsel.CounselACreateRequest;
-import com.onz.modules.counsel.web.dto.request.counsel.CounselAUpdateRequest;
-import com.onz.modules.counsel.web.dto.request.counsel.CounselQCreateRequest;
-import com.onz.modules.counsel.web.dto.request.counsel.CounselQUpdateRequest;
+import com.onz.modules.counsel.web.dto.request.counsel.*;
+import com.onz.modules.counsel.web.dto.response.CounselAnswerListResponse;
 import com.onz.modules.counsel.web.dto.response.counsel.CounselDetailResponse;
 import com.onz.modules.counsel.web.dto.response.counsel.CounselListResponse;
 import lombok.RequiredArgsConstructor;
@@ -103,11 +101,11 @@ public class CounselService {
         return counsel;
     }
 
-    public List<CounselListResponse> answerList(Long counselId, Pageable pageable, UserPrincipal me){
+    public List<CounselAnswerListResponse> answerList(Long counselId, Pageable pageable, UserPrincipal me){
         Account account = accountService.findOne(me.getId());
         //List<Counsel> list = counselRepository.findAll(pageable).get().collect(Collectors.toList());
         List<Counsel> list = counselRepository.findAnswerList(counselId, pageable);
-        List<CounselListResponse> result = list.stream().map(counsel->new CounselListResponse(counsel, account)).collect(Collectors.toList());
+        List<CounselAnswerListResponse> result = list.stream().map(counsel->new CounselAnswerListResponse(counsel, account)).collect(Collectors.toList());
         return result;
     }
 
@@ -160,6 +158,17 @@ public class CounselService {
         counsel.setIsDelete(YN.Y);
         counselRepository.save(counsel);
         return counsel;
+    }
+
+    public Counsel updateAnswerAdopt(Long id, CounselAAdoptRequest counselAAdoptRequest, UserPrincipal me){
+//        Account account = accountService.findOne(me.getId());
+        Counsel counsel = counselRepository.findById(id).get();
+        Counsel parent = counselRepository.findById(counselAAdoptRequest.getParentCounselId()).orElseGet(null);
+        parent.updateCounselAdopted();
+        counselAAdoptRequest.setParentCounsel(parent);
+        counsel.updateAnswerAdopt(counselAAdoptRequest);
+        Counsel saved = counselRepository.save(counsel);
+        return saved;
     }
 
 //    public void update(OrganizationUpdateRequest updateRequest) {
