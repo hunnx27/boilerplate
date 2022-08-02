@@ -63,5 +63,7 @@ onz:
     secret: UFMgZFP4ciZDx/FfK3U16X6Mm3M=
 
 file:
-  path: D:\develop
+  path:
+    root: D:\develop
+    data: Data
 

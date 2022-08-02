@@ -10,6 +10,7 @@ import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.infra.counsel.CounselRepository;
 import com.onz.modules.counsel.web.dto.request.counsel.*;
 import com.onz.modules.counsel.web.dto.response.CounselAnswerListResponse;
+import com.onz.modules.counsel.web.dto.response.counsel.CounselAnswerDetailResponse;
 import com.onz.modules.counsel.web.dto.response.counsel.CounselDetailResponse;
 import com.onz.modules.counsel.web.dto.response.counsel.CounselListResponse;
 import lombok.RequiredArgsConstructor;
@@ -109,13 +110,21 @@ public class CounselService {
         return result;
     }
 
+    public CounselAnswerDetailResponse answerById(Long id){
+//        Account account = accountService.findOne(me.getId());
+        //List<Counsel> list = counselRepository.findAll(pageable).get().collect(Collectors.toList());
+        Counsel one = counselRepository.findById(id).orElseGet(null);
+        CounselAnswerDetailResponse result = new CounselAnswerDetailResponse(one);
+        return result;
+    }
+
     public void createAnswer(CounselACreateRequest counselACreateRequest, UserPrincipal me) {
         Account account = accountService.findOne(me.getId());
         Long parentCounselId = counselACreateRequest.getParentCounselId();
         if(parentCounselId!=-1){
             Counsel parentCounsel = counselRepository.findById(parentCounselId).orElseGet(null);
             long cnt = counselRepository.countByParentCounselId(parentCounselId);
-            parentCounsel.setReportCnt(cnt++);
+            parentCounsel.setReportCnt(++cnt);
             counselACreateRequest.setParentCounsel(parentCounsel);
         }
         Counsel counsel = new Counsel(counselACreateRequest, account);

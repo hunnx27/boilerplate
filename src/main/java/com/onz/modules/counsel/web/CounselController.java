@@ -6,6 +6,7 @@ import com.onz.modules.counsel.application.CounselService;
 import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.web.dto.request.counsel.*;
 import com.onz.modules.counsel.web.dto.response.CounselAnswerListResponse;
+import com.onz.modules.counsel.web.dto.response.counsel.CounselAnswerDetailResponse;
 import com.onz.modules.counsel.web.dto.response.counsel.CounselDetailResponse;
 import com.onz.modules.counsel.web.dto.response.counsel.CounselListResponse;
 import lombok.RequiredArgsConstructor;
@@ -70,6 +71,12 @@ public class CounselController extends BaseApiController {
     @GetMapping("/counsel/{counselId}/answer")
     public List<CounselAnswerListResponse> answerList(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long counselId, Pageable pageable){
         List<CounselAnswerListResponse> result = counselService.answerList(counselId, pageable, me);
+        return result;
+    }
+
+    @GetMapping("/counsel/answer/{id}")
+    public CounselAnswerDetailResponse answerOne(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long id, Pageable pageable){
+        CounselAnswerDetailResponse result = counselService.answerById(id);
         return result;
     }
 

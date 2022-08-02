@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -35,11 +37,7 @@ public class CounselDetailResponse {
     private String qnaItem;
     private String shortOpenYn;
     private String opneYn;
-    private String image5;
-    private String image4;
-    private String image3;
-    private String image2;
-    private String image1;
+    private List<String> images = new ArrayList<>();
 
 
 
@@ -62,11 +60,11 @@ public class CounselDetailResponse {
         this.gugun = counsel.getRelatedZone();
         this.qnaItem = counsel.getQnaItem()!=null? counsel.getQnaItem().name() : "Q1";
         if(counsel.getImages()!=null){
-            this.image1 = counsel.getImages().getImage1();
-            this.image2 = counsel.getImages().getImage2();
-            this.image3 = counsel.getImages().getImage3();
-            this.image4 = counsel.getImages().getImage4();
-            this.image5 = counsel.getImages().getImage5();
+            if(counsel.getImages().getImage1()!=null) images.add(counsel.getImages().getImage1());
+            if(counsel.getImages().getImage2()!=null) images.add(counsel.getImages().getImage2());
+            if(counsel.getImages().getImage3()!=null) images.add(counsel.getImages().getImage3());
+            if(counsel.getImages().getImage4()!=null) images.add(counsel.getImages().getImage4());
+            if(counsel.getImages().getImage5()!=null) images.add(counsel.getImages().getImage5());
         }
 
         this.opneYn = counsel.getOpenYn().name();
@@ -91,11 +89,11 @@ public class CounselDetailResponse {
         this.gugun = counsel.getRelatedZone();
         this.qnaItem = counsel.getQnaItem()!=null? counsel.getQnaItem().name() : "Q1";
         if(counsel.getImages()!=null){
-            this.image1 = counsel.getImages().getImage1();
-            this.image2 = counsel.getImages().getImage2();
-            this.image3 = counsel.getImages().getImage3();
-            this.image4 = counsel.getImages().getImage4();
-            this.image5 = counsel.getImages().getImage5();
+            if(counsel.getImages().getImage1()!=null) images.add(counsel.getImages().getImage1());
+            if(counsel.getImages().getImage2()!=null) images.add(counsel.getImages().getImage2());
+            if(counsel.getImages().getImage3()!=null) images.add(counsel.getImages().getImage3());
+            if(counsel.getImages().getImage4()!=null) images.add(counsel.getImages().getImage4());
+            if(counsel.getImages().getImage5()!=null) images.add(counsel.getImages().getImage5());
         }
 
         this.opneYn = counsel.getOpenYn().name();

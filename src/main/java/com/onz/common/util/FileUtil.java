@@ -4,6 +4,7 @@ import com.onz.common.exception.FileException;
 import com.onz.common.util.dto.AttachDto;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -12,19 +13,23 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Component
 public class FileUtil {
     // Paths.get()으로 운영체제에 따라서 다른 파일구분자 처리
 //    public final static String rootPath = Paths.get("C:", "Users", "jihun.park", "Desktop", "testFile").toString();
-    @Value("${file.path}")
-    private String rootPath;
+    @Value("${file.path.root}")
+    private String ROOT_PATH;
+    @Value("${file.path.data}")
+    private String DATA_PATH;
+
     /**
      * MultipartFile 형태의 파일을 Attachments Entity 형태로 파싱
      *
@@ -38,10 +43,11 @@ public class FileUtil {
         }
 
         // 파일 업로드 경로 생성
-        String savePath = Paths.get(rootPath, "Data", customPath).toString();
-        if (!new File(savePath).exists()) {
+        Path saveDirPath = Paths.get(DATA_PATH, customPath);
+        String fullPath = Paths.get(ROOT_PATH, saveDirPath.toString()).toString();
+        if (!new File(fullPath).exists()) {
             try {
-                new File(savePath).mkdirs();
+                new File(fullPath).mkdirs();
             } catch (Exception e) {
                 e.getStackTrace();
             }
@@ -53,9 +59,11 @@ public class FileUtil {
 
             String origFilename = multipartFile.getOriginalFilename();
             if (origFilename == null || "".equals(origFilename)) continue;
-            //String filename = MD5Generator(FilenameUtils.getBaseName(origFilename)).toString() + "." + FilenameUtils.getExtension(origFilename);
-            String filename = origFilename;
-            String filePath = Paths.get(savePath, filename).toString();
+            String filename = renameFile(FilenameUtils.getBaseName(origFilename)).toString() + "." + FilenameUtils.getExtension(origFilename);
+            //String filename = origFilename;
+            String filePath = Paths.get(fullPath, filename).toString();
+            String tmpSavePathString = Paths.get(saveDirPath.toString(), filename).toString();
+            String savePathString = "/" + tmpSavePathString.toString().replaceAll("\\\\","/");
 
             try {
                 File target = new File(filePath);
@@ -69,7 +77,7 @@ public class FileUtil {
                 AttachDto attach = new AttachDto();
                 attach.setEntityId(id);
                 attach.setOriginalName(origFilename);
-                attach.setSaveName(filename);
+                attach.setSaveName(savePathString);
                 attach.setSize(multipartFile.getSize());
                 attach.setFilePath(filePath);
                 fileList.add(attach);
@@ -99,8 +107,8 @@ public class FileUtil {
      * @return
      */
     public File getDownloadFile(String fileName) {
-
-        return new File(Paths.get(rootPath, "files").toString(), fileName);
+        File file = new File(Paths.get(ROOT_PATH).toString(), fileName);
+        return file;
     }
 
     /**
@@ -109,7 +117,6 @@ public class FileUtil {
      * @param input
      */
     public String MD5Generator(String input) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-
         MessageDigest mdMD5 = MessageDigest.getInstance("MD5");
         mdMD5.update(input.getBytes("UTF-8"));
 
@@ -122,6 +129,13 @@ public class FileUtil {
         }
 
         return hexMD5hash.toString();
+    }
+
+    public String renameFile(String input) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+        String date = df.format(new Date());
+        input = date+"-"+this.MD5Generator(input);
+        return input;
     }
 
     /**

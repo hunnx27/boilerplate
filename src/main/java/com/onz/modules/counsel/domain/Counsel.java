@@ -169,11 +169,11 @@ public class Counsel extends BaseEntity {
             for(int i=0; i<filelist.size(); i++){
                 AttachDto atttach = filelist.get(i);
                 switch(i){
-                    case 0: embedImages.setImage1(atttach.getFilePath());break;
-                    case 1: embedImages.setImage2(atttach.getFilePath());break;
-                    case 2: embedImages.setImage3(atttach.getFilePath());break;
-                    case 3: embedImages.setImage4(atttach.getFilePath());break;
-                    case 4: embedImages.setImage5(atttach.getFilePath());break;
+                    case 0: embedImages.setImage1(atttach.getSaveName());break;
+                    case 1: embedImages.setImage2(atttach.getSaveName());break;
+                    case 2: embedImages.setImage3(atttach.getSaveName());break;
+                    case 3: embedImages.setImage4(atttach.getSaveName());break;
+                    case 4: embedImages.setImage5(atttach.getSaveName());break;
                 }
             }
             this.images = embedImages;
