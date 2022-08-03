@@ -1,4 +1,4 @@
-package com.onz.modules.review.application;
+package com.onz.modules.company.application;
 
 import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.web.dto.request.CompanySearchRequest;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class ReviewService {
+public class CompanyService {
 
     private final CompanyRepository companyRepository;
 

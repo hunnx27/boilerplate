@@ -2,7 +2,7 @@ package com.onz.modules.account.domain;
 
 import com.onz.common.enums.Gubn;
 import com.onz.common.enums.GubnConverter;
-import com.onz.common.enums.InterestOrg;
+import com.onz.common.enums.InterestCompany;
 import com.onz.modules.account.domain.embed.Myinfo;
 import com.onz.modules.account.domain.enums.*;
 import com.onz.modules.account.web.dto.request.AccountMyinfoUpdateRequest;
@@ -12,7 +12,7 @@ import com.onz.common.domain.BaseEntity;
 import com.onz.modules.auth.application.util.MysqlAESUtil;
 import com.onz.modules.auth.application.util.MysqlSHA2Util;
 import com.onz.modules.education.domain.Education;
-import com.onz.modules.organization.domain.Organization;
+import com.onz.modules.company.domain.Company;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
@@ -67,11 +67,11 @@ public class Account extends BaseEntity {
     private Set<Education> educations = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Organization organization;
+    private Company company;
 
     @JsonIgnore
     @OneToOne(mappedBy = "director", fetch = FetchType.LAZY)
-    private Organization director;
+    private Company director;
 
     @Builder
     public Account(String userId, Gubn gubn, Role role, AuthProvider provider) {
@@ -116,7 +116,7 @@ public class Account extends BaseEntity {
 
     public void setUpdateMyinfo(AccountMyinfoUpdateRequest req){
         if(myinfo==null) myinfo = new Myinfo();
-        myinfo.setInterestOrg(req.getInterestOrgName()!=null? InterestOrg.valueOf(req.getInterestOrgName()) : null);
+        myinfo.setInterestCompany(req.getInterestCompanyName()!=null? InterestCompany.valueOf(req.getInterestCompanyName()) : null);
         myinfo.setBirthYYYY(req.getBirthYYYY());
         myinfo.setInterestZone(req.getInterestZone());
         myinfo.setMajorSchool(req.getMajorSchool());

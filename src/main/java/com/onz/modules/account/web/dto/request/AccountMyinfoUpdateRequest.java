@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AccountMyinfoUpdateRequest {
 
-    private String interestOrgName; // 관심 기관
+    private String interestCompanyName; // 관심 기관
     private String interestZone; // 관심지역
     private String birthYYYY; // 생년
     private String majorSchool; // 출신 학교

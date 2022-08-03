@@ -1,7 +1,7 @@
 package com.onz.modules.account.domain.embed;
 
-import com.onz.common.enums.InterestOrg;
-import com.onz.common.enums.InterestOrgConverter;
+import com.onz.common.enums.InterestCompany;
+import com.onz.common.enums.InterestCompanyConverter;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,8 +13,8 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Myinfo {
 //    @Enumerated(EnumType.STRING)
-    @Convert(converter = InterestOrgConverter.class)
-    private InterestOrg interestOrg; // 관심 기관
+    @Convert(converter = InterestCompanyConverter.class)
+    private InterestCompany interestCompany; // 관심 기관
 
     private String interestZone; // 관심지역
 
@@ -27,8 +27,8 @@ public class Myinfo {
     public Myinfo() {
     }
 
-    public Myinfo(InterestOrg interestOrg, String interestZone, String birthYYYY, String majorSchool, String majorDepartment) {
-        this.interestOrg = interestOrg;
+    public Myinfo(InterestCompany interestCompany, String interestZone, String birthYYYY, String majorSchool, String majorDepartment) {
+        this.interestCompany = interestCompany;
         this.interestZone = interestZone;
         this.birthYYYY = birthYYYY;
         this.majorSchool = majorSchool;

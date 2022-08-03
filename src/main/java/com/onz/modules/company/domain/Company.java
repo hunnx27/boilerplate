@@ -1,4 +1,4 @@
-package com.onz.modules.organization.domain;
+package com.onz.modules.company.domain;
 
 import com.onz.modules.account.domain.Account;
 import com.onz.common.domain.BaseEntity;
@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
-public class Organization extends BaseEntity {
+public class Company extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -25,7 +25,7 @@ public class Organization extends BaseEntity {
     private int totalMemberCount;
     private int currentMemberCount;
 
-    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     @OrderBy("createdAt")
     private List<Account> accounts = new ArrayList<>();
 

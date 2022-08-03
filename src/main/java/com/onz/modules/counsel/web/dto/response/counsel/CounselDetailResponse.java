@@ -29,8 +29,8 @@ public class CounselDetailResponse {
     @JsonProperty(value="isMine")
     private Boolean isMine;
 
-    private String interestOrgName;
-    private String interestOrgDesc;
+    private String interestCompanyName;
+    private String interestCompanyDesc;
     private String relatedZone;
     private String si;
     private String gugun;
@@ -53,8 +53,8 @@ public class CounselDetailResponse {
         this.createDate = counsel.getCreatedAt()!=null? counsel.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")) : "";
         this.accountId = counsel.getAccount().getId();
         this.isMine = (counsel.getAccount().getId() == me.getId());
-        this.interestOrgName = counsel.getInterestOrg()!=null? counsel.getInterestOrg().name() : null;
-        this.interestOrgDesc = counsel.getInterestOrg()!=null? counsel.getInterestOrg().getDesc() : null;
+        this.interestCompanyName = counsel.getInterestCompany()!=null? counsel.getInterestCompany().name() : null;
+        this.interestCompanyDesc = counsel.getInterestCompany()!=null? counsel.getInterestCompany().getDesc() : null;
         this.relatedZone = counsel.getRelatedZone();
         this.si = counsel.getRelatedZone();
         this.gugun = counsel.getRelatedZone();
@@ -82,8 +82,8 @@ public class CounselDetailResponse {
         this.createDate = counsel.getCreatedAt()!=null? counsel.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")) : "";
         this.accountId = counsel.getAccount().getId();
         this.isMine = null;
-        this.interestOrgName = counsel.getInterestOrg()!=null? counsel.getInterestOrg().name() : null;
-        this.interestOrgDesc = counsel.getInterestOrg()!=null? counsel.getInterestOrg().getDesc() : null;
+        this.interestCompanyName = counsel.getInterestCompany()!=null? counsel.getInterestCompany().name() : null;
+        this.interestCompanyDesc = counsel.getInterestCompany()!=null? counsel.getInterestCompany().getDesc() : null;
         this.relatedZone = counsel.getRelatedZone();
         this.si = counsel.getRelatedZone();
         this.gugun = counsel.getRelatedZone();

@@ -4,9 +4,9 @@ import javax.persistence.AttributeConverter;
 import java.util.EnumSet;
 import java.util.NoSuchElementException;
 
-public class InterestOrgConverter implements AttributeConverter<InterestOrg, String> {
+public class InterestCompanyConverter implements AttributeConverter<InterestCompany, String> {
     @Override
-    public String convertToDatabaseColumn(InterestOrg intrsOrg) {
+    public String convertToDatabaseColumn(InterestCompany intrsOrg) {
         String intrsOrgCoe = "";
         if(intrsOrg != null){
             intrsOrgCoe = intrsOrg.getCode();
@@ -15,10 +15,10 @@ public class InterestOrgConverter implements AttributeConverter<InterestOrg, Str
     }
 
     @Override
-    public InterestOrg convertToEntityAttribute(String dbData) {
-        InterestOrg intrsOrg = null;
+    public InterestCompany convertToEntityAttribute(String dbData) {
+        InterestCompany intrsOrg = null;
         if( dbData != null && !"".equals(dbData) ){
-            intrsOrg = EnumSet.allOf(InterestOrg.class).stream()
+            intrsOrg = EnumSet.allOf(InterestCompany.class).stream()
                     .filter(e->e.getCode().equals(dbData))
                     .findAny()
                     .orElseThrow(()-> new NoSuchElementException());

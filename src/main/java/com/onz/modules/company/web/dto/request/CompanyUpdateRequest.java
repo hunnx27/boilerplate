@@ -1,11 +1,11 @@
-package com.onz.modules.organization.web.dto.request;
+package com.onz.modules.company.web.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class OrganizationUpdateRequest {
+public class CompanyUpdateRequest {
 
     private Long id;
     private String name;

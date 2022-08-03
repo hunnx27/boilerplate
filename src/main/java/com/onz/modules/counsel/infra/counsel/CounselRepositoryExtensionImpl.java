@@ -55,10 +55,10 @@ public class CounselRepositoryExtensionImpl extends QuerydslRepositorySupport im
     public long countAdoptedAnswer(Long answerId, Long accountId) {
         QCounsel counsel = QCounsel.counsel;
         BooleanBuilder where = new BooleanBuilder();
-        where.and(counsel.counselState.eq(CounselState.A));
-        where.and(counsel.account.id.eq(accountId));
-        where.and(counsel.qnaGubn.eq(QnaGubn.A));
-        where.and(counsel.isDelete.eq(YN.N));
+        where.and(counsel.counselState.eq(CounselState.A)); // 채택된 글이고
+        where.and(counsel.account.id.eq(accountId)); //답변작성자 글이고
+        where.and(counsel.qnaGubn.eq(QnaGubn.A)); // 답변이고
+        where.and(counsel.isDelete.eq(YN.N)); // 삭제가 안된글이고
         JPQLQuery<Counsel> result = from(counsel).where(where);
         return result.fetchCount();
     }

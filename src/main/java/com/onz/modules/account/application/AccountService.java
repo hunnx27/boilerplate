@@ -1,7 +1,7 @@
 package com.onz.modules.account.application;
 
+import com.onz.common.enums.InterestCompany;
 import com.onz.modules.account.domain.embed.Myinfo;
-import com.onz.common.enums.InterestOrg;
 import com.onz.modules.account.web.dto.AccountConverter;
 import com.onz.modules.account.web.dto.request.AccountMyinfoUpdateRequest;
 import com.onz.modules.account.web.dto.request.AccountSearchRequest;
@@ -117,7 +117,7 @@ public class AccountService {
     public Account getMember(){
         Account account = new Account();
         Myinfo myinfo = new Myinfo();
-        myinfo.setInterestOrg(InterestOrg.valueOf("ALL"));
+        myinfo.setInterestCompany(InterestCompany.valueOf("ALL"));
         account.setMyinfo(myinfo);
         return null;
     }

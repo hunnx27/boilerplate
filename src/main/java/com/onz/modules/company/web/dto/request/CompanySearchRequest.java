@@ -1,4 +1,4 @@
-package com.onz.modules.organization.web.dto.request;
+package com.onz.modules.company.web.dto.request;
 
 import com.onz.common.web.dto.request.BasePageRequest;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class OrganizationSearchRequest extends BasePageRequest {
+public class CompanySearchRequest extends BasePageRequest {
 
 
     private String code;

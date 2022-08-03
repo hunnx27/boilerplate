@@ -1,4 +1,4 @@
-package com.onz.modules.review.web;
+package com.onz.modules.company.web;
 
 import com.onz.modules.account.domain.Account;
 import com.onz.common.web.BaseApiController;
@@ -15,34 +15,34 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-public class ReviewController extends BaseApiController {
+public class CompanyController extends BaseApiController {
 
     private final CompanyService companyService;
     private final ModelMapper modelMapper;
 
-    @GetMapping("/reviews")
+    @GetMapping("/company")
     public Page<Company> list(CompanySearchRequest searchRequest) {
         return companyService.list(searchRequest);
     }
 
-    @PostMapping("/reviews")
+    @PostMapping("/company")
     public void create(@RequestBody CompanyCreateRequest createRequest) {
         companyService.create(modelMapper.map(createRequest, Company.class));
     }
 
-    @PatchMapping("/reviews/{id}")
+    @PatchMapping("/company/{id}")
     public void update(@PathVariable Long id,
         @RequestBody CompanyUpdateRequest updateRequest) {
         updateRequest.setId(id);
         companyService.update(updateRequest);
     }
 
-    @GetMapping("/reviews/{id}")
+    @GetMapping("/company/{id}")
     public Company findOne(@PathVariable Long id) {
         return companyService.findOne(id);
     }
 
-    @PostMapping("/reviews/{id}/add")
+    @PostMapping("/company/{id}/add")
     public ResponseEntity addAccount(@PathVariable Long id, Account account) {
         Company one = companyService.findOne(id);
         one.addAccount(account);

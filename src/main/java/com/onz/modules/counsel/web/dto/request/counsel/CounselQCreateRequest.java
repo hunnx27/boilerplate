@@ -16,7 +16,7 @@ public class CounselQCreateRequest {
 
     List<MultipartFile> files;
     private String addedTagData;
-    private InterestOrg interestOrgName; // 관심 기관
+    private InterestCompany interestCompanyName; // 관심 기관
     private String relatedZone;
     private QnaItem qnaItem;
     private String txt;

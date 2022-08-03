@@ -2,11 +2,8 @@ package com.onz.modules.counsel.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.onz.common.domain.BaseEntity;
-import com.onz.common.enums.Gubn;
-import com.onz.common.enums.GubnConverter;
-import com.onz.common.enums.YN;
-import com.onz.common.enums.InterestOrg;
-import com.onz.common.enums.InterestOrgConverter;
+import com.onz.common.enums.*;
+import com.onz.common.enums.InterestCompany;
 import com.onz.common.util.dto.AttachDto;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.counsel.domain.embed.Images;
@@ -49,8 +46,8 @@ public class Counsel extends BaseEntity {
     private YN openYn;
     @Enumerated(EnumType.STRING)
     private YN shortOpenYn;
-    @Convert(converter = InterestOrgConverter.class)
-    private InterestOrg interestOrg; // 관심 기관
+    @Convert(converter = InterestCompanyConverter.class)
+    private InterestCompany interestCompany; // 관심 기관
     @Enumerated(EnumType.STRING)
     private QnaItem qnaItem;
 
@@ -85,7 +82,7 @@ public class Counsel extends BaseEntity {
         this.counselState = CounselState.R;
         this.openYn = YN.Y;
         this.shortOpenYn = req.getShortOpenYn();
-        this.interestOrg = req.getInterestOrgName();
+        this.interestCompany = req.getInterestCompanyName();
         this.qnaItem = req.getQnaItem();
         this.txt = req.getTxt();
         this.relatedZone = req.getRelatedZone();
@@ -108,7 +105,7 @@ public class Counsel extends BaseEntity {
 //        this.counselState = CounselState.R;
         this.openYn = YN.Y;
         this.shortOpenYn = req.getShortOpenYn();
-        this.interestOrg = req.getInterestOrgName();
+        this.interestCompany = req.getInterestCommpanyName();
         this.relatedZone = req.getRelatedZone();
         this.txt = req.getTxt();
 
