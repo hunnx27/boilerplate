@@ -6,6 +6,7 @@ import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.counsel.domain.CounselComment;
+import com.onz.modules.counsel.infra.counsel.CounselRepository;
 import com.onz.modules.counsel.infra.counselComment.CounselCommentRepository;
 import com.onz.modules.counsel.web.dto.request.counselComment.CounselCommentCreateRequest;
 import com.onz.modules.counsel.web.dto.request.counselComment.CounselCommentUpdateRequest;
@@ -28,17 +29,21 @@ public class CounselCommentService {
 
     private final AccountService accountService;
     private final CounselCommentRepository counselCommentRepository;
+    private final CounselRepository counselRepository;
     private final FileUtil fileUtil;
 
     public void create(CounselCommentCreateRequest counselCommentCreateRequest, UserPrincipal me) {
+        // 댓글 등록자 설정
         Account account = accountService.findOne(me.getId());
+        // 답변 설정
+        counselCommentCreateRequest.setParentCounsel(counselRepository.findById(counselCommentCreateRequest.getParentCounselId()).orElseGet(null));
         CounselComment counselComment = new CounselComment(counselCommentCreateRequest, account);
         CounselComment saved = counselCommentRepository.save(counselComment);
     }
 
     public List<CounselCommentListResponse> commentList(Long answerId, Pageable pageable, UserPrincipal me){
         Account account = accountService.findOne(me.getId());
-        List<CounselComment> list = counselCommentRepository.findAll(pageable).get().collect(Collectors.toList());
+        List<CounselComment> list = counselCommentRepository.findCommentList(answerId, pageable);
         List<CounselCommentListResponse> result = list.stream().map(counselComment->new CounselCommentListResponse(counselComment, account)).collect(Collectors.toList());
         return result;
     }
@@ -47,8 +52,7 @@ public class CounselCommentService {
         CounselComment counselComment = counselCommentRepository.findById(id).orElse(null);
         CounselCommentDetailResponse result = null;
         if(counselComment != null){
-            Account account = accountService.findOne(me.getId());
-            result = new CounselCommentDetailResponse(counselComment, account);
+            result = new CounselCommentDetailResponse(counselComment);
         }
         return result;
     }

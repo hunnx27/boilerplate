@@ -1,5 +1,6 @@
 package com.onz.modules.counsel.web.dto.request.counselComment;
 
+import com.onz.modules.counsel.domain.Counsel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,9 +14,7 @@ import java.util.List;
 public class CounselCommentUpdateRequest {
 
     Long id;
-    List<MultipartFile> files;
     private String txt;
-    private Long parentCounselId;
 
     // 자동처리
 //    @Convert(converter = GubnConverter.class)

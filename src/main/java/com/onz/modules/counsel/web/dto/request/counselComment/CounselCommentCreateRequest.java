@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 public class CounselCommentCreateRequest {
 
-    List<MultipartFile> files;
     private String txt;
     private Long parentCounselId;
     private Counsel parentCounsel;

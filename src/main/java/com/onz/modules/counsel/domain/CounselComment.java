@@ -2,6 +2,7 @@ package com.onz.modules.counsel.domain;
 
 import com.onz.common.domain.BaseEntity;
 import com.onz.common.enums.Gubn;
+import com.onz.common.enums.GubnConverter;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.counsel.web.dto.request.counselComment.CounselCommentCreateRequest;
 import com.onz.modules.counsel.web.dto.request.counselComment.CounselCommentUpdateRequest;
@@ -18,12 +19,12 @@ public class CounselComment extends BaseEntity {
     @GeneratedValue
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "id", name="counsel_id")
+    @JoinColumn(referencedColumnName = "id", name="answer_counsel_id")
     private Counsel counsel;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "id", name="account_id")
     private Account account;
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = GubnConverter.class)
     private Gubn gubn;
     private String txt;
 
@@ -32,8 +33,14 @@ public class CounselComment extends BaseEntity {
     }
 
     public CounselComment(CounselCommentCreateRequest req, Account account) {
+        this.counsel = req.getParentCounsel();
+        this.account = account;
+        this.gubn = account.getGubn();
+        this.txt = req.getTxt();
     }
 
     public void updateCounselComment(CounselCommentUpdateRequest req, Account account){
+        this.gubn = account.getGubn();
+        this.txt = req.getTxt();
     }
 }

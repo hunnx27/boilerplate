@@ -16,27 +16,12 @@ import java.time.format.DateTimeFormatter;
 public class CounselCommentDetailResponse {
 
     private Long id;
-    private String counselStateCode;
-    private String counselStateName;
-    private String gubnName;
-    private String inputTag;
     private String txt;
-    private String createDate;
-    private long reportCnt;
-    private Long accountId;
-    @JsonProperty(value="isMine")
-    private boolean isMine;
+    private Long parentCounselId;
 
-    public CounselCommentDetailResponse(CounselComment counselComment, Account me) {
-//        this.id = counsel.getId();
-//        this.counselStateCode = counsel.getCounselState()!=null ? counsel.getCounselState().name() : "";
-//        this.counselStateName = counsel.getCounselState()!=null ? counsel.getCounselState().getName() : "";
-//        this.gubnName = counsel.getGubn()!=null? counsel.getGubn().getName() : "";
-//        this.inputTag = counsel.getInputTag();
-//        this.txt = counsel.getTxt();
-//        this.reportCnt = counsel.getReportCnt();
-//        this.createDate = counsel.getCreatedAt()!=null? counsel.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")) : "";
-//        this.accountId = counsel.getAccount().getId();
-//        this.isMine = (counsel.getAccount().getId() == me.getId());
+    public CounselCommentDetailResponse(CounselComment counselComment) {
+        this.id = counselComment.getId();
+        this.txt = counselComment.getTxt();
+        this.parentCounselId = counselComment.getCounsel().getId();
     }
 }
