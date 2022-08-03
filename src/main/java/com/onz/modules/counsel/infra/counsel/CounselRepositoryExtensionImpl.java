@@ -3,6 +3,7 @@ package com.onz.modules.counsel.infra.counsel;
 import com.onz.common.enums.YN;
 import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.domain.QCounsel;
+import com.onz.modules.counsel.domain.enums.CounselState;
 import com.onz.modules.counsel.domain.enums.QnaGubn;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
@@ -48,5 +49,17 @@ public class CounselRepositoryExtensionImpl extends QuerydslRepositorySupport im
         JPQLQuery<Counsel> query = getQuerydsl().applyPagination(pageable, result);
         QueryResults<Counsel> fetchResults = query.fetchResults();
         return fetchResults.getResults();
+    }
+
+    @Override
+    public long countAdoptedAnswer(Long answerId, Long accountId) {
+        QCounsel counsel = QCounsel.counsel;
+        BooleanBuilder where = new BooleanBuilder();
+        where.and(counsel.counselState.eq(CounselState.A));
+        where.and(counsel.account.id.eq(accountId));
+        where.and(counsel.qnaGubn.eq(QnaGubn.A));
+        where.and(counsel.isDelete.eq(YN.N));
+        JPQLQuery<Counsel> result = from(counsel).where(where);
+        return result.fetchCount();
     }
 }

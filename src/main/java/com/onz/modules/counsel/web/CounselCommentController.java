@@ -55,4 +55,5 @@ public class CounselCommentController extends BaseApiController {
         CounselComment counselComment = counselCommentService.deleteCounselCommentSoft(id);
         return ResponseEntity.ok(new CounselCommentDetailResponse(counselComment));
     }
+
 }

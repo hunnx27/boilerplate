@@ -7,7 +7,11 @@ import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.counsel.domain.Counsel;
+import com.onz.modules.counsel.domain.CounselRecommend;
+import com.onz.modules.counsel.domain.enums.RecommendGubn;
 import com.onz.modules.counsel.infra.counsel.CounselRepository;
+import com.onz.modules.counsel.infra.counselComment.CounselCommentRepository;
+import com.onz.modules.counsel.infra.counselRecommend.CounselRecommendRepository;
 import com.onz.modules.counsel.web.dto.request.counsel.*;
 import com.onz.modules.counsel.web.dto.response.CounselAnswerListResponse;
 import com.onz.modules.counsel.web.dto.response.counsel.CounselAnswerDetailResponse;
@@ -30,6 +34,8 @@ public class CounselService {
 
     private final AccountService accountService;
     private final CounselRepository counselRepository;
+    private final CounselCommentRepository counselCommentRepository;
+    private final CounselRecommendRepository counselRecommendRepository;
     private final FileUtil fileUtil;
 
 //    public Page<Organization> list(OrganizationSearchRequest organizationSearchRequest) {
@@ -106,7 +112,24 @@ public class CounselService {
         Account account = accountService.findOne(me.getId());
         //List<Counsel> list = counselRepository.findAll(pageable).get().collect(Collectors.toList());
         List<Counsel> list = counselRepository.findAnswerList(counselId, pageable);
-        List<CounselAnswerListResponse> result = list.stream().map(counsel->new CounselAnswerListResponse(counsel, account)).collect(Collectors.toList());
+        List<CounselAnswerListResponse> result =
+                list.stream().map(counsel-> {
+                            Long answerId = counsel.getId();
+                            Long writer = counsel.getAccount().getId();
+                            CounselAnswerListResponse res = new CounselAnswerListResponse(counsel, account);
+                            long commentCnt = counselCommentRepository.countCommentList(answerId);
+                            res.setCommentCnt(commentCnt);
+                            List<CounselRecommend>  recommendList = counselRecommendRepository.findRecommend(answerId);
+                            res.setRecommendCnt(recommendList.size());
+                            boolean isRecommand = recommendList.stream().anyMatch(recommend -> recommend.getAccount().getId()==me.getId());
+                            res.setRecommend(isRecommand);
+                            long adoptedCnt = counselRepository.countAdoptedAnswer(answerId, writer);
+                            res.setStateAdoptedCnt(adoptedCnt);
+                            long noticeCnt = counselRecommendRepository.countNotice(answerId, me.getId());
+                            res.setNotice(noticeCnt>0);
+                    return res;
+                })
+                .collect(Collectors.toList());
         return result;
     }
 
@@ -178,6 +201,22 @@ public class CounselService {
         counsel.updateAnswerAdopt(counselAAdoptRequest);
         Counsel saved = counselRepository.save(counsel);
         return saved;
+    }
+
+    // 추천하기
+    public void recommendAnswer(Long id, UserPrincipal me){
+        Account account = accountService.findOne(me.getId());
+        Counsel answerCounsel = counselRepository.findById(id).orElse(null);
+        CounselRecommend counselRecommad = new CounselRecommend(account, answerCounsel, RecommendGubn.R);
+        counselRecommendRepository.save(counselRecommad);
+    }
+
+    // 신고하기
+    public void noticeAnswer(Long id, UserPrincipal me){
+        Account account = accountService.findOne(me.getId());
+        Counsel answerCounsel = counselRepository.findById(id).orElse(null);
+        CounselRecommend counselRecommad = new CounselRecommend(account, answerCounsel, RecommendGubn.N);
+        counselRecommendRepository.save(counselRecommad);
     }
 
 //    public void update(OrganizationUpdateRequest updateRequest) {

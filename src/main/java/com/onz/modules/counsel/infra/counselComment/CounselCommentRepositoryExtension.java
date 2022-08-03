@@ -10,4 +10,5 @@ import java.util.List;
 public interface CounselCommentRepositoryExtension {
 //    List<CounselComment> findAnswerList(Long parentCounselId, Pageable pageable);
     List<CounselComment> findCommentList(Long parentCounselId, Pageable pageable);
+    long countCommentList(Long parentCounselId);
 }

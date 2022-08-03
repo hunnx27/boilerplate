@@ -1,11 +1,11 @@
-package com.onz.modules.counsel.infra.counselRecommand;
+package com.onz.modules.counsel.infra.counselRecommend;
 
 
-import com.onz.modules.counsel.domain.CounselRecommand;
+import com.onz.modules.counsel.domain.CounselRecommend;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CounselRecommandRepository extends JpaRepository<CounselRecommand, Long>,
-        CounselRecommandRepositoryExtension {
+public interface CounselRecommendRepository extends JpaRepository<CounselRecommend, Long>,
+        CounselRecommendRepositoryExtension {
 
 //    List<Counsel> findByParentCounselId(Long parentCounselId);
 //    @Query("select c from Counsel c where c.qnaGubn='A' and c.parentCounsel.id = :parentCounselId")

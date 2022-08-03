@@ -103,6 +103,16 @@ public class CounselController extends BaseApiController {
         return ResponseEntity.ok(new CounselDetailResponse(counsel));
     }
 
+    @PostMapping("/counsel/answer/{id}/recommend")
+    public void recommendAnswer(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long id) {
+        counselService.recommendAnswer(id, me);
+    }
+
+    @PostMapping("/counsel/answer/{id}/notice")
+    public void noticeAnswer(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long id) {
+        counselService.noticeAnswer(id, me);
+    }
+
 
 //    @PatchMapping("/counsel/{id}")
 //    public void update(@PathVariable Long id,

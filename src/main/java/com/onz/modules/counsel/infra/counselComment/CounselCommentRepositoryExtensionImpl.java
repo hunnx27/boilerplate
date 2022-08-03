@@ -37,4 +37,13 @@ public class CounselCommentRepositoryExtensionImpl extends QuerydslRepositorySup
         return fetchResults.getResults();
     }
 
+    @Override
+    public long countCommentList(Long parentCounselId) {
+        QCounselComment comment = QCounselComment.counselComment;
+        BooleanBuilder where = new BooleanBuilder();
+        where.and(comment.isDelete.eq(YN.N));
+        where.and(comment.counsel.id.eq(parentCounselId));
+        JPQLQuery<CounselComment> result = from(comment).where(where);
+        return result.fetchCount();
+    }
 }

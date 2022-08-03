@@ -17,7 +17,7 @@ public enum PointTable {
     COUNCEL_ANSWER_REGIST("IA", "상담답변등록참여", 10),
     COUNCEL_CHOSEN("IC", "상담답변채택됨", 100),
     COUNCEL_SELECT("IS", "상담답변채택함", 50),
-    APP_RECOMMAND("AR", "앱추천", 100),
+    APP_RECOMMEND("AR", "앱추천", 100),
     GRADE_RATE("GR", "등급조정", 0),
     CASH_REFUND("MU", "현금환급", 0),
     COUNCEL_DELETE("ID", "상담답변삭제	", -10),

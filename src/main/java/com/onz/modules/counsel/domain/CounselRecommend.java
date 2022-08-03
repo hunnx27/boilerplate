@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class CounselRecommand extends BaseEntity {
+public class CounselRecommend extends BaseEntity {
     @Id
     @GeneratedValue
     private Long id;
@@ -22,9 +22,14 @@ public class CounselRecommand extends BaseEntity {
     @JoinColumn(referencedColumnName = "id", name="counsel_id")
     private Counsel counsel;
     @Enumerated(EnumType.STRING)
-    private RecommandGubn recommandGubn;
+    private RecommendGubn recommendGubn;
 
-    public CounselRecommand() {
+    public CounselRecommend() {
     }
 
+    public CounselRecommend(Account account, Counsel counsel, RecommendGubn recommendGubn) {
+        this.account = account;
+        this.counsel = counsel;
+        this.recommendGubn = recommendGubn;
+    }
 }

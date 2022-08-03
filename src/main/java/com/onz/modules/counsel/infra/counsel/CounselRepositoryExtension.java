@@ -10,4 +10,5 @@ public interface CounselRepositoryExtension {
 
     List<Counsel> findCounselList(Pageable pageable);
     List<Counsel> findAnswerList(Long parentCounselId, Pageable pageable);
+    long countAdoptedAnswer(Long answerId, Long accountId);
 }

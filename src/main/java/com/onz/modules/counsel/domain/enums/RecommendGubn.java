@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum RecommandGubn {
-    R("Recommand", "추천"),
+public enum RecommendGubn {
+    R("Recommend", "추천"),
     N("Notification/Report", "신고")
     ;
 
