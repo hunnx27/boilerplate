@@ -45,7 +45,7 @@ public class CounselAnswerListResponse {
 //        this.reportCnt = counsel.getReportCnt();
         this.accountId = counsel.getAccount().getId(); // 답변자
         this.isMine = (counsel.getAccount().getId() == me.getId());
-        this.time = counsel.getCounselState()!=null? TimeUtil.calculateTime(Date.from(counsel.getCreatedAt().toInstant())) : "";
+        this.time = counsel.getCreatedAt()!=null? TimeUtil.calculateTime(Date.from(counsel.getCreatedAt().toInstant())) : "";
         this.commentTxt = counsel.getCommentTxt();
         this.counselStateCode = counsel.getCounselState().name();
         if(counsel.getImages()!=null){
