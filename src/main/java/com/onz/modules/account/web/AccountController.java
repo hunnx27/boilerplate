@@ -81,15 +81,15 @@ public class AccountController extends BaseApiController {
     @GetMapping("/accounts/me")
 //    public ResponseEntity<?> me(@CurrentPrincipal UserPrincipal principal) {
     public ResponseEntity<?> me(@AuthenticationPrincipal UserPrincipal up) {
-        AccountResponse ressponse = new AccountResponse(accountService.findOne(up.getId()));
-        return ResponseEntity.ok(ressponse);
+        AccountResponse response = new AccountResponse(accountService.findOne(up.getId()));
+        return ResponseEntity.ok(response);
 //        return ResponseEntity.ok(new Account());
     }
 
     @DeleteMapping("/accounts/me")
     public ResponseEntity<?> deleteMe(@AuthenticationPrincipal UserPrincipal up) {
         Account account = accountService.deleteMeSoft(up.getId());
-        AccountResponse ressponse = new AccountResponse();
+        AccountResponse response = new AccountResponse();
         return ResponseEntity.ok(account);
     }
 
