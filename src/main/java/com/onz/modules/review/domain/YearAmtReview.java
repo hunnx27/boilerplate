@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @Entity
-public class YearAmtReivew extends BaseEntity {
+public class YearAmtReview extends BaseEntity {
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,10 +29,10 @@ public class YearAmtReivew extends BaseEntity {
     private String annYn;
 
 
-    public YearAmtReivew() {
+    public YearAmtReview() {
     }
 
-    public YearAmtReivew(Long idxNo, Review review, Amt amt, EtcAmt etcAmt, String annYn) {
+    public YearAmtReview(Long idxNo, Review review, Amt amt, EtcAmt etcAmt, String annYn) {
         this.idxNo = idxNo;
         this.review = review;
         this.amt = amt;
