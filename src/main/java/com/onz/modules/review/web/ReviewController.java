@@ -78,8 +78,8 @@ public class ReviewController extends BaseApiController {
     })
     @PostMapping("/reviews/{id}/add")
     public ResponseEntity addAccount(@PathVariable Long id, Account account) {
-        Company one = companyService.findOne(id);
-        one.addAccount(account);
+//        Company one = companyService.findOne(id);
+//        one.addAccount(account);
         return ResponseEntity.ok().build();
     }
 }

@@ -33,13 +33,6 @@ public class CompanyRepositoryExtensionImpl extends QuerydslRepositorySupport im
         BooleanBuilder where = new BooleanBuilder();
         where.and(company.isDelete.eq(YN.N));
 
-        if (StringUtils.hasText(searchRequest.getCode())) {
-            where.and(company.code.eq(searchRequest.getCode()));
-        }
-        if (StringUtils.hasText(searchRequest.getName())) {
-            where.and(company.name.eq(searchRequest.getName()));
-        }
-
         JPQLQuery<Company> result = from(company)
             .where(where);
 
@@ -50,10 +43,10 @@ public class CompanyRepositoryExtensionImpl extends QuerydslRepositorySupport im
 
     @Override
     public void update(CompanyUpdateRequest updateRequest) {
-        QCompany company = QCompany.company;
-        update(company)
-            .set(company.name, updateRequest.getName())
-            .where(company.id.eq(updateRequest.getId()))
-            .execute();
+//        QCompany company = QCompany.company;
+//        update(company)
+//            .set(company.officeName, updateRequest.getName())
+//            .where(company.id.eq(updateRequest.getId()))
+//            .execute();
     }
 }
