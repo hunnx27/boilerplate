@@ -69,15 +69,4 @@ public class CompanyController extends BaseApiController {
         return companyService.findOne(id);
     }
 
-    @Operation(summary = "기관에 사용자 등록하기", description = "등록합니다..")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "등록 완료", content = @Content(schema = @Schema(implementation = PathVariable.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PathVariable.class)))
-    })
-    @PostMapping("/company/{id}/add")
-    public ResponseEntity addAccount(@PathVariable Long id, Account account) {
-        Company one = companyService.findOne(id);
-        one.addAccount(account);
-        return ResponseEntity.ok().build();
-    }
 }

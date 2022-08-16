@@ -1,9 +1,12 @@
 package com.onz.modules.company.domain;
 
+import com.onz.common.enums.Gubn;
 import com.onz.modules.account.domain.Account;
 import com.onz.common.domain.BaseEntity;
 import com.onz.common.enums.YN;
 import java.time.ZonedDateTime;
+
+import com.onz.modules.company.domain.enums.EstablishmentType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,32 +22,33 @@ public class Company extends BaseEntity {
     @Id
     @GeneratedValue
     private Long id;
-
-    private String code;
-    private String name;
-    private int totalMemberCount;
-    private int currentMemberCount;
-
-    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
-    @OrderBy("createdAt")
-    private List<Account> accounts = new ArrayList<>();
-
-    private YN isOperation;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id")
-    private Account director;
-
-    private ZonedDateTime openedAt;
-    private YN isOpen;
-    private int fixedPeople;
-    private int currentPeople;
-
-    public void addAccount(Account account) {
-        this.getAccounts().add(account);
-    }
-
-    public void addDirector(Account account){
-        this.director = account;
-    }
+    @Enumerated(EnumType.STRING)
+    Gubn gubn;
+    @Enumerated(EnumType.STRING)
+    EstablishmentType establishmentType;
+    private String officeName;
+    private String juso;
+    private String gps_x;
+    private String gps_y;
+    private String run;
+    private String director;
+    private ZonedDateTime openDt;
+    @Enumerated(EnumType.STRING)
+    private YN useYn;
+    @Enumerated(EnumType.STRING)
+    private YN evaluateYn;
+    private Double fill;
+    private long totPeople;
+    private long currPeople;
+    private String agePeoples;
+    private String charItems;
+    private String perItems;
+    private String evalItems;
+    private String zonecode;
+    private String zipcode;
+    private String phoneNum;
+    private String faxNum;
+    private String homepage;
+    private String syncCode;
+    private ZonedDateTime eventBannerDate;
 }

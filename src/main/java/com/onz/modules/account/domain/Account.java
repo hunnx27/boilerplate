@@ -66,13 +66,6 @@ public class Account extends BaseEntity {
     @JsonBackReference
     private Set<Education> educations = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Company company;
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "director", fetch = FetchType.LAZY)
-    private Company director;
-
     @Builder
     public Account(String userId, Gubn gubn, Role role, AuthProvider provider) {
         this.gubn = gubn;
