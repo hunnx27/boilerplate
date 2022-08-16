@@ -12,6 +12,13 @@ import com.onz.modules.auth.web.dto.request.SignupRequest;
 import com.onz.modules.auth.web.dto.response.AuthResponse;
 import com.onz.modules.common.pointHistory.application.PointHistoryService;
 import com.onz.modules.common.pointHistory.domain.enums.PointTable;
+import com.onz.modules.counsel.web.dto.response.counselComment.CounselCommentListResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name="계정 가입/로그인 제어",description = "계정의 가입과 로그인을 제어하는 api.")
 public class AuthController {
 
     private final UserDetailServiceImpl userDetailService;
@@ -38,6 +46,11 @@ public class AuthController {
     private final AccountService accountService;
     private final PointHistoryService pointHistoryService;
 
+    @Operation(summary = "로그인하기기", description = "로그인합니다..")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "로그인 완료", content = @Content(schema = @Schema(implementation = HttpServletResponse.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = HttpServletResponse.class)))
+    })
     @PostMapping("/auth/login")
     public ResponseEntity<?> login(HttpServletResponse response,
         @RequestBody LoginRequest loginRequest) {
@@ -59,6 +72,11 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponse(token));
     }
 
+    @Operation(summary = "회원가입하기", description = "회원가입합니다..")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "회원가입 완료", content = @Content(schema = @Schema(implementation = HttpServletResponse.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = HttpServletResponse.class)))
+    })
     @PostMapping("/auth/oauth2/signup")
     public ResponseEntity<?> oauth2Signup(HttpServletResponse response,
                                           @RequestBody SignupRequest signupRequest){
@@ -98,6 +116,11 @@ public class AuthController {
     /**
      * 회원가입후 서비스 처리
      */
+    @Operation(summary = "회원가입 축하 포인트 API", description = "회원가입 축하 포인트 추가")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "포인트 적립 완료", content = @Content(schema = @Schema(implementation = PointTable.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PointTable.class)))
+    })
     private void afterJoinService(Account account){
         // 회원가입 최초 포인트(+3000point)
         accountService.createMyPointHistories(account, PointTable.WELCOME_JOIN);

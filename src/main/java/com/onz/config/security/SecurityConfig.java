@@ -50,6 +50,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
             .antMatchers(HttpMethod.GET, "/download/**").permitAll()
             .antMatchers(HttpMethod.POST, "/login", "/api/accounts").not().fullyAuthenticated()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/v3/**",  "/configuration/ui",
+                        "/swagger-resources", "/configuration/security",
+                        "/swagger-ui/**", "/webjars/**").not().fullyAuthenticated()
+                //이부분은 수정해야함 외부노출 xxxx 관리자용 토큰으로 따로 승인받기?
             .antMatchers("/auth/**").permitAll()
             .anyRequest().authenticated();
 

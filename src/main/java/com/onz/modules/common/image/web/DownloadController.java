@@ -1,6 +1,13 @@
 package com.onz.modules.common.image.web;
 
 import com.onz.common.util.FileUtil;
+import com.onz.modules.auth.web.dto.UserPrincipal;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -22,12 +29,17 @@ import java.nio.file.Paths;
 
 @RequiredArgsConstructor
 @Controller
+@Tag(name="파일 이미지 제어",description = "파일이미지 관련 api입니다.")
 public class DownloadController {
     private final FileUtil fileUtil;
     private final ResourceLoader resourceLoader;
 
 
-
+    @Operation(summary = "파일 업로드 주소변환 불러오기", description = "file 레코드의 업로드된 이미지의 주소를 받아옵니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "불러오기 완료", content = @Content(schema = @Schema(implementation = RequestBody.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = RequestBody.class)))
+    })
     @GetMapping("/download/image")
     @ResponseBody
     public ResponseEntity<Resource>  getImage(@RequestParam String path) throws IOException {
@@ -65,7 +77,11 @@ public class DownloadController {
         }
     }
 
-
+    @Operation(summary = "파일 업로드 주소변환 불러오기", description = "file 레코드의 업로드된 이미지의 주소를 받아옵니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "불러오기 완료", content = @Content(schema = @Schema(implementation = File.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = File.class)))
+    })
     @GetMapping("/download/image2")
     @ResponseBody
     public Resource  getImage2(@RequestParam String path) throws IOException {

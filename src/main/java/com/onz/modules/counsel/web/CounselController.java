@@ -9,6 +9,12 @@ import com.onz.modules.counsel.web.dto.response.CounselAnswerListResponse;
 import com.onz.modules.counsel.web.dto.response.counsel.CounselAnswerDetailResponse;
 import com.onz.modules.counsel.web.dto.response.counsel.CounselDetailResponse;
 import com.onz.modules.counsel.web.dto.response.counsel.CounselListResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -22,6 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
+@Tag(name="상담제어",description = "상담 관련 api입니다.")
 public class CounselController extends BaseApiController {
 
     private final CounselService counselService;
@@ -33,29 +40,54 @@ public class CounselController extends BaseApiController {
      *
      */
 
+    @Operation(summary = "상담 생성", description = "변수를 이용하여 counsel 레코드를 생성합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "상담 생성 완료", content = @Content(schema = @Schema(implementation = CounselQCreateRequest.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselQCreateRequest.class)))
+    })
     @PostMapping("/counsel")
     public void create(@AuthenticationPrincipal UserPrincipal me, CounselQCreateRequest counselQCreateRequest) {
         counselService.create(counselQCreateRequest, me);
     }
 
+    @Operation(summary = "상담 목록 조회", description = "변수를 이용하여 counsel 레코드를 생성합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "상담 목록 조회 완료", content = @Content(schema = @Schema(implementation = CounselListResponse.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselListResponse.class)))
+    })
     @GetMapping("/counsel")
     public List<CounselListResponse> list(@AuthenticationPrincipal UserPrincipal me, Pageable pageable){
         List<CounselListResponse> result = counselService.list(pageable, me);
         return result;
     }
-    
+
+    @Operation(summary = "상담 조회", description = "변수를 이용하여 counsel 레코드를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "상담 조회 완료", content = @Content(schema = @Schema(implementation = CounselDetailResponse.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselDetailResponse.class)))
+    })
     @GetMapping("/counsel/{id}")
     public CounselDetailResponse info(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long id){
         CounselDetailResponse result = counselService.detail(id, me);
         return result;
     }
 
+    @Operation(summary = "상담 내용 수정", description = "변수를 이용하여 counsel 레코드를 수정합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "상담 수정 완료", content = @Content(schema = @Schema(implementation = CounselDetailResponse.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselDetailResponse.class)))
+    })
     @PutMapping("/counsel/{id}")
     public ResponseEntity<?> updateCounsel(@AuthenticationPrincipal UserPrincipal up, CounselQUpdateRequest counselQUpdateRequest, @PathVariable Long id) {
         CounselDetailResponse counselDetail = counselService.updateCounsel(id, counselQUpdateRequest, up);
         return ResponseEntity.ok(counselDetail);
     }
 
+    @Operation(summary = "상담 삭제", description = "변수를 이용하여 counsel 레코드를 삭제합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "상담 삭제 완료", content = @Content(schema = @Schema(implementation = CounselDetailResponse.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselDetailResponse.class)))
+    })
     @DeleteMapping("/counsel/{id}")
     public ResponseEntity<?> deleteCounsel(@PathVariable Long id) {
         Counsel counsel = counselService.deleteCounselSoft(id);
@@ -68,46 +100,86 @@ public class CounselController extends BaseApiController {
      *
      */
 
+    @Operation(summary = "상담 답변 조회", description = "변수를 이용하여 counsel 레코드의 answer 레코드를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "상담 답변 조회 완료", content = @Content(schema = @Schema(implementation = CounselAnswerListResponse.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselAnswerListResponse.class)))
+    })
     @GetMapping("/counsel/{counselId}/answer")
     public List<CounselAnswerListResponse> answerList(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long counselId, Pageable pageable){
         List<CounselAnswerListResponse> result = counselService.answerList(counselId, pageable, me);
         return result;
     }
 
+    @Operation(summary = "상담 답변 단일 조회", description = "변수를 이용하여 counsel 레코드의 변수의 answer 레코드를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "상담 답변 단일 조회 완료", content = @Content(schema = @Schema(implementation = CounselAnswerDetailResponse.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselAnswerDetailResponse.class)))
+    })
     @GetMapping("/counsel/answer/{id}")
     public CounselAnswerDetailResponse answerOne(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long id, Pageable pageable){
         CounselAnswerDetailResponse result = counselService.answerById(id);
         return result;
     }
 
+    @Operation(summary = "상담 답변 생성", description = "변수를 이용하여 counsel 레코드에 답변을 생성합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "상담 답변 생성 완료", content = @Content(schema = @Schema(implementation = CounselACreateRequest.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselACreateRequest.class)))
+    })
     @PostMapping("/counsel/answer")
     public void createAnswer(@AuthenticationPrincipal UserPrincipal me, CounselACreateRequest counselACreateRequest) {
         counselService.createAnswer(counselACreateRequest, me);
     }
 
+    @Operation(summary = "상담 답변 수정", description = "변수를 이용하여 counsel 레코드에 답변을 수정합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "상담 답변 수정 완료", content = @Content(schema = @Schema(implementation = CounselAUpdateRequest.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselAUpdateRequest.class)))
+    })
     @PutMapping("/counsel/answer/{id}")
     public ResponseEntity<?> updateAnswer(@AuthenticationPrincipal UserPrincipal up, CounselAUpdateRequest counselAUpdateRequest, @PathVariable Long id) {
         Counsel counsel = counselService.updateAnswer(id, counselAUpdateRequest, up);
         return ResponseEntity.ok(new CounselDetailResponse(counsel));
     }
 
+    @Operation(summary = "상담 답변 삭제", description = "변수를 이용하여 counsel 레코드에 답변을 삭제합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "상담 답변 삭제 완료", content = @Content(schema = @Schema(implementation = CounselDetailResponse.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselDetailResponse.class)))
+    })
     @DeleteMapping("/counsel/answer/{id}")
     public ResponseEntity<?> deleteAnswer(@PathVariable Long id) {
         Counsel counsel = counselService.deleteAnswerSoft(id);
         return ResponseEntity.ok(new CounselDetailResponse(counsel));
     }
 
+    @Operation(summary = "상담 답변의 댓글 수정하기", description = "counsel 레코드의 answer에 작성된 답변을 수정합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "상담 답변 댓글 수정 완료", content = @Content(schema = @Schema(implementation = CounselAAdoptRequest.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselAAdoptRequest.class)))
+    })
     @PutMapping("/counsel/answer/{id}/adopt")
     public ResponseEntity<?> updateAnswerAdopt(@AuthenticationPrincipal UserPrincipal up, @RequestBody CounselAAdoptRequest counselAAdoptRequest, @PathVariable Long id) {
         Counsel counsel = counselService.updateAnswerAdopt(id, counselAAdoptRequest, up);
         return ResponseEntity.ok(new CounselDetailResponse(counsel));
     }
 
+    @Operation(summary = "상담 답변의 댓글 추천하기", description = "counsel 레코드의 answer에 작성된 답변을 추천합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "상담 답변 댓글 추천 완료", content = @Content(schema = @Schema(implementation = UserPrincipal.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = UserPrincipal.class)))
+    })
     @PostMapping("/counsel/answer/{id}/recommend")
     public void recommendAnswer(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long id) {
         counselService.recommendAnswer(id, me);
     }
 
+    @Operation(summary = "상담 답변의 댓글을 신고하기", description = "counsel 레코드의 answer에 작성된 답변을 신고합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "상담 답변 댓글 신고 완료", content = @Content(schema = @Schema(implementation = UserPrincipal.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = UserPrincipal.class)))
+    })
     @PostMapping("/counsel/answer/{id}/notice")
     public void noticeAnswer(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long id) {
         counselService.noticeAnswer(id, me);
