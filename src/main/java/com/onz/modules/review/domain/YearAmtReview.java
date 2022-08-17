@@ -53,22 +53,22 @@ public class YearAmtReview extends BaseEntity {
     private String apprId; // 승인자 (관리자)
 
     @Enumerated(EnumType.STRING)
-    private YN topchoiceYn=YN.N; // 대표 리뷰로 선정여부
+    private YN topchoiceYn; // 대표 리뷰로 선정여부
 
     //1 page
     private Long workExp; // 근무시 교사 연차
 
     @Enumerated(EnumType.STRING)
-    private YN workExpOpenYn=YN.N; // 근무시 교사 연차 공개 여부
+    private YN workExpOpenYn; // 근무시 교사 연차 공개 여부
 
     //2 page
     private Long amt; // 연봉
 
     @Enumerated(EnumType.STRING)
-    private YN endAtmYn=YN.N; // 퇴직금 여부
+    private YN endAtmYn; // 퇴직금 여부
 
     @Enumerated(EnumType.STRING)
-    private YN etcYn=YN.N; //수당 여부
+    private YN etcYn; //수당 여부
     //2-1 page 수당
 
     private String etcAmt; // 수당금액 배열 , 기준으로 etc_items와 매핑된다
