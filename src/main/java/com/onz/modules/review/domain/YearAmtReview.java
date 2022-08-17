@@ -1,43 +1,113 @@
 package com.onz.modules.review.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.onz.common.domain.BaseEntity;
-import com.onz.modules.review.domain.embed.*;
+import com.onz.common.enums.YN;
+import com.onz.modules.company.domain.Company;
+import com.onz.modules.counsel.domain.enums.CounselState;
+import com.onz.modules.review.web.dto.AmtRequestDto;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.time.ZonedDateTime;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 public class YearAmtReview extends BaseEntity {
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Size(max=50)
-    private Long idxNo;
+    @Size(max = 50)
+    private Long id;
 
-    @Embedded
-    Review review;
-    @Embedded
-    Amt amt;
-    @Embedded
-    EtcAmt etcAmt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", nullable = false)
+    private Company company;
 
-    @Size(max=1)
-    private String annYn;
+    @Size(max = 1)
+    @Enumerated(EnumType.STRING)
+    private YN annYn;//뭔지모름
 
+    private Long amtOld; //이전연봉
 
-    public YearAmtReview() {
+    @Enumerated(EnumType.STRING)
+    private CounselState state; // 승인여부 A:승인 W:?
+
+    @Column(updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private ZonedDateTime apprDt;
+
+    @Column(updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private ZonedDateTime topchoiceDt;
+
+    private String apprTxt; // 승인메세지 {기관명} 승인처리 되었습니다.
+    private String apprId; // 승인자 (관리자)
+
+    @Enumerated(EnumType.STRING)
+    private YN topchoiceYn; // 대표 리뷰로 선정여부
+
+    //1 page
+    private Long workExp; // 근무시 교사 연차
+
+    @Enumerated(EnumType.STRING)
+    private YN workExpOpenYn; // 근무시 교사 연차 공개 여부
+
+    //2 page
+    private Long amt; // 연봉
+
+    @Enumerated(EnumType.STRING)
+    private YN endAtmYn; // 퇴직금 여부
+
+    @Enumerated(EnumType.STRING)
+    private YN etcYn; //수당 여부
+    //2-1 page 수당
+
+    private String etcAmt; // 수당금액 배열 , 기준으로 etc_items와 매핑된다
+    private String etcItems; //입력한 수당 idx 배열 {1 - 처우개선비 ,2 - 근무환경개선비, 3- 누리과정수당, 4- 기타}
+
+    /*
+    create_dt // 생성일자
+    appr_dt // 승인일자
+    topchoice_dt //대표리뷰 설정 일자자     */
+
+    @Builder
+    public YearAmtReview(AmtRequestDto amtRequestDto, Company company) {
+        this.workExp = amtRequestDto.getWorkExp();
+        this.workExpOpenYn = amtRequestDto.getWorkExpOpenYn();
+        this.amt = amtRequestDto.getAmt();
+        this.endAtmYn = amtRequestDto.getEndAtmYn();
+        this.etcYn = amtRequestDto.getEtcYn();
+        this.etcAmt = amtRequestDto.getEtcAmt();
+        this.etcItems = amtRequestDto.getEtcItems();
+        this.company=company;
     }
 
-    public YearAmtReview(Long idxNo, Review review, Amt amt, EtcAmt etcAmt, String annYn) {
-        this.idxNo = idxNo;
-        this.review = review;
-        this.amt = amt;
-        this.etcAmt = etcAmt;
+    public YearAmtReview(AmtRequestDto amtRequestDto, ZonedDateTime topchoiceDt, ZonedDateTime apprDt, Long id, YN annYn, Long amtOld, CounselState state, String apprTxt, String apprId, YN topchoiceYn) {
+        this.id = id;
         this.annYn = annYn;
+        this.amtOld = amtOld;
+        this.state = state;
+        this.apprTxt = apprTxt;
+        this.apprDt=apprDt;
+        this.apprId = apprId;
+        this.topchoiceYn = topchoiceYn;
+        this.topchoiceDt = topchoiceDt;
+        this.workExp = amtRequestDto.getWorkExp();
+        this.workExpOpenYn = amtRequestDto.getWorkExpOpenYn();
+        this.amt = amtRequestDto.getAmt();
+        this.endAtmYn = amtRequestDto.getEndAtmYn();
+        this.etcYn = amtRequestDto.getEtcYn();
+        this.etcAmt = amtRequestDto.getEtcAmt();
+        this.etcItems = amtRequestDto.getEtcItems();
+        this.company = getCompany();
     }
 
 

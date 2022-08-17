@@ -1,2 +1,4 @@
-package com.onz.modules.review.infra;public interface AmtReviewRepositoryExtension {
+package com.onz.modules.review.infra;
+
+public interface AmtReviewRepositoryExtension {
 }

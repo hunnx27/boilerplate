@@ -7,6 +7,7 @@ import com.onz.common.enums.YN;
 import java.time.ZonedDateTime;
 
 import com.onz.modules.company.domain.enums.EstablishmentType;
+import com.onz.modules.review.domain.YearAmtReview;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -51,4 +52,8 @@ public class Company extends BaseEntity {
     private String homepage;
     private String syncCode;
     private ZonedDateTime eventBannerDate;
+//    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+//    private List<YearAmtReview> yearAmtReviews = new ArrayList<>();
+//    @OneToMany(mappedBy = "id", cascade = { CascadeType.PERSIST, CascadeType.REMOVE})
+//    private List<YearAmtReview> yearAmtReviews;
 }
