@@ -1,12 +1,13 @@
 package com.onz.modules.company.domain;
 
-import com.onz.common.enums.Gubn;
+import com.onz.common.enums.*;
 import com.onz.modules.account.domain.Account;
 import com.onz.common.domain.BaseEntity;
-import com.onz.common.enums.YN;
+
 import java.time.ZonedDateTime;
 
 import com.onz.modules.company.domain.enums.EstablishmentType;
+import com.onz.modules.company.domain.enums.EstablishmentTypeConverter;
 import com.onz.modules.review.domain.YearAmtReview;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,9 +24,10 @@ public class Company extends BaseEntity {
     @Id
     @GeneratedValue
     private Long id;
-    @Enumerated(EnumType.STRING)
-    Gubn gubn;
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = InterestCompanyConverter.class)
+    private InterestCompany interestCompany;
+//    @Enumerated(EnumType.STRING)
+    @Convert(converter = EstablishmentTypeConverter.class)
     EstablishmentType establishmentType;
     private String officeName;
     private String juso;

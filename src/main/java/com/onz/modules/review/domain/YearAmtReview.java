@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -24,17 +25,17 @@ public class YearAmtReview extends BaseEntity {
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Size(max = 50)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
-    @Size(max = 1)
     @Enumerated(EnumType.STRING)
     private YN annYn;//뭔지모름
 
+//    @ColumnDefault("0")
+//    @Column(nullable = true)
     private Long amtOld; //이전연봉
 
     @Enumerated(EnumType.STRING)
@@ -52,22 +53,22 @@ public class YearAmtReview extends BaseEntity {
     private String apprId; // 승인자 (관리자)
 
     @Enumerated(EnumType.STRING)
-    private YN topchoiceYn; // 대표 리뷰로 선정여부
+    private YN topchoiceYn=YN.N; // 대표 리뷰로 선정여부
 
     //1 page
     private Long workExp; // 근무시 교사 연차
 
     @Enumerated(EnumType.STRING)
-    private YN workExpOpenYn; // 근무시 교사 연차 공개 여부
+    private YN workExpOpenYn=YN.N; // 근무시 교사 연차 공개 여부
 
     //2 page
     private Long amt; // 연봉
 
     @Enumerated(EnumType.STRING)
-    private YN endAtmYn; // 퇴직금 여부
+    private YN endAtmYn=YN.N; // 퇴직금 여부
 
     @Enumerated(EnumType.STRING)
-    private YN etcYn; //수당 여부
+    private YN etcYn=YN.N; //수당 여부
     //2-1 page 수당
 
     private String etcAmt; // 수당금액 배열 , 기준으로 etc_items와 매핑된다

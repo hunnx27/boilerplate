@@ -25,8 +25,8 @@ public class AmtReviewController extends BaseApiController {
 
     @Operation(summary = "연봉 리뷰 등록", description = "연봉 리뷰를 등록합니다..")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "리뷰 등록 완료", content = @Content(schema = @Schema(implementation = YearAmtReview.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = YearAmtReview.class)))
+            @ApiResponse(responseCode = "200", description = "리뷰 등록 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
     })
     @PostMapping("/atm_review")
     public void create(@RequestBody AmtRequestDto amtRequestDto) {
