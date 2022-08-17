@@ -54,8 +54,8 @@ public class Company extends BaseEntity {
     private String homepage;
     private String syncCode;
     private ZonedDateTime eventBannerDate;
-//    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
-//    private List<YearAmtReview> yearAmtReviews = new ArrayList<>();
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE})
+    private List<YearAmtReview> yearAmtReviews = new ArrayList<>();
 //    @OneToMany(mappedBy = "id", cascade = { CascadeType.PERSIST, CascadeType.REMOVE})
 //    private List<YearAmtReview> yearAmtReviews;
 }
