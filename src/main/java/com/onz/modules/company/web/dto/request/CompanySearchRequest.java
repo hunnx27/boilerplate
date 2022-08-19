@@ -9,9 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CompanySearchRequest extends BasePageRequest {
-
-
     private String code;
     private String name;
-    private String address;
-}
+    }

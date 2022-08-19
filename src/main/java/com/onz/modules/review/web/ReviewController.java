@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 
+/*
+레거시 많아서 정리가 필요함
+ */
 @RequiredArgsConstructor
 @RestController
 @Tag(name="리뷰 제어",description = "리뷰를 제어하는 api.")

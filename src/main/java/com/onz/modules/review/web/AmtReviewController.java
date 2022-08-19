@@ -1,6 +1,7 @@
 package com.onz.modules.review.web;
 
 import com.onz.common.web.BaseApiController;
+import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.review.application.AmtReviewService;
 import com.onz.modules.review.domain.YearAmtReview;
 import com.onz.modules.review.web.dto.AmtRequestDto;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +31,7 @@ public class AmtReviewController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
     })
     @PostMapping("/atm_review")
-    public void create(@RequestBody AmtRequestDto amtRequestDto) {
-        amtReviewService.create(amtRequestDto);
+    public void create(@AuthenticationPrincipal UserPrincipal me, AmtRequestDto amtRequestDto) {
+        amtReviewService.create(amtRequestDto,me);
     }
 }

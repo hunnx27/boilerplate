@@ -3,6 +3,7 @@ package com.onz.modules.review.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.onz.common.domain.BaseEntity;
 import com.onz.common.enums.YN;
+import com.onz.modules.account.domain.Account;
 import com.onz.modules.company.domain.Company;
 import com.onz.modules.counsel.domain.enums.CounselState;
 import com.onz.modules.review.web.dto.AmtRequestDto;
@@ -28,8 +29,12 @@ public class YearAmtReview extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id", nullable = false)
+    @JoinColumn(name = "companyId", nullable = false)
     private Company company;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private Account account;
 
     @Enumerated(EnumType.STRING)
     private YN annYn;//뭔지모름
@@ -80,8 +85,9 @@ public class YearAmtReview extends BaseEntity {
     topchoice_dt //대표리뷰 설정 일자자     */
 
     @Builder
-    public YearAmtReview(AmtRequestDto amtRequestDto, Company company) {
+    public YearAmtReview(AmtRequestDto amtRequestDto, Company company, Account account) {
         this.workExp = amtRequestDto.getWorkExp();
+        this.account=account;
         this.workExpOpenYn = amtRequestDto.getWorkExpOpenYn();
         this.amt = amtRequestDto.getAmt();
         this.endAtmYn = amtRequestDto.getEndAtmYn();
@@ -89,6 +95,7 @@ public class YearAmtReview extends BaseEntity {
         this.etcAmt = amtRequestDto.getEtcAmt();
         this.etcItems = amtRequestDto.getEtcItems();
         this.company=company;
+        this.account=account;
     }
 
     public YearAmtReview(AmtRequestDto amtRequestDto, ZonedDateTime topchoiceDt, ZonedDateTime apprDt, Long id, YN annYn, Long amtOld, CounselState state, String apprTxt, String apprId, YN topchoiceYn) {

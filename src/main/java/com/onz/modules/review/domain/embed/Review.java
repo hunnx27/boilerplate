@@ -10,14 +10,12 @@ import javax.validation.constraints.Size;
 @Setter
 @Embeddable
 public class Review {
-    @Size(max=50)
-    private String id;
+//    @Size(max=50)
+//    private String review_id;
     @Size(max=11)
     private int code;
     @Size(max=1)
     private String state;
-    @Embedded
-    private WorkExp workExp;
     @Embedded
     private Topchoice topchoice;
     @Embedded
@@ -26,11 +24,9 @@ public class Review {
     public Review() {
     }
 
-    public Review(String id, int code, String state, WorkExp workExp, Topchoice topchoice, Appr appr) {
-        this.id = id;
+    public Review(int code, String state, Topchoice topchoice, Appr appr) {
         this.code = code;
         this.state = state;
-        this.workExp = workExp;
         this.topchoice = topchoice;
         this.appr = appr;
     }
