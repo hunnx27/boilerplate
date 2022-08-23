@@ -33,7 +33,7 @@ spring:
     defer-datasource-initialization: true
   sql:
     init:
-      mode: always
+      mode: never; # always/embedded/never #FIXME 최초실행시 always로 실행(기초데이터입력)
 
   config:
     activate:
