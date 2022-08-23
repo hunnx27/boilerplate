@@ -1,37 +1,106 @@
 package com.onz.modules.review.domain;
 
 import com.onz.common.domain.BaseEntity;
-import com.onz.modules.review.domain.embed.*;
+import com.onz.common.enums.YN;
+import com.onz.modules.account.domain.Account;
+import com.onz.modules.company.domain.Company;
+import com.onz.modules.review.domain.embed.Review;
+import com.onz.modules.review.web.dto.InterviewRequestDto;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@DynamicInsert
 public class InterviewReview extends BaseEntity {
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Size(max=50)
-    private Long idxNo;
+    private Long id;
 
-    @Embedded
-    Review review;
-    @Embedded
-    private Items items;
-    @Embedded
-    private QNAs qNAs;
+    private String item_1;
 
-    public InterviewReview() {
+    @Enumerated(EnumType.STRING)
+    private YN item_2;
+    @Enumerated(EnumType.STRING)
+    private YN item_3;
+
+    private String item_4;
+    private String item_5;
+
+    @Enumerated(EnumType.STRING)
+    private YN item_6;
+
+    @ColumnDefault("'W'")
+    private String state;
+
+    //    private Long reviewOrder;
+//    private String interviewQ;
+//    private String interviewA;
+//    private String interviewQA;
+//    private String interviewAA;
+    private String txtAdmin;
+
+    @Enumerated(EnumType.STRING)
+    private YN WorkExpOpenYn;
+
+    private Long workExp;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "companyId", nullable = false)
+    private Company company;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "accountId")
+    private Account account;
+
+    //    //1 page
+//    private String interviewQ; // 인터뷰 질문
+//    private String interviewA; // 인터뷰 답변
+//    private String interviewAQ; // 인터뷰 질문 관리자 질문
+//    private String interviewAA; // 인터뷰 질문 관리자 답변
+//    private String interviewOrder; // 인터뷰 질문 내림차순정렬
+//    private String txtAdmin; //관리자 의견
+//    //    private Long reviewOrder;
+//    private Long companyId;
+    @Builder
+    public InterviewReview(InterviewRequestDto interviewRequestDto, Company company, Account account) {
+//        this.reviewOrder=interviewRequestDto.getInterviewOrder();
+        this.txtAdmin = interviewRequestDto.getTxtAdmin();
+        this.company = company;
+        this.workExp= interviewRequestDto.getWorkExp();
+//        this.interviews=interviewRequestDto.getInterview();
+        this.account = account;
+        this.item_1=interviewRequestDto.getItem_1();
+        this.item_2=interviewRequestDto.getItem_2();
+        this.item_3=interviewRequestDto.getItem_3();
+        this.item_4=interviewRequestDto.getItem_4();
+        this.item_5=interviewRequestDto.getItem_5();
+        this.item_6=interviewRequestDto.getItem_6();
+        this.WorkExpOpenYn=interviewRequestDto.getWorkExpOpenYn();
     }
 
-    public InterviewReview(Long idxNo, Review review, Items items, QNAs qNAs) {
-        this.idxNo = idxNo;
-        this.review = review;
-        this.items = items;
-        this.qNAs = qNAs;
+    public InterviewReview(InterviewRequestDto interviewRequestDto, Long id) {
+        this.id = id;
+//        this.reviewOrder=reviewOrder;
+//        this.interviewQ=interviewQ;
+//        this.interviewAA=interviewAA;
+//        this.interviewA=interviewA;
+//        this.interviewQA=interviewQA;
+        this.txtAdmin = interviewRequestDto.getTxtAdmin();
+        this.company = getCompany();
+        this.state=getState();
+
     }
 }

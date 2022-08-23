@@ -2,6 +2,8 @@ package com.onz.modules.review.web;
 
 import com.onz.common.web.BaseApiController;
 import com.onz.modules.auth.web.dto.UserPrincipal;
+import com.onz.modules.company.domain.Company;
+import com.onz.modules.company.web.dto.request.CompanySearchRequest;
 import com.onz.modules.review.application.AmtReviewService;
 import com.onz.modules.review.domain.YearAmtReview;
 import com.onz.modules.review.web.dto.AmtRequestDto;
@@ -13,6 +15,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +34,7 @@ public class AmtReviewController extends BaseApiController {
             @ApiResponse(responseCode = "200", description = "리뷰 등록 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
     })
-    @PostMapping("/atm_review")
+    @PostMapping("/review/amt")
     public void create(@AuthenticationPrincipal UserPrincipal me, AmtRequestDto amtRequestDto) {
         amtReviewService.create(amtRequestDto,me);
     }

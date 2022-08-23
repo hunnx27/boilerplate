@@ -5,7 +5,6 @@ import com.onz.common.domain.BaseEntity;
 import com.onz.common.enums.YN;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.company.domain.Company;
-import com.onz.modules.counsel.domain.enums.CounselState;
 import com.onz.modules.review.web.dto.AmtRequestDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,7 +32,7 @@ public class YearAmtReview extends BaseEntity {
     private Company company;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "accountId")
     private Account account;
 
     @Enumerated(EnumType.STRING)
@@ -43,8 +42,8 @@ public class YearAmtReview extends BaseEntity {
 //    @Column(nullable = true)
     private Long amtOld; //이전연봉
 
-    @Enumerated(EnumType.STRING)
-    private CounselState state; // 승인여부 A:승인 W:?
+    @ColumnDefault("'W'")
+    private String state="W"; // 승인여부 A:승인 W:?
 
     @Column(updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
@@ -95,14 +94,12 @@ public class YearAmtReview extends BaseEntity {
         this.etcAmt = amtRequestDto.getEtcAmt();
         this.etcItems = amtRequestDto.getEtcItems();
         this.company=company;
-        this.account=account;
     }
 
-    public YearAmtReview(AmtRequestDto amtRequestDto, ZonedDateTime topchoiceDt, ZonedDateTime apprDt, Long id, YN annYn, Long amtOld, CounselState state, String apprTxt, String apprId, YN topchoiceYn) {
+    public YearAmtReview(AmtRequestDto amtRequestDto, ZonedDateTime topchoiceDt, ZonedDateTime apprDt, Long id, YN annYn, Long amtOld, String apprTxt, String apprId, YN topchoiceYn) {
         this.id = id;
         this.annYn = annYn;
         this.amtOld = amtOld;
-        this.state = state;
         this.apprTxt = apprTxt;
         this.apprDt=apprDt;
         this.apprId = apprId;

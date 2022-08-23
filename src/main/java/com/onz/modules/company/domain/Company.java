@@ -26,6 +26,7 @@ public class Company extends BaseEntity {
     private Long id;
     @Convert(converter = InterestCompanyConverter.class)
     private InterestCompany interestCompany;
+    //추가
 //    @Enumerated(EnumType.STRING)
     @Convert(converter = EstablishmentTypeConverter.class)
     EstablishmentType establishmentType;

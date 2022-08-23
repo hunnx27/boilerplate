@@ -5,13 +5,18 @@ import com.onz.modules.account.domain.Account;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.infra.CompanyRepository;
+import com.onz.modules.company.web.dto.reponse.CompanySearchResponse;
+import com.onz.modules.company.web.dto.request.CompanySearchRequest;
 import com.onz.modules.review.domain.YearAmtReview;
 import com.onz.modules.review.infra.AmtReviewRepository;
 import com.onz.modules.review.web.dto.AmtRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
