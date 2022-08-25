@@ -3,6 +3,7 @@ package com.onz.modules.company.application;
 import com.onz.modules.common.address.infra.AddressRepository;
 import com.onz.modules.common.address.infra.dto.DistinctAddressResponse;
 import com.onz.modules.company.domain.Company;
+import com.onz.modules.company.web.dto.reponse.CompanyDetailResponse;
 import com.onz.modules.company.web.dto.reponse.CompanySearchResponse;
 import com.onz.modules.company.web.dto.request.CompanySearchRequest;
 import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
@@ -40,6 +41,13 @@ public class CompanyService {
     public Company findOne(Long id) {
         return companyRepository.findById(id)
                 .orElseThrow();
+    }
+
+    public CompanyDetailResponse detailPage(Long id) {
+        //List<CompanyDetailResponse> list = companyRepository.convertDetail(findOne(id));
+        Company company = findOne(id);
+        CompanyDetailResponse rs = new CompanyDetailResponse(company);
+        return rs;
     }
 
     public List<CompanySearchResponse> search(CompanySearchRequest companySearchRequest) {

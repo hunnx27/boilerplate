@@ -7,6 +7,7 @@ import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.web.dto.request.CompanyCreateRequest;
 import com.onz.modules.company.web.dto.request.CompanySearchRequest;
 import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
+import com.onz.modules.review.application.AmtReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,15 +31,16 @@ import javax.servlet.http.HttpServletResponse;
 public class ReviewController extends BaseApiController {
 
     private final CompanyService companyService;
+    private final AmtReviewService amtReviewService;
     private final ModelMapper modelMapper;
 
-    @Operation(summary = "리뷰 불러오기", description = "리뷰 레코드를 불러옵니다..")
+    @Operation(summary = "선택 리뷰 불러오기", description = "리뷰 레코드를 불러옵니다..")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "불러오기 완료", content = @Content(schema = @Schema(implementation = CompanySearchRequest.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanySearchRequest.class)))
     })
     @GetMapping("/reviews")
-    public Page<Company> list(CompanySearchRequest searchRequest) {
+    public Page<Company> list(@RequestBody CompanySearchRequest searchRequest) {
         return companyService.list(searchRequest);
     }
 

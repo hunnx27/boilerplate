@@ -30,6 +30,7 @@ public class Company extends BaseEntity {
 //    @Enumerated(EnumType.STRING)
     @Convert(converter = EstablishmentTypeConverter.class)
     EstablishmentType establishmentType;
+    private ZonedDateTime eventBannerDate;
     private String officeName;
     private String juso;
     private String gps_x;
@@ -54,7 +55,7 @@ public class Company extends BaseEntity {
     private String faxNum;
     private String homepage;
     private String syncCode;
-    private ZonedDateTime eventBannerDate;
+
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE})
     private List<YearAmtReview> yearAmtReviews = new ArrayList<>();
 //    @OneToMany(mappedBy = "id", cascade = { CascadeType.PERSIST, CascadeType.REMOVE})

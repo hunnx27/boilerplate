@@ -1,29 +1,25 @@
 package com.onz.modules.company.infra;
 
 import com.onz.common.enums.YN;
-import com.onz.modules.account.domain.Account;
-import com.onz.modules.account.domain.QAccount;
-import com.onz.modules.common.address.domain.Address;
 import com.onz.modules.common.address.infra.AddressRepository;
-import com.onz.modules.common.address.web.dto.AddressResponse;
 import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.domain.QCompany;
+import com.onz.modules.company.web.dto.reponse.CompanyDetailResponse;
 import com.onz.modules.company.web.dto.reponse.CompanySearchResponse;
 import com.onz.modules.company.web.dto.request.CompanySearchRequest;
 import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.onz.modules.company.domain.QCompany.company;
 
@@ -36,6 +32,24 @@ public class CompanyRepositoryExtensionImpl extends QuerydslRepositorySupport im
     public CompanyRepositoryExtensionImpl(JPAQueryFactory jpaQueryFactory) {
         super(Company.class);
         this.jpaQueryFactory = jpaQueryFactory;
+    }
+
+    @Override
+    public List<CompanyDetailResponse> convertlist(Company company) {
+        QCompany qc=QCompany.company;
+        List<Company> list = jpaQueryFactory
+                //select(
+//        Projections.constructor(CompanyDetailResponse.class,
+//                qc.id,qc.interestCompany,qc.establishmentType,qc.officeName,qc.juso,qc.run,
+//                qc.director,qc.openDt,qc.useYn,qc.evaluateYn,qc.fill,qc.totPeople,qc.currPeople ,
+//                qc.agePeoples,qc.charItems,qc.perItems,qc.evalItems,qc.zonecode,qc.zipcode,qc.phoneNum,
+//                qc.faxNum,qc.homepage,qc.syncCode)
+                // )
+                .selectFrom(qc)
+                .where(qc.id.eq(company.getId()))
+                .fetch();
+
+        return list.stream().map(com -> new CompanyDetailResponse(com)).collect(Collectors.toList());
     }
 
     @Override

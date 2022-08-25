@@ -1,5 +1,6 @@
 package com.onz.modules.review.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.onz.common.domain.BaseEntity;
 import com.onz.common.enums.YN;
@@ -27,16 +28,20 @@ public class YearAmtReview extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "companyId", nullable = false)
     private Company company;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "accountId")
     private Account account;
 
     @Enumerated(EnumType.STRING)
     private YN annYn;//뭔지모름
+
+    private String zonecode;
 
 //    @ColumnDefault("0")
 //    @Column(nullable = true)
@@ -77,7 +82,7 @@ public class YearAmtReview extends BaseEntity {
 
     private String etcAmt; // 수당금액 배열 , 기준으로 etc_items와 매핑된다
     private String etcItems; //입력한 수당 idx 배열 {1 - 처우개선비 ,2 - 근무환경개선비, 3- 누리과정수당, 4- 기타}
-
+    private String mapsidogunguName;
     /*
     create_dt // 생성일자
     appr_dt // 승인일자
@@ -94,12 +99,14 @@ public class YearAmtReview extends BaseEntity {
         this.etcAmt = amtRequestDto.getEtcAmt();
         this.etcItems = amtRequestDto.getEtcItems();
         this.company=company;
+        this.zonecode=company.getZonecode();
     }
 
     public YearAmtReview(AmtRequestDto amtRequestDto, ZonedDateTime topchoiceDt, ZonedDateTime apprDt, Long id, YN annYn, Long amtOld, String apprTxt, String apprId, YN topchoiceYn) {
         this.id = id;
         this.annYn = annYn;
         this.amtOld = amtOld;
+        this.zonecode=company.getZonecode();
         this.apprTxt = apprTxt;
         this.apprDt=apprDt;
         this.apprId = apprId;
@@ -114,6 +121,4 @@ public class YearAmtReview extends BaseEntity {
         this.etcItems = amtRequestDto.getEtcItems();
         this.company = getCompany();
     }
-
-
 }
