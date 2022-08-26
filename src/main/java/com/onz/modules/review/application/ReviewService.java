@@ -30,7 +30,8 @@ public class ReviewService {
         return companyRepository.list(searchRequest);
     }
     public List<ReviewResponseDto> findByAllReview(Pageable pageable){
-        return reviewRepository.findByAllReview(pageable);
+        List<ReviewResponseDto> list = reviewRepository.findByAllReview(pageable);
+        return list;
     }
 
     public void create(Company company) {

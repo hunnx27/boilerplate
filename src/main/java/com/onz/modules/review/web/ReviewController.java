@@ -101,7 +101,7 @@ public class ReviewController extends BaseApiController {
             @ApiResponse(responseCode = "200", description = "test", content = @Content(schema = @Schema(implementation = Review.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = Review.class)))
     })
-    @GetMapping("/review/all")
+    @GetMapping("/reviews/all")
     public List<ReviewResponseDto> findByAllReview(
             @PageableDefault(size = 10, sort = "created_at", direction = Sort.Direction.DESC)
             Pageable pageable

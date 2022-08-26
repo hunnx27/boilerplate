@@ -28,6 +28,7 @@ public interface ReviewRepository extends JpaRepository<Company,  Long>,
                         "work_exp_open_yn AS work_exp_open_yn , " +
                         "company_id AS company_id, " +
                         "account_id  As account_id, " +
+                        "txt AS txt, "+
                         "NULL AS item_1 , " +
                         "NULL AS item_2 , " +
                         "NULL AS item_3 , " +
@@ -79,6 +80,7 @@ public interface ReviewRepository extends JpaRepository<Company,  Long>,
                         "work_exp_open_yn AS work_exp_open_yn , " +
                         "company_id AS company_id, " +
                         "account_id  As account_id, " +
+                        "null AS txt, "+
                         "item_1 AS item_1 , " +
                         "item_2 AS item_2 , " +
                         "item_3 AS item_3 , " +
@@ -130,6 +132,7 @@ public interface ReviewRepository extends JpaRepository<Company,  Long>,
                         "work_exp_open_yn AS work_exp_open_yn , " +
                         "company_id AS company_id , " +
                         "account_id  As account_id , " +
+                        "null AS txt, "+
                         "NULL AS item_1 , " +
                         "NULL AS item_2 , " +
                         "NULL AS item_3 , " +
