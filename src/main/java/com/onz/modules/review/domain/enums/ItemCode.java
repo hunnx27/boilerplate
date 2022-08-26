@@ -6,6 +6,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ItemCode {
+    A101("물론이죠"),
+    A102("글쎄요"),
+    A103("싫어요"),
     B101("연 4회 이하"),
     B102("연 5~10회"),
     B103("연 10~20회"),
