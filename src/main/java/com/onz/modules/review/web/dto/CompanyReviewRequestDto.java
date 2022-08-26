@@ -3,6 +3,7 @@ package com.onz.modules.review.web.dto;
 import com.onz.common.domain.BaseEntity;
 import com.onz.common.enums.YN;
 import com.onz.modules.review.domain.embed.Images;
+import com.onz.modules.review.domain.enums.ItemCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,14 +22,14 @@ public class CompanyReviewRequestDto extends BaseEntity {
     private Long companyId;
     private Long workExp;
     private YN WorkExpOpenYn;
-    private String itemB1;
-    private String itemB2;
-    private String itemB3;
-    private String itemC1;
-    private String itemC2;
-    private String itemC3;
-    private String itemD1;
-    private String itemD2;
-    private String likeCode;
+    private ItemCode itemB1;
+    private ItemCode itemB2;
+    private ItemCode itemB3;
+    private ItemCode itemC1;
+    private ItemCode itemC2;
+    private ItemCode itemC3;
+    private ItemCode itemD1;
+    private ItemCode itemD2;
+    private ItemCode likeCode;
 
 }

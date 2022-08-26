@@ -6,6 +6,7 @@ import com.onz.common.util.dto.AttachDto;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.company.domain.Company;
 import com.onz.modules.review.domain.embed.Images;
+import com.onz.modules.review.domain.enums.ItemCode;
 import com.onz.modules.review.web.dto.CompanyReviewRequestDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,23 +47,31 @@ public class CompanyReview extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private YN WorkExpOpenYn;
     @Column(name = "item_B1")
-    private String itemB1;
+    @Enumerated(EnumType.STRING)
+    private ItemCode itemB1;
     @Column(name = "item_B2")
-    private String itemB2;
+    @Enumerated(EnumType.STRING)
+    private ItemCode itemB2;
     @Column(name = "item_B3")
-    private String itemB3;
+    @Enumerated(EnumType.STRING)
+    private ItemCode itemB3;
     @Column(name = "item_C1")
-    private String itemC1;
+    @Enumerated(EnumType.STRING)
+    private ItemCode itemC1;
     @Column(name = "item_C2")
-    private String itemC2;
+    @Enumerated(EnumType.STRING)
+    private ItemCode itemC2;
     @Column(name = "item_C3")
-    private String itemC3;
+    @Enumerated(EnumType.STRING)
+    private ItemCode itemC3;
     @Column(name = "item_D1")
-    private String itemD1;
+    @Enumerated(EnumType.STRING)
+    private ItemCode itemD1;
     @Column(name = "item_D2")
-    private String itemD2;
-
-    private String likeCode;
+    @Enumerated(EnumType.STRING)
+    private ItemCode itemD2;
+    @Enumerated(EnumType.STRING)
+    private ItemCode likeCode;
 
     @ColumnDefault("'W'")
     private String state="W";
