@@ -4,6 +4,7 @@ import com.onz.common.domain.BaseEntity;
 import com.onz.common.enums.YN;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.company.domain.Company;
+import com.onz.modules.company.domain.enums.EstablishmentType;
 import com.onz.modules.review.domain.embed.Review;
 import com.onz.modules.review.web.dto.InterviewRequestDto;
 import lombok.Builder;
@@ -52,10 +53,11 @@ public class InterviewReview extends BaseEntity {
     private String txtAdmin;
 
     @Enumerated(EnumType.STRING)
-    private YN WorkExpOpenYn;
+    private YN workExpOpenYn;
 
     private Long workExp;
 
+    private String zonecode;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "companyId", nullable = false)
@@ -64,6 +66,8 @@ public class InterviewReview extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "accountId")
     private Account account;
+
+    private String topQ1;
 
     //    //1 page
 //    private String interviewQ; // 인터뷰 질문
@@ -88,7 +92,12 @@ public class InterviewReview extends BaseEntity {
         this.item_4=interviewRequestDto.getItem_4();
         this.item_5=interviewRequestDto.getItem_5();
         this.item_6=interviewRequestDto.getItem_6();
-        this.WorkExpOpenYn=interviewRequestDto.getWorkExpOpenYn();
+        this.zonecode=company.getZonecode();
+        this.workExpOpenYn=interviewRequestDto.getWorkExpOpenYn();
+        this.topQ1=interviewRequestDto.getInterviews().get(0).getQ();
+    }
+    public InterviewReview(InterviewReviewItem interviewReviewItem){
+        this.topQ1=interviewReviewItem.getInterviewQ();
     }
 
     public InterviewReview(InterviewRequestDto interviewRequestDto, Long id) {
@@ -101,6 +110,5 @@ public class InterviewReview extends BaseEntity {
         this.txtAdmin = interviewRequestDto.getTxtAdmin();
         this.company = getCompany();
         this.state=getState();
-
     }
 }

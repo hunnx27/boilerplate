@@ -4,11 +4,17 @@ import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.web.dto.request.CompanySearchRequest;
 import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
 import com.onz.modules.company.infra.CompanyRepository;
+import com.onz.modules.review.domain.InterviewReview;
+import com.onz.modules.review.domain.embed.Review;
+import com.onz.modules.review.infra.ReviewRepository;
+import com.onz.modules.review.web.dto.ReviewResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -17,9 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReviewService {
 
     private final CompanyRepository companyRepository;
+    private final ReviewRepository reviewRepository;
 
     public Page<Company> list(CompanySearchRequest searchRequest) {
         return companyRepository.list(searchRequest);
+    }
+    public List<ReviewResponseDto> findByAllReview(){
+        return reviewRepository.findByAllReview();
     }
 
     public void create(Company company) {

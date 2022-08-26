@@ -44,7 +44,7 @@ public class CompanyReview extends BaseEntity {
     private Long work_exp;
 
     @Enumerated(EnumType.STRING)
-    private YN WorkExpOpenYn;
+    private YN workExpOpenYn;
     @Column(name = "item_B1")
     private String itemB1;
     @Column(name = "item_B2")
@@ -82,7 +82,7 @@ public class CompanyReview extends BaseEntity {
         this.itemD2=companyReviewRequestDto.getItemD2();
         this.likeCode=companyReviewRequestDto.getLikeCode();
         this.work_exp= companyReviewRequestDto.getWorkExp();
-        this.WorkExpOpenYn=companyReviewRequestDto.getWorkExpOpenYn();
+        this.workExpOpenYn=companyReviewRequestDto.getWorkExpOpenYn();
 //        this.state=getState();
     }
 
@@ -90,7 +90,7 @@ public class CompanyReview extends BaseEntity {
     public CompanyReview(CompanyReviewRequestDto companyReviewRequestDto,Long id) {
         this.id = id;
         this.work_exp=companyReviewRequestDto.getWorkExp();
-        this.WorkExpOpenYn=companyReviewRequestDto.getWorkExpOpenYn();
+        this.workExpOpenYn=companyReviewRequestDto.getWorkExpOpenYn();
         this.company=getCompany();
         this.likeCode=companyReviewRequestDto.getLikeCode();
         this.account=getAccount();

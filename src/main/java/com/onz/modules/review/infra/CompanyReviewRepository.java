@@ -5,5 +5,5 @@ import com.onz.modules.review.domain.InterviewReview;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CompanyReviewRepository extends JpaRepository<CompanyReview, Long>,
-        InterviewReviewRepositoryExtension{
+        CompanyReviewRepositoryExtension{
 }

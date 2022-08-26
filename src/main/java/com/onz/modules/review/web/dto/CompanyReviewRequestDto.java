@@ -20,7 +20,7 @@ public class CompanyReviewRequestDto extends BaseEntity {
     private String txt;
     private Long companyId;
     private Long workExp;
-    private YN WorkExpOpenYn;
+    private YN workExpOpenYn;
     private String itemB1;
     private String itemB2;
     private String itemB3;

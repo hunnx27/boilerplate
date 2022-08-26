@@ -8,6 +8,10 @@ import com.onz.modules.company.web.dto.request.CompanyCreateRequest;
 import com.onz.modules.company.web.dto.request.CompanySearchRequest;
 import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
 import com.onz.modules.review.application.AmtReviewService;
+import com.onz.modules.review.application.ReviewService;
+import com.onz.modules.review.domain.InterviewReview;
+import com.onz.modules.review.domain.embed.Review;
+import com.onz.modules.review.web.dto.ReviewResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /*
 레거시 많아서 정리가 필요함
@@ -33,6 +38,7 @@ public class ReviewController extends BaseApiController {
     private final CompanyService companyService;
     private final AmtReviewService amtReviewService;
     private final ModelMapper modelMapper;
+    private final ReviewService reviewService;
 
     @Operation(summary = "선택 리뷰 불러오기", description = "리뷰 레코드를 불러옵니다..")
     @ApiResponses(value = {
@@ -86,5 +92,14 @@ public class ReviewController extends BaseApiController {
 //        Company one = companyService.findOne(id);
 //        one.addAccount(account);
         return ResponseEntity.ok().build();
+    }
+    @Operation(summary = "test ", description = "test..")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "test", content = @Content(schema = @Schema(implementation = Review.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = Review.class)))
+    })
+    @GetMapping("/review/all")
+    public List<ReviewResponseDto> findByAllReview(){
+        return reviewService.findByAllReview();
     }
 }

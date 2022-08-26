@@ -26,7 +26,7 @@ public class InterviewRequestDto extends BaseEntity {
     private String item_4;
     private String item_5;
     private YN item_6;
-    private YN WorkExpOpenYn;
+    private YN workExpOpenYn;
 
 
     @Getter
