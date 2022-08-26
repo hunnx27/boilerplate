@@ -15,6 +15,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,7 +48,10 @@ public class InterviewReviewController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = YearAmtReview.class)))
     })
     @GetMapping("/reviews/interview")
-    public List<InterviewListResponseDto> interviewReviewList(){
-        return interviewService.interviewReviewList();
+    public List<InterviewListResponseDto> interviewReviewList(
+            @PageableDefault(size = 10, sort = "created_at", direction = Sort.Direction.DESC)
+            Pageable pageable
+    ){
+        return interviewService.interviewReviewList(pageable);
     }
 }

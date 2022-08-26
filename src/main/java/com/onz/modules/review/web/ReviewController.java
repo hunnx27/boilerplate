@@ -21,6 +21,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -99,7 +102,10 @@ public class ReviewController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = Review.class)))
     })
     @GetMapping("/review/all")
-    public List<ReviewResponseDto> findByAllReview(){
-        return reviewService.findByAllReview();
+    public List<ReviewResponseDto> findByAllReview(
+            @PageableDefault(size = 10, sort = "created_at", direction = Sort.Direction.DESC)
+            Pageable pageable
+    ){
+        return reviewService.findByAllReview(pageable);
     }
 }

@@ -20,6 +20,7 @@ import com.onz.modules.review.web.dto.CompanyReviewRequestDto;
 import com.onz.modules.review.web.dto.InterviewListResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,8 +54,8 @@ public class CompanyReviewService {
             }
         }
     }
-    public List<CompanyReviewListResponseDto> companyReviewList() {
-        List<CompanyReviewListResponseDto> list =  companyReviewRepository.ListCompanyReview(companyReviewRepository.findAll());
+    public List<CompanyReviewListResponseDto> companyReviewList(Pageable pageable) {
+        List<CompanyReviewListResponseDto> list =  companyReviewRepository.ListCompanyReview(companyReviewRepository.findAll(pageable).toList());
         List<CompanyReviewListResponseDto> array = list.stream().map(res -> {
 //           String q_1 =(interviewReviewItemRepository.getById(res.getId()).getInterviewQ());
 //            res.setQ_1(q_1);

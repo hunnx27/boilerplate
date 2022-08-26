@@ -17,6 +17,7 @@ import javax.persistence.Enumerated;
 @Setter
 @NoArgsConstructor
 public class InterviewListResponseDto {
+    private String type="INTERVIEW";
     @JsonIgnore
     private Long id;
     private String Zonecode;

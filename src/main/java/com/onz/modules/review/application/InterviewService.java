@@ -17,6 +17,7 @@ import com.onz.modules.review.web.dto.InterviewRequestDto;
 import com.onz.modules.review.web.dto.YearAmtListResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,8 +56,8 @@ public class InterviewService {
             interviewReviewItemRepository.save(interviewReviewItem);
         }
     }
-    public List<InterviewListResponseDto> interviewReviewList() {
-        List<InterviewListResponseDto> list =  interviewReviewRepository.ListInterview(interviewReviewRepository.findAll());
+    public List<InterviewListResponseDto> interviewReviewList(Pageable pageable) {
+        List<InterviewListResponseDto> list =  interviewReviewRepository.ListInterview(interviewReviewRepository.findAll(pageable).toList());
         List<InterviewListResponseDto> array = list.stream().map(res -> {
 //           String q_1 =(interviewReviewItemRepository.getById(res.getId()).getInterviewQ());
 //            res.setQ_1(q_1);

@@ -12,6 +12,7 @@ import net.minidev.json.annotate.JsonIgnore;
 @Setter
 @NoArgsConstructor
 public class YearAmtListResponseDto extends BaseApiController {
+    private String type="AMT";
     private Long workExp; // 근무시 교사 연차
     private YN workExpOpenYn; // 근무시 교사 연차 공개 여부
     private Long companyId;

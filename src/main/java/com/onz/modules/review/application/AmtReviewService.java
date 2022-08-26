@@ -13,6 +13,7 @@ import com.onz.modules.review.web.dto.AmtRequestDto;
 import com.onz.modules.review.web.dto.YearAmtListResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,8 +39,8 @@ public class AmtReviewService {
         amtReviewRepository.save(yearAmtReview);
     }
 
-    public List<YearAmtListResponseDto> amtReviewList() {
-        List<YearAmtListResponseDto> list =  amtReviewRepository.ListAmt(amtReviewRepository.findAll());
+    public List<YearAmtListResponseDto> amtReviewList(Pageable pageable) {
+        List<YearAmtListResponseDto> list =  amtReviewRepository.ListAmt(amtReviewRepository.findAll(pageable).toList());
         List<YearAmtListResponseDto> array = list.stream().map(res -> {
             List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(res.getZonecode());
             if (addressList.size() > 0) {

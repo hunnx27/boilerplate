@@ -11,6 +11,7 @@ import com.onz.modules.review.web.dto.ReviewResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +29,8 @@ public class ReviewService {
     public Page<Company> list(CompanySearchRequest searchRequest) {
         return companyRepository.list(searchRequest);
     }
-    public List<ReviewResponseDto> findByAllReview(){
-        return reviewRepository.findByAllReview();
+    public List<ReviewResponseDto> findByAllReview(Pageable pageable){
+        return reviewRepository.findByAllReview(pageable);
     }
 
     public void create(Company company) {

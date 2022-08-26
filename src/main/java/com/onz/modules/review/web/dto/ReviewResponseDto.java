@@ -51,6 +51,7 @@ public interface ReviewResponseDto {
     String getitem_d1();
     String getitem_d2();
     String getlike_code();
+    String getType();
 
 
 }
