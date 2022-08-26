@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class AmtReviewController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
     })
     @PostMapping("/review/amt")
-    public void create(@AuthenticationPrincipal UserPrincipal me, AmtRequestDto amtRequestDto) {
+    public void create(@AuthenticationPrincipal UserPrincipal me, @RequestBody AmtRequestDto amtRequestDto) {
         amtReviewService.create(amtRequestDto,me);
     }
     @Operation(summary = "연봉리뷰 보기", description = "연봉 리뷰를 조회합니다..")
