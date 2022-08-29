@@ -6,6 +6,8 @@ import com.onz.common.domain.BaseEntity;
 
 import java.time.ZonedDateTime;
 
+import com.onz.modules.company.domain.enums.CharItem;
+import com.onz.modules.company.domain.enums.CharItemConverter;
 import com.onz.modules.company.domain.enums.EstablishmentType;
 import com.onz.modules.company.domain.enums.EstablishmentTypeConverter;
 import com.onz.modules.review.domain.YearAmtReview;
@@ -46,7 +48,8 @@ public class Company extends BaseEntity {
     private long totPeople;
     private long currPeople;
     private String agePeoples;
-    private String charItems;
+    @Convert(converter = CharItemConverter.class)
+    private List<CharItem> charItems;
     private String perItems;
     private String evalItems;
     private String zonecode;

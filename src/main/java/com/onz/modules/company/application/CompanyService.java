@@ -38,17 +38,24 @@ public class CompanyService {
         companyRepository.update(updateRequest);
     }
 
-    public Company findOne(Long id) {
-        return companyRepository.findById(id)
-                .orElseThrow();
-    }
-
-    public CompanyDetailResponse detailPage(Long id) {
-        //List<CompanyDetailResponse> list = companyRepository.convertDetail(findOne(id));
-        Company company = findOne(id);
+    public CompanyDetailResponse findOne(Long id) {
+        Company company = companyRepository.findById(id).orElseThrow();
         CompanyDetailResponse rs = new CompanyDetailResponse(company);
+        List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(company.getZonecode());
+        if (addressList.size() > 0) {
+            DistinctAddressResponse address = addressList.get(0);
+            String mapsidogunguName = address.getSidoName() + " " + address.getSigunguName();
+            rs.setMapsidogunguName(mapsidogunguName);
+        }
         return rs;
     }
+
+//    public CompanyDetailResponse detailPage(Long id) {
+//        //List<CompanyDetailResponse> list = companyRepository.convertDetail(findOne(id));
+//        Company company = findOne(id);
+//        CompanyDetailResponse rs = new CompanyDetailResponse(company);
+//        return rs;
+//    }
 
     public List<CompanySearchResponse> search(CompanySearchRequest companySearchRequest) {
         List<CompanySearchResponse> list = companyRepository.search(companySearchRequest);

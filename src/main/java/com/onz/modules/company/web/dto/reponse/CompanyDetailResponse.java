@@ -12,6 +12,8 @@ import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -19,13 +21,13 @@ import java.time.ZonedDateTime;
 public class CompanyDetailResponse {
     @JsonIgnore
     private Long id;
-    private InterestCompany interestCompany;
-    private EstablishmentType establishmentType;
+    private String interestCompanyName;
+    private String establishmentTypeName;
     private String officeName;
     private String juso;
     private String run;
     private String director;
-    private ZonedDateTime openDt;
+    private String openDtStr;
     @Enumerated(EnumType.STRING)
     private YN useYn;
     @Enumerated(EnumType.STRING)
@@ -43,54 +45,26 @@ public class CompanyDetailResponse {
     private String faxNum;
     private String homepage;
     private String syncCode;
-    private ZonedDateTime eventBannerDate;
-
-        public CompanyDetailResponse(Long id, InterestCompany interestCompany, EstablishmentType establishmentType,String officeName, String juso, String run,
-                                     String director, ZonedDateTime openDt, YN useYn, YN evaluateYn, Double fill, long totPeople,
-                                     long currPeople, String agePeoples, String charItems, String perItems, String evalItems,
-                                     String zonecode, String zipcode, String phoneNum, String faxNum, String homepage, String syncCode){
-        this.id=id;
-        this.interestCompany=interestCompany;
-        this.establishmentType=establishmentType;
-        this.officeName=officeName;
-        this.juso=juso;
-        this.run=run;
-        this.director=director;
-        this.openDt=openDt;
-        this.useYn=useYn;
-        this.evaluateYn=evaluateYn;
-        this.fill=fill;
-        this.totPeople=totPeople;
-        this.currPeople=currPeople;
-        this.agePeoples=agePeoples;
-        this.charItems=charItems;
-        this.perItems=perItems;
-        this.evalItems=evalItems;
-        this.zonecode=zonecode;
-        this.zipcode=zipcode;
-        this.phoneNum=phoneNum;
-        this.faxNum=faxNum;
-        this.homepage=homepage;
-        this.syncCode=syncCode;
-
-    }
+    private String eventBannerDateStr;
+    private String mapsidogunguName;
+    private String gps_x;
+    private String gps_y;
 
     public CompanyDetailResponse(Company company){
         this.id=company.getId();
-        this.interestCompany=company.getInterestCompany();
-        this.establishmentType=company.getEstablishmentType();
+        this.interestCompanyName=company.getInterestCompany().getDesc();
+        this.establishmentTypeName=company.getEstablishmentType().getName();
         this.officeName=company.getOfficeName();
         this.juso=company.getJuso();
         this.run=company.getRun();
         this.director=company.getDirector();
-        this.openDt=company.getOpenDt();
         this.useYn=company.getUseYn();
         this.evaluateYn=company.getEvaluateYn();
         this.fill=company.getFill();
         this.totPeople=company.getTotPeople();
         this.currPeople=company.getCurrPeople();
         this.agePeoples=company.getAgePeoples();
-        this.charItems=company.getCharItems();
+        this.charItems= String.join(",", company.getCharItems().stream().map(charItem -> charItem.getName()).collect(Collectors.toList()));
         this.perItems=company.getPerItems();
         this.evalItems=company.getEvalItems();
         this.zonecode=company.getZonecode();
@@ -99,7 +73,10 @@ public class CompanyDetailResponse {
         this.faxNum=company.getFaxNum();
         this.homepage=company.getHomepage();
         this.syncCode=company.getSyncCode();
-        this.eventBannerDate=company.getEventBannerDate();
+        this.openDtStr = company.getOpenDt()!=null? company.getOpenDt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")) : "-";
+        this.eventBannerDateStr = company.getEventBannerDate()!=null? company.getEventBannerDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")) : "-";;
+        this.gps_x = company.getGps_x();
+        this.gps_y = company.getGps_y();
 
     }
 }

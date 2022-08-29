@@ -75,15 +75,15 @@ public class ReviewController extends BaseApiController {
         companyService.update(updateRequest);
     }
 
-    @Operation(summary = "리뷰 단일 검색", description = "리뷰를 하나 검색합니다..")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "검색 완료", content = @Content(schema = @Schema(implementation = PathVariable.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = HttpServletResponse.class)))
-    })
-    @GetMapping("/reviews/{id}")
-    public Company findOne(@PathVariable Long id) {
-        return companyService.findOne(id);
-    }
+//    @Operation(summary = "리뷰 단일 검색", description = "리뷰를 하나 검색합니다..")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "검색 완료", content = @Content(schema = @Schema(implementation = PathVariable.class))),
+//            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = HttpServletResponse.class)))
+//    })
+//    @GetMapping("/reviews/{id}")
+//    public Company findOne(@PathVariable Long id) {
+//        return companyService.findOne(id);
+//    }
 
     @Operation(summary = "기업에 등록하기", description = "기업에 리뷰를 등록합니다..")
     @ApiResponses(value = {

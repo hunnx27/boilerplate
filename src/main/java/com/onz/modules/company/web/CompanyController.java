@@ -79,18 +79,18 @@ public class CompanyController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PathVariable.class)))
     })
     @GetMapping("/company/{id}")
-    public Company findOne(@PathVariable Long id) {
+    public CompanyDetailResponse findOne(@PathVariable Long id) {
         return companyService.findOne(id);
     }
 
-    @Operation(summary = "단일 기관 정보 받아오기", description = "단일 기관 레코드로 정보를 불러옵니다..")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "불러오기 완료", content = @Content(schema = @Schema(implementation = CompanySearchRequest.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanySearchRequest.class)))
-    })
-    @GetMapping("/company/info{id}")
-    public CompanyDetailResponse detailPage(@PathVariable Long id) {
-        return companyService.detailPage(id);
-    }
+//    @Operation(summary = "단일 기관 정보 받아오기", description = "단일 기관 레코드로 정보를 불러옵니다..")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "불러오기 완료", content = @Content(schema = @Schema(implementation = CompanySearchRequest.class))),
+//            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanySearchRequest.class)))
+//    })
+//    @GetMapping("/company/info{id}")
+//    public CompanyDetailResponse detailPage(@PathVariable Long id) {
+//        return companyService.detailPage(id);
+//    }
 
 }
