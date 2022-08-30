@@ -25,12 +25,12 @@ public class InterviewListResponseDto {
     private String establishmentType;
     private String officeName;
     private String item_1;
-    private String q_1;
     private YN item_2;
     private YN item_3;
     private String item_4;
     private String item_5;
     private YN item_6;
+    private String q_1;
     private YN workExpOpenYn;
     private Long workExp;
 

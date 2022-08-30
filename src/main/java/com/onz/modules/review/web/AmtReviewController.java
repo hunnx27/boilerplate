@@ -47,7 +47,7 @@ public class AmtReviewController extends BaseApiController {
     })
     @GetMapping("/reviews/amt")
     public List<YearAmtListResponseDto> amtReviewList(
-            @PageableDefault(size = 10, sort = "created_at", direction = Sort.Direction.DESC)
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
             Pageable pageable
     ){
         return amtReviewService.amtReviewList(pageable);

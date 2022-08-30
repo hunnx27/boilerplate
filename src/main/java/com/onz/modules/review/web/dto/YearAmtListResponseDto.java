@@ -29,19 +29,25 @@ public class YearAmtListResponseDto extends BaseApiController {
     private String etcItems; //입력한 수당 idx 배열 {1 - 처우개선비 ,2 - 근무환경개선비, 3- 누리과정수당, 4- 기타
     @JsonIgnore
     private Long id;
+    private String impCost;
+    private String workCost;
+    private String addCost;
+    private String etcCost;
+    private Long totalCost;
 
-    public YearAmtListResponseDto(Long workExp, YN workExpOpenYn, Long companyId, Long amt, YN endAtmYn, String etcItems, String officeName, String mapsidogunguName, Long id,String Zonecode,YN etcYn,EstablishmentType establishmentType){
+    public YearAmtListResponseDto(Long workExp, YN workExpOpenYn, Long companyId, Long amt, YN endAtmYn, String etcItems, String officeName, String mapsidogunguName, Long id,String Zonecode,YN etcYn,EstablishmentType establishmentType,String etcAmt){
         this.workExp=workExp;
         this.workExpOpenYn=workExpOpenYn;
         this.companyId=companyId;
         this.amt=amt;
+        this.etcAmt=etcAmt;
         this.endAtmYn=endAtmYn;
         this.etcItems=etcItems;
         this.officeName=officeName;
         this.mapsidogunguName=mapsidogunguName;
         this.id=id;
         this.etcYn=etcYn;
-        this.Zonecode=Zonecode;
+        this.Zonecode=getZonecode();
         this.establishmentType=establishmentType.getName();
     }
 }

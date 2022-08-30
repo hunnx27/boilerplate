@@ -9,7 +9,7 @@ import com.onz.modules.company.web.dto.request.CompanySearchRequest;
 import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
 import com.onz.modules.review.application.AmtReviewService;
 import com.onz.modules.review.application.ReviewService;
-import com.onz.modules.review.domain.InterviewReview;
+import com.onz.modules.review.domain.dto.ReviewAll;
 import com.onz.modules.review.domain.embed.Review;
 import com.onz.modules.review.web.dto.ReviewResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,7 +27,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /*

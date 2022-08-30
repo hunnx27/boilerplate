@@ -26,7 +26,7 @@ public class AmtReviewRepositoryExtensionImpl extends QuerydslRepositorySupport 
                         qYearAmtReview.amt, qYearAmtReview.endAtmYn, qYearAmtReview.etcItems,
                         qYearAmtReview.company.officeName, qYearAmtReview.mapsidogunguName,
                         qYearAmtReview.id,qYearAmtReview.company.zonecode,qYearAmtReview.etcYn,
-                        qYearAmtReview.company.establishmentType))
+                        qYearAmtReview.company.establishmentType,qYearAmtReview.etcAmt))
                 .fetch();
     }
 }

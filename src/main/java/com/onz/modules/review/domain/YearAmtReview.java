@@ -41,7 +41,7 @@ public class YearAmtReview extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private YN annYn;//뭔지모름
 
-    private String zonecode;
+    private String Zonecode;
 
 //    @ColumnDefault("0")
 //    @Column(nullable = true)
@@ -82,6 +82,7 @@ public class YearAmtReview extends BaseEntity {
 
     private String etcAmt; // 수당금액 배열 , 기준으로 etc_items와 매핑된다
     private String etcItems; //입력한 수당 idx 배열 {1 - 처우개선비 ,2 - 근무환경개선비, 3- 누리과정수당, 4- 기타}
+
     private String mapsidogunguName;
     /*
     create_dt // 생성일자
@@ -99,14 +100,14 @@ public class YearAmtReview extends BaseEntity {
         this.etcAmt = amtRequestDto.getEtcAmt();
         this.etcItems = amtRequestDto.getEtcItems();
         this.company=company;
-        this.zonecode=company.getZonecode();
+        this.Zonecode=company.getZonecode();
     }
 
     public YearAmtReview(AmtRequestDto amtRequestDto, ZonedDateTime topchoiceDt, ZonedDateTime apprDt, Long id, YN annYn, Long amtOld, String apprTxt, String apprId, YN topchoiceYn) {
         this.id = id;
         this.annYn = annYn;
         this.amtOld = amtOld;
-        this.zonecode=company.getZonecode();
+        this.Zonecode=company.getZonecode();
         this.apprTxt = apprTxt;
         this.apprDt=apprDt;
         this.apprId = apprId;

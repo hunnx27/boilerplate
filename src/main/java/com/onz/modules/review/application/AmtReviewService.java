@@ -17,7 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -40,8 +40,39 @@ public class AmtReviewService {
     }
 
     public List<YearAmtListResponseDto> amtReviewList(Pageable pageable) {
-        List<YearAmtListResponseDto> list =  amtReviewRepository.ListAmt(amtReviewRepository.findAll(pageable).toList());
+        List<YearAmtListResponseDto> list = amtReviewRepository.ListAmt(amtReviewRepository.findAll(pageable).toList());
         List<YearAmtListResponseDto> array = list.stream().map(res -> {
+            String[] one = res.getEtcItems().split(",");
+            String[] two = res.getEtcAmt().split(",");
+            int total =0;
+            Map<String,String> map = new HashMap<>();
+            for(int i=0; i<one.length; i++){
+                String key = one[i];
+                String value = two[i];
+                map.put(key, value);
+                total += Integer.parseInt(value);
+
+                switch (key){
+                    case "1":
+                        System.out.println(key+"+"+value);
+                        res.setImpCost(value);
+                        break;
+                    case "2":
+                        System.out.println(key+"+"+value);
+                        res.setWorkCost(value);
+                        break;
+                    case "3":
+                        System.out.println(key+"+"+value);
+                        res.setAddCost(value);
+                        break;
+                    case "4":
+                        System.out.println(key+"+"+value);
+                        res.setEtcCost(value);
+                        break;
+                }
+                res.setTotalCost((long) total);
+            }
+
             List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(res.getZonecode());
             if (addressList.size() > 0) {
                 DistinctAddressResponse address = addressList.get(0);

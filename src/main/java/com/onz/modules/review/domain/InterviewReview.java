@@ -57,7 +57,7 @@ public class InterviewReview extends BaseEntity {
 
     private Long workExp;
 
-    private String zonecode;
+    private String Zonecode;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "companyId", nullable = false)
@@ -92,7 +92,7 @@ public class InterviewReview extends BaseEntity {
         this.item_4=interviewRequestDto.getItem_4();
         this.item_5=interviewRequestDto.getItem_5();
         this.item_6=interviewRequestDto.getItem_6();
-        this.zonecode=company.getZonecode();
+//        this.Zonecode=company.getZonecode();
         this.workExpOpenYn=interviewRequestDto.getWorkExpOpenYn();
         this.topQ1=interviewRequestDto.getInterviews().get(0).getQ();
     }
