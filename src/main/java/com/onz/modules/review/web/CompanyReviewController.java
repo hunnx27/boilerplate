@@ -50,7 +50,7 @@ public class CompanyReviewController extends BaseApiController {
     })
     @GetMapping("/reviews/company")
     public List<CompanyReviewListResponseDto> companyReviewList(
-            @PageableDefault(size = 10, sort = "created_at", direction = Sort.Direction.DESC)
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
             Pageable pageable
     ){
         return companyReviewService.companyReviewList(pageable);

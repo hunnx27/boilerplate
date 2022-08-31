@@ -49,7 +49,7 @@ public class InterviewReviewController extends BaseApiController {
     })
     @GetMapping("/reviews/interview")
     public List<InterviewListResponseDto> interviewReviewList(
-            @PageableDefault(size = 10, sort = "created_at", direction = Sort.Direction.DESC)
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
             Pageable pageable
     ){
         return interviewService.interviewReviewList(pageable);
