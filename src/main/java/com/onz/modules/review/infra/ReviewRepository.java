@@ -1,13 +1,8 @@
 package com.onz.modules.review.infra;
 
 
-import com.onz.modules.common.address.domain.Address;
 import com.onz.modules.company.domain.Company;
-import com.onz.modules.review.domain.InterviewReview;
 import com.onz.modules.review.domain.dto.ReviewAll;
-import com.onz.modules.review.domain.embed.Review;
-import com.onz.modules.review.web.dto.ReviewResponseDto;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,53 +17,52 @@ public interface ReviewRepository extends JpaRepository<Company, Long>,
             "SELECT " +
                     "'COMPANY' AS type, " +
                     "id AS id, " +
-                    "is_delete AS is_delete , " +
-                    "modified_at AS modified_at , " +
+                    "is_delete AS isDelete , " +
+                    "modified_at AS modifiedAt , " +
                     "state AS state , " +
-                    "created_at AS created_at , " +
-                    "work_exp_open_yn AS work_exp_open_yn , " +
-                    "company_id AS company_id, " +
-                    "account_id  As account_id, " +
-                    "txt AS txt, " +
+                    "created_at AS createdAt,  " +
+                    "work_exp_open_yn AS workExpOpenYn , " +
+                    "company_id AS companyId, " +
+                    "account_id  As accountId, " +
+                    "txt AS txt , " +
                     "NULL AS item_1 , " +
                     "NULL AS item_2 , " +
                     "NULL AS item_3 , " +
                     "NULL AS item_4 , " +
                     "NULL AS item_5 , " +
                     "NULL AS item_6 , " +
-                    "NULL AS topq1 , " +
-                    "NULL AS txt_admin , " +
-                    "work_exp AS work_exp , " +
+                    "NULL AS topQ1 , " +
+                    "NULL AS txtAdmin , " +
+                    "work_exp AS workExp , " +
                     "NULL AS zonecode , " +
                     "NULL AS amt , " +
-                    "NULL AS amt_old , " +
-                    "NULL AS appr_dt , " +
-                    "NULL AS appr_id , " +
-                    "NULL AS appr_txt , " +
-                    "NULL AS end_atm_yn , " +
-                    "NULL AS etc_amt , " +
-                    "NULL AS etc_items , " +
-                    "NULL AS etc_yn , " +
-                    "NULL AS mapsidogungu_name , " +
-                    "NULL AS topchoice_dt , " +
-                    "NULL AS topchoice_yn , " +
-                    "NULL AS ann_yn , " +
+                    "NULL AS amtOld , " +
+                    "NULL AS apprDt , " +
+                    "NULL AS apprId , " +
+                    "NULL AS apprTxt , " +
+                    "NULL AS endAtmYn , " +
+                    "NULL AS etcAmt , " +
+                    "NULL AS etcItems , " +
+                    "NULL AS etcYn , " +
+                    "NULL AS mapsidogunguName , " +
+                    "NULL AS topchoiceDt , " +
+                    "NULL AS topchoiceYn , " +
+                    "NULL AS annYn , " +
                     "image1 AS image1 , " +
                     "image2 AS image2 , " +
                     "image3 AS image3 , " +
                     "image4 AS image4 , " +
                     "image5 AS image5 , " +
-                    "item_b1 AS item_b1 , " +
-                    "item_b2 AS item_b2 , " +
-                    "item_b3 AS item_b3 ,  " +
-                    "item_c1 AS item_c1 , " +
-                    "item_c2 AS item_c2 , " +
-                    "item_c3 AS item_c3 , " +
-                    "item_d1 AS item_d1 , " +
-                    "item_d2 AS item_d2 , " +
-                    "like_code AS like_code " +
+                    "item_b1 AS itemB1 , " +
+                    "item_b2 AS itemB2 , " +
+                    "item_b3 AS itemB3 ,  " +
+                    "item_c1 AS itemC1 , " +
+                    "item_c2 AS itemC2 , " +
+                    "item_c3 AS itemC3 , " +
+                    "item_d1 AS itemD1 , " +
+                    "item_d2 AS itemD2 , " +
+                    "like_code AS likeCode " +
                     "FROM company_review cr  " +
-
                     "UNION ALL " +
 
                     "SELECT " +
@@ -119,7 +113,7 @@ public interface ReviewRepository extends JpaRepository<Company, Long>,
                     "NULL AS item_d1 , " +
                     "NULL AS item_d2 , " +
                     "NULL AS like_code " +
-                    "FROM interview_review ir " +
+                    "FROM interview_review ir where false " +
 
                     "UNION ALL " +
 
@@ -171,7 +165,7 @@ public interface ReviewRepository extends JpaRepository<Company, Long>,
                     "NULL AS item_d1 , " +
                     "NULL AS item_d2 , " +
                     "NULL AS like_code " +
-                    "FROM year_amt_review yar ";
+                    "FROM year_amt_review yar where false ";
 
 
 //            "SELECT "

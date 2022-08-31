@@ -1,67 +1,73 @@
 package com.onz.modules.review.domain.dto;
 
 import com.onz.common.enums.YN;
+import com.onz.modules.review.domain.enums.ItemCode;
+
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 public interface ReviewAll {
     String getType();
     Long getId();
-    YN getis_delete();
-    String getmodified_at();
-    String getstate();
-    String getCreated_at();
-    YN getwork_exp_open_yn();
+    YN getIsDelete();
+    String getModifiedAt();
+    String getState();
+    String getCreatedAt();
+    YN getWorkExpOpenYn();
     String getItem_1();
     YN getItem_2();
     YN getItem_3();
     String getItem_4();
     String getItem_5();
     YN getItem_6();
-    String gettopQ1();
-    Long getcompany_id();
-    Long getaccount_id();
-    String gettxt_admin();
-    Long getwork_exp();
+    String getTopQ1();
+    Long getCompanyId();
+    Long getAccountId();
+    String getTxtAdmin();
+    Long getWorkExp();
     String getZonecode();
-    Long getamt();
-    Long getamt_old();
-    String getappr_dt();
-    String getappr_txt();
-    String getappr_id();
-    String getend_atm_yn();
-    String getetc_amt();
-    String getetc_items();
-    String getetc_yn();
-    String getmapsidogungu_name();
-    String gettopchoice_dt();
-    YN gettopchoice_yn();
-    YN getann_yn();
-    String getimage1();
-    String getimage2();
-    String getimage3();
-    String getimage4();
-    String getimage5();
-    String getitem_b1();
-    String getitem_b2();
-    String getitem_b3();
-    String getitem_c1();
-    String getitem_c2();
-    String getitem_c3();
-    String getitem_d1();
-    String getitem_d2();
-    String getlike_code();
-    String getimpCost();
-    String getworkCost();
-    String getaddCost();
-    String getetcCost();
-    Long gettotalCost();
+    Long getAmt();
+    Long getAmtOld();
+    String getApprDt();
+    String getApprTxt();
+    String getApprId();
+    String getEndAtmYn();
+    String getEtcAmt();
+    String getEtcItems();
+    String getEtcYn();
+    String getMapsidogunguName();
+    String getTopchoiceDt();
+    YN getTopchoiceYn();
+    YN getAnnYn();
+    String getImage1();
+    String getImage2();
+    String getImage3();
+    String getImage4();
+    String getImage5();
+    @Enumerated(EnumType.STRING)
+    ItemCode getItemB1();
+    @Enumerated(EnumType.STRING)
+    ItemCode getItemB2();
+    @Enumerated(EnumType.STRING)
+    ItemCode getItemB3();
+    @Enumerated(EnumType.STRING)
+    ItemCode getItemC1();
+    @Enumerated(EnumType.STRING)
+    ItemCode getItemC2();
+    @Enumerated(EnumType.STRING)
+    ItemCode getItemC3();
+    @Enumerated(EnumType.STRING)
+    ItemCode getItemD1();
+    @Enumerated(EnumType.STRING)
+    ItemCode getItemD2();
+    @Enumerated(EnumType.STRING)
+    ItemCode getLikeCode();
+    String getImpCost();
+    String getWorkCost();
+    String getAddCost();
+    String getEtcCost();
+    Long getTotalCost();
     String getTxt();
-
-
-//
-//    void setImporCost(String value);
-//    void setWorkCost(String value);
-//    void setAddCost(String value);
-//    void setEtcCost(String value);
-//    void setTotalCost(Long value);
 
 }

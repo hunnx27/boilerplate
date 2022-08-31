@@ -44,10 +44,10 @@ public class ReviewService {
         List<ReviewResponseDto> array = list.stream().map(res->{
             ReviewResponseDto aaa = new ReviewResponseDto(res);
 
-            aaa.setImpCost(res.getimpCost());
-            if(res.getetc_items()!=null){
-                String[] one = res.getetc_items().split(",");
-                String[] two = res.getetc_amt().split(",");
+            aaa.setImpCost(res.getImpCost());
+            if(res.getEtcItems()!=null){
+                String[] one = res.getEtcItems().split(",");
+                String[] two = res.getEtcAmt().split(",");
                 int total =0;
                 Map<String,String> map = new HashMap<>();
                 for(int i=0; i<one.length; i++){

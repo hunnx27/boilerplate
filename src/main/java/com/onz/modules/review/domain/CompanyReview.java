@@ -5,6 +5,7 @@ import com.onz.common.enums.YN;
 import com.onz.common.util.dto.AttachDto;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.company.domain.Company;
+import com.onz.modules.review.domain.dto.ReviewAll;
 import com.onz.modules.review.domain.embed.Images;
 import com.onz.modules.review.domain.enums.ItemCode;
 import com.onz.modules.review.web.dto.CompanyReviewRequestDto;
@@ -122,4 +123,69 @@ public class CompanyReview extends BaseEntity {
             this.images = embedImages;
         }
     }
+
+    // 점수 계산을 위한 셋팅
+    public CompanyReview(ReviewAll reviewAll) {
+        this.itemB1 = reviewAll.getItemB1();
+        this.itemB2 = reviewAll.getItemB2();
+        this.itemB3 = reviewAll.getItemB3();
+        this.itemC1 = reviewAll.getItemC1();
+        this.itemC2 = reviewAll.getItemC2();
+        this.itemC3 = reviewAll.getItemC3();
+        this.itemD1 = reviewAll.getItemD1();
+        this.itemD2 = reviewAll.getItemD2();
+        this.likeCode = reviewAll.getLikeCode();
+    }
+
+    /**
+     *  업무량 평균점수
+     * @return
+     */
+    public int getJumsuWorkload(){
+        int jumsu = (this.itemB1.getScore() + this.itemB2.getScore() + this.itemB3.getScore()) / 3;
+        return jumsu;
+    }
+    /**
+     *  업무량 별5개 점수(업무량 점수 / 20)
+      * @return
+     */
+    public int getStarJumsuWorkload(){
+        int starJumsu = getJumsuWorkload() / 20;
+        return starJumsu;
+    }
+
+    /**
+     *  직무만족 평균점수
+     * @return
+     */
+    public int getJumsuJobSatisfaction(){
+        int jumsu = (this.itemC1.getScore() + this.itemC2.getScore() + this.itemC3.getScore()) / 3;
+        return jumsu;
+    }
+    /**
+     *  직무만족 별5개 점수(직무만족 평균점수  / 20)
+     * @return
+     */
+    public int getStarJumsuJobSatisfaction(){
+        int starJumsu = getJumsuJobSatisfaction() / 20;
+        return starJumsu;
+    }
+
+    /**
+     *  원내분위기 평균점수
+     * @return
+     */
+    public int getJumsuWorkAtmosphere(){
+        int jumsu = (this.itemD1.getScore() + this.itemD2.getScore()) / 2;
+        return jumsu;
+    }
+    /**
+     *  원내분위기 별5개 점수(직무만족 평균점수  / 20)
+     * @return
+     */
+    public int getStarJumsuWorkAtmosphere(){
+        int starJumsu = getJumsuWorkAtmosphere() / 20;
+        return starJumsu;
+    }
+
 }
