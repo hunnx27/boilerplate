@@ -113,7 +113,7 @@ public interface ReviewRepository extends JpaRepository<Company, Long>,
                     "NULL AS item_d1 , " +
                     "NULL AS item_d2 , " +
                     "NULL AS like_code " +
-                    "FROM interview_review ir where false " +
+                    "FROM interview_review ir " +
 
                     "UNION ALL " +
 
@@ -165,7 +165,7 @@ public interface ReviewRepository extends JpaRepository<Company, Long>,
                     "NULL AS item_d1 , " +
                     "NULL AS item_d2 , " +
                     "NULL AS like_code " +
-                    "FROM year_amt_review yar where false ";
+                    "FROM year_amt_review yar ";
 
 
 //            "SELECT "

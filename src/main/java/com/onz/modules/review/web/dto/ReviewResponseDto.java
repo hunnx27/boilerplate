@@ -55,6 +55,7 @@ public class ReviewResponseDto extends BaseApiController {
 //    private String item_c3;
 //    private String item_d1;
 //    private String item_d2;
+    private double starJumsuTotalAvg;
     private int starJumsuWorkload;
     private int starJumsuJobSatisfaction;
     private int starJumsuWorkAtmosphere;
@@ -117,6 +118,7 @@ public class ReviewResponseDto extends BaseApiController {
 //        this.likeCode = reviewAll.getLikeCode()!=null? reviewAll.getLikeCode().name() : null;
         if("COMPANY".equals(reviewAll.getType())){
             CompanyReview r = new CompanyReview(reviewAll);
+            this.starJumsuTotalAvg = r.getStarJumsuTotalAvg();
             this.starJumsuWorkload = r.getStarJumsuWorkload();
             this.starJumsuJobSatisfaction =  r.getStarJumsuJobSatisfaction();
             this.starJumsuWorkAtmosphere = r.getStarJumsuWorkAtmosphere();
