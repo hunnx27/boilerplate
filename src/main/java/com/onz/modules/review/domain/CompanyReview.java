@@ -8,6 +8,7 @@ import com.onz.modules.company.domain.Company;
 import com.onz.modules.review.domain.dto.ReviewAll;
 import com.onz.modules.review.domain.embed.Images;
 import com.onz.modules.review.domain.enums.ItemCode;
+import com.onz.modules.review.web.dto.CompanyReviewListResponseDto;
 import com.onz.modules.review.web.dto.CompanyReviewRequestDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -106,6 +107,16 @@ public class CompanyReview extends BaseEntity {
         this.account=getAccount();
         this.txt = companyReviewRequestDto.getTxt();
     }
+    public CompanyReview(CompanyReview companyReview) {
+        this.id = getId();
+        this.work_exp=getWork_exp();
+        this.workExpOpenYn=getWorkExpOpenYn();
+        this.company=getCompany();
+        this.likeCode=getLikeCode();
+        this.account=getAccount();
+        this.txt =getTxt();
+    }
+
 
     public void setImages(List<AttachDto> filelist){
         com.onz.modules.review.domain.embed.Images embedImages = new com.onz.modules.review.domain.embed.Images();

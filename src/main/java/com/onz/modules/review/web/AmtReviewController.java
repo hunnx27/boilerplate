@@ -62,6 +62,7 @@ public class AmtReviewController extends BaseApiController {
     @GetMapping("/reviews/amt/avg")
     public YearAmtAvgResponseDto amtReviewAvgList(AvgReqestDto avgReqestDto){
         return amtReviewService.amtReviewAvgList(avgReqestDto);
-
     }
+
+
 }

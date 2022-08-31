@@ -9,4 +9,5 @@ public interface AmtReviewRepository extends JpaRepository<YearAmtReview, Long>,
         AmtReviewRepositoryExtension{
 
     List<YearAmtReview> findByCompanyId(Long company_id);
+
 }
