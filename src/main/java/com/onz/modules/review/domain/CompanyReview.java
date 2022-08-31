@@ -149,6 +149,25 @@ public class CompanyReview extends BaseEntity {
     }
 
     /**
+     * 총 만족도 평균( (업무량점수 + 직무만족점수 + 원내분위기점수) / 3 )
+     * @return
+     */
+    public double getStarJumsuTotalAvg(){
+        double jumsu = (getJumsuWorkload() + getStarJumsuJobSatisfaction() + getStarJumsuWorkAtmosphere()) / (double)3;
+        jumsu = Math.round(jumsu * 10) / 10.0; //소수 첫째자리까지
+        return jumsu;
+    }
+
+    /**
+     * 총 만족도 평균(5점만점)( (업무량 별 점수 + 직무만족 별 점수 + 원내분위기 별 점수) / 3 )
+     */
+    public double getJumsuTotalAvg(){
+        double jumsu = (getStarJumsuWorkload() + getJumsuJobSatisfaction() + getJumsuWorkAtmosphere()) / (double)3;
+        jumsu = Math.round(jumsu * 10) / 10.0;
+        return jumsu;
+    }
+
+    /**
      *  업무량 평균점수
      * @return
      */
