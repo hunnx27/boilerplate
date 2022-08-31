@@ -9,8 +9,7 @@ import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.infra.CompanyRepository;
 import com.onz.modules.review.domain.YearAmtReview;
 import com.onz.modules.review.infra.AmtReviewRepository;
-import com.onz.modules.review.web.dto.AmtRequestDto;
-import com.onz.modules.review.web.dto.YearAmtListResponseDto;
+import com.onz.modules.review.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +29,8 @@ public class AmtReviewService {
     private final CompanyRepository companyRepository;
     private final AccountService accountService;
     private final AddressRepository addressRepository;
+    Long one = Long.valueOf(0);
+    Long count = Long.valueOf(0);
 
     public void create(AmtRequestDto amtRequestDto, UserPrincipal me) {
         Long companyId = amtRequestDto.getCompanyId();
@@ -39,34 +40,48 @@ public class AmtReviewService {
         amtReviewRepository.save(yearAmtReview);
     }
 
+    public YearAmtAvgResponseDto amtReviewAvgList(AvgReqestDto avgReqestDto) {
+        List<YearAmtReview> list = amtReviewRepository.findByCompanyId(avgReqestDto.getCompanyId());
+        List<YearAmtResponseDto> array = list.stream().map(res->{
+            YearAmtResponseDto aaa = new YearAmtResponseDto(res.getAmt());
+            one +=res.getAmt();
+            count+=1;
+            System.out.println(one);
+            return aaa;
+        }).collect(Collectors.toList());
+        YearAmtAvgResponseDto yearAmtAvgResponseDto = new YearAmtAvgResponseDto();
+        yearAmtAvgResponseDto.setTotalAmt(one/count);
+        return yearAmtAvgResponseDto;
+    }
+
     public List<YearAmtListResponseDto> amtReviewList(Pageable pageable) {
         List<YearAmtListResponseDto> list = amtReviewRepository.ListAmt(amtReviewRepository.findAll(pageable).toList());
         List<YearAmtListResponseDto> array = list.stream().map(res -> {
             String[] one = res.getEtcItems().split(",");
             String[] two = res.getEtcAmt().split(",");
-            int total =0;
-            Map<String,String> map = new HashMap<>();
-            for(int i=0; i<one.length; i++){
+            int total = 0;
+            Map<String, String> map = new HashMap<>();
+            for (int i = 0; i < one.length; i++) {
                 String key = one[i];
                 String value = two[i];
                 map.put(key, value);
                 total += Integer.parseInt(value);
 
-                switch (key){
+                switch (key) {
                     case "1":
-                        System.out.println(key+"+"+value);
+                        System.out.println(key + "+" + value);
                         res.setImpCost(value);
                         break;
                     case "2":
-                        System.out.println(key+"+"+value);
+                        System.out.println(key + "+" + value);
                         res.setWorkCost(value);
                         break;
                     case "3":
-                        System.out.println(key+"+"+value);
+                        System.out.println(key + "+" + value);
                         res.setAddCost(value);
                         break;
                     case "4":
-                        System.out.println(key+"+"+value);
+                        System.out.println(key + "+" + value);
                         res.setEtcCost(value);
                         break;
                 }

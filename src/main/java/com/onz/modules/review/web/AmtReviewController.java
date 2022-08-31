@@ -5,6 +5,8 @@ import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.review.application.AmtReviewService;
 import com.onz.modules.review.domain.YearAmtReview;
 import com.onz.modules.review.web.dto.AmtRequestDto;
+import com.onz.modules.review.web.dto.AvgReqestDto;
+import com.onz.modules.review.web.dto.YearAmtAvgResponseDto;
 import com.onz.modules.review.web.dto.YearAmtListResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -51,5 +53,15 @@ public class AmtReviewController extends BaseApiController {
             Pageable pageable
     ){
         return amtReviewService.amtReviewList(pageable);
+    }
+    @Operation(summary = "기관 평균 연봉 보기", description = "평균 연봉을 조회합니다..")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "조회 완료", content = @Content(schema = @Schema(implementation = YearAmtReview.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = YearAmtReview.class)))
+    })
+    @GetMapping("/reviews/amt/avg")
+    public YearAmtAvgResponseDto amtReviewAvgList(AvgReqestDto avgReqestDto){
+        return amtReviewService.amtReviewAvgList(avgReqestDto);
+
     }
 }
