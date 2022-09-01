@@ -8,5 +8,6 @@ import com.onz.modules.review.web.dto.InterviewListResponseDto;
 import java.util.List;
 
 public interface CompanyReviewRepositoryExtension {
-    List<CompanyReviewListResponseDto> ListCompanyReview(List<CompanyReview> companyReviews);
+    List<CompanyReviewListResponseDto> listCompanyReview(List<CompanyReview> companyReviews);
+    List<CompanyReview> listCompanyReviewByCompanyId(Long companyId);
 }

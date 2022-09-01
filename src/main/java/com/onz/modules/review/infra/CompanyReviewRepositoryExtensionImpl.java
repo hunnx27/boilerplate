@@ -1,8 +1,10 @@
 package com.onz.modules.review.infra;
 
+import com.onz.common.enums.YN;
 import com.onz.modules.review.domain.*;
 import com.onz.modules.review.web.dto.CompanyReviewListResponseDto;
 import com.onz.modules.review.web.dto.InterviewListResponseDto;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
@@ -17,11 +19,28 @@ public class CompanyReviewRepositoryExtensionImpl extends QuerydslRepositorySupp
         super(CompanyReview.class);
         this.jpaQueryFactory = jpaQueryFactory;
     }
-    public List<CompanyReviewListResponseDto> ListCompanyReview(List<CompanyReview> companyReviews) {
+
+    @Override
+    public List<CompanyReviewListResponseDto> listCompanyReview(List<CompanyReview> companyReviews) {
         QCompanyReview qCompanyReview = QCompanyReview.companyReview;
         List<CompanyReview> list = jpaQueryFactory
                 .selectFrom(qCompanyReview)
                 .fetch();
         return list.stream().map(com -> new CompanyReviewListResponseDto(com)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CompanyReview> listCompanyReviewByCompanyId(Long companyId) {
+        QCompanyReview qCompanyReview = QCompanyReview.companyReview;
+        BooleanBuilder where = new BooleanBuilder();
+        where.and(qCompanyReview.isDelete.eq(YN.N));
+        where.and(qCompanyReview.company.id.eq(companyId));
+
+        List<CompanyReview> list = jpaQueryFactory
+                .selectFrom(qCompanyReview)
+                .where(where)
+                .fetch();
+//        return list.stream().map(com -> new CompanyReviewListResponseDto(com)).collect(Collectors.toList());
+        return list;
     }
 }
