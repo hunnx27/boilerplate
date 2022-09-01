@@ -13,7 +13,7 @@ public class CompanyJipyoResponse {
     private String officeName;
     private String establishmentTypeName;
     private long jipyoScore;
-    private long starAvgJumsu;
+    private double starAvgJumsu;
     private long reviewCount;
     private EvaluationScore escore;
     private UserScore uscore;
@@ -23,7 +23,7 @@ public class CompanyJipyoResponse {
     public CompanyJipyoResponse(Company company, AggregateCompany aggCompany) {
         this.officeName = company.getOfficeName();
         this.establishmentTypeName = company.getEstablishmentType().getName();
-        this.starAvgJumsu = aggCompany!=null? Math.round(aggCompany.getAvgStarJumsu()) : 0;
+        this.starAvgJumsu = aggCompany!=null? Math.round(aggCompany.getAvgStarJumsu() * 10) / (double)10 : 0.0;
         this.reviewCount = aggCompany.getCount();
         this.escore = new EvaluationScore(company);
         this.uscore = new UserScore(aggCompany);
