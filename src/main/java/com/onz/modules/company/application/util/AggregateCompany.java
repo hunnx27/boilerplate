@@ -26,6 +26,7 @@ public class AggregateCompany {
     private double itemC3Sum = 0;
     private double itemD1Sum = 0;
     private double itemD2Sum = 0;
+    private double starJumsuSum = 0;
 
     public void merge(AggregateCompany other){
         this.count += other.count;
@@ -50,6 +51,7 @@ public class AggregateCompany {
         this.itemC3Sum += rv.getItemC3().getScore();
         this.itemD1Sum += rv.getItemD1().getScore();
         this.itemD2Sum += rv.getItemD2().getScore();
+        this.starJumsuSum += rv.getStarJumsuTotalAvg();
     }
     public String toStringSum(){
         String rs = this.likeCodeSum +", "
@@ -91,5 +93,8 @@ public class AggregateCompany {
     }
     public double getAvgItemD2(){
         return Math.round(this.itemD2Sum / this.count * 10) / 10;
+    }
+    public double getAvgStarJumsu(){
+        return Math.round(this.starJumsuSum / this.count * 10) / 10;
     }
 }
