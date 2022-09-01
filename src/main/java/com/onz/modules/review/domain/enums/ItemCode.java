@@ -6,10 +6,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ItemCode {
-    A100("계속근무",0, "CONTINUE_WORK", "CONTINUE_WORK"),
-    A101("물론이죠",100, "CONTINUE_WORK", "CONTINUE_WORK"),
-    A102("싫어요", 20, "CONTINUE_WORK", "CONTINUE_WORK"),
-    A103("글쎄요", 60, "CONTINUE_WORK", "CONTINUE_WORK"),
+    A100("계속근무",0, "KEEP_WORK", "KEEP_WORK"),
+    A101("물론이죠",100, "KEEP_WORK", "KEEP_WORK"),
+    A102("싫어요", 20, "KEEP_WORK", "KEEP_WORK"),
+    A103("글쎄요", 60, "KEEP_WORK", "KEEP_WORK"),
     B100("행사횟수", 0, "EVENT_CNT_JUMSU", "WORKLOAD"),
     B101("연 4회 이하", 20, "EVENT_CNT_JUMSU", "WORKLOAD"),
     B102("연 5~10회", 100, "EVENT_CNT_JUMSU", "WORKLOAD"),
@@ -22,7 +22,8 @@ public enum ItemCode {
     B300("수업준비시간", 0, "READY_CLASS_JUMSU", "WORKLOAD"),
     B301("1시간 미만 ", 20, "READY_CLASS_JUMSU", "WORKLOAD"),
     B302("1~2시간 미만", 40, "READY_CLASS_JUMSU", "WORKLOAD"),
-    B303("5시간 이상", 60, "READY_CLASS_JUMSU", "WORKLOAD"),
+    B303("2~3시간 미만", 60, "READY_CLASS_JUMSU", "WORKLOAD"),
+    B304("5시간 이상", 100, "READY_CLASS_JUMSU", "WORKLOAD"),
     C100("개인PC", 0, "PERSONAL_PC_JUMSU", "JOB_SATISFACTION"),
     C101("있어요", 100, "PERSONAL_PC_JUMSU", "JOB_SATISFACTION"),
     C102("함께 써요", 60, "PERSONAL_PC_JUMSU", "JOB_SATISFACTION"),
