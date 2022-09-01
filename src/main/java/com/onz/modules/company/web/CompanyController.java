@@ -3,6 +3,7 @@ package com.onz.modules.company.web;
 import com.onz.common.web.BaseApiController;
 import com.onz.modules.company.application.CompanyService;
 import com.onz.modules.company.domain.Company;
+import com.onz.modules.company.web.dto.reponse.CompanyJipyoResponse;
 import com.onz.modules.company.web.dto.reponse.CompanySearchResponse;
 import com.onz.modules.company.web.dto.reponse.CompanyDetailResponse;
 import com.onz.modules.company.web.dto.request.CompanyCreateRequest;
@@ -90,7 +91,7 @@ public class CompanyController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PathVariable.class)))
     })
     @GetMapping("/company/{id}/jipyo")
-    public Map<String,Object> findOneJipyo(@PathVariable Long id) {
+    public CompanyJipyoResponse findOneJipyo(@PathVariable Long id) {
         return companyService.findOneJipyo(id);
     }
 

@@ -1,8 +1,21 @@
 package com.onz.modules.company.application.util;
 
 import com.onz.modules.review.domain.CompanyReview;
+import lombok.Getter;
 
+/**
+ * 근속 : Sum A1 / count A1
+ * 행사 : Sum B2 / count A1
+ * 서류 : Sum B3 / count A1
+ * 수업준비 : Sum B4 / count A1
+ * 개선PC : Sum C5 / count A1
+ * 자기개발 : Sum C6 / count A1
+ * 육아휴직 : Sum C7 / count A1
+ * 동료관계 : Sum D8 / count A1
+ * 리더쉽 : Sum D9 / count A1
+ */
 public class AggregateCompany {
+    @Getter
     private long count = 0;
     private double likeCodeSum = 0;
     private double itemB1Sum = 0;

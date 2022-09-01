@@ -55,7 +55,7 @@ public class CompanyReviewService {
         }
     }
     public List<CompanyReviewListResponseDto> companyReviewList(Pageable pageable) {
-        List<CompanyReviewListResponseDto> list =  companyReviewRepository.ListCompanyReview(companyReviewRepository.findAll(pageable).toList());
+        List<CompanyReviewListResponseDto> list =  companyReviewRepository.listCompanyReview(companyReviewRepository.findAll(pageable).toList());
         List<CompanyReviewListResponseDto> array = list.stream().map(res -> {
 //           String q_1 =(interviewReviewItemRepository.getById(res.getId()).getInterviewQ());
 //            res.setQ_1(q_1);

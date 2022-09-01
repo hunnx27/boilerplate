@@ -6,10 +6,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ItemCode {
-    A100("계속근무",0, "CONTINUE_WORK", "CONTINUE_WORK"),
-    A101("물론이죠",100, "CONTINUE_WORK", "CONTINUE_WORK"),
-    A102("싫어요", 20, "CONTINUE_WORK", "CONTINUE_WORK"),
-    A103("글쎄요", 60, "CONTINUE_WORK", "CONTINUE_WORK"),
+    A100("계속근무",0, "KEEP_WORK", "KEEP_WORK"),
+    A101("물론이죠",100, "KEEP_WORK", "KEEP_WORK"),
+    A102("싫어요", 20, "KEEP_WORK", "KEEP_WORK"),
+    A103("글쎄요", 60, "KEEP_WORK", "KEEP_WORK"),
     B100("행사횟수", 0, "EVENT_CNT_JUMSU", "WORKLOAD"),
     B101("연 4회 이하", 20, "EVENT_CNT_JUMSU", "WORKLOAD"),
     B102("연 5~10회", 100, "EVENT_CNT_JUMSU", "WORKLOAD"),
