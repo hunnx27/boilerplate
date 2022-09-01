@@ -42,18 +42,20 @@ public class AmtReviewController extends BaseApiController {
     public void create(@AuthenticationPrincipal UserPrincipal me, @RequestBody AmtRequestDto amtRequestDto) {
         amtReviewService.create(amtRequestDto,me);
     }
+
     @Operation(summary = "연봉리뷰 보기", description = "연봉 리뷰를 조회합니다..")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "조회 완료", content = @Content(schema = @Schema(implementation = YearAmtReview.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = YearAmtReview.class)))
     })
-    @GetMapping("/reviews/amt")
+    @GetMapping("/reviews/amt/{id}")
     public List<YearAmtListResponseDto> amtReviewList(
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
             Pageable pageable
     ){
         return amtReviewService.amtReviewList(pageable);
     }
+
     @Operation(summary = "기관 평균 연봉 보기", description = "평균 연봉을 조회합니다..")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "조회 완료", content = @Content(schema = @Schema(implementation = YearAmtReview.class))),

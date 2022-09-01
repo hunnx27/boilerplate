@@ -4,8 +4,6 @@ import com.onz.common.domain.BaseEntity;
 import com.onz.common.enums.YN;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.company.domain.Company;
-import com.onz.modules.company.domain.enums.EstablishmentType;
-import com.onz.modules.review.domain.embed.Review;
 import com.onz.modules.review.web.dto.InterviewRequestDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,8 +13,6 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -29,17 +25,20 @@ public class InterviewReview extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String item_1;
 
+    private String item_1;
+    //모의수업 인덱스 1,3
     @Enumerated(EnumType.STRING)
     private YN item_2;
+    //필기시험 여부 y
     @Enumerated(EnumType.STRING)
     private YN item_3;
-
+    //인적성 평가 여부 y
     private String item_4;
+    // 면접 합격여부 및 평가
     private String item_5;
-
-    @Enumerated(EnumType.STRING)
+    //난이도도
+   @Enumerated(EnumType.STRING)
     private YN item_6;
 
     @ColumnDefault("'W'")
@@ -57,7 +56,8 @@ public class InterviewReview extends BaseEntity {
 
     private Long workExp;
 
-    private String Zonecode;
+    private String zonecode;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "companyId", nullable = false)
@@ -111,4 +111,5 @@ public class InterviewReview extends BaseEntity {
         this.company = getCompany();
         this.state=getState();
     }
+
 }

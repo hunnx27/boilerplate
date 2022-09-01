@@ -19,7 +19,7 @@ public class YearAmtListResponseDto extends BaseApiController {
     private String officeName;
     private String establishmentType;
     private String mapsidogunguName;
-    private String Zonecode;
+    private String zonecode;
     //2 page
     private Long amt; // 연봉
     private YN endAtmYn; // 퇴직금 여부
@@ -47,7 +47,7 @@ public class YearAmtListResponseDto extends BaseApiController {
         this.mapsidogunguName=mapsidogunguName;
         this.id=id;
         this.etcYn=etcYn;
-        this.Zonecode=getZonecode();
+        this.zonecode=getZonecode();
         this.establishmentType=establishmentType.getName();
     }
 }

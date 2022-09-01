@@ -20,7 +20,7 @@ public class CompanyReviewListResponseDto {
     private Long id;
     private Long work_exp;
     private YN workExpOpenYn;
-    private String Zonecode;
+    private String zonecode;
     private String mapsidogunguName;
     private String establishmentType;
     private String officeName;
@@ -48,6 +48,7 @@ public class CompanyReviewListResponseDto {
     private int starJumsuWorkload;
     private int starJumsuJobSatisfaction;
     private int starJumsuWorkAtmosphere;
+    private int getJumsuLikeload;
 
     public CompanyReviewListResponseDto(CompanyReview companyReview){
         this.id=companyReview.getId();
@@ -55,11 +56,11 @@ public class CompanyReviewListResponseDto {
         this.work_exp= companyReview.getWork_exp();
         this.establishmentType=companyReview.getCompany().getEstablishmentType().getName();
         this.mapsidogunguName=getMapsidogunguName();
-        this.Zonecode=companyReview.getCompany().getZonecode();
+        this.zonecode=companyReview.getCompany().getZonecode();
         this.workExpOpenYn=companyReview.getWorkExpOpenYn();
         this.txt=companyReview.getTxt();
         this.createdAt=companyReview.getCreatedAt();
-        this.likeCode=companyReview.getLikeCode().name();
+//        this.likeCode=companyReview.getLikeCode().name();
 //        this.itemB1=companyReview.getItemB1().name();
 //        this.itemB2=companyReview.getItemB2().name();
 //        this.itemB3=companyReview.getItemB3().name();
@@ -81,5 +82,6 @@ public class CompanyReviewListResponseDto {
         this.starJumsuWorkload = companyReview.getStarJumsuWorkload();
         this.starJumsuJobSatisfaction =  companyReview.getStarJumsuJobSatisfaction();
         this.starJumsuWorkAtmosphere = companyReview.getStarJumsuWorkAtmosphere();
+        this.getJumsuLikeload = companyReview.getJumsuLikeload();
         }
     }

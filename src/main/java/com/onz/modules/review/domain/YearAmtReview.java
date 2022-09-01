@@ -41,7 +41,7 @@ public class YearAmtReview extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private YN annYn;//뭔지모름
 
-    private String Zonecode;
+    private String zonecode;
 
 //    @ColumnDefault("0")
 //    @Column(nullable = true)
@@ -100,14 +100,14 @@ public class YearAmtReview extends BaseEntity {
         this.etcAmt = amtRequestDto.getEtcAmt();
         this.etcItems = amtRequestDto.getEtcItems();
         this.company=company;
-        this.Zonecode=company.getZonecode();
+        this.zonecode=company.getZonecode();
     }
 
     public YearAmtReview(AmtRequestDto amtRequestDto, ZonedDateTime topchoiceDt, ZonedDateTime apprDt, Long id, YN annYn, Long amtOld, String apprTxt, String apprId, YN topchoiceYn) {
         this.id = id;
         this.annYn = annYn;
         this.amtOld = amtOld;
-        this.Zonecode=company.getZonecode();
+        this.zonecode=company.getZonecode();
         this.apprTxt = apprTxt;
         this.apprDt=apprDt;
         this.apprId = apprId;

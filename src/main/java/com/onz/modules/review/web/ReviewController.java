@@ -104,7 +104,7 @@ public class ReviewController extends BaseApiController {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = ReviewResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = ReviewResponseDto.class)))
     })
-    @GetMapping("/reviews/all")
+    @GetMapping("/reviews/companies/{companyId}")
     public List<ReviewResponseDto> findByAllReview(
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
             Pageable pageable
@@ -117,7 +117,7 @@ public class ReviewController extends BaseApiController {
             @ApiResponse(responseCode = "200", description = "조회 완료", content = @Content(schema = @Schema(implementation = YearAmtReview.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = YearAmtReview.class)))
     })
-    @GetMapping("/reviews/company/amt")
+    @GetMapping("/reviews/amt/{companyId}")
     public List<YearAmtReview> companySearchAmt(AvgReqestDto avgReqestDto) {
         return reviewService.companySearchAmt(avgReqestDto);
     }
@@ -127,7 +127,7 @@ public class ReviewController extends BaseApiController {
             @ApiResponse(responseCode = "200", description = "조회 완료", content = @Content(schema = @Schema(implementation = YearAmtReview.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = YearAmtReview.class)))
     })
-    @GetMapping("/reviews/company/company")
+    @GetMapping("/reviews/company/companies/{companyId}")
     public List<CompanyReviewListResponseDto> companySearchCompany(AvgReqestDto avgReqestDto) {
         return reviewService.companySearchCompany(avgReqestDto);
     }
@@ -137,8 +137,19 @@ public class ReviewController extends BaseApiController {
             @ApiResponse(responseCode = "200", description = "조회 완료", content = @Content(schema = @Schema(implementation = YearAmtReview.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = YearAmtReview.class)))
     })
-    @GetMapping("/reviews/company/interview")
+    @GetMapping("/reviews/company/interview/{companyId}")
     public List<InterviewListResponseDto> companySearchInterview(AvgReqestDto avgReqestDto) {
         return reviewService.companySearchInterview(avgReqestDto);
     }
+
+    @Operation(summary = "기관코드로 인터뷰 리뷰 상단 api", description = "기관에 작성된 인터뷰를 계산합니다..")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "조회 완료", content = @Content(schema = @Schema(implementation = YearAmtReview.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = YearAmtReview.class)))
+    })
+    @GetMapping("/reviews/company/interview/{companyId}/test")
+    public InterviewcountResponsedto companyInterviewTest(AvgReqestDto avgReqestDto) {
+        return reviewService.companySearchInterviewCount(avgReqestDto);
+    }
+
 }

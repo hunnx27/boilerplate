@@ -42,12 +42,13 @@ public class InterviewReviewController extends BaseApiController {
     public void create(@AuthenticationPrincipal UserPrincipal me, @RequestBody InterviewRequestDto interviewRequestDto) {
         interviewService.create(interviewRequestDto,me);
     }
+
     @Operation(summary = "인터뷰 리뷰 보기", description = "인터뷰 리뷰를 조회합니다..")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "리뷰 조회 완료", content = @Content(schema = @Schema(implementation = YearAmtReview.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = YearAmtReview.class)))
     })
-    @GetMapping("/reviews/interview")
+    @GetMapping("/reviews/interview/{id}")
     public List<InterviewListResponseDto> interviewReviewList(
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
             Pageable pageable

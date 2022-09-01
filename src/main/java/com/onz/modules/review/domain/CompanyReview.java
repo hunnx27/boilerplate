@@ -175,6 +175,10 @@ public class CompanyReview extends BaseEntity {
         int jumsu = (this.itemB1.getScore() + this.itemB2.getScore() + this.itemB3.getScore()) / 3;
         return jumsu;
     }
+    public int getJumsuLikeload(){
+        int likejumsu = (this.likeCode.getScore());
+        return likejumsu;
+    }
     /**
      *  업무량 별5개 점수(업무량 점수 / 20)
       * @return

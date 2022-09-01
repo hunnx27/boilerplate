@@ -28,7 +28,7 @@ public class ReviewResponseDto extends BaseApiController {
     private Long AccountId;
     private String txtAdmin;
     private Long workExp;
-    private String Zonecode;
+    private String zonecode;
     private Long amt;
     private Long amtOld;
     private String apprDt;
@@ -88,7 +88,7 @@ public class ReviewResponseDto extends BaseApiController {
         this.AccountId = reviewAll.getAccountId();
         this.txtAdmin = reviewAll.getTxtAdmin();
         this.workExp = reviewAll.getWorkExp();
-        this.Zonecode = reviewAll.getZonecode();
+        this.zonecode = reviewAll.getZonecode();
         this.amt = reviewAll.getAmt();
         this.amtOld = reviewAll.getAmtOld();
         this.apprDt = reviewAll.getApprDt();
