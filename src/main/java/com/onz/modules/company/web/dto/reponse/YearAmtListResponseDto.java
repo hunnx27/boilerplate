@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -39,9 +41,35 @@ public class YearAmtListResponseDto extends ReviewCommonResponseDto {
         this.EtcItems=yearAmtReview.getEtcItems();
         this.accountId= yearAmtReview.getAccount().getId();
         this.totalCost=getTotalCost();
-        //TODO
-        //TODO
-        //TODO
-        //TODO Switch 문 추가 예정
+        String[] one = this.getEtcItems().split(",");
+        String[] two = this.getEtcAmt().split(",");
+        int total = 0;
+        Map<String, String> map = new HashMap<>();
+        for (int i = 0; i < one.length; i++) {
+            String key = one[i];
+            String value = two[i];
+            map.put(key, value);
+            total += Integer.parseInt(value);
+
+            switch (key) {
+                case "1":
+                    System.out.println(key + "+" + value);
+                    this.setImpCost(value);
+                    break;
+                case "2":
+                    System.out.println(key + "+" + value);
+                    this.setWorkCost(value);
+                    break;
+                case "3":
+                    System.out.println(key + "+" + value);
+                    this.setAddCost(value);
+                    break;
+                case "4":
+                    System.out.println(key + "+" + value);
+                    this.setEtcCost(value);
+                    break;
+            }
+            this.setTotalCost((long) total);
+        }
     }
 }
