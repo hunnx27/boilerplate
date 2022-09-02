@@ -1,4 +1,4 @@
-package com.onz.modules.review.web.dto;
+package com.onz.modules.company.web.dto.reponse;
 
 import com.onz.common.enums.YN;
 import com.onz.modules.review.domain.InterviewReview;

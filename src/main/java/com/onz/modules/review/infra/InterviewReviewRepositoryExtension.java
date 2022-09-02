@@ -1,9 +1,7 @@
 package com.onz.modules.review.infra;
 
 import com.onz.modules.review.domain.InterviewReview;
-import com.onz.modules.review.domain.YearAmtReview;
-import com.onz.modules.review.web.dto.InterviewListResponseDto;
-import com.onz.modules.review.web.dto.YearAmtListResponseDto;
+import com.onz.modules.company.web.dto.reponse.InterviewListResponseDto;
 
 import java.util.List;
 

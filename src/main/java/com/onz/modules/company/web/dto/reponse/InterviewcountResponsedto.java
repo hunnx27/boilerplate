@@ -1,4 +1,4 @@
-package com.onz.modules.review.web.dto;
+package com.onz.modules.company.web.dto.reponse;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,14 +1,9 @@
 package com.onz.modules.review.infra;
 
 import com.onz.modules.company.domain.Company;
-import com.onz.modules.company.web.dto.reponse.CompanyDetailResponse;
 import com.onz.modules.review.domain.InterviewReview;
 import com.onz.modules.review.domain.QInterviewReview;
-import com.onz.modules.review.domain.QYearAmtReview;
-import com.onz.modules.review.domain.YearAmtReview;
-import com.onz.modules.review.web.dto.InterviewListResponseDto;
-import com.onz.modules.review.web.dto.YearAmtListResponseDto;
-import com.querydsl.core.types.Projections;
+import com.onz.modules.company.web.dto.reponse.InterviewListResponseDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 

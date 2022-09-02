@@ -2,8 +2,7 @@ package com.onz.modules.review.infra;
 
 import com.onz.common.enums.YN;
 import com.onz.modules.review.domain.*;
-import com.onz.modules.review.web.dto.CompanyReviewListResponseDto;
-import com.onz.modules.review.web.dto.InterviewListResponseDto;
+import com.onz.modules.company.web.dto.reponse.CompanyReviewListResponseDto;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;

@@ -8,7 +8,6 @@ import com.onz.modules.company.domain.Company;
 import com.onz.modules.review.domain.dto.ReviewAll;
 import com.onz.modules.review.domain.embed.Images;
 import com.onz.modules.review.domain.enums.ItemCode;
-import com.onz.modules.review.web.dto.CompanyReviewListResponseDto;
 import com.onz.modules.review.web.dto.CompanyReviewRequestDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +15,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.util.List;
