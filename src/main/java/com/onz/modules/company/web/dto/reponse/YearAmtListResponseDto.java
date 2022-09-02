@@ -39,5 +39,9 @@ public class YearAmtListResponseDto extends ReviewCommonResponseDto {
         this.EtcItems=yearAmtReview.getEtcItems();
         this.accountId= yearAmtReview.getAccount().getId();
         this.totalCost=getTotalCost();
+        //TODO
+        //TODO
+        //TODO
+        //TODO Switch 문 추가 예정
     }
 }

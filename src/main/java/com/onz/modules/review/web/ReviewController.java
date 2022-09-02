@@ -73,18 +73,18 @@ public class ReviewController extends BaseApiController {
         amtReviewService.create(amtRequestDto, me);
     }
 
-//    @Operation(summary = "연봉리뷰 보기", description = "연봉 리뷰를 조회합니다..")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "조회 완료", content = @Content(schema = @Schema(implementation = YearAmtReview.class))),
-//            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = YearAmtReview.class)))
-//    })
-//    @GetMapping("/reviews/amts")
-//    public List<YearAmtReview> amtReviewList(
-//            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
-//                    Pageable pageable
-//    ) {
-//        return amtReviewService.amtReviewList(pageable);
-//    }
+    @Operation(summary = "연봉리뷰 보기", description = "연봉 리뷰를 조회합니다..")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "조회 완료", content = @Content(schema = @Schema(implementation = YearAmtReview.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = YearAmtReview.class)))
+    })
+    @GetMapping("/reviews/amts")
+    public List<YearAmtListResponseDto> amtReviewList(
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
+                    Pageable pageable
+    ) {
+        return amtReviewService.amtReviewList(pageable);
+    }
 
     /*
     Interview
