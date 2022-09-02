@@ -51,8 +51,14 @@ public class AmtReviewService {
             log.debug(String.valueOf(one));
             return aaa;
         }).collect(Collectors.toList());
-        YearAmtAvgResponseDto yearAmtAvgResponseDto = new YearAmtAvgResponseDto();
-        yearAmtAvgResponseDto.setTotalAmt(count!=0 ? one/count : 0);
+        long total = count!=0 ? one/count : 0;
+        long min = list.stream().mapToLong(rv -> rv.getAmt()).min().orElse(0);
+        long max = list.stream().mapToLong(rv -> rv.getAmt()).max().orElse(0);
+        YearAmtAvgResponseDto yearAmtAvgResponseDto = YearAmtAvgResponseDto.builder()
+                .minAmt(min)
+                .maxAmt(max)
+                .totalAmt(total)
+                .build();
         return yearAmtAvgResponseDto;
     }
 
