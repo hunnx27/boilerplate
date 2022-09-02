@@ -54,7 +54,7 @@ public class CompanyReviewService {
         List<CompanyReviewListResponseDto> array = list.stream().map(res -> {
 //           String q_1 =(interviewReviewItemRepository.getById(res.getId()).getInterviewQ());
 //            res.setQ_1(q_1);
-            List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(res.getZonecode());
+            List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(res.zoneCode);
             if (addressList.size() > 0) {
                 DistinctAddressResponse address = addressList.get(0);
                 String mapsidogunguName = address.getSidoName() + " " + address.getSigunguName();

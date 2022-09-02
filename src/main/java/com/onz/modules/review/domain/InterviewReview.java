@@ -25,7 +25,6 @@ public class InterviewReview extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
     private String item_1;
     //모의수업 인덱스 1,3
     @Enumerated(EnumType.STRING)
@@ -57,7 +56,6 @@ public class InterviewReview extends BaseEntity {
     private Long workExp;
 
     private String zonecode;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "companyId", nullable = false)

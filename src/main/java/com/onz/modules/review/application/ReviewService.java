@@ -6,6 +6,7 @@ import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.web.dto.reponse.CompanyReviewListResponseDto;
 import com.onz.modules.company.web.dto.reponse.InterviewListResponseDto;
 import com.onz.modules.company.web.dto.reponse.InterviewcountResponsedto;
+import com.onz.modules.company.web.dto.reponse.YearAmtListResponseDto;
 import com.onz.modules.company.web.dto.request.AvgReqestDto;
 import com.onz.modules.company.web.dto.request.CompanySearchRequest;
 import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
@@ -25,6 +26,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -65,30 +67,42 @@ public class ReviewService {
         return companyRepository.list(searchRequest);
     }
 
-    public List<YearAmtReview> companySearchAmt(AvgReqestDto avgReqestDto) {
-        return amtReviewRepository.findByCompanyId(avgReqestDto.getCompanyId());
+    public List<YearAmtListResponseDto> companySearchAmt(@PathVariable Long id) {
+        return amtReviewRepository.findByCompanyId(id);
     }
 
-    public List<CompanyReviewListResponseDto> companySearchCompany(AvgReqestDto avgReqestDto) {
-        List<CompanyReview> list = companyReviewRepository.findByCompanyId(avgReqestDto.getCompanyId());
+    public List<CompanyReviewListResponseDto> companySearchCompany(@PathVariable Long id) {
+        List<CompanyReview> list = companyReviewRepository.findByCompanyId(id);
         List<CompanyReviewListResponseDto> array = list.stream().map(res -> {
             CompanyReviewListResponseDto bbb = new CompanyReviewListResponseDto(res);
+            List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(res.getCompany().getZonecode());
+            if (addressList.size() > 0) {
+                DistinctAddressResponse address = addressList.get(0);
+                String mapsidogunguName = address.getSidoName() + " " + address.getSigunguName();
+                bbb.setMapsidogunguName(mapsidogunguName);
+            }
             return bbb;
         }).collect(Collectors.toList());
         return array;
     }
 
-    public List<InterviewListResponseDto> companySearchInterview(AvgReqestDto avgReqestDto) {
-        List<InterviewReview> list = interviewReviewRepository.findByCompanyId(avgReqestDto.getCompanyId());
+    public List<InterviewListResponseDto> companySearchInterview(@PathVariable Long id) {
+        List<InterviewReview> list = interviewReviewRepository.findByCompanyId(id);
         List<InterviewListResponseDto> array = list.stream().map(res -> {
             InterviewListResponseDto bbb = new InterviewListResponseDto(res);
+            List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(res.getZonecode());
+            if (addressList.size() > 0) {
+                DistinctAddressResponse address = addressList.get(0);
+                String mapsidogunguName = address.getSidoName() + " " + address.getSigunguName();
+                bbb.setMapsidogunguName(mapsidogunguName);
+            }
             return bbb;
         }).collect(Collectors.toList());
 //            companySearchInterviewCount(writCount,patCount);
         return array;
     }
 
-    public InterviewcountResponsedto companySearchInterviewCount(AvgReqestDto avgReqestDto) {
+    public InterviewcountResponsedto companySearchInterviewCount(@PathVariable Long id) {
         writCount = 0;
         patCount = 0;
         mockCount = 0;
@@ -100,7 +114,7 @@ public class ReviewService {
         waitCount=0;
         noCount=0;
 
-        List<InterviewReview> list = interviewReviewRepository.findByCompanyId(avgReqestDto.getCompanyId());
+        List<InterviewReview> list = interviewReviewRepository.findByCompanyId(id);
         List<InterviewListResponseDto> array = list.stream().map(res -> {
             companyCount++;
             if (res.getItem_2().name().equals("Y")) {

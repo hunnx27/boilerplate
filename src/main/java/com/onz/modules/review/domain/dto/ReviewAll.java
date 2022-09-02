@@ -7,7 +7,7 @@ public interface ReviewAll {
     String getType();
     Long getId();
 //    String getState();
-//    YN getWorkExpOpenYn();
+    YN getWorkExpOpenYn();
     String getItem_1();
     YN getItem_2();
     YN getItem_3();

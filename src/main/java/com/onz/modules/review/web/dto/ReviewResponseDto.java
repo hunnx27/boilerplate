@@ -17,20 +17,11 @@ import java.util.NoSuchElementException;
 
 @Getter
 @NoArgsConstructor
-public class ReviewResponseDto {
-
+public class ReviewResponseDto extends ReviewCommonResponseDto{
     /**
-     * Common
+     * all
      */
     private String Type;
-    private Long id;
-    @Setter
-    private String mapsidogunguName;
-    private Long companyId;
-    private String companyName;
-    private String establishmentTypeName;
-    private Long accountId;
-    private Long workExp;
 //    private String apprDt;
 //    private String apprId;
 //    private String apprTxt;
@@ -133,7 +124,6 @@ public class ReviewResponseDto {
 //        this.etcAmt = reviewAll.getEtcAmt();
 //        this.etcItems = reviewAll.getEtcItems();
 //        this.zonecode = reviewAll.getZonecode();
-//        this.WorkExpOpenYn = reviewAll.getWorkExpOpenYn();
 //        this.state = reviewAll.getState();
 //        this.isDelete = reviewAll.getIsDelete();
 //        this.ModifiedAt = reviewAll.getModifiedAt();

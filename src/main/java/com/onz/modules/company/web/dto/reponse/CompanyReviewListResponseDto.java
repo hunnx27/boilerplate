@@ -3,6 +3,7 @@ package com.onz.modules.company.web.dto.reponse;
 import com.onz.common.enums.YN;
 import com.onz.modules.review.domain.CompanyReview;
 import com.onz.modules.review.domain.InterviewReview;
+import com.onz.modules.review.web.dto.ReviewCommonResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,52 +15,25 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CompanyReviewListResponseDto {
+public class CompanyReviewListResponseDto extends ReviewCommonResponseDto {
     private String type="COMPANY";
-    @JsonIgnore
-    private Long id;
-    private Long work_exp;
-    private YN workExpOpenYn;
-    private String zonecode;
-    private String mapsidogunguName;
-    private String establishmentType;
-    private String officeName;
-    private String txt;
-    private ZonedDateTime createdAt;
-    private String likeCode;
-    private String itemB1;
-    private String itemB2;
-    private String itemB3;
-    private String itemC1;
-    private String itemC2;
-    private String itemC3;
-    private String itemD1;
-    private String itemD2;
-    private String likeCodeName;
-    private String itemB1Name;
-    private String itemB2Name;
-    private String itemB3Name;
-    private String itemC1Name;
-    private String itemC2Name;
-    private String itemC3Name;
-    private String itemD1Name;
-    private String itemD2Name;
+    private String Txt;
     private double starJumsuTotalAvg;
     private int starJumsuWorkload;
     private int starJumsuJobSatisfaction;
     private int starJumsuWorkAtmosphere;
-    private int getJumsuLikeload;
 
     public CompanyReviewListResponseDto(CompanyReview companyReview){
         this.id=companyReview.getId();
-        this.officeName=companyReview.getCompany().getOfficeName();
-        this.work_exp= companyReview.getWork_exp();
-        this.establishmentType=companyReview.getCompany().getEstablishmentType().getName();
-        this.mapsidogunguName=getMapsidogunguName();
-        this.zonecode=companyReview.getCompany().getZonecode();
+        this.zoneCode=companyReview.getCompany().getZonecode();
+        this.companyId=companyReview.getCompany().getId();
+        this.accountId=companyReview.getAccount().getId();
+        this.companyName=companyReview.getCompany().getOfficeName();
+        this.workExp= companyReview.getWork_exp();
+        this.establishmentTypeName=companyReview.getCompany().getEstablishmentType().getName();
         this.workExpOpenYn=companyReview.getWorkExpOpenYn();
-        this.txt=companyReview.getTxt();
-        this.createdAt=companyReview.getCreatedAt();
+        this.Txt=companyReview.getTxt();
+        this.zoneCode=companyReview.getCompany().getZonecode();
 //        this.likeCode=companyReview.getLikeCode().name();
 //        this.itemB1=companyReview.getItemB1().name();
 //        this.itemB2=companyReview.getItemB2().name();
@@ -82,6 +56,5 @@ public class CompanyReviewListResponseDto {
         this.starJumsuWorkload = companyReview.getStarJumsuWorkload();
         this.starJumsuJobSatisfaction =  companyReview.getStarJumsuJobSatisfaction();
         this.starJumsuWorkAtmosphere = companyReview.getStarJumsuWorkAtmosphere();
-        this.getJumsuLikeload = companyReview.getJumsuLikeload();
         }
     }

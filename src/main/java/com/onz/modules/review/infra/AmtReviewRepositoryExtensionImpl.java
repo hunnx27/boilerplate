@@ -2,7 +2,7 @@ package com.onz.modules.review.infra;
 
 import com.onz.modules.review.domain.QYearAmtReview;
 import com.onz.modules.review.domain.YearAmtReview;
-import com.onz.modules.review.web.dto.YearAmtListResponseDto;
+import com.onz.modules.company.web.dto.reponse.YearAmtListResponseDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;

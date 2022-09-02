@@ -8,6 +8,7 @@ import com.onz.modules.common.address.infra.dto.DistinctAddressResponse;
 import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.infra.CompanyRepository;
 import com.onz.modules.company.web.dto.reponse.YearAmtAvgResponseDto;
+import com.onz.modules.company.web.dto.reponse.YearAmtListResponseDto;
 import com.onz.modules.company.web.dto.request.AvgReqestDto;
 import com.onz.modules.review.domain.YearAmtReview;
 import com.onz.modules.review.infra.AmtReviewRepository;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,8 +44,8 @@ public class AmtReviewService {
         amtReviewRepository.save(yearAmtReview);
     }
 
-    public YearAmtAvgResponseDto amtReviewAvgList(AvgReqestDto avgReqestDto) {
-        List<YearAmtReview> list = amtReviewRepository.findByCompanyId(avgReqestDto.getCompanyId());
+    public YearAmtAvgResponseDto amtReviewAvgList(@PathVariable Long id) {
+        List<YearAmtListResponseDto> list = amtReviewRepository.findByCompanyId(id);
         List<YearAmtResponseDto> array = list.stream().map(res->{
             YearAmtResponseDto aaa = new YearAmtResponseDto(res.getAmt());
             one +=res.getAmt();
@@ -62,7 +64,7 @@ public class AmtReviewService {
         return yearAmtAvgResponseDto;
     }
 
-    public List<YearAmtListResponseDto> amtReviewList(Pageable pageable) {
+    public List<YearAmtListResponseDto> companySearchAmt(Pageable pageable) {
         List<YearAmtListResponseDto> list = amtReviewRepository.ListAmt(amtReviewRepository.findAll(pageable).toList());
         List<YearAmtListResponseDto> array = list.stream().map(res -> {
             String[] one = res.getEtcItems().split(",");
@@ -95,8 +97,7 @@ public class AmtReviewService {
                 }
                 res.setTotalCost((long) total);
             }
-
-            List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(res.getZonecode());
+            List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(res.zoneCode);
             if (addressList.size() > 0) {
                 DistinctAddressResponse address = addressList.get(0);
                 String mapsidogunguName = address.getSidoName() + " " + address.getSigunguName();
