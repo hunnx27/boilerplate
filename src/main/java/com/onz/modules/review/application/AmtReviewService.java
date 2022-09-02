@@ -48,11 +48,11 @@ public class AmtReviewService {
             YearAmtResponseDto aaa = new YearAmtResponseDto(res.getAmt());
             one +=res.getAmt();
             count+=1;
-            System.out.println(one);
+            log.debug(String.valueOf(one));
             return aaa;
         }).collect(Collectors.toList());
         YearAmtAvgResponseDto yearAmtAvgResponseDto = new YearAmtAvgResponseDto();
-        yearAmtAvgResponseDto.setTotalAmt(one/count);
+        yearAmtAvgResponseDto.setTotalAmt(count!=0 ? one/count : 0);
         return yearAmtAvgResponseDto;
     }
 

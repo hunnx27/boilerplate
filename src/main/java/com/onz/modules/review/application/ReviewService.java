@@ -142,14 +142,24 @@ public class ReviewService {
             return bbb;
         }).collect(Collectors.toList());
 //            companySearchInterviewCount(writCount,patCount);
-        lowLevCount = (lowLevCount * 100) / companyCount;
-        midLevCount = (midLevCount * 100) / companyCount;
-        highLevCount = (highLevCount * 100) / companyCount;
-        goalCount = (goalCount * 100) / companyCount;
-        waitCount = (waitCount * 100) / companyCount;
-        noCount = (noCount * 100) / companyCount;
+        if(companyCount!=0){
+            lowLevCount = (lowLevCount * 100) / companyCount;
+            midLevCount = (midLevCount * 100) / companyCount;
+            highLevCount = (highLevCount * 100) / companyCount;
+            goalCount = (goalCount * 100) / companyCount;
+            waitCount = (waitCount * 100) / companyCount;
+            noCount = (noCount * 100) / companyCount;
+        }else{
+            lowLevCount = 0;
+            midLevCount = 0;
+            highLevCount = 0;
+            goalCount = 0;
+            waitCount = 0;
+            noCount = 0;
+        }
         totalLevelPer = max(max(lowLevCount, midLevCount), highLevCount);
         totalGoalPer = max(max(goalCount, waitCount), noCount);
+
         if (totalLevelPer == lowLevCount) {
             totalLevel = "lowLevel";
         } else if (totalLevelPer == midLevCount) {
