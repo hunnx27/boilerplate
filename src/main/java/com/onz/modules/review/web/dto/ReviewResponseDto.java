@@ -81,15 +81,15 @@ public class ReviewResponseDto {
      */
     private Long amt;
     @Setter
-    private Long totalCost;
+    private Long totalCost; // 수당 통합
     @Setter
-    private String impCost;
+    private String impCost; // 처우개선비
     @Setter
-    private String workCost;
+    private String workCost; // 근무환경개선
     @Setter
-    private String addCost;
+    private String addCost; // 누리과정수당
     @Setter
-    private String etcCost;
+    private String etcCost; // 기타
 //    private String etcAmt;
 //    private String etcItems;
 //    private String endAtmYn;
