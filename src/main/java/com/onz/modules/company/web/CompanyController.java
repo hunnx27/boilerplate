@@ -39,7 +39,7 @@ public class CompanyController extends BaseApiController {
             @ApiResponse(responseCode = "200", description = "불러오기 완료", content = @Content(schema = @Schema(implementation = CompanySearchRequest.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanySearchRequest.class)))
     })
-    @GetMapping("/company")
+    @GetMapping("/companies")
     public Page<Company> list(CompanySearchRequest searchRequest) {
         return companyService.list(searchRequest);
     }
@@ -50,7 +50,7 @@ public class CompanyController extends BaseApiController {
             @ApiResponse(responseCode = "200", description = "불러오기 완료", content = @Content(schema = @Schema(implementation = CompanySearchRequest.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanySearchRequest.class)))
     })
-    @GetMapping("/search_company")
+    @GetMapping("/companies/search/")
     public List<CompanySearchResponse> search(CompanySearchRequest companySearchRequest) {
         return companyService.search(companySearchRequest);
     }
@@ -84,7 +84,7 @@ public class CompanyController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PathVariable.class)))
     })
 
-    @GetMapping("/company/{id}")
+    @GetMapping("/companies/{id}")
     public CompanyDetailResponse findOne(@PathVariable Long id) {
         return companyService.findOne(id);
     }
