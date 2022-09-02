@@ -202,12 +202,12 @@ public class ReviewService {
                     }
                     aaa.setTotalCost((long) total);
                 }
-                List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(res.getZonecode());
-                if (addressList.size() > 0) {
-                    DistinctAddressResponse address = addressList.get(0);
-                    String mapsidogunguName = address.getSidoName() + " " + address.getSigunguName();
-                    aaa.setMapsidogunguName(mapsidogunguName);
-                }
+            }
+            List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(res.getZonecode());
+            if (addressList.size() > 0) {
+                DistinctAddressResponse address = addressList.get(0);
+                String mapsidogunguName = address.getSidoName() + " " + address.getSigunguName();
+                aaa.setMapsidogunguName(mapsidogunguName);
             }
             return aaa;
         }).collect(Collectors.toList());

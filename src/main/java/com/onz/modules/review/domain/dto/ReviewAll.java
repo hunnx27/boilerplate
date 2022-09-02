@@ -3,10 +3,6 @@ package com.onz.modules.review.domain.dto;
 import com.onz.common.enums.YN;
 import com.onz.modules.review.domain.enums.ItemCode;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 public interface ReviewAll {
     String getType();
     Long getId();
@@ -23,6 +19,8 @@ public interface ReviewAll {
     YN getItem_6();
     String getTopQ1();
     Long getCompanyId();
+    String getCompanyName();
+    String getEstablishmentTypeValue();
     Long getAccountId();
     String getTxtAdmin();
     Long getWorkExp();
@@ -45,23 +43,14 @@ public interface ReviewAll {
     String getImage3();
     String getImage4();
     String getImage5();
-    @Enumerated(EnumType.STRING)
     ItemCode getItemB1();
-    @Enumerated(EnumType.STRING)
     ItemCode getItemB2();
-    @Enumerated(EnumType.STRING)
     ItemCode getItemB3();
-    @Enumerated(EnumType.STRING)
     ItemCode getItemC1();
-    @Enumerated(EnumType.STRING)
     ItemCode getItemC2();
-    @Enumerated(EnumType.STRING)
     ItemCode getItemC3();
-    @Enumerated(EnumType.STRING)
     ItemCode getItemD1();
-    @Enumerated(EnumType.STRING)
     ItemCode getItemD2();
-    @Enumerated(EnumType.STRING)
     ItemCode getLikeCode();
     String getImpCost();
     String getWorkCost();

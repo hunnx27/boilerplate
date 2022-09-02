@@ -2,10 +2,15 @@ package com.onz.modules.review.web.dto;
 
 import com.onz.common.enums.YN;
 import com.onz.common.web.BaseApiController;
+import com.onz.modules.company.domain.enums.EstablishmentType;
 import com.onz.modules.review.domain.CompanyReview;
 import com.onz.modules.review.domain.dto.ReviewAll;
+import com.onz.modules.review.domain.enums.ItemCode;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.EnumSet;
+import java.util.NoSuchElementException;
 
 
 @Data
@@ -18,14 +23,14 @@ public class ReviewResponseDto extends BaseApiController {
     private String state;
     private String CreatedAt;
     private YN WorkExpOpenYn;
-    private String item_1;
-    private YN item_2;
-    private YN item_3;
-    private String item_4;
-    private String item_5;
-    private YN item_6;
-    private Long CompanyId;
-    private Long AccountId;
+    private String itemTest1;
+    private String itemTest2;
+    private String itemTest3;
+    private String itemMood;
+    private Long companyId;
+    private String companyName;
+    private String establishmentTypeName;
+    private Long accountId;
     private String txtAdmin;
     private Long workExp;
     private String zonecode;
@@ -77,15 +82,23 @@ public class ReviewResponseDto extends BaseApiController {
         this.state = reviewAll.getState();
         this.CreatedAt = reviewAll.getCreatedAt();
         this.WorkExpOpenYn = reviewAll.getWorkExpOpenYn();
-        this.item_1 = reviewAll.getItem_1();
-        this.item_2 = reviewAll.getItem_2();
-        this.item_3 = reviewAll.getItem_3();
-        this.item_4 = reviewAll.getItem_4();
-        this.item_5 = reviewAll.getItem_5();
-        this.item_6 = reviewAll.getItem_6();
+        this.itemTest1 = reviewAll.getItem_1()!=null? "O" : "X";
+        this.itemTest2 = reviewAll.getItem_2()!=null&&"Y".equals(reviewAll.getItem_2())? "O" : "X";
+        this.itemTest3 = reviewAll.getItem_3()!=null&&"Y".equals(reviewAll.getItem_3())? "O" : "X";
+        switch(reviewAll.getItem_5()!=null?reviewAll.getItem_5():"999"){
+            case "1": this.itemMood = "여유";break;
+            case "2": this.itemMood = "편안";break;
+            case "3": this.itemMood = "긴장";break;
+            default: this.itemMood = "-";break;
+        }
         this.q_1=reviewAll.getTopQ1();
-        this.CompanyId = reviewAll.getCompanyId();
-        this.AccountId = reviewAll.getAccountId();
+        this.companyId = reviewAll.getCompanyId();
+        this.companyName = reviewAll.getCompanyName();
+        EstablishmentType type = EnumSet.allOf(EstablishmentType.class).stream()
+                .filter(e->e.getValue().equals(reviewAll.getEstablishmentTypeValue()))
+                .findAny().orElse(EstablishmentType.C99);
+        this.establishmentTypeName = type.getName();
+        this.accountId = reviewAll.getAccountId();
         this.txtAdmin = reviewAll.getTxtAdmin();
         this.workExp = reviewAll.getWorkExp();
         this.zonecode = reviewAll.getZonecode();
