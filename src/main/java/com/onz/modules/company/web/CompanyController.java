@@ -205,7 +205,7 @@ public class CompanyController extends BaseApiController {
             @ApiResponse(responseCode = "200", description = "조회 완료", content = @Content(schema = @Schema(implementation = YearAmtReview.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = YearAmtReview.class)))
     })
-    @GetMapping("/companies/companyId}/review/companies")
+    @GetMapping("/companies/{companyId}/review/companies")
     public List<CompanyReviewListResponseDto> companySearchCompany(@PathVariable Long companyId) {
         return reviewService.companySearchCompany(companyId);
     }
