@@ -13,6 +13,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -65,6 +66,10 @@ public class InterviewReview extends BaseEntity {
     @JoinColumn(name = "accountId")
     private Account account;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "interviewId")
+    private List<InterviewReviewItem> interviewItems;
+
     private String topQ1;
 
     //    //1 page
@@ -94,8 +99,8 @@ public class InterviewReview extends BaseEntity {
         this.workExpOpenYn=interviewRequestDto.getWorkExpOpenYn();
         this.topQ1=interviewRequestDto.getInterviews().get(0).getQ();
     }
-    public InterviewReview(InterviewReviewItem interviewReviewItem){
-        this.topQ1=interviewReviewItem.getInterviewQ();
+    public InterviewReview(InterviewReview interviewReviewItem){
+        this.topQ1=interviewReviewItem.getTopQ1();
     }
 
     public InterviewReview(InterviewRequestDto interviewRequestDto, Long id) {

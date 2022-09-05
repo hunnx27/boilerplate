@@ -10,6 +10,7 @@ import com.onz.modules.company.infra.CompanyRepository;
 import com.onz.modules.company.web.dto.reponse.YearAmtAvgResponseDto;
 import com.onz.modules.company.web.dto.reponse.YearAmtListResponseDto;
 import com.onz.modules.company.web.dto.request.AvgReqestDto;
+import com.onz.modules.review.domain.InterviewReview;
 import com.onz.modules.review.domain.YearAmtReview;
 import com.onz.modules.review.infra.AmtReviewRepository;
 import com.onz.modules.review.web.dto.*;
@@ -106,5 +107,10 @@ public class AmtReviewService {
             return res;
         }).collect(Collectors.toList());
         return array;
+    }
+    public AmtReviewDetailResponseDto amtReviewDetail(@PathVariable Long id) {
+        YearAmtReview yearAmtReview = amtReviewRepository.findById(id).orElse(null);
+        AmtReviewDetailResponseDto result = new AmtReviewDetailResponseDto(yearAmtReview);
+        return result;
     }
 }

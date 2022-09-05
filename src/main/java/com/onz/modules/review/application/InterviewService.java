@@ -7,17 +7,21 @@ import com.onz.modules.common.address.infra.AddressRepository;
 import com.onz.modules.common.address.infra.dto.DistinctAddressResponse;
 import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.infra.CompanyRepository;
+import com.onz.modules.review.domain.CompanyReview;
 import com.onz.modules.review.domain.InterviewReview;
 import com.onz.modules.review.domain.InterviewReviewItem;
 import com.onz.modules.review.infra.InterviewReviewRepository;
 import com.onz.modules.review.infra.InterviewReviewItemRepository;
 import com.onz.modules.company.web.dto.reponse.InterviewListResponseDto;
+import com.onz.modules.review.web.dto.CompanyReviewDetailResponseDto;
 import com.onz.modules.review.web.dto.InterviewRequestDto;
+import com.onz.modules.review.web.dto.InterviewReviewDetailResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,5 +72,10 @@ public class InterviewService {
             return res;
         }).collect(Collectors.toList());
         return array;
+    }
+    public InterviewReviewDetailResponseDto interviewReviewDetail(@PathVariable Long id) {
+        InterviewReview interviewReview = interviewReviewRepository.findById(id).orElse(null);
+        InterviewReviewDetailResponseDto result = new InterviewReviewDetailResponseDto(interviewReview);
+        return result;
     }
 }

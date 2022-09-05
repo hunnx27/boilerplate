@@ -9,17 +9,21 @@ import com.onz.modules.common.address.infra.AddressRepository;
 import com.onz.modules.common.address.infra.dto.DistinctAddressResponse;
 import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.infra.CompanyRepository;
+import com.onz.modules.company.web.dto.reponse.CompanyJipyoResponse;
 import com.onz.modules.review.domain.CompanyReview;
 import com.onz.modules.review.infra.CompanyReviewRepository;
 import com.onz.modules.company.web.dto.reponse.CompanyReviewListResponseDto;
+import com.onz.modules.review.web.dto.CompanyReviewDetailResponseDto;
 import com.onz.modules.review.web.dto.CompanyReviewRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -49,8 +53,9 @@ public class CompanyReviewService {
             }
         }
     }
+
     public List<CompanyReviewListResponseDto> companyReviewList(Pageable pageable) {
-        List<CompanyReviewListResponseDto> list =  companyReviewRepository.listCompanyReview(companyReviewRepository.findAll(pageable).toList());
+        List<CompanyReviewListResponseDto> list = companyReviewRepository.listCompanyReview(companyReviewRepository.findAll(pageable).toList());
         List<CompanyReviewListResponseDto> array = list.stream().map(res -> {
 //           String q_1 =(interviewReviewItemRepository.getById(res.getId()).getInterviewQ());
 //            res.setQ_1(q_1);
@@ -64,4 +69,11 @@ public class CompanyReviewService {
         }).collect(Collectors.toList());
         return array;
     }
+
+    public CompanyReviewDetailResponseDto companyReviewDetail(@PathVariable Long id) {
+        CompanyReview companyReview = companyReviewRepository.findById(id).orElse(null);
+        CompanyReviewDetailResponseDto result = new CompanyReviewDetailResponseDto(companyReview);
+        return result;
+    }
+
 }
