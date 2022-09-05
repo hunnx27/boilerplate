@@ -9,27 +9,24 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.annotate.JsonIgnore;
 
 @Getter
-@Setter
 @NoArgsConstructor
+@Slf4j
 public class CompanySearchResponse {
-    //히든값 id
-    //officename
-    //zonecode
-    private String officeName;
-    private String zonecode;
-    private String sidoName;
-    private String gubuName;
-    private String mapsidogunguName;
-    private String establishName;
     @JsonIgnore
     private Long id;
+    private String officeName;
+    private String zonecode;
+    private String establishName;
+    @Setter
+    private String mapsidogunguName;
 
-    public CompanySearchResponse(String officeName, String zonecode, Long id,EstablishmentType establishmentType) {
+    public CompanySearchResponse(Long id, EstablishmentType establishmentType, String officeName, String zonecode) {
         this.id = id;
-        this.establishName= establishmentType.getName();
+        this.establishName= establishmentType!=null ? establishmentType.getName() : EstablishmentType.C99.getName();
         this.officeName = officeName;
         this.zonecode = zonecode;
     }

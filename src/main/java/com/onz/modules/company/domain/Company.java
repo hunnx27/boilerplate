@@ -58,9 +58,4 @@ public class Company extends BaseEntity {
     private String faxNum;
     private String homepage;
     private String syncCode;
-
-    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE})
-    private List<YearAmtReview> yearAmtReviews = new ArrayList<>();
-//    @OneToMany(mappedBy = "id", cascade = { CascadeType.PERSIST, CascadeType.REMOVE})
-//    private List<YearAmtReview> yearAmtReviews;
 }

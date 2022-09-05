@@ -12,7 +12,6 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
-import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -70,7 +69,7 @@ public class CompanyRepositoryExtensionImpl extends QuerydslRepositorySupport im
     }
 
     @Override
-    public List<CompanySearchResponse> search(CompanySearchRequest companySearchRequest) {
+    public List<CompanySearchResponse> search(CompanySearchRequest companySearchRequest, Pageable pageable) {
         BooleanBuilder builder = new BooleanBuilder();
         if (companySearchRequest.getName() != null) {
             builder.and(company.officeName.contains(companySearchRequest.getName()));
@@ -86,7 +85,14 @@ public class CompanyRepositoryExtensionImpl extends QuerydslRepositorySupport im
             }
 
         }
-        return jpaQueryFactory.selectFrom(company).where(builder).select(Projections.constructor(CompanySearchResponse.class,company.officeName,company.zonecode,company.id,company.establishmentType)).fetch();
+
+//        jpaQueryFactory.selectFrom(company).where(builder).select(Projections.constructor(CompanySearchResponse.class)).fetch();
+         JPQLQuery<CompanySearchResponse> query = jpaQueryFactory
+                .selectFrom(company)
+                .where(builder)
+                .select(Projections.constructor(CompanySearchResponse.class, company.id, company.establishmentType, company.officeName, company.zonecode));
+        List<CompanySearchResponse> list = getQuerydsl().applyPagination(pageable, query).fetch();
+        return list;
     }
 //        QAccount account = QAccount.account;
 //

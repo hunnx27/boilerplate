@@ -15,6 +15,7 @@ import com.onz.modules.review.infra.CompanyReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -80,14 +81,9 @@ public class CompanyService {
     }
 
 
-    public List<CompanySearchResponse> search(CompanySearchRequest companySearchRequest) {
-        List<CompanySearchResponse> list = companyRepository.search(companySearchRequest);
+    public List<CompanySearchResponse> search(CompanySearchRequest companySearchRequest, Pageable pageable) {
+        List<CompanySearchResponse> list = companyRepository.search(companySearchRequest, pageable);
         List<CompanySearchResponse> array = list.stream().map(res -> {
-//            Integer sidocode = Integer.valueOf(res.getZonecode().substring(0, 2));
-//            String guguncode = res.getZonecode().substring(3, 5);
-//            String sidoName = addressRepository.findDistinctBySidoCode(sidocode).get(Integer.parseInt(guguncode)).getSidoName();
-//            String gubuName= addressRepository.findDistinctBySidoCode(sidocode).get(Integer.parseInt(guguncode)).getSigunguName();
-
             List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(res.getZonecode());
             if(addressList.size()>0) {
                 DistinctAddressResponse address = addressList.get(0);
@@ -96,11 +92,8 @@ public class CompanyService {
                 String mapsidogunguName = address.getSidoName()+" "+address.getSigunguName();
                 System.out.println(address.getSidoName());
                 System.out.println(address.getSigunguName());
-                res.setGubuName(gubuName);
-                res.setSidoName(sidoName);
                 res.setMapsidogunguName(mapsidogunguName);
             }
-//            return new CompanySearchResponse();
             return res;
         }).collect(Collectors.toList());
         return array;
