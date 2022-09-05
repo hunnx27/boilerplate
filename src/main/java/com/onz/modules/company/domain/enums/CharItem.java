@@ -15,7 +15,8 @@ public enum CharItem {
     CHAR07("시간연장형", "7"),
     CHAR08("휴일보육", "8"),
     CHAR09("24시간", "9"),
-    CHAR10("일시보육", "10")
+    CHAR10("일시보육", "10"),
+    CHARN("선택안함", "N")
     ;
 
     String name;

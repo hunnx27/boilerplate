@@ -7,6 +7,7 @@ import com.onz.modules.company.web.dto.request.CompanySearchRequest;
 import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
 import com.onz.modules.company.domain.Company;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,6 @@ import java.util.Optional;
 public interface CompanyRepositoryExtension {
     List<CompanyDetailResponse> convertlist(Company company);
     PageImpl<Company> list(CompanySearchRequest companySearchRequest);
-    List<CompanySearchResponse> search(CompanySearchRequest companySearchRequest);
+    List<CompanySearchResponse> search(CompanySearchRequest companySearchRequest, Pageable pageable);
     void update(CompanyUpdateRequest updateRequest);
 }
