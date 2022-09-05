@@ -137,38 +137,6 @@ public class ReviewController extends BaseApiController {
         return companyReviewService.companyReviewList(pageable);
     }
 
-    @Operation(summary = "기관 리뷰 단건 보기", description = "기업 리뷰를 조회합니다..")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "조회 완료", content = @Content(schema = @Schema(implementation = CompanyReviewDetailResponseDto.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanyReviewDetailResponseDto.class)))
-    })
-    @GetMapping("/reviews/companies/{id}")
-    public CompanyReviewDetailResponseDto companyReviewDetail(
-            @PathVariable Long id) {
-        return companyReviewService.companyReviewDetail(id);
-    }
-
-    @Operation(summary = "기관 면접 리뷰 단건 보기", description = "기업 리뷰를 조회합니다..")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "조회 완료", content = @Content(schema = @Schema(implementation = CompanyReviewDetailResponseDto.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanyReviewDetailResponseDto.class)))
-    })
-    @GetMapping("/reviews/interviews/{id}")
-    public InterviewReviewDetailResponseDto interviewReviewDetail(
-            @PathVariable Long id) {
-        return interviewService.interviewReviewDetail(id);
-    }
-
-    @Operation(summary = "기관 연봉 리뷰 단건 보기", description = "기업 리뷰를 조회합니다..")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "조회 완료", content = @Content(schema = @Schema(implementation = CompanyReviewDetailResponseDto.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanyReviewDetailResponseDto.class)))
-    })
-    @GetMapping("/reviews/amts/{id}")
-    public AmtReviewDetailResponseDto amtReviewDetail(
-            @PathVariable Long id) {
-        return amtReviewService.amtReviewDetail(id);
-    }
 }
 
 

@@ -9,8 +9,15 @@ import com.onz.modules.company.web.dto.request.CompanyCreateRequest;
 import com.onz.modules.company.web.dto.request.CompanySearchRequest;
 import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
 import com.onz.modules.review.application.AmtReviewService;
+import com.onz.modules.review.application.CompanyReviewService;
+import com.onz.modules.review.application.InterviewService;
 import com.onz.modules.review.application.ReviewService;
+import com.onz.modules.review.domain.CompanyReview;
+import com.onz.modules.review.domain.InterviewReview;
 import com.onz.modules.review.domain.YearAmtReview;
+import com.onz.modules.review.web.dto.AmtReviewDetailResponseDto;
+import com.onz.modules.review.web.dto.CompanyReviewDetailResponseDto;
+import com.onz.modules.review.web.dto.InterviewReviewDetailResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,6 +42,8 @@ public class CompanyController extends BaseApiController {
     private final CompanyService companyService;
     private final ModelMapper modelMapper;
     private final ReviewService reviewService;
+    private final InterviewService interviewService;
+    private final CompanyReviewService companyReviewService;
     private final AmtReviewService amtReviewService;
 
     @Operation(summary = "기관 불러오기", description = "기관 레코드를 불러옵니다..")
@@ -105,6 +114,17 @@ public class CompanyController extends BaseApiController {
         return companyService.findOneJipyo(id);
     }
 
+    @Operation(summary = "기관 연봉 리뷰 단건 보기", description = "기업 리뷰를 조회합니다..")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "조회 완료", content = @Content(schema = @Schema(implementation = CompanyReviewDetailResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanyReviewDetailResponseDto.class)))
+    })
+    @GetMapping("/companies/amts/{id}")
+    public AmtReviewDetailResponseDto amtReviewDetail(
+            @PathVariable Long id) {
+        return amtReviewService.amtReviewDetail(id);
+    }
+
     /*
     amt
      */
@@ -126,7 +146,7 @@ public class CompanyController extends BaseApiController {
     @GetMapping("/companies/{id}/review/amts")
     public List<YearAmtListResponseDto> companySearchAmt(@PathVariable Long id) {
         return reviewService.companySearchAmt(id);
-    }// FIXME
+    }
     /*
     interview
      */
@@ -151,6 +171,16 @@ public class CompanyController extends BaseApiController {
         return reviewService.companySearchInterviewCount(id);
     }
 
+    @Operation(summary = "기관 면접 리뷰 단건 보기", description = "기업 리뷰를 조회합니다..")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "조회 완료", content = @Content(schema = @Schema(implementation = CompanyReviewDetailResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanyReviewDetailResponseDto.class)))
+    })
+    @GetMapping("/companies/interviews/{id}")
+    public InterviewReviewDetailResponseDto interviewReviewDetail(
+            @PathVariable Long id) {
+        return interviewService.interviewReviewDetail(id);
+    }
     /*
     companies
      */
@@ -163,4 +193,18 @@ public class CompanyController extends BaseApiController {
     public List<CompanyReviewListResponseDto> companySearchCompany(@PathVariable Long id) {
         return reviewService.companySearchCompany(id);
     }
+
+    @Operation(summary = "기관 리뷰 단건 보기", description = "기업 리뷰를 조회합니다..")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "조회 완료", content = @Content(schema = @Schema(implementation = CompanyReviewDetailResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanyReviewDetailResponseDto.class)))
+    })
+    @GetMapping("/companies/companies/{id}")
+    public CompanyReviewDetailResponseDto companyReviewDetail(
+            @PathVariable Long id) {
+        return companyReviewService.companyReviewDetail(id);
+    }
+
+
+
 }
