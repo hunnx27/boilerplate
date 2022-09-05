@@ -1,5 +1,7 @@
 package com.onz.modules.review.infra;
 
+import com.onz.modules.company.web.dto.reponse.InterviewListResponseDto;
+import com.onz.modules.review.domain.InterviewReview;
 import com.onz.modules.review.domain.QYearAmtReview;
 import com.onz.modules.review.domain.YearAmtReview;
 import com.onz.modules.company.web.dto.reponse.YearAmtListResponseDto;
@@ -8,6 +10,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AmtReviewRepositoryExtensionImpl extends QuerydslRepositorySupport implements AmtReviewRepositoryExtension {
 
@@ -19,15 +22,12 @@ public class AmtReviewRepositoryExtensionImpl extends QuerydslRepositorySupport 
     }
     public List<YearAmtListResponseDto> ListAmt(List<YearAmtReview> yearAmtReview) {
         QYearAmtReview qYearAmtReview = QYearAmtReview.yearAmtReview;
-        return jpaQueryFactory
+
+        List<YearAmtReview> list = jpaQueryFactory
                 .selectFrom(qYearAmtReview)
-                .select(Projections.constructor(YearAmtListResponseDto.class,
-                        qYearAmtReview.workExp, qYearAmtReview.workExpOpenYn, qYearAmtReview.company.id,
-                        qYearAmtReview.amt, qYearAmtReview.endAtmYn, qYearAmtReview.etcItems,
-                        qYearAmtReview.company.officeName, qYearAmtReview.mapsidogunguName,
-                        qYearAmtReview.id,qYearAmtReview.company.zonecode,qYearAmtReview.etcYn,
-                        qYearAmtReview.company.establishmentType,qYearAmtReview.etcAmt))
                 .fetch();
+        return list.stream().map(com -> new YearAmtListResponseDto(com)).collect(Collectors.toList());
+
     }
 }
 

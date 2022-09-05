@@ -68,7 +68,17 @@ public class ReviewService {
     }
 
     public List<YearAmtListResponseDto> companySearchAmt(@PathVariable Long id) {
-        return amtReviewRepository.findByCompanyId(id);
+        List<YearAmtListResponseDto> list = amtReviewRepository.findByCompanyId(id);
+        List<YearAmtListResponseDto> array = list.stream().map(res -> {
+        List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(res.zoneCode);
+        if (addressList.size() > 0) {
+            DistinctAddressResponse address = addressList.get(0);
+            String mapsidogunguName = address.getSidoName() + " " + address.getSigunguName();
+            res.setMapsidogunguName(mapsidogunguName);
+        }
+        return res;
+    }).collect(Collectors.toList());
+        return array;
     }
 
     public List<CompanyReviewListResponseDto> companySearchCompany(@PathVariable Long id) {
