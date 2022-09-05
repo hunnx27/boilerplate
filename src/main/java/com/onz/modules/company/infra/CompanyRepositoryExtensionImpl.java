@@ -71,8 +71,12 @@ public class CompanyRepositoryExtensionImpl extends QuerydslRepositorySupport im
     @Override
     public List<CompanySearchResponse> search(CompanySearchRequest companySearchRequest, Pageable pageable) {
         BooleanBuilder builder = new BooleanBuilder();
+
         if (companySearchRequest.getName() != null) {
             builder.and(company.officeName.contains(companySearchRequest.getName()));
+        }
+        if (companySearchRequest.getInterestCompany() != null){
+            builder.and(company.interestCompany.eq(companySearchRequest.getInterestCompany()));
         }
         if (companySearchRequest.getCode() !=null) {
             if (companySearchRequest.getCode().length()<3) {
@@ -83,7 +87,6 @@ public class CompanyRepositoryExtensionImpl extends QuerydslRepositorySupport im
             }else{
                 builder.and(company.zonecode.eq(companySearchRequest.getCode()));
             }
-
         }
 
 //        jpaQueryFactory.selectFrom(company).where(builder).select(Projections.constructor(CompanySearchResponse.class)).fetch();
