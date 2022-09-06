@@ -133,8 +133,8 @@ public class ReviewService {
             if (res.getItem_3()!=null && res.getItem_3().name().equals("Y")) {
                 patCount += 1;
             }
-            if (res.getItem_1()!=null && res.getItem_1().charAt(0) == '1') {
-                mockCount += 1;
+            if(res.getItem_1()!=null){  //FIXME (NULL OR N)
+                mockCount+=1;
             }
             int key = res.getItem_5()!=null ? Integer.parseInt(res.getItem_5()) : 0;
             switch (key) {
