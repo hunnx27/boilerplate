@@ -55,31 +55,49 @@ public class CompanyController extends BaseApiController {
     @Operation(summary = "기관 불러오기", description = "기관 레코드를 불러옵니다..")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "불러오기 완료", content = @Content(schema = @Schema(implementation = CompanySearchRequest.class))), @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanySearchRequest.class)))})
     @GetMapping("/companies")
-    public Page<Company> list(CompanySearchRequest searchRequest) {
-        return companyService.list(searchRequest);
+    public ResponseEntity<ApiR<?>> list(CompanySearchRequest searchRequest) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companyService.list(searchRequest)));
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
 
     @Operation(summary = "기관이름으로 검색하기", description = "기관 이름으로 레코드를 불러옵니다..")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "불러오기 완료", content = @Content(schema = @Schema(implementation = CompanySearchRequest.class))), @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanySearchRequest.class)))})
     @GetMapping("/companies/search")
-    public List<CompanySearchResponse> search(CompanySearchRequest companySearchRequest, @PageableDefault(size = 20, sort = "officeName", direction = Sort.Direction.ASC) Pageable pageable) {
-        return companyService.search(companySearchRequest, pageable);
+    public ResponseEntity<ApiR<?>> search(CompanySearchRequest companySearchRequest, @PageableDefault(size = 20, sort = "officeName", direction = Sort.Direction.ASC) Pageable pageable) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companyService.search(companySearchRequest, pageable)));
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @Operation(summary = "기관 생성하기", description = "기관 레코드를 생성합니다..")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "생성 완료", content = @Content(schema = @Schema(implementation = CompanyCreateRequest.class))), @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanyCreateRequest.class)))})
     @PostMapping("/company")
     public void create(@RequestBody CompanyCreateRequest createRequest) {
-        companyService.create(modelMapper.map(createRequest, Company.class));
+        try {
+            companyService.create(modelMapper.map(createRequest, Company.class));
+            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @Operation(summary = "기관 수정하기", description = "기관 레코드를 수정합니다..")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "수정 완료", content = @Content(schema = @Schema(implementation = CompanyUpdateRequest.class))), @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanyUpdateRequest.class)))})
     @PatchMapping("/company/{id}")
     public void update(@PathVariable Long id, @RequestBody CompanyUpdateRequest updateRequest) {
-        updateRequest.setId(id);
-        companyService.update(updateRequest);
+        try {
+            updateRequest.setId(id);
+            companyService.update(updateRequest);
+            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @Operation(summary = "단일 기관 불러오기", description = "단일 기관 레코드를 불러옵니다..")

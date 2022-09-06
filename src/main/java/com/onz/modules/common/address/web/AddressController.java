@@ -1,5 +1,6 @@
 package com.onz.modules.common.address.web;
 
+import com.onz.common.web.ApiR;
 import com.onz.common.web.BaseApiController;
 import com.onz.modules.common.address.domain.Address;
 import com.onz.modules.common.address.infra.AddressRepository;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
-@Tag(name="지역 제어",description = "지역을 제어하는 api.")
+@Tag(name = "지역 제어", description = "지역을 제어하는 api.")
 public class AddressController extends BaseApiController {
     AddressRepository addressRepository;
 
@@ -36,14 +37,17 @@ public class AddressController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AddressResponse.class)))
     })
     @GetMapping("/common/address")
-    public ResponseEntity<List<AddressResponse>> getAllAddress(){
-        List<Address> result = addressRepository.findAll();
+    public ResponseEntity<ApiR<?>> getAllAddress() {
+        try {
+            List<Address> result = addressRepository.findAll();
 
-        List<AddressResponse> result2 = result.stream().map(AddressResponse::new)
-                .collect(Collectors.toList());
+            List<AddressResponse> result2 = result.stream().map(AddressResponse::new)
+                    .collect(Collectors.toList());
 
-        return ResponseEntity.status(HttpStatus.OK).body(result2);
-
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @Operation(summary = "시도 그룹화해서 불러오기", description = "시,도를 불러옵니다..")
@@ -52,14 +56,17 @@ public class AddressController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AddressSidoResponse.class)))
     })
     @GetMapping("/common/address/sido")
-    public ResponseEntity<List<AddressSidoResponse>> getAddressGroupBySidoCode(){
-        List<Address> result = addressRepository.findByAddressGroupBySidoCide();
+    public ResponseEntity<ApiR<?>> getAddressGroupBySidoCode() {
+        try {
+            List<Address> result = addressRepository.findByAddressGroupBySidoCide();
 
-        List<AddressSidoResponse> result2 = result.stream().map(AddressSidoResponse::new)
-                .collect(Collectors.toList());
+            List<AddressSidoResponse> result2 = result.stream().map(AddressSidoResponse::new)
+                    .collect(Collectors.toList());
 
-        return ResponseEntity.status(HttpStatus.OK).body(result2);
-
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @Operation(summary = "SidoCode 불러오기", description = "불러옵니다..")
@@ -68,14 +75,17 @@ public class AddressController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AddressResponse.class)))
     })
     @GetMapping("/common/address/sido/{sidoCode}")
-    public ResponseEntity<List<AddressResponse>> getAddressBySidoCode(@PathVariable int sidoCode, Pageable pageable){
-        Page<Address> result = addressRepository.findBySidoCode(sidoCode, pageable);
+    public ResponseEntity<ApiR<?>> getAddressBySidoCode(@PathVariable int sidoCode, Pageable pageable) {
+        try {
+            Page<Address> result = addressRepository.findBySidoCode(sidoCode, pageable);
 
-        List<AddressResponse> result2 = result.stream().map(AddressResponse::new)
-                .collect(Collectors.toList());
+            List<AddressResponse> result2 = result.stream().map(AddressResponse::new)
+                    .collect(Collectors.toList());
 
-        return ResponseEntity.status(HttpStatus.OK).body(result2);
-
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(result2));
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
 }

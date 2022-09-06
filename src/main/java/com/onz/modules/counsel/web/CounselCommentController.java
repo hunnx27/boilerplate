@@ -1,5 +1,6 @@
 package com.onz.modules.counsel.web;
 
+import com.onz.common.web.ApiR;
 import com.onz.common.web.BaseApiController;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.counsel.domain.CounselComment;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -41,11 +43,15 @@ public class CounselCommentController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselCommentListResponse.class)))
     })
     @GetMapping("/counsel/comment/answer/{answerId}")
-    public List<CounselCommentListResponse> commentList(@AuthenticationPrincipal UserPrincipal me,
-                                                        @PathVariable Long answerId,
-                                                        Pageable pageable){
-        List<CounselCommentListResponse> result = counselCommentService.commentList(answerId, pageable, me);
-        return result;
+    public ResponseEntity<ApiR<?>> commentList(@AuthenticationPrincipal UserPrincipal me,
+                                               @PathVariable Long answerId,
+                                               Pageable pageable){
+        try {
+            List<CounselCommentListResponse> result = counselCommentService.commentList(answerId, pageable, me);
+            return  ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(result));
+        }catch (Exception e){
+            throw e;
+        }
     }
 
     @Operation(summary = "상담 답변 추가하기", description = "N번째 상담에 작성된 답글 추가하기.")
@@ -55,7 +61,12 @@ public class CounselCommentController extends BaseApiController {
     })
     @PostMapping("/counsel/comment")
     public void createComment(@AuthenticationPrincipal UserPrincipal me, CounselCommentCreateRequest counselCommentCreateRequest) {
-        counselCommentService.create(counselCommentCreateRequest, me);
+        try {
+            counselCommentService.create(counselCommentCreateRequest, me);
+            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
+        }catch (Exception e){
+            throw e;
+        }
     }
 
     @Operation(summary = "상담 답변 수정하기", description = "N번째 상담에 작성된 답글 수정하기.")
@@ -64,12 +75,15 @@ public class CounselCommentController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselCommentUpdateRequest.class)))
     })
     @PutMapping("/counsel/comment/{id}")
-    public ResponseEntity<?> updateComment(@AuthenticationPrincipal UserPrincipal up,
+    public void updateComment(@AuthenticationPrincipal UserPrincipal up,
                                            CounselCommentUpdateRequest counselCommentUpdateRequest,
                                            @PathVariable Long id) {
-        CounselComment counselComment = counselCommentService.updateCounselComment(id, counselCommentUpdateRequest, up);
-        return ResponseEntity.ok(new CounselCommentDetailResponse(counselComment));
-
+        try {
+            CounselComment counselComment = counselCommentService.updateCounselComment(id, counselCommentUpdateRequest, up);
+            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(new CounselCommentDetailResponse(counselComment)));
+        }catch (Exception e){
+            throw e;
+        }
     }
 
     @Operation(summary = "상담 답변 삭제하기", description = "N번째 상담에 작성된 답글 삭제하기.")
@@ -78,9 +92,14 @@ public class CounselCommentController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselComment.class)))
     })
     @DeleteMapping("/counsel/comment/{id}")
-    public ResponseEntity<?> deleteComment(@PathVariable Long id) {
-        CounselComment counselComment = counselCommentService.deleteCounselCommentSoft(id);
-        return ResponseEntity.ok(new CounselCommentDetailResponse(counselComment));
+    public ResponseEntity<ApiR<?>> deleteComment(@PathVariable Long id) {
+        try {
+            CounselComment counselComment = counselCommentService.deleteCounselCommentSoft(id);
+            new CounselCommentDetailResponse(counselComment);
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
+        }catch (Exception e){
+            throw e;
+        }
     }
 
 }

@@ -74,10 +74,10 @@ public class ReviewController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
     })
     @PostMapping("/review/amt")
-    public ResponseEntity<ApiR<?>> create(@AuthenticationPrincipal UserPrincipal me, @RequestBody AmtRequestDto amtRequestDto) {
+    public void create(@AuthenticationPrincipal UserPrincipal me, @RequestBody AmtRequestDto amtRequestDto) {
         try {
             amtReviewService.create(amtRequestDto, me);
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
+            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
         } catch (Exception e) {
             throw e;
         }
@@ -112,10 +112,10 @@ public class ReviewController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = InterviewRequestDto.class)))
     })
     @PostMapping("/reviews/interview")
-    public ResponseEntity<ApiR<?>> create(@AuthenticationPrincipal UserPrincipal me, @RequestBody InterviewRequestDto interviewRequestDto) {
+    public void create(@AuthenticationPrincipal UserPrincipal me, @RequestBody InterviewRequestDto interviewRequestDto) {
         try {
             interviewService.create(interviewRequestDto, me);
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
+            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
         } catch (Exception e) {
             throw e;
         }
@@ -147,10 +147,10 @@ public class ReviewController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanyReviewRequestDto.class)))
     })
     @PostMapping("/reviews/company")
-    public ResponseEntity<ApiR<?>> create(@AuthenticationPrincipal UserPrincipal me, CompanyReviewRequestDto companyReviewRequestDto) {
+    public void create(@AuthenticationPrincipal UserPrincipal me, CompanyReviewRequestDto companyReviewRequestDto) {
         try {
             companyReviewService.create(companyReviewRequestDto, me);
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
+            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
         } catch (Exception e) {
             throw e;
         }

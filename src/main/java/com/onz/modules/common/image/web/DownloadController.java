@@ -1,6 +1,7 @@
 package com.onz.modules.common.image.web;
 
 import com.onz.common.util.FileUtil;
+import com.onz.common.web.ApiR;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -42,13 +43,12 @@ public class DownloadController {
     })
     @GetMapping("/download/image")
     @ResponseBody
-    public ResponseEntity<Resource>  getImage(@RequestParam String path) throws IOException {
-        File file = fileUtil.getDownloadFile(path);
+    public  ResponseEntity<ApiR<?>>  getImage(@RequestParam String path) throws IOException {
         try {
+            File file = fileUtil.getDownloadFile(path);
+            try {
 //            Resource resource = resourceLoader.getResource(file.getPath());
-            byte[] fileByte = FileUtils.readFileToByteArray(file);
-
-
+                byte[] fileByte = FileUtils.readFileToByteArray(file);
 
 
 //            return ResponseEntity.ok()
@@ -57,23 +57,26 @@ public class DownloadController {
 //                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM.toString())	//바이너리 데이터로 받아오기 설정
 //                    .body(fileByte);	//파일 넘기기
 
-            Path pathObj = Paths.get(file.getPath());
-            String contentType = Files.probeContentType(pathObj);
+                Path pathObj = Paths.get(file.getPath());
+                String contentType = Files.probeContentType(pathObj);
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentDisposition(
-                    ContentDisposition.builder("attachment")
-                            .filename(file.getName(), StandardCharsets.UTF_8)
-                            .build());
-            headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentDisposition(
+                        ContentDisposition.builder("attachment")
+                                .filename(file.getName(), StandardCharsets.UTF_8)
+                                .build());
+                headers.add(HttpHeaders.CONTENT_TYPE, contentType);
 
-            Resource resource = new InputStreamResource(Files.newInputStream(pathObj));
-            return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+                Resource resource = new InputStreamResource(Files.newInputStream(pathObj));
+                return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(resource));
 
-        } catch (Exception e ) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 
+            }
+        }catch (Exception e){
+            throw e;
         }
     }
 
@@ -84,10 +87,14 @@ public class DownloadController {
     })
     @GetMapping("/download/image2")
     @ResponseBody
-    public Resource  getImage2(@RequestParam String path) throws IOException {
-        File file = fileUtil.getDownloadFile(path);
+    public  ResponseEntity<ApiR<?>>  getImage2(@RequestParam String path) throws IOException {
+        try {
+            File file = fileUtil.getDownloadFile(path);
 
-        Resource resource = resourceLoader.getResource("file:"+file.getPath());
-        return resource;
+            Resource resource = resourceLoader.getResource("file:" + file.getPath());
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(resource));
+        }catch (Exception e){
+            throw e;
+        }
     }
 }
