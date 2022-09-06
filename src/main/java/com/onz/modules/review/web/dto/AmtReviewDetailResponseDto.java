@@ -15,7 +15,7 @@ public class AmtReviewDetailResponseDto {
     private String impCost;
     private String workCost;
     private String addCost;
-    private String ectCost;
+    private String etcCost;
     private Long workExp;
     private YN endAtmYn;
     private String etcAmt;
@@ -49,7 +49,7 @@ public class AmtReviewDetailResponseDto {
                     break;
                 case "4":
                     System.out.println(key + "+" + value);
-                    this.ectCost=value;
+                    this.etcCost=value;
                     break;
             }
             this.totalCost=(long) total;

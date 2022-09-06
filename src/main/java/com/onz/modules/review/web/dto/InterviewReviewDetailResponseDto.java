@@ -15,7 +15,8 @@ public class InterviewReviewDetailResponseDto {
     private List<String> itemTest1;
     private String itemTest2;
     private String itemTest3;
-    private String itemMood;
+    private String item4Goal;
+    private String item5Mood;
     private List<InterviewItemResponse> qna;
     private Long workExp;
 
@@ -36,11 +37,17 @@ public class InterviewReviewDetailResponseDto {
         }
         this.itemTest2 = interviewReview.getItem_2()!=null&&"Y".equals(interviewReview.getItem_2().name())? "있어요" : "없어요";
         this.itemTest3 = interviewReview.getItem_3()!=null&&"Y".equals(interviewReview.getItem_3().name())? "있어요" : "없어요";
+        switch(interviewReview.getItem_4()!=null?interviewReview.getItem_4():"999"){
+            case "1": this.item4Goal = "합격";break;
+            case "2": this.item4Goal = "불합격";break;
+            case "3": this.item4Goal = "대기";break;
+            default: this.item4Goal = "-";break;
+        }
         switch(interviewReview.getItem_5()!=null?interviewReview.getItem_5():"999"){
-            case "1": this.itemMood = "여유";break;
-            case "2": this.itemMood = "편안";break;
-            case "3": this.itemMood = "긴장";break;
-            default: this.itemMood = "-";break;
+            case "1": this.item5Mood = "여유";break;
+            case "2": this.item5Mood = "편안";break;
+            case "3": this.item5Mood = "긴장";break;
+            default: this.item5Mood = "-";break;
         }
         this.workExp = interviewReview.getWorkExp();
         this.qna= interviewReview.getInterviewItems().stream().map(e -> new InterviewItemResponse(e)).collect(Collectors.toList());

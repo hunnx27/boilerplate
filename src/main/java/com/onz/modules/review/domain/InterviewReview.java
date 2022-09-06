@@ -26,19 +26,24 @@ public class InterviewReview extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String item_1;
     //모의수업 인덱스 1,3
-    @Enumerated(EnumType.STRING)
-    private YN item_2;
+    private String item_1;
+
     //필기시험 여부 y
     @Enumerated(EnumType.STRING)
-    private YN item_3;
+    private YN item_2;
+
     //인적성 평가 여부 y
-    private String item_4;
+    @Enumerated(EnumType.STRING)
+    private YN item_3;
+
     // 면접 합격여부 및 평가
+    private String item_4;
+
+    //난이도
     private String item_5;
-    //난이도도
-   @Enumerated(EnumType.STRING)
+
+    @Enumerated(EnumType.STRING)
     private YN item_6;
 
     @ColumnDefault("'W'")
