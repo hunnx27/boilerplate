@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 @Data
 @NoArgsConstructor
+@Slf4j
 public class YearAmtListResponseDto extends ReviewCommonResponseDto {
     private String type="AMT";
     private Long amt;
@@ -53,19 +55,19 @@ public class YearAmtListResponseDto extends ReviewCommonResponseDto {
 
             switch (key) {
                 case "1":
-                    System.out.println(key + "+" + value);
+                    log.info("{} + {}", key, value);
                     this.setImpCost(value);
                     break;
                 case "2":
-                    System.out.println(key + "+" + value);
+                    log.info("{} + {}", key, value);
                     this.setWorkCost(value);
                     break;
                 case "3":
-                    System.out.println(key + "+" + value);
+                    log.info("{} + {}", key, value);
                     this.setAddCost(value);
                     break;
                 case "4":
-                    System.out.println(key + "+" + value);
+                    log.info("{} + {}", key, value);
                     this.setEtcCost(value);
                     break;
             }

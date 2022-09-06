@@ -90,8 +90,8 @@ public class CompanyService {
                 String sidoName = address.getSidoName();
                 String gubuName = address.getSigunguName();
                 String mapsidogunguName = address.getSidoName()+" "+address.getSigunguName();
-                System.out.println(address.getSidoName());
-                System.out.println(address.getSigunguName());
+                log.info(address.getSidoName());
+                log.info(address.getSigunguName());
                 res.setMapsidogunguName(mapsidogunguName);
             }
             return res;

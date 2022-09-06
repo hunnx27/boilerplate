@@ -3,11 +3,13 @@ package com.onz.modules.review.web.dto;
 import com.onz.common.enums.YN;
 import com.onz.modules.review.domain.YearAmtReview;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Getter
+@Slf4j
 public class AmtReviewDetailResponseDto {
 
     private Long amt;
@@ -36,19 +38,19 @@ public class AmtReviewDetailResponseDto {
 
             switch (key) {
                 case "1":
-                    System.out.println(key + "+" + value);
+                    log.info("{} + {}", key, value);
                     this.impCost=value;
                     break;
                 case "2":
-                    System.out.println(key + "+" + value);
+                    log.info("{} + {}", key, value);
                     this.workCost=value;
                     break;
                 case "3":
-                    System.out.println(key + "+" + value);
+                    log.info("{} + {}", key, value);
                     this.addCost=value;
                     break;
                 case "4":
-                    System.out.println(key + "+" + value);
+                    log.info("{} + {}", key, value);
                     this.etcCost=value;
                     break;
             }
