@@ -7,13 +7,11 @@ import com.onz.modules.common.address.infra.AddressRepository;
 import com.onz.modules.common.address.infra.dto.DistinctAddressResponse;
 import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.infra.CompanyRepository;
-import com.onz.modules.review.domain.CompanyReview;
 import com.onz.modules.review.domain.InterviewReview;
 import com.onz.modules.review.domain.InterviewReviewItem;
 import com.onz.modules.review.infra.InterviewReviewRepository;
 import com.onz.modules.review.infra.InterviewReviewItemRepository;
 import com.onz.modules.company.web.dto.reponse.InterviewListResponseDto;
-import com.onz.modules.review.web.dto.CompanyReviewDetailResponseDto;
 import com.onz.modules.review.web.dto.InterviewRequestDto;
 import com.onz.modules.review.web.dto.InterviewReviewDetailResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +35,7 @@ public class InterviewService {
     private final AddressRepository addressRepository;
     private final InterviewReviewItemRepository interviewReviewItemRepository;
 
-    public void create(InterviewRequestDto interviewRequestDto, UserPrincipal me) {
+    public InterviewReview create(InterviewRequestDto interviewRequestDto, UserPrincipal me) {
         Long companyId = interviewRequestDto.getCompanyId();
         Account account = accountService.findOne(me.getId());
         Company company = companyRepository.findById(companyId).orElse(null);
@@ -57,6 +55,7 @@ public class InterviewService {
             InterviewReviewItem interviewReviewItem = new InterviewReviewItem(itv, mom);
             interviewReviewItemRepository.save(interviewReviewItem);
         }
+        return interviewReview;
     }
     public List<InterviewListResponseDto> interviewReviewList(Pageable pageable) {
         List<InterviewListResponseDto> list =  interviewReviewRepository.ListInterview(interviewReviewRepository.findAll(pageable).toList());

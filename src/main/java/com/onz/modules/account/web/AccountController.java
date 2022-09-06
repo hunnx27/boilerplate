@@ -107,16 +107,6 @@ public class AccountController extends BaseApiController {
         return ResponseEntity.status(HttpStatus.OK).body(delete);
     }
 
-    @Operation(summary = "모르겠습니다 ", description = "변수를 이용하여 무슨기능인지 파악.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "수정해주세요", content = @Content(schema = @Schema(implementation = CounselQCreateRequest.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselQCreateRequest.class)))
-    })
-    @GetMapping("/accounts/{id}/educations")
-    public ResponseEntity<?> educations(@PathVariable Long id) {
-        return ResponseEntity.ok(accountService.educations(id));
-    }
-
     @Operation(summary = "현재 접속한 계정 조회", description = "변수를 이용하여 접속한 계정 레코드를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "접속된 계정 조회 완료", content = @Content(schema = @Schema(implementation = UserPrincipal.class))),

@@ -9,8 +9,6 @@ import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.infra.CompanyRepository;
 import com.onz.modules.company.web.dto.reponse.YearAmtAvgResponseDto;
 import com.onz.modules.company.web.dto.reponse.YearAmtListResponseDto;
-import com.onz.modules.company.web.dto.request.AvgReqestDto;
-import com.onz.modules.review.domain.InterviewReview;
 import com.onz.modules.review.domain.YearAmtReview;
 import com.onz.modules.review.infra.AmtReviewRepository;
 import com.onz.modules.review.web.dto.*;
@@ -37,12 +35,13 @@ public class AmtReviewService {
     Long one = Long.valueOf(0);
     Long count = Long.valueOf(0);
 
-    public void create(AmtRequestDto amtRequestDto, UserPrincipal me) {
+    public YearAmtReview create(AmtRequestDto amtRequestDto, UserPrincipal me) {
         Long companyId = amtRequestDto.getCompanyId();
         Account account = accountService.findOne(me.getId());
         Company company = companyRepository.findById(companyId).orElse(null);
         YearAmtReview yearAmtReview = new YearAmtReview(amtRequestDto, company, account);
         amtReviewRepository.save(yearAmtReview);
+        return yearAmtReview;
     }
 
     public YearAmtAvgResponseDto amtReviewAvgList(@PathVariable Long id) {
