@@ -127,17 +127,16 @@ public class ReviewService {
         List<InterviewReview> list = interviewReviewRepository.findByCompanyId(id);
         List<InterviewListResponseDto> array = list.stream().map(res -> {
             companyCount++;
-            if (res.getItem_2().name().equals("Y")) {
+            if (res.getItem_2()!=null && res.getItem_2().name().equals("Y")) {
                 writCount += 1;
             }
-            if (res.getItem_3().name().equals("Y")) {
+            if (res.getItem_3()!=null && res.getItem_3().name().equals("Y")) {
                 patCount += 1;
             }
             if(res.getItem_1()!=null){  //FIXME (NULL OR N)
                 mockCount+=1;
             }
-
-            int key = Integer.parseInt(res.getItem_5());
+            int key = res.getItem_5()!=null ? Integer.parseInt(res.getItem_5()) : 0;
             switch (key) {
                 case 1:
                     lowLevCount += 1;
@@ -149,7 +148,7 @@ public class ReviewService {
                     highLevCount += 1;
                     break;
             }
-            int key1 = Integer.parseInt(res.getItem_4());
+            int key1 = res.getItem_4()!=null ? Integer.parseInt(res.getItem_4()) : 0;
             switch (key1){
                 case 1:
                     goalCount +=1;

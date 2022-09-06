@@ -28,6 +28,7 @@ public class CompanyReviewDetailResponseDto {
     private final int starJumsuWorkload;
     private final int starJumsuJobSatisfaction;
     private final int starJumsuWorkAtmosphere;
+    private final String createDate;
 
     public CompanyReviewDetailResponseDto(CompanyReview companyReview) {
         this.Txt = companyReview.getTxt();
@@ -45,6 +46,7 @@ public class CompanyReviewDetailResponseDto {
         this.starJumsuJobSatisfaction = companyReview.getStarJumsuJobSatisfaction();
         this.starJumsuWorkAtmosphere = companyReview.getStarJumsuWorkAtmosphere();
         this.workExp= companyReview.getWork_exp();
+        this.createDate = companyReview.getCreatedAt()!=null? companyReview.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) : "";
 
     }
 }
