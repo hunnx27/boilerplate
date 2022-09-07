@@ -6,9 +6,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @NoArgsConstructor
+@Slf4j
 public class CompanyJipyoResponse {
     private String officeName;
     private String establishmentTypeName;
@@ -55,13 +57,17 @@ public class CompanyJipyoResponse {
             long scoreHealth =0;
             long scoreSafty =0;
             if(evals !=null){
-                scoreTot = evals.length>0 ? Math.round(Double.parseDouble(evals[0])) : 0;
-                scoreCareEnv = evals.length>1 ? Math.round(Double.parseDouble(evals[1])) : 0;
-                scoreOprManage = evals.length>2 ? Math.round(Double.parseDouble(evals[2])) : 0;
-                scoreCareCourse = evals.length>3 ? Math.round(Double.parseDouble(evals[3])) : 0;
-                scoreTeach = evals.length>4 ? Math.round(Double.parseDouble(evals[4])) : 0;
-                scoreHealth = evals.length>5 ? Math.round(Double.parseDouble(evals[5])) : 0;
-                scoreSafty = evals.length>6 ? Math.round(Double.parseDouble(evals[6])) : 0;
+                try{
+                    scoreTot = evals.length>0 ? Math.round(Double.parseDouble(evals[0])) : 0;
+                    scoreCareEnv = evals.length>1 ? Math.round(Double.parseDouble(evals[1])) : 0;
+                    scoreOprManage = evals.length>2 ? Math.round(Double.parseDouble(evals[2])) : 0;
+                    scoreCareCourse = evals.length>3 ? Math.round(Double.parseDouble(evals[3])) : 0;
+                    scoreTeach = evals.length>4 ? Math.round(Double.parseDouble(evals[4])) : 0;
+                    scoreHealth = evals.length>5 ? Math.round(Double.parseDouble(evals[5])) : 0;
+                    scoreSafty = evals.length>6 ? Math.round(Double.parseDouble(evals[6])) : 0;
+                }catch(NumberFormatException e){
+                    log.error("evals : {} :: {}",evals[0], e.getMessage());
+                }
             }
             this.scoreTot = scoreTot;
             this.scoreCareEnv = scoreCareEnv;

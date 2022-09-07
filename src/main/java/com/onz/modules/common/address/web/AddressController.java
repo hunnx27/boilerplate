@@ -63,7 +63,7 @@ public class AddressController extends BaseApiController {
             List<AddressSidoResponse> result2 = result.stream().map(AddressSidoResponse::new)
                     .collect(Collectors.toList());
 
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(result2));
         } catch (Exception e) {
             throw e;
         }
