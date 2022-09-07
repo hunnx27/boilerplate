@@ -104,8 +104,12 @@ public class CompanyController extends BaseApiController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "불러오기 완료", content = @Content(schema = @Schema(implementation = PathVariable.class))), @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PathVariable.class)))})
 
     @GetMapping("/companies/{id}")
-    public CompanyDetailResponse findOne(@PathVariable Long id) {
-        return companyService.findOne(id);
+    public ResponseEntity<ApiR<?>> findOne(@PathVariable Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companyService.findOne(id)));
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
 
