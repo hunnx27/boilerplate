@@ -67,7 +67,7 @@ public class CompanyController extends BaseApiController {
     @Operation(summary = "기관이름으로 검색하기", description = "기관 이름으로 레코드를 불러옵니다..")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "불러오기 완료", content = @Content(schema = @Schema(implementation = CompanySearchRequest.class))), @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanySearchRequest.class)))})
     @GetMapping("/companies/search")
-    public ResponseEntity<ApiR<?>> search(CompanySearchRequest companySearchRequest, @PageableDefault(size = 20, sort = "officeName", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<ApiR<Page<CompanySearchResponse>>> search(CompanySearchRequest companySearchRequest, @PageableDefault(size = 20, sort = "officeName", direction = Sort.Direction.ASC) Pageable pageable) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companyService.search(companySearchRequest, pageable)));
         } catch (Exception e) {

@@ -11,6 +11,7 @@ import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.PageImpl;
@@ -70,6 +71,28 @@ public class CompanyRepositoryExtensionImpl extends QuerydslRepositorySupport im
 
     @Override
     public List<CompanySearchResponse> search(CompanySearchRequest companySearchRequest, Pageable pageable) {
+        BooleanBuilder builder = searchWhere(companySearchRequest);
+
+//        jpaQueryFactory.selectFrom(company).where(builder).select(Projections.constructor(CompanySearchResponse.class)).fetch();
+         JPQLQuery<CompanySearchResponse> query = jpaQueryFactory
+                .selectFrom(company)
+                .where(builder)
+                .select(Projections.constructor(CompanySearchResponse.class, company.id, company.establishmentType, company.officeName, company.zonecode));
+        List<CompanySearchResponse> list = getQuerydsl().applyPagination(pageable, query).fetch();
+        return list;
+    }
+
+    public Long searchTotSize(CompanySearchRequest companySearchRequest){
+        BooleanBuilder builder = searchWhere(companySearchRequest);
+        Long result = jpaQueryFactory
+                .select(company.count())
+                .from(company)
+                .where(builder)
+                .fetchOne();
+        return result;
+    }
+
+    private BooleanBuilder searchWhere(CompanySearchRequest companySearchRequest){
         BooleanBuilder builder = new BooleanBuilder();
 
         if (companySearchRequest.getName() != null) {
@@ -88,14 +111,7 @@ public class CompanyRepositoryExtensionImpl extends QuerydslRepositorySupport im
                 builder.and(company.zonecode.eq(companySearchRequest.getCode()));
             }
         }
-
-//        jpaQueryFactory.selectFrom(company).where(builder).select(Projections.constructor(CompanySearchResponse.class)).fetch();
-         JPQLQuery<CompanySearchResponse> query = jpaQueryFactory
-                .selectFrom(company)
-                .where(builder)
-                .select(Projections.constructor(CompanySearchResponse.class, company.id, company.establishmentType, company.officeName, company.zonecode));
-        List<CompanySearchResponse> list = getQuerydsl().applyPagination(pageable, query).fetch();
-        return list;
+        return builder;
     }
 //        QAccount account = QAccount.account;
 //

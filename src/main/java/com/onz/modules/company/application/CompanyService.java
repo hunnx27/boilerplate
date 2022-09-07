@@ -15,6 +15,7 @@ import com.onz.modules.review.infra.CompanyReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,7 +82,7 @@ public class CompanyService {
     }
 
 
-    public List<CompanySearchResponse> search(CompanySearchRequest companySearchRequest, Pageable pageable) {
+    public Page<CompanySearchResponse> search(CompanySearchRequest companySearchRequest, Pageable pageable) {
         List<CompanySearchResponse> list = companyRepository.search(companySearchRequest, pageable);
         List<CompanySearchResponse> array = list.stream().map(res -> {
             List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(res.getZonecode());
@@ -96,6 +97,10 @@ public class CompanyService {
             }
             return res;
         }).collect(Collectors.toList());
-        return array;
+
+        Long totalSize = companyRepository.searchTotSize(companySearchRequest);
+        Page<CompanySearchResponse> pagee = new PageImpl<>(list, pageable, totalSize);
+
+        return pagee;
     }
 }
