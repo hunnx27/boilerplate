@@ -1,8 +1,11 @@
 package com.onz.modules.counsel.web;
 
+import com.onz.common.enums.Gubn;
 import com.onz.common.web.ApiR;
 import com.onz.common.web.BaseApiController;
 import com.onz.modules.auth.web.dto.UserPrincipal;
+import com.onz.modules.common.pointHistory.web.dto.response.PointHistoryResponse;
+import com.onz.modules.company.web.dto.reponse.CounselSearchCountDto;
 import com.onz.modules.counsel.application.CounselService;
 import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.web.dto.request.counsel.*;
@@ -207,7 +210,7 @@ public class CounselController extends BaseApiController {
     })
     @PutMapping("/counsel/answer/{id}/adopt")
     public void updateAnswerAdopt(@AuthenticationPrincipal UserPrincipal
-                                                             up, @RequestBody CounselAAdoptRequest counselAAdoptRequest, @PathVariable Long id) {
+                                          up, @RequestBody CounselAAdoptRequest counselAAdoptRequest, @PathVariable Long id) {
         try {
             Counsel counsel = counselService.updateAnswerAdopt(id, counselAAdoptRequest, up);
             ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(new CounselDetailResponse(counsel)));
@@ -246,6 +249,48 @@ public class CounselController extends BaseApiController {
         }
     }
 
+    @Operation(summary = "상담 검색", description = "태그를 이용해 상담을 검색합니다 #를제외함.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "접속한 계정의 포인트 조회 완료", content = @Content(schema = @Schema(implementation = PointHistoryResponse.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PointHistoryResponse.class)))
+    })
+    @GetMapping("/counsel/search/{id}")
+    public ResponseEntity<ApiR<?>> search(String tag) {
+        try {
+
+            return ResponseEntity.ok(ApiR.createSuccess(counselService.search(tag)));
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    @Operation(summary = "11123", description = "테스트중")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "접속한 계정의 포인트 조회 완료", content = @Content(schema = @Schema(implementation = PointHistoryResponse.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PointHistoryResponse.class)))
+    })
+    @GetMapping("/counsel/search/")
+    public ResponseEntity<ApiR<?>> tagMoa(String gubn) {
+        try{
+            CounselSearchCountDto result = counselService.tagmoa(gubn);
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(result));
+        }catch (Exception e){
+            throw  e;
+        }
+    }
+    @Operation(summary = "3243424", description = "테스트중")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "접속한 계정의 포인트 조회 완료", content = @Content(schema = @Schema(implementation = PointHistoryResponse.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PointHistoryResponse.class)))
+    })
+    @GetMapping("/counsel/search/tag/{code}")
+    public ResponseEntity<ApiR<?>> tagMoaGo(@PathVariable String code){
+        try{
+            CounselSearchCountDto result = counselService.tagmoa(code);
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(result));
+        }catch (Exception e){
+            throw  e;
+        }
+    }
 
 //    @PatchMapping("/counsel/{id}")
 //    public void update(@PathVariable Long id,

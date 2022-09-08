@@ -36,6 +36,17 @@ public class CounselListResponse {
         this.reportCnt = counsel.getReportCnt();
         this.createDate = counsel.getCreatedAt()!=null? counsel.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")) : "";
         this.accountId = counsel.getAccount().getId();
-        this.isMine = (counsel.getAccount().getId() == me.getId());
+        this.isMine = (counsel.getAccount().getId().equals(me.getId()));
+    }
+    public CounselListResponse(Counsel counsel) {
+        this.id = counsel.getId();
+        this.counselStateCode = counsel.getCounselState()!=null ? counsel.getCounselState().name() : "";
+        this.counselStateName = counsel.getCounselState()!=null ? counsel.getCounselState().getName() : "";
+        this.gubnName = counsel.getGubn()!=null? counsel.getGubn().getName() : "";
+        this.inputTag = counsel.getInputTag();
+        this.txt = counsel.getTxt();
+        this.reportCnt = counsel.getReportCnt();
+        this.createDate = counsel.getCreatedAt()!=null? counsel.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")) : "";
+        this.accountId = counsel.getAccount().getId();
     }
 }
