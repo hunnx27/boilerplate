@@ -8,6 +8,7 @@ import com.onz.modules.common.pointHistory.web.dto.response.PointHistoryResponse
 import com.onz.modules.company.web.dto.reponse.CounselSearchCountDto;
 import com.onz.modules.counsel.application.CounselService;
 import com.onz.modules.counsel.domain.Counsel;
+import com.onz.modules.counsel.domain.enums.QnaItem;
 import com.onz.modules.counsel.web.dto.request.counsel.*;
 import com.onz.modules.counsel.web.dto.response.CounselAnswerListResponse;
 import com.onz.modules.counsel.web.dto.response.counsel.CounselAnswerDetailResponse;
@@ -285,7 +286,7 @@ public class CounselController extends BaseApiController {
     @GetMapping("/counsel/search/tag/{code}")
     public ResponseEntity<ApiR<?>> tagMoaGo(@PathVariable String code){
         try{
-            CounselSearchCountDto result = counselService.tagmoa(code);
+            List<CounselListResponse> result = counselService.tagMoaGo(code);
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(result));
         }catch (Exception e){
             throw  e;
