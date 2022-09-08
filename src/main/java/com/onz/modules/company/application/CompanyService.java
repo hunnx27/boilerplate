@@ -81,6 +81,30 @@ public class CompanyService {
         return result;
     }
 
+    public List<CompanyJipyoResponse> findJipyos(Pageable pageable) {
+        List<Company> list = companyRepository.getListBaseCompany(pageable);
+        List<CompanyJipyoResponse> jipyoList = list.stream().map(company -> {
+            CompanyJipyoResponse result = new CompanyJipyoResponse();
+            if(company!=null){
+                List<CompanyReview> reviews = companyReviewRepository.listCompanyReviewByCompanyId(company.getId());
+                Map<String,Object> rsTot = new HashMap<>();
+                rsTot.put("기관명", company.getOfficeName());
+                AggregateCompany agg = reviews.stream().collect(AggregateCompany::new, AggregateCompany::add, AggregateCompany::merge);
+
+                result = new CompanyJipyoResponse(company, agg);
+                List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(company.getZonecode());
+                if (addressList.size() > 0) {
+                    DistinctAddressResponse address = addressList.get(0);
+                    String mapsidogunguName = address.getSidoName() + " " + address.getSigunguName();
+                    result.setMapsidogunguName(mapsidogunguName);
+                }
+            }
+            return result;
+        }).collect(Collectors.toList());
+
+        return jipyoList;
+    }
+
 
     public Page<CompanySearchResponse> search(CompanySearchRequest companySearchRequest, Pageable pageable) {
         List<CompanySearchResponse> list = companyRepository.search(companySearchRequest, pageable);

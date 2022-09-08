@@ -119,9 +119,23 @@ public class CompanyController extends BaseApiController {
     @Operation(summary = "단일 기관 지표 점수 불러오기", description = "단일 기관 지표점수를 불러옵니다..")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "불러오기 완료", content = @Content(schema = @Schema(implementation = PathVariable.class))), @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PathVariable.class)))})
     @GetMapping("/companies/{id}/jipyo")
-    public ResponseEntity<ApiR<?>> findOneJipyo(@PathVariable Long id) {
+    public ResponseEntity<ApiR<CompanyJipyoResponse>> findOneJipyo(@PathVariable Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companyService.findOneJipyo(id)));
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    /**
+     * 리뷰 슬라이더 탑 4
+     **/
+    @Operation(summary = "기관 별 지표 점수 불러오기", description = "기관 별 지표 점수 불러옵니다..")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "불러오기 완료", content = @Content(schema = @Schema(implementation = PathVariable.class))), @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PathVariable.class)))})
+    @GetMapping("/companies/jipyos")
+    public ResponseEntity<ApiR<List<CompanyJipyoResponse>>> findJipyos(@PageableDefault(size = 4, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companyService.findJipyos(pageable)));
         } catch (Exception e) {
             throw e;
         }

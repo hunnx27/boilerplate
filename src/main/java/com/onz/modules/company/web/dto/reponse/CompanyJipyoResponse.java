@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 @Slf4j
 public class CompanyJipyoResponse {
+    private Long id;
     private String officeName;
     private String establishmentTypeName;
     private long jipyoScore;
@@ -23,6 +24,7 @@ public class CompanyJipyoResponse {
     private String mapsidogunguName;
 
     public CompanyJipyoResponse(Company company, AggregateCompany aggCompany) {
+        this.id = company.getId();
         this.officeName = company.getOfficeName();
         this.establishmentTypeName = company.getEstablishmentType().getName();
         this.starAvgJumsu = aggCompany!=null? Math.round(aggCompany.getAvgStarJumsu() * 10) / (double)10 : 0.0;
