@@ -282,7 +282,7 @@ public class CounselController extends BaseApiController {
             @ApiResponse(responseCode = "200", description = "접속한 계정의 포인트 조회 완료", content = @Content(schema = @Schema(implementation = PointHistoryResponse.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PointHistoryResponse.class)))
     })
-    @GetMapping("/counsel/search/tag/{code}")
+    @GetMapping("/counsel/search/gubn/{code}")
     public ResponseEntity<ApiR<?>> tagMoaGo(@PathVariable String code){
         try{
             CounselSearchCountDto result = counselService.tagmoa(code);
@@ -291,6 +291,42 @@ public class CounselController extends BaseApiController {
             throw  e;
         }
     }
+    @Operation(summary = "3243424", description = "테스트중")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "접속한 계정의 포인트 조회 완료", content = @Content(schema = @Schema(implementation = PointHistoryResponse.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PointHistoryResponse.class)))
+    })
+
+    //TODO
+    //TODO
+    //TODO
+    //TODO 태그로 검색하는 API
+    @GetMapping("/counsel/search/tag/{code}")
+    public ResponseEntity<ApiR<?>> searchTag(@PathVariable String code){
+        try{
+            //CounselSearchCountDto result = counselService.tagmoa(code);
+            CounselSearchCountDto result = null;
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(result));
+        }catch (Exception e){
+            throw  e;
+        }
+    }
+
+    //TODO
+    //TODO
+    //TODO
+    //TODO qnaitem으로 검색하는 API
+    @GetMapping("/counsel/search/qnaitem/{code}")
+    public ResponseEntity<ApiR<?>> searchQnaItem(@PathVariable String code){
+        try{
+            //CounselSearchCountDto result = counselService.tagmoa(code);
+            CounselSearchCountDto result = null;
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(result));
+        }catch (Exception e){
+            throw  e;
+        }
+    }
+
 
 //    @PatchMapping("/counsel/{id}")
 //    public void update(@PathVariable Long id,
