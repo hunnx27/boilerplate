@@ -268,7 +268,7 @@ public class CounselController extends BaseApiController {
             @ApiResponse(responseCode = "200", description = "접속한 계정의 포인트 조회 완료", content = @Content(schema = @Schema(implementation = PointHistoryResponse.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PointHistoryResponse.class)))
     })
-    @GetMapping("/counsel/search/")
+    @GetMapping("/counsel/search")
     public ResponseEntity<ApiR<?>> tagMoa(String gubn) {
         try{
             CounselSearchCountDto result = counselService.tagmoa(gubn);
