@@ -34,6 +34,28 @@ public class CompanyRepositoryExtensionImpl extends QuerydslRepositorySupport im
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
+    private BooleanBuilder searchWhere(CompanySearchRequest companySearchRequest){
+        BooleanBuilder builder = new BooleanBuilder();
+
+        if (companySearchRequest.getName() != null) {
+            builder.and(company.officeName.contains(companySearchRequest.getName()));
+        }
+        if (companySearchRequest.getInterestCompany() != null){
+            builder.and(company.interestCompany.eq(companySearchRequest.getInterestCompany()));
+        }
+        if (companySearchRequest.getCode() !=null) {
+            if (companySearchRequest.getCode().length()<3) {
+//                String first_request = companySearchRequest.getCode();
+//                builder.and(company.zonecode.substring(0,2).eq(first_request));
+                String first_request = companySearchRequest.getCode().substring(0,2);//시
+                builder.and(company.zonecode.startsWith(first_request));
+            }else{
+                builder.and(company.zonecode.eq(companySearchRequest.getCode()));
+            }
+        }
+        return builder;
+    }
+
     @Override
     public List<CompanyDetailResponse> convertlist(Company company) {
         QCompany qc=QCompany.company;
@@ -92,27 +114,21 @@ public class CompanyRepositoryExtensionImpl extends QuerydslRepositorySupport im
         return result;
     }
 
-    private BooleanBuilder searchWhere(CompanySearchRequest companySearchRequest){
+    public List<Company> getListBaseCompany(Pageable pageable){
         BooleanBuilder builder = new BooleanBuilder();
 
-        if (companySearchRequest.getName() != null) {
-            builder.and(company.officeName.contains(companySearchRequest.getName()));
-        }
-        if (companySearchRequest.getInterestCompany() != null){
-            builder.and(company.interestCompany.eq(companySearchRequest.getInterestCompany()));
-        }
-        if (companySearchRequest.getCode() !=null) {
-            if (companySearchRequest.getCode().length()<3) {
-//                String first_request = companySearchRequest.getCode();
-//                builder.and(company.zonecode.substring(0,2).eq(first_request));
-                String first_request = companySearchRequest.getCode().substring(0,2);//시
-                builder.and(company.zonecode.startsWith(first_request));
-            }else{
-                builder.and(company.zonecode.eq(companySearchRequest.getCode()));
-            }
-        }
-        return builder;
+        builder.and(company.isDelete.eq(YN.N));
+        builder.and(company.useYn.eq(YN.Y));
+
+        JPQLQuery<Company> query = jpaQueryFactory
+                .selectFrom(company)
+                .where(builder);
+
+        List<Company> result = getQuerydsl().applyPagination(pageable, query).fetch();
+        return result;
     }
+
+
 //        QAccount account = QAccount.account;
 //
 //        // 조건생성

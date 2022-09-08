@@ -18,4 +18,5 @@ public interface CompanyRepositoryExtension {
     List<CompanySearchResponse> search(CompanySearchRequest companySearchRequest, Pageable pageable);
     Long searchTotSize(CompanySearchRequest companySearchRequest);
     void update(CompanyUpdateRequest updateRequest);
+    List<Company> getListBaseCompany(Pageable pageable);
 }
