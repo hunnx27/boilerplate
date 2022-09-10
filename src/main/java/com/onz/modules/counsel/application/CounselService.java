@@ -5,7 +5,6 @@ import com.onz.common.util.FileUtil;
 import com.onz.common.util.dto.AttachDto;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
-import com.onz.modules.account.domain.QAccount;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.company.web.dto.reponse.CounselSearchCountDto;
 import com.onz.modules.counsel.domain.Counsel;
@@ -20,13 +19,11 @@ import com.onz.modules.counsel.web.dto.response.CounselAnswerListResponse;
 import com.onz.modules.counsel.web.dto.response.counsel.CounselAnswerDetailResponse;
 import com.onz.modules.counsel.web.dto.response.counsel.CounselDetailResponse;
 import com.onz.modules.counsel.web.dto.response.counsel.CounselListResponse;
-import com.onz.modules.review.domain.enums.ItemCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -345,28 +342,26 @@ public class CounselService {
 
         return counselSearchCountDto;
     }
+
     /**
      * //FIXME  ---> Code로 검색하자!
      */
-//    public List<CounselListResponse> tagMoaGo(String code){
-//        List<Counsel> counsel = counselRepository.findAll();
-//        QnaItem qnaItem = new ();
-//        List<CounselListResponse> result = counsel.stream().map(res -> {
-//            if (null == res.getInputTag()) {
-//
-//            } else {
-//                String date[] = res.getInputTag().split("#");
-//                System.out.println(date);
-//                for (int i = 0; i < date.length; i++) {
-//                    if (qnaItem.getCode().equals(date[i])) {
-//                        return new CounselListResponse(res);
-//                    }
-//                }
-//            }
-//            return null;
-//        }).collect(Collectors.toList());
-//        return result;
-//    }
+    public List<CounselListResponse> tagMoaGo(String qnaItem) {
+        List<Counsel> counsel = counselRepository.findAll();
+        List<CounselListResponse> result = counsel.stream().map(res -> {
+            if (null == res.getInputTag()) {
+                // Empty
+            } else {
+                if (res.getQnaItem().name().equals(qnaItem)) {
+                    return new CounselListResponse(res);
+                }else{
+
+                }
+            }
+            return null;
+        }).collect(Collectors.toList());
+        return result;
+    }
 
 //    public void update(OrganizationUpdateRequest updateRequest) {
 //        CounselService.this.counselRepository.update(updateRequest);
