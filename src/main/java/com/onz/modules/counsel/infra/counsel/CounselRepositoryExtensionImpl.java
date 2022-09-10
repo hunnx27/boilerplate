@@ -5,6 +5,9 @@ import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.domain.QCounsel;
 import com.onz.modules.counsel.domain.enums.CounselState;
 import com.onz.modules.counsel.domain.enums.QnaGubn;
+import com.onz.modules.counsel.domain.enums.QnaItem;
+import com.onz.modules.counsel.web.dto.request.counsel.CounselSearchRequest;
+import com.onz.modules.counsel.web.dto.request.counsel.enums.CounselSearchType;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.JPQLQuery;
@@ -13,7 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CounselRepositoryExtensionImpl extends QuerydslRepositorySupport implements
         CounselRepositoryExtension {
@@ -38,9 +43,28 @@ public class CounselRepositoryExtensionImpl extends QuerydslRepositorySupport im
     }
 
     @Override
-    public List<Counsel> findCounselList(Pageable pageable) {
+    public List<Counsel> findCounselList(CounselSearchRequest counselSearchRequest, Pageable pageable) {
         QCounsel counsel = QCounsel.counsel;
         BooleanBuilder where = new BooleanBuilder();
+
+        if(counselSearchRequest.getGubn() != null){
+            where.and(counsel.gubn.eq(counselSearchRequest.getGubn()));
+        }
+        if(counselSearchRequest.getCounselSearchType() !=null){
+            switch(counselSearchRequest.getCounselSearchType()){
+                case QNA_ITEM:
+                    List<String> list = Arrays.stream(QnaItem.values()).map(qnaItem -> qnaItem.name()).collect(Collectors.toList());
+                    if(list.contains(counselSearchRequest.getKeyword())) {
+                        where.and(counsel.qnaItem.eq(QnaItem.valueOf(counselSearchRequest.getKeyword())));
+                    }
+                    break;
+                case HASHTAG:
+                    if(counselSearchRequest.getKeyword()!=null && !"".equals(counselSearchRequest.getKeyword())){
+                        where.and(counsel.inputTag.contains("#".concat(counselSearchRequest.getKeyword())));
+                    }
+                    break;
+            }
+        }
         where.and(counsel.qnaGubn.eq(QnaGubn.Q));
         where.and(counsel.openYn.eq(YN.Y));
         where.and(counsel.isDelete.eq(YN.N));

@@ -1,5 +1,6 @@
 package com.onz.modules.counsel.application;
 
+import com.onz.common.enums.Gubn;
 import com.onz.common.enums.YN;
 import com.onz.common.util.FileUtil;
 import com.onz.common.util.dto.AttachDto;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,9 +74,9 @@ public class CounselService {
         }
     }
 
-    public List<CounselListResponse> list(Pageable pageable, UserPrincipal me) {
+    public List<CounselListResponse> list(CounselSearchRequest counselSearchRequest, Pageable pageable, UserPrincipal me) {
         Account account = accountService.findOne(me.getId());
-        List<Counsel> list = counselRepository.findCounselList(pageable);
+        List<Counsel> list = counselRepository.findCounselList(counselSearchRequest, pageable);
         List<CounselListResponse> result = list.stream().map(counsel -> new CounselListResponse(counsel, account)).collect(Collectors.toList());
         return result;
     }
@@ -253,6 +255,11 @@ public class CounselService {
     }
 
     public CounselSearchCountDto tagmoa(String gubn) {
+        List gubnCodeList = Arrays.stream(Gubn.values()).map(gubn1 -> gubn1.name()).collect(Collectors.toList());
+        String gubnCode = Gubn.TEACHER.getCode();
+        if(gubnCodeList.contains(gubn)){
+            gubnCode = Gubn.valueOf(gubn).getCode();
+        }
         List<CounselSearchCountDto.QnaItemInfo> qnaList = new ArrayList<>();
         q1 = 0L;
         q2 = 0L;
@@ -262,8 +269,9 @@ public class CounselService {
         q6 = 0L;
         q7 = 0L;
         List<Counsel> counsel = counselRepository.findAll();
+        final String finalGubnCode = gubnCode;
         List<Counsel> result = counsel.stream().map(res -> {
-                    if (res.getGubn().getCode().equals(gubn)) {
+                    if (res.getGubn().getCode().equals(finalGubnCode)) {
                         if (res.getQnaItem() == null) {
                         } else {
                             if (res.getGubn().getCode().equals("I")) {
@@ -321,7 +329,7 @@ public class CounselService {
 
                 collect(Collectors.toList());
         CounselSearchCountDto counselSearchCountDto = new CounselSearchCountDto();
-        if (gubn.equals("I")) {
+        if (finalGubnCode.equals("I")) {
             qnaList.add(CounselSearchCountDto.QnaItemInfo.builder().item(QnaItem.QI01).cnt(q1).build());
             qnaList.add(CounselSearchCountDto.QnaItemInfo.builder().item(QnaItem.QI02).cnt(q2).build());
             qnaList.add(CounselSearchCountDto.QnaItemInfo.builder().item(QnaItem.QI03).cnt(q3).build());
@@ -329,7 +337,7 @@ public class CounselService {
             qnaList.add(CounselSearchCountDto.QnaItemInfo.builder().item(QnaItem.QI05).cnt(q5).build());
             qnaList.add(CounselSearchCountDto.QnaItemInfo.builder().item(QnaItem.QI06).cnt(q6).build());
             counselSearchCountDto.setQnaList(qnaList);
-        } else if (gubn.equals("S")) {
+        } else if (finalGubnCode.equals("S")) {
             qnaList.add(CounselSearchCountDto.QnaItemInfo.builder().item(QnaItem.QS01).cnt(q1).build());
             qnaList.add(CounselSearchCountDto.QnaItemInfo.builder().item(QnaItem.QS02).cnt(q2).build());
             qnaList.add(CounselSearchCountDto.QnaItemInfo.builder().item(QnaItem.QS03).cnt(q3).build());
