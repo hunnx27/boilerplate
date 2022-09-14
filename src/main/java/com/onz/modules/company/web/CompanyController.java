@@ -126,7 +126,6 @@ public class CompanyController extends BaseApiController {
             throw e;
         }
     }
-
     /**
      * 리뷰 슬라이더 탑 4
      **/

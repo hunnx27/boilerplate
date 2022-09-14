@@ -7,19 +7,18 @@ import com.onz.modules.company.web.dto.reponse.CompanyReviewListResponseDto;
 import com.onz.modules.company.web.dto.reponse.InterviewListResponseDto;
 import com.onz.modules.company.web.dto.reponse.InterviewcountResponsedto;
 import com.onz.modules.company.web.dto.reponse.YearAmtListResponseDto;
-import com.onz.modules.company.web.dto.request.AvgReqestDto;
 import com.onz.modules.company.web.dto.request.CompanySearchRequest;
 import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
 import com.onz.modules.company.infra.CompanyRepository;
 import com.onz.modules.review.domain.CompanyReview;
 import com.onz.modules.review.domain.InterviewReview;
-import com.onz.modules.review.domain.YearAmtReview;
 import com.onz.modules.review.domain.dto.ReviewAll;
 import com.onz.modules.review.infra.AmtReviewRepository;
 import com.onz.modules.review.infra.CompanyReviewRepository;
 import com.onz.modules.review.infra.InterviewReviewRepository;
 import com.onz.modules.review.infra.ReviewRepository;
 import com.onz.modules.review.web.dto.*;
+import com.querydsl.jpa.impl.JPAQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -31,6 +30,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.lang.Double.max;
@@ -70,7 +70,7 @@ public class ReviewService {
     public List<YearAmtListResponseDto> companySearchAmt(@PathVariable Long id) {
         List<YearAmtListResponseDto> list = amtReviewRepository.findByCompanyId(id);
         List<YearAmtListResponseDto> array = list.stream().map(res -> {
-        List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(res.zoneCode);
+            List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(res.zoneCode);
         if (addressList.size() > 0) {
             DistinctAddressResponse address = addressList.get(0);
             String mapsidogunguName = address.getSidoName() + " " + address.getSigunguName();
@@ -251,6 +251,7 @@ public class ReviewService {
         }).collect(Collectors.toList());
         return array;
     }
+
 
     public void create(Company company) {
         companyRepository.save(company);

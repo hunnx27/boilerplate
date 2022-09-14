@@ -13,7 +13,8 @@ public enum EstablishmentType {
     C05("가정", "05"),
     C06("직장", "06"),
     C07("부모협동", "07"),
-    C99("기타", "99")
+    C99("기타", "99"),
+    all("전체","09")
     ;
 
     String name;

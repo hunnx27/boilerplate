@@ -35,6 +35,7 @@ public class CompanyReviewRepositoryExtensionImpl extends QuerydslRepositorySupp
         where.and(qCompanyReview.isDelete.eq(YN.N));
         where.and(qCompanyReview.company.id.eq(companyId));
 
+
         List<CompanyReview> list = jpaQueryFactory
                 .selectFrom(qCompanyReview)
                 .where(where)

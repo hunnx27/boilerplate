@@ -8,12 +8,14 @@ import com.onz.modules.company.web.dto.reponse.CompanyDetailResponse;
 import com.onz.modules.company.web.dto.reponse.CompanySearchResponse;
 import com.onz.modules.company.web.dto.request.CompanySearchRequest;
 import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
+import com.onz.modules.review.web.dto.FindEstaRequestDto;
+import com.onz.modules.review.web.dto.ReviewResponseDto;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -142,7 +144,6 @@ public class CompanyRepositoryExtensionImpl extends QuerydslRepositorySupport im
 //
 //        return Optional.ofNullable(findedAccount);
 //    }
-
 
     @Override
     public void update(CompanyUpdateRequest updateRequest) {

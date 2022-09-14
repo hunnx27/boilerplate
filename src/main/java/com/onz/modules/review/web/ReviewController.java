@@ -4,13 +4,10 @@ import com.onz.common.web.ApiR;
 import com.onz.common.web.BaseApiController;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.company.application.CompanyService;
-import com.onz.modules.company.web.dto.reponse.CompanyReviewListResponseDto;
-import com.onz.modules.company.web.dto.reponse.InterviewListResponseDto;
 import com.onz.modules.review.application.AmtReviewService;
 import com.onz.modules.review.application.CompanyReviewService;
 import com.onz.modules.review.application.InterviewService;
 import com.onz.modules.review.application.ReviewService;
-import com.onz.modules.review.domain.InterviewReview;
 import com.onz.modules.review.domain.YearAmtReview;
 import com.onz.modules.review.web.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,8 +25,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /*
 레거시 많아서 정리가 필요함
@@ -89,13 +84,13 @@ public class ReviewController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = YearAmtReview.class)))
     })
     @GetMapping("/reviews/amts")
-    public ResponseEntity<ApiR<?>> amtReviewList(
+    public ResponseEntity<ApiR<?>> amtReviewList(FindEstaRequestDto findEstaRequestDto,
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
                     Pageable pageable
     ) {
 
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(amtReviewService.amtReviewList(pageable)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(amtReviewService.amtReviewList(findEstaRequestDto,pageable)));
         } catch (Exception e) {
             throw e;
             //return ApiR.createError(e.getMessage());
@@ -103,6 +98,25 @@ public class ReviewController extends BaseApiController {
         //return ApiR.createSuccess(amtReviewService.amtReviewList(pageable));
     }
 
+//    @Operation(summary = "연봉리뷰 보기에서 상세검색", description = "연봉 리뷰를 조회합니다..")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "조회 완료", content = @Content(schema = @Schema(implementation = YearAmtReview.class))),
+//            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = YearAmtReview.class)))
+//    })
+//    @GetMapping("/reviews/amt/find")
+//    public ResponseEntity<ApiR<?>> amtReviewListfind(
+//            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
+//                    Pageable pageable, FindEstaRequestDto findEstaRequestDto
+//    ) {
+//
+//        try {
+//            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(amtReviewService.amtReviewListfind(pageable)));
+//        } catch (Exception e) {
+//            throw e;
+//            //return ApiR.createError(e.getMessage());
+//        }
+//        //return ApiR.createSuccess(amtReviewService.amtReviewList(pageable));
+//    }
     /*
     Interview
      */

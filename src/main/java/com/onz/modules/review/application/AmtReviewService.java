@@ -64,8 +64,8 @@ public class AmtReviewService {
         return yearAmtAvgResponseDto;
     }
 
-    public List<YearAmtListResponseDto> amtReviewList(Pageable pageable) {
-        List<YearAmtListResponseDto> list = amtReviewRepository.ListAmt(amtReviewRepository.findAll(pageable).toList());
+    public List<YearAmtListResponseDto> amtReviewList(FindEstaRequestDto findEstaRequestDto,Pageable pageable) {
+        List<YearAmtListResponseDto> list = amtReviewRepository.ListAmt(findEstaRequestDto,pageable);
         List<YearAmtListResponseDto> array = list.stream().map(res -> {
             String[] one = res.getEtcItems().split(",");
             String[] two = res.getEtcAmt().split(",");

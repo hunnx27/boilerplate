@@ -1,10 +1,9 @@
 package com.onz.modules.review.infra;
 
 
-import com.onz.modules.company.domain.Company;
-import com.onz.modules.company.web.dto.request.CompanySearchRequest;
-import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
-import org.springframework.data.domain.PageImpl;
+import com.onz.modules.review.domain.dto.ReviewAll;
+
+import java.util.List;
 
 public interface ReviewRepositoryExtension {
 

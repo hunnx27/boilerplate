@@ -15,5 +15,4 @@ public class ReviewRepositoryExtensionImpl extends QuerydslRepositorySupport imp
         super(Company.class);
         this.jpaQueryFactory = jpaQueryFactory;
     }
-
 }
