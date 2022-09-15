@@ -141,12 +141,12 @@ public class ReviewController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = YearAmtReview.class)))
     })
     @GetMapping("/reviews/interviews")
-    public ResponseEntity<ApiR<?>> interviewReviewList(
+    public ResponseEntity<ApiR<?>> interviewReviewList(FindEstaRequestDto findEstaRequestDto,
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
                     Pageable pageable
     ) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(interviewService.interviewReviewList(pageable)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(interviewService.interviewReviewList(findEstaRequestDto,pageable)));
         } catch (Exception e) {
             throw e;
         }
@@ -176,12 +176,12 @@ public class ReviewController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = YearAmtReview.class)))
     })
     @GetMapping("/reviews/companies")
-    public ResponseEntity<ApiR<?>> companyReviewList(
+    public ResponseEntity<ApiR<?>> companyReviewList(FindEstaRequestDto findEstaRequestDto,
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
                     Pageable pageable
     ) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companyReviewService.companyReviewList(pageable)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companyReviewService.companyReviewList(findEstaRequestDto,pageable)));
         } catch (Exception e) {
             throw e;
         }

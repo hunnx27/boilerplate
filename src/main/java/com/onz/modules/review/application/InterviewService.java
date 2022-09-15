@@ -12,6 +12,7 @@ import com.onz.modules.review.domain.InterviewReviewItem;
 import com.onz.modules.review.infra.InterviewReviewRepository;
 import com.onz.modules.review.infra.InterviewReviewItemRepository;
 import com.onz.modules.company.web.dto.reponse.InterviewListResponseDto;
+import com.onz.modules.review.web.dto.FindEstaRequestDto;
 import com.onz.modules.review.web.dto.InterviewRequestDto;
 import com.onz.modules.review.web.dto.InterviewReviewDetailResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -57,8 +58,8 @@ public class InterviewService {
         }
         return interviewReview;
     }
-    public List<InterviewListResponseDto> interviewReviewList(Pageable pageable) {
-        List<InterviewListResponseDto> list =  interviewReviewRepository.ListInterview(interviewReviewRepository.findAll(pageable).toList());
+    public List<InterviewListResponseDto> interviewReviewList(FindEstaRequestDto findEstaRequestDto, Pageable pageable) {
+        List<InterviewListResponseDto> list =  interviewReviewRepository.ListInterview(findEstaRequestDto,pageable);
         List<InterviewListResponseDto> array = list.stream().map(res -> {
 //           String q_1 =(interviewReviewItemRepository.getById(res.getId()).getInterviewQ());
 //            res.setQ_1(q_1);
