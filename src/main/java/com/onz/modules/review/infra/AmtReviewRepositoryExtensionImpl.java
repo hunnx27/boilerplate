@@ -11,6 +11,7 @@ import com.onz.modules.review.web.dto.FindEstaRequestDto;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.EnumPath;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
@@ -34,19 +35,33 @@ public class AmtReviewRepositoryExtensionImpl extends QuerydslRepositorySupport 
     public List<YearAmtListResponseDto> ListAmt(FindEstaRequestDto findEstaRequestDto, Pageable pageable) {
         QYearAmtReview qYearAmtReview = QYearAmtReview.yearAmtReview;
         BooleanBuilder where = new BooleanBuilder();
+        String zoneCode = findEstaRequestDto.getSido() + findEstaRequestDto.getGungu();
         if (qYearAmtReview.company.zonecode != null) {
-            if (qYearAmtReview.company.zonecode.toString().length() == 4) {
-                where.and(qYearAmtReview.company.zonecode.eq(findEstaRequestDto.getSido()));
-                where.and(qYearAmtReview.company.zonecode.eq(findEstaRequestDto.getSigungu()));
-            } else if (qYearAmtReview.company.zonecode.toString().length() < 3) {
-                where.and(qYearAmtReview.company.zonecode.startsWith(findEstaRequestDto.getSido()));
+            if (findEstaRequestDto.getSido() != null) {
+                //sido가 널이 아닐떄
+                if (findEstaRequestDto.getSido() == null) {
+                    //모두검색
+                }
+                if (findEstaRequestDto.getGungu() == null) {//Sido값은들어옴 ,만약 군구가 널이라면
+                    where.and(qYearAmtReview.company.zonecode.startsWith(findEstaRequestDto.getSido()));//시도로검색
+                } else {
+                    //만약 null이 아니라면
+                    where.and((qYearAmtReview.company.zonecode.eq(zoneCode)));
+                }
             }
         }
         if (qYearAmtReview.company.establishmentType != null) {
-            where.and(qYearAmtReview.company.establishmentType.eq(findEstaRequestDto.getEstablishmentType()));
+            if (findEstaRequestDto.getEstablishmentType().name().equals("all")) {
+                //all
+            } else {
+                where.and(qYearAmtReview.company.establishmentType.eq(findEstaRequestDto.getEstablishmentType()));
+            }
         }
         if (qYearAmtReview.company.interestCompany != null) {
-            where.and(qYearAmtReview.company.interestCompany.eq(findEstaRequestDto.getInterestCompany()));
+            if (findEstaRequestDto.getInterestCompany().name().equals("all")) {
+            } else {
+                where.and(qYearAmtReview.company.interestCompany.eq(findEstaRequestDto.getInterestCompany()));
+            }
         }
 
         JPQLQuery<YearAmtReview> result = from(qYearAmtReview).where(where);

@@ -12,6 +12,6 @@ public class FindEstaRequestDto extends BasePageRequest {
     private InterestCompany interestCompany;
     private EstablishmentType establishmentType;
     private String sido;
-    private String sigungu;
+    private String gungu;
 
 }

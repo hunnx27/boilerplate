@@ -51,7 +51,6 @@ public class YearAmtListResponseDto extends ReviewCommonResponseDto {
             String key = one[i];
             String value = two[i];
             map.put(key, value);
-            total += Integer.parseInt(value);
 
             switch (key) {
                 case "1":

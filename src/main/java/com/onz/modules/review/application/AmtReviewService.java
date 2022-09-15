@@ -75,6 +75,7 @@ public class AmtReviewService {
                 String key = one[i];
                 String value = two[i];
                 map.put(key, value);
+                //value String 분기처리
                 total += Integer.parseInt(value);
 
                 switch (key) {
