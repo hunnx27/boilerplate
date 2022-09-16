@@ -13,6 +13,7 @@ import com.onz.modules.company.infra.CompanyRepository;
 import com.onz.modules.review.domain.CompanyReview;
 import com.onz.modules.review.domain.InterviewReview;
 import com.onz.modules.review.domain.dto.ReviewAll;
+import com.onz.modules.review.domain.dto.ReviewAllDto;
 import com.onz.modules.review.infra.AmtReviewRepository;
 import com.onz.modules.review.infra.CompanyReviewRepository;
 import com.onz.modules.review.infra.InterviewReviewRepository;
@@ -204,8 +205,8 @@ public class ReviewService {
         return new InterviewcountResponsedto(writCount, patCount, mockCount, lowLevCount, midLevCount, highLevCount, totalLevel,goalCount,waitCount,noCount,totalGoal);
     }
 
-    public List<ReviewResponseDto> findByAllReview(Pageable pageable) {
-        List<ReviewAll> list = reviewRepository.findByAllReview(pageable);
+    public List<ReviewResponseDto> findByAllReview(FindEstaRequestDto findEstaRequestDto,Pageable pageable) {
+        List<ReviewAllDto> list = reviewRepository.findByAllReview(findEstaRequestDto,pageable);
 //        List<ReviewAll>  >> List<ReviewResponseDto>
         List<ReviewResponseDto> array = list.stream().map(res -> {
             ReviewResponseDto aaa = new ReviewResponseDto(res);

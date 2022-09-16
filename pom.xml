@@ -158,6 +158,12 @@
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.6.7</version>
         </dependency>
+        <!-- queryDsl NativeQuery Mapper-->
+        <dependency>
+            <groupId>ch.simas.qlrm</groupId>
+            <artifactId>qlrm</artifactId>
+            <version>1.7.1</version>
+        </dependency>
 
 
 

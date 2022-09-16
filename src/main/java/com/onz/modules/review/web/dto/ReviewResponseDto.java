@@ -5,6 +5,7 @@ import com.onz.common.web.BaseApiController;
 import com.onz.modules.company.domain.enums.EstablishmentType;
 import com.onz.modules.review.domain.CompanyReview;
 import com.onz.modules.review.domain.dto.ReviewAll;
+import com.onz.modules.review.domain.dto.ReviewAllDto;
 import com.onz.modules.review.domain.enums.ItemCode;
 import lombok.Data;
 import lombok.Getter;
@@ -88,7 +89,7 @@ public class ReviewResponseDto extends ReviewCommonResponseDto{
 //    private YN annYn;
 //    private Long amtOld;
 
-    public ReviewResponseDto(ReviewAll reviewAll) {
+    public ReviewResponseDto(ReviewAllDto reviewAll) {
         this.Type =reviewAll.getType();
         this.id = reviewAll.getId();
         this.itemTest1 = reviewAll.getItem_1()!=null? "O" : "X";

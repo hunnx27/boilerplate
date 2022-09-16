@@ -6,6 +6,7 @@ import com.onz.common.util.dto.AttachDto;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.company.domain.Company;
 import com.onz.modules.review.domain.dto.ReviewAll;
+import com.onz.modules.review.domain.dto.ReviewAllDto;
 import com.onz.modules.review.domain.embed.Images;
 import com.onz.modules.review.domain.enums.ItemCode;
 import com.onz.modules.review.web.dto.CompanyReviewRequestDto;
@@ -134,7 +135,7 @@ public class CompanyReview extends BaseEntity {
     }
 
     // 점수 계산을 위한 셋팅
-    public CompanyReview(ReviewAll reviewAll) {
+    public CompanyReview(ReviewAllDto reviewAll) {
         this.itemB1 = reviewAll.getItemB1();
         this.itemB2 = reviewAll.getItemB2();
         this.itemB3 = reviewAll.getItemB3();

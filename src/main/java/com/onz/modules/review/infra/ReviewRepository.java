@@ -3,10 +3,12 @@ package com.onz.modules.review.infra;
 
 import com.onz.modules.company.domain.Company;
 import com.onz.modules.review.domain.dto.ReviewAll;
+import com.onz.modules.review.web.dto.FindEstaRequestDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Company, Long>,
@@ -192,7 +194,7 @@ public interface ReviewRepository extends JpaRepository<Company, Long>,
 //            "NULL AS item_2 , NULL AS item_3 , NULL AS item_4 , NULL AS item_5 , NULL AS item_6, NULL AS topq1 " +
 //            "FROM company_review cr";
 
-    @Query(value = FIND_ALL_IDS, nativeQuery = true)
-    List<ReviewAll> findByAllReview(Pageable pageable);
+//    @Query(value = FIND_ALL_IDS, nativeQuery = true)
+//    List<ReviewAll> findByAllReview(FindEstaRequestDto findEstaRequestDto,Pageable pageable);
 
 }

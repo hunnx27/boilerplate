@@ -15,3 +15,9 @@ public class FindEstaRequestDto extends BasePageRequest {
     private String gungu;
 
 }
+/*
+{
+  "interestCompany": "daycarecenter",
+  "establishmentType": "all"
+}
+ */

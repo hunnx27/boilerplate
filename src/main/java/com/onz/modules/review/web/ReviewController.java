@@ -50,11 +50,11 @@ public class ReviewController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = ReviewResponseDto.class)))
     })
     @GetMapping("/reviews/all")
-    public ResponseEntity<ApiR<?>> findByAllReview(
+    public ResponseEntity<ApiR<?>> findByAllReview( FindEstaRequestDto findEstaRequestDto,
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
                     Pageable pageable) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(reviewService.findByAllReview(pageable)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(reviewService.findByAllReview(findEstaRequestDto,pageable)));
         } catch (Exception e) {
             throw e;
         }
@@ -68,7 +68,7 @@ public class ReviewController extends BaseApiController {
             @ApiResponse(responseCode = "200", description = "리뷰 등록 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
     })
-    @PostMapping("/review/amt")
+    @PostMapping("/reviews/amt")
     public void create(@AuthenticationPrincipal UserPrincipal me, @RequestBody AmtRequestDto amtRequestDto) {
         try {
             amtReviewService.create(amtRequestDto, me);
