@@ -23,7 +23,7 @@ Boiler Plate
 - JDBC URL을 jdbc:h2:mem:test로 맞추고 접속
 
 
-## DB 설정
+## `DB 설정
 ```
 docker pull mysql
 docker run --name mysql -e MYSQL_ROOT_PASSWORD=<password> -d -p 3306:3306 mysql
