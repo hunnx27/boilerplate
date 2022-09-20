@@ -14,9 +14,6 @@ import com.onz.modules.common.pointHistory.domain.PointHistory;
 import com.onz.modules.common.pointHistory.domain.enums.PointTable;
 import com.onz.modules.common.pointHistory.infra.PointHistoryRepository;
 import com.onz.modules.common.pointHistory.web.dto.response.PointHistoryResponse;
-import com.onz.modules.education.application.EducationService;
-import com.onz.modules.education.domain.Education;
-import com.onz.modules.education.infra.EducationRepository;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.infra.AccountRepository;
 import com.onz.common.enums.YN;
@@ -42,8 +39,6 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final AccountConverter accountConverter;
-    private final EducationRepository educationRepository;
-    private final EducationService educationService;
     private final PasswordEncoder passwordEncoder;
     private final PointHistoryRepository pointHistoryRepository;
 
@@ -71,11 +66,6 @@ public class AccountService {
 
     public boolean delete(Long id) {
         Account account = accountRepository.deleteAccount(id);
-        if (account.getIsDelete().equals(YN.Y)) {
-            List<Education> educationsByAccounts = educationRepository.findEducationsByAccounts(
-                account);
-            educationsByAccounts.forEach(education -> education.removeAccount(account));
-        }
 
         return true;
     }
@@ -96,11 +86,6 @@ public class AccountService {
         account.setIsDelete(YN.Y);
         accountRepository.save(account);
         return account;
-    }
-
-    public List<Education> educations(Long id) {
-        Account account = accountRepository.findById(id).orElseThrow();
-        return educationRepository.findEducationsByAccounts(account);
     }
 
     public Account getNewUser(SignupRequest signupRequest){

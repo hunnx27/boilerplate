@@ -11,9 +11,6 @@ import com.onz.common.enums.Role;
 import com.onz.common.domain.BaseEntity;
 import com.onz.modules.auth.application.util.MysqlAESUtil;
 import com.onz.modules.auth.application.util.MysqlSHA2Util;
-import com.onz.modules.education.domain.Education;
-import com.onz.modules.company.domain.Company;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Builder;
@@ -22,7 +19,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -61,17 +57,6 @@ public class Account extends BaseEntity {
 
 
     private String temp;
-
-    @ManyToMany(mappedBy = "accounts", fetch = FetchType.LAZY)
-    @JsonBackReference
-    private Set<Education> educations = new HashSet<>();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Company company;
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "director", fetch = FetchType.LAZY)
-    private Company director;
 
     @Builder
     public Account(String userId, Gubn gubn, Role role, AuthProvider provider) {
