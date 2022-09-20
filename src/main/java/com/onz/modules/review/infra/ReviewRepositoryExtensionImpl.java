@@ -1,9 +1,12 @@
 package com.onz.modules.review.infra;
 
 import com.onz.modules.company.domain.Company;
+import com.onz.modules.company.domain.QCompany;
 import com.onz.modules.review.domain.dto.ReviewAllDto;
 import com.onz.modules.review.web.dto.FindEstaRequestDto;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.data.domain.Pageable;
@@ -11,10 +14,13 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-import static com.onz.modules.review.infra.ReviewRepository.FIND_ALL_IDS;
+import static com.onz.modules.review.infra.ReviewRepository.*;
 
 
 //@Repository
@@ -30,7 +36,7 @@ import static com.onz.modules.review.infra.ReviewRepository.FIND_ALL_IDS;
 //        this.em = em;
 //    }
 
-
+@Slf4j
 public class ReviewRepositoryExtensionImpl extends QuerydslRepositorySupport implements
         ReviewRepositoryExtension {
 
@@ -44,9 +50,165 @@ public class ReviewRepositoryExtensionImpl extends QuerydslRepositorySupport imp
     }
 
     public List<ReviewAllDto> findByAllReview(FindEstaRequestDto findEstaRequestDto, Pageable pageable) {
-        Query nativequery =em
-                .createNativeQuery(FIND_ALL_IDS,"reviewUnion");
-        List<ReviewAllDto> resultList=nativequery.getResultList();
+        String zoneCode = findEstaRequestDto.getSido() + findEstaRequestDto.getGungu();
+        //FIND_ALL_IDS
+//        String query = FIND_ALL_IDS;
+        // 기관리뷰
+        String query1 = FIND_ONE_IDS;
+        String where1 = "";
+        Map<String, Object> params = new HashMap<>();
+        if (findEstaRequestDto.getSido()!=null) {
+            //전체검색 시도가 11,22 일떄
+            if (findEstaRequestDto.getGungu() == null) {//군구가 널이라면 11  11000          }
+                where1 += " AND c.zonecode LIKE concat(:data_zone, '%') " ;
+                params.put("data_zone", findEstaRequestDto.getSido());
+
+            }else{
+                //만약 시도가 11인데 군구가 정확하면 11123
+                where1 += " AND c.zonecode = :data_zone ";
+                params.put("data_zone",zoneCode);
+            }
+        }else {//시도가 널이면
+            if (findEstaRequestDto.getGungu() == null) {
+                //시도가 99인데 군구도 널일떄->전체검색 99 999
+            } else {
+                //시도가 99인데 군구가 정확하다면? 99 123
+            }
+        }if(findEstaRequestDto.getEstablishmentType()!=null){
+            if(findEstaRequestDto.getEstablishmentType().name().equals("all")){
+                //전체검색
+            }else{
+                where1 += " AND c.establishment_type = :esta ";
+                params.put("esta",findEstaRequestDto.getEstablishmentType().getValue());
+            }
+        }
+        if(findEstaRequestDto.getInterestCompany()!=null){
+            if(findEstaRequestDto.getInterestCompany().name().equals("all")){
+                //전체
+            }else{
+                where1 += " AND c.interest_company = :inter ";
+                params.put("inter",findEstaRequestDto.getInterestCompany().getCode());
+            }
+        }
+        query1 += where1;
+        // 인터뷰리뷰
+        String query2 = FIND_TWO_IDS;
+        String where2 = "";
+        if (findEstaRequestDto.getSido()!=null) {
+            //전체검색 시도가 11,22 일떄
+            if (findEstaRequestDto.getGungu() == null) {//군구가 널이라면 11  11000          }
+                where2 += " AND c.zonecode LIKE concat(:data_zone, '%') " ;
+                params.put("data_zone", findEstaRequestDto.getSido());
+
+            }else{
+                //만약 시도가 11인데 군구가 정확하면 11123
+                where2 += " AND c.zonecode = :data_zone ";
+                params.put("data_zone",zoneCode);
+            }
+        }else {//시도가 널이면
+            if (findEstaRequestDto.getGungu() == null) {
+                //시도가 99인데 군구도 널일떄->전체검색 99 999
+            } else {
+                //시도가 99인데 군구가 정확하다면? 99 123
+            }
+        }if(findEstaRequestDto.getEstablishmentType()!=null){
+            if(findEstaRequestDto.getEstablishmentType().name().equals("all")){
+                //전체검색
+            }else{
+                where2 += " AND c.establishment_type = :esta ";
+                params.put("esta",findEstaRequestDto.getEstablishmentType().getValue());
+            }
+        }
+        if(findEstaRequestDto.getInterestCompany()!=null){
+            if(findEstaRequestDto.getInterestCompany().name().equals("all")){
+                //전체
+            }else{
+                where2 += " AND c.interest_company = :inter ";
+                params.put("inter",findEstaRequestDto.getInterestCompany().getCode());
+            }
+        }
+        query2 += where2;
+        // 연봉리뷰
+        String query3 = FIND_THR_IDS;
+        String where3 = "";
+        if (findEstaRequestDto.getSido()!=null) {
+            //전체검색 시도가 11,22 일떄
+            if (findEstaRequestDto.getGungu() == null) {//군구가 널이라면 11  11000          }
+                where3 += " AND c.zonecode LIKE concat(:data_zone, '%') ";
+                params.put("data_zone", findEstaRequestDto.getSido());
+
+            }else{
+                //만약 시도가 11인데 군구가 정확하면 11123
+                where3 += " AND c.zonecode = :data_zone ";
+                params.put("data_zone",zoneCode);
+            }
+        }else {//시도가 널이면
+            if (findEstaRequestDto.getGungu() == null) {
+                //시도가 99인데 군구도 널일떄->전체검색 99 999
+            } else {
+                //시도가 99인데 군구가 정확하다면? 99 123
+            }
+        }if(findEstaRequestDto.getEstablishmentType()!=null){
+            if(findEstaRequestDto.getEstablishmentType().name().equals("all")){
+                //전체검색
+            }else{
+                where3 += " AND c.establishment_type = :esta ";
+                params.put("esta",findEstaRequestDto.getEstablishmentType().getValue());
+            }
+        }
+        if(findEstaRequestDto.getInterestCompany()!=null){
+            if(findEstaRequestDto.getInterestCompany().name().equals("all")){
+                //전체
+            }else{
+                        where3 += " AND c.interest_company = :inter ";
+                params.put("inter",findEstaRequestDto.getInterestCompany().getCode());
+            }
+        }
+        query3 += where3;
+
+        String query = query1 + " UNION ALL " + query2 + " UNION ALL " + query3;
+        Query nativequery = em
+                .createNativeQuery(query, "reviewUnion");
+
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            nativequery.setParameter(entry.getKey(), entry.getValue());
+        }
+
+        List<ReviewAllDto> resultList = nativequery.getResultList();
+//        resultList.stream().map(res -> {
+//            if (res.getZonecode() != null) {
+//                if (findEstaRequestDto.getSido() == null) {
+//
+//                }
+//                //전체검색
+//                if (findEstaRequestDto.getSido() != null) {
+//
+//                if (findEstaRequestDto.getGungu() == null) {
+//                    //전체검색
+//                    res.getZonecode().startsWith(findEstaRequestDto.getSido());
+//                } else {
+//                    res.getZonecode().equals(zoneCode);
+//                }
+//            }
+//        }
+//        if (res.getEstablishmentType() != null) {
+//            if (findEstaRequestDto.getEstablishmentType().name().equals("all")) {
+//                //all
+//            } else {
+//                res.getEstablishmentType().equals(findEstaRequestDto.getEstablishmentType());
+//            }
+//        }
+//        if (QCompany.company.interestCompany != null) {
+//            if (findEstaRequestDto.getInterestCompany().name().equals("all")) {
+//
+//            } else {
+//                QCompany.company.interestCompany.eq(findEstaRequestDto.getInterestCompany());
+//            }
+//        }
+//        return res;
+//    }).
+//
+//    collect(Collectors.toList());
 
         return resultList;
 

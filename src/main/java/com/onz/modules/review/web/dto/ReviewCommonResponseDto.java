@@ -5,6 +5,7 @@ import com.onz.modules.company.domain.enums.EstablishmentType;
 import lombok.Setter;
 import net.minidev.json.annotate.JsonIgnore;
 
+import java.time.ZonedDateTime;
 import java.util.EnumSet;
 
 public class ReviewCommonResponseDto {
@@ -21,7 +22,9 @@ public class ReviewCommonResponseDto {
     public String establishmentTypeName; //기관 분류
     public Long accountId; // 회원아이디
     public Long workExp; // 근무연차
-    public YN workExpOpenYn;
-//    public YN workExpOpenYn; // 근무시 교사 연차 공개 여부
+//    public YN WorkExpOpenYn;
+    public YN workExpOpenYn; // 근무시 교사 연차 공개 여부
+    public ZonedDateTime ModifiedAt;
+    public ZonedDateTime CreatedAt;
 
 }

@@ -119,8 +119,6 @@ public class CompanyService {
                 String sidoName = address.getSidoName();
                 String gubuName = address.getSigunguName();
                 String mapsidogunguName = address.getSidoName()+" "+address.getSigunguName();
-                log.info(address.getSidoName());
-                log.info(address.getSigunguName());
                 res.setMapsidogunguName(mapsidogunguName);
             }
             return res;

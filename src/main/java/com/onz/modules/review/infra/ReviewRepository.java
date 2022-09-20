@@ -15,61 +15,59 @@ public interface ReviewRepository extends JpaRepository<Company, Long>,
         ReviewRepositoryExtension {
     //String FIND_DISTINCT_IDS = "SELECT DISTINCT a.sigungu_code as sigunguCode , a.sido_name as sidoName , a.sigungu_name as sigunguName from address a where a.sigungu_code = :sigungu_code";
 
-    String FIND_ALL_IDS =
+    String FIND_ONE_IDS ="SELECT " +
+            "'COMPANY' AS type, " +
+            "cr.id AS id, " +
+            "cr.is_delete AS isDelete , " +
+            "cr.modified_at AS modifiedAt , " +
+            "cr.state AS state , " +
+            "cr.created_at AS createdAt,  " +
+            "cr.work_exp_open_yn AS workExpOpenYn , " +
+            "c.id AS companyId, " +
+            "c.office_name AS companyName, " +
+            "c.establishment_type AS establishmentTypeValue, " +
+            "cr.account_id  As accountId, " +
+            "cr.txt AS txt , " +
+            "NULL AS item_1 , " +
+            "NULL AS item_2 , " +
+            "NULL AS item_3 , " +
+            "NULL AS item_4 , " +
+            "NULL AS item_5 , " +
+            "NULL AS item_6 , " +
+            "NULL AS topQ1 , " +
+            "NULL AS txtAdmin , " +
+            "cr.work_exp AS workExp , " +
+            "c.zonecode AS zonecode , " +
+            "NULL AS amt , " +
+            "NULL AS amtOld , " +
+            "NULL AS apprDt , " +
+            "NULL AS apprId , " +
+            "NULL AS apprTxt , " +
+            "NULL AS endAtmYn , " +
+            "NULL AS etcAmt , " +
+            "NULL AS etcItems , " +
+            "NULL AS etcYn , " +
+            "NULL AS mapsidogunguName , " +
+            "NULL AS topchoiceDt , " +
+            "NULL AS topchoiceYn , " +
+            "NULL AS annYn , " +
+            "cr.image1 AS image1 , " +
+            "cr.image2 AS image2 , " +
+            "cr.image3 AS image3 , " +
+            "cr.image4 AS image4 , " +
+            "cr.image5 AS image5 , " +
+            "cr.item_b1 AS itemB1 , " +
+            "cr.item_b2 AS itemB2 , " +
+            "cr.item_b3 AS itemB3 ,  " +
+            "cr.item_c1 AS itemC1 , " +
+            "cr.item_c2 AS itemC2 , " +
+            "cr.item_c3 AS itemC3 , " +
+            "cr.item_d1 AS itemD1 , " +
+            "cr.item_d2 AS itemD2 , " +
+            "cr.like_code AS likeCode " +
+            "FROM company_review cr INNER JOIN company c ON cr.company_id = c.id WHERE 1=1 " ;
+    String FIND_TWO_IDS =
             "SELECT " +
-                    "'COMPANY' AS type, " +
-                    "cr.id AS id, " +
-                    "cr.is_delete AS isDelete , " +
-                    "cr.modified_at AS modifiedAt , " +
-                    "cr.state AS state , " +
-                    "cr.created_at AS createdAt,  " +
-                    "cr.work_exp_open_yn AS workExpOpenYn , " +
-                    "c.id AS companyId, " +
-                    "c.office_name AS companyName, " +
-                    "c.establishment_type AS establishmentTypeValue, " +
-                    "cr.account_id  As accountId, " +
-                    "cr.txt AS txt , " +
-                    "NULL AS item_1 , " +
-                    "NULL AS item_2 , " +
-                    "NULL AS item_3 , " +
-                    "NULL AS item_4 , " +
-                    "NULL AS item_5 , " +
-                    "NULL AS item_6 , " +
-                    "NULL AS topQ1 , " +
-                    "NULL AS txtAdmin , " +
-                    "cr.work_exp AS workExp , " +
-                    "c.zonecode AS zonecode , " +
-                    "NULL AS amt , " +
-                    "NULL AS amtOld , " +
-                    "NULL AS apprDt , " +
-                    "NULL AS apprId , " +
-                    "NULL AS apprTxt , " +
-                    "NULL AS endAtmYn , " +
-                    "NULL AS etcAmt , " +
-                    "NULL AS etcItems , " +
-                    "NULL AS etcYn , " +
-                    "NULL AS mapsidogunguName , " +
-                    "NULL AS topchoiceDt , " +
-                    "NULL AS topchoiceYn , " +
-                    "NULL AS annYn , " +
-                    "cr.image1 AS image1 , " +
-                    "cr.image2 AS image2 , " +
-                    "cr.image3 AS image3 , " +
-                    "cr.image4 AS image4 , " +
-                    "cr.image5 AS image5 , " +
-                    "cr.item_b1 AS itemB1 , " +
-                    "cr.item_b2 AS itemB2 , " +
-                    "cr.item_b3 AS itemB3 ,  " +
-                    "cr.item_c1 AS itemC1 , " +
-                    "cr.item_c2 AS itemC2 , " +
-                    "cr.item_c3 AS itemC3 , " +
-                    "cr.item_d1 AS itemD1 , " +
-                    "cr.item_d2 AS itemD2 , " +
-                    "cr.like_code AS likeCode " +
-                    "FROM company_review cr INNER JOIN company c ON cr.company_id = c.id " +
-                    "UNION ALL " +
-
-                    "SELECT " +
                     "'INTERVIEW' AS type, " +
                     "ir.id AS id, " +
                     "ir.is_delete AS is_delete , " +
@@ -119,10 +117,8 @@ public interface ReviewRepository extends JpaRepository<Company, Long>,
                     "NULL AS item_d1 , " +
                     "NULL AS item_d2 , " +
                     "NULL AS like_code " +
-                    "FROM interview_review ir INNER JOIN company c ON ir.company_id = c.id " +
-
-                    "UNION ALL " +
-
+                    "FROM interview_review ir INNER JOIN company c ON ir.company_id = c.id  WHERE 1=1 " ;
+    String FIND_THR_IDS =
                     "SELECT " +
                     "'AMT' AS type, " +
                     "yar.id AS id, " +
@@ -173,7 +169,7 @@ public interface ReviewRepository extends JpaRepository<Company, Long>,
                     "NULL AS item_d1 , " +
                     "NULL AS item_d2 , " +
                     "NULL AS like_code " +
-                    "FROM year_amt_review yar INNER JOIN company c ON yar.company_id = c.id ";
+                    "FROM year_amt_review yar INNER JOIN company c ON yar.company_id = c.id  WHERE 1=1 ";
 
 
 //            "SELECT "

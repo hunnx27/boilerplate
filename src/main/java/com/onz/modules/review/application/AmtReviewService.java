@@ -80,19 +80,15 @@ public class AmtReviewService {
 
                 switch (key) {
                     case "1":
-                        log.info("{} + {}", key, value);
                         res.setImpCost(value);
                         break;
                     case "2":
-                        log.info("{} + {}", key, value);
                         res.setWorkCost(value);
                         break;
                     case "3":
-                        log.info("{} + {}", key, value);
                         res.setAddCost(value);
                         break;
                     case "4":
-                        log.info("{} + {}", key, value);
                         res.setEtcCost(value);
                         break;
                 }

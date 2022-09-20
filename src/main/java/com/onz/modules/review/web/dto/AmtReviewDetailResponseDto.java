@@ -38,19 +38,15 @@ public class AmtReviewDetailResponseDto {
 
             switch (key) {
                 case "1":
-                    log.info("{} + {}", key, value);
                     this.impCost=value;
                     break;
                 case "2":
-                    log.info("{} + {}", key, value);
                     this.workCost=value;
                     break;
                 case "3":
-                    log.info("{} + {}", key, value);
                     this.addCost=value;
                     break;
                 case "4":
-                    log.info("{} + {}", key, value);
                     this.etcCost=value;
                     break;
             }

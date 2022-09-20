@@ -32,7 +32,6 @@ public class ReviewResponseDto extends ReviewCommonResponseDto{
 //    private String ModifiedAt;
 //    private String state;
 //    private String CreatedAt;
-//    private YN WorkExpOpenYn;
 //    private String topchoiceDt;
 //    private YN topchoiceYn;
 //    private String image1;
@@ -105,10 +104,11 @@ public class ReviewResponseDto extends ReviewCommonResponseDto{
         this.companyId = reviewAll.getCompanyId();
         this.companyName = reviewAll.getCompanyName();
         EstablishmentType type = EnumSet.allOf(EstablishmentType.class).stream()
-                .filter(e->e.getValue().equals(reviewAll.getEstablishmentTypeValue()))
+                .filter(e->e.getValue().equals(reviewAll.getEstablishmentType()))
                 .findAny().orElse(EstablishmentType.C99);
         this.establishmentTypeName = type.getName();
         this.accountId = reviewAll.getAccountId();
+        this.workExpOpenYn=reviewAll.getWorkExpOpenYn();
         this.workExp = reviewAll.getWorkExp();
         this.amt = reviewAll.getAmt();
 
@@ -124,7 +124,7 @@ public class ReviewResponseDto extends ReviewCommonResponseDto{
 
 //        this.etcAmt = reviewAll.getEtcAmt();
 //        this.etcItems = reviewAll.getEtcItems();
-//        this.zonecode = reviewAll.getZonecode();
+        this.zoneCode = reviewAll.getZonecode();
 //        this.state = reviewAll.getState();
 //        this.isDelete = reviewAll.getIsDelete();
 //        this.ModifiedAt = reviewAll.getModifiedAt();
