@@ -5,6 +5,7 @@ import com.onz.common.web.dto.response.ErrorResponse;
 import com.onz.common.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -62,6 +63,15 @@ public class GlobalExceptionHandler {
         ErrorCode errorCdoe = ErrorCode.valueOf(bindResultCode);
 
         return ErrorResponse.toResponseEntity(errorCdoe);
+    }
+
+    /**
+     * @valid  유효성체크에 통과하지 못하면  MethodArgumentNotValidException 이 발생한다.
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> accessDeniedException(AccessDeniedException ex, HttpServletRequest request){
+        log.warn("handleAllException", ex);
+        return ErrorResponse.toResponseEntity(ErrorCode.INVALID_AUTH_TOKEN_DETAIL);
     }
 
 

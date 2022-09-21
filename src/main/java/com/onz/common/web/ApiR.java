@@ -33,7 +33,7 @@ public class ApiR<T> {
     }
 
     // Hibernate Validator에 의해 유효하지 않은 데이터로 인해 API 호출이 거부될때 반환
-    public static ApiR<?> createFail(BindingResult bindingResult) {
+            public static ApiR<?> createFail(BindingResult bindingResult) {
         Map<String, String> errors = new HashMap<>();
 
         List<ObjectError> allErrors = bindingResult.getAllErrors();
