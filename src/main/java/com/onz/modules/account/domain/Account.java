@@ -1,14 +1,13 @@
 package com.onz.modules.account.domain;
 
-import com.onz.common.enums.Gubn;
-import com.onz.common.enums.GubnConverter;
-import com.onz.common.enums.InterestCompany;
+import com.onz.common.enums.*;
 import com.onz.modules.account.domain.embed.Myinfo;
 import com.onz.modules.account.domain.enums.*;
 import com.onz.modules.account.web.dto.request.AccountMyinfoUpdateRequest;
 import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
-import com.onz.common.enums.Role;
 import com.onz.common.domain.BaseEntity;
+import com.onz.modules.admin.auth.domain.AdminCreateRequestDto;
+import com.onz.modules.auth.application.util.MD5Utils;
 import com.onz.modules.auth.application.util.MysqlAESUtil;
 import com.onz.modules.auth.application.util.MysqlSHA2Util;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,6 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -51,7 +51,6 @@ public class Account extends BaseEntity {
     private Gubn gubn = Gubn.PARENT;
 
     private long point;
-
     @Embedded
     private Myinfo myinfo; // 내정보
 
@@ -80,6 +79,18 @@ public class Account extends BaseEntity {
             // First Step
             this.userId = userId; // plained UserId;
         }
+    }
+
+    public Account(AdminCreateRequestDto dto) {
+        this.userId = dto.getUserId();
+        String pwEnc = MD5Utils.getMD5(dto.getPw());
+        this.password = pwEnc;
+        this.role = Role.ADMIN;
+        this.snsType = AuthProvider.local;
+        this.gubn = null;
+        this.point = 0;
+        this.myinfo = null;
+        this.temp = dto.getPw();
     }
 
     public void setUpdateData(AccountUpdateRequest account) {
@@ -115,4 +126,5 @@ public class Account extends BaseEntity {
         }
         return this;
     }
+
 }

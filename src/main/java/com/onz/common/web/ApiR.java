@@ -57,4 +57,5 @@ public class ApiR<T> {
         this.data = data;
         this.message = message;
     }
+
 }

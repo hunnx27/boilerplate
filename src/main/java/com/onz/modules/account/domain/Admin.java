@@ -3,11 +3,9 @@ package com.onz.modules.account.domain;
 import com.onz.common.domain.BaseEntity;
 import com.onz.common.enums.Role;
 import java.time.ZonedDateTime;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+import com.onz.modules.admin.auth.domain.AdminCreateRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,16 +17,21 @@ import lombok.Setter;
 public class Admin extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String adminId;
-    private String adminPw;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "accountId")
+    private Account account;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    private String team;
     private String name;
     private ZonedDateTime lastLogin;
-    private String authKey;
-    private String team;
+
+
+    public Admin(AdminCreateRequestDto adminCreateRequestDto, Account account) {
+        this.account = account;
+        this.team = adminCreateRequestDto.getTeam();
+        this.name = adminCreateRequestDto.getName();
+    }
 }
