@@ -1,15 +1,12 @@
 package com.onz.modules.counsel.infra.counsel;
 
 import com.onz.common.enums.YN;
-import com.onz.modules.company.domain.Company;
-import com.onz.modules.company.domain.QCompany;
 import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.domain.QCounsel;
 import com.onz.modules.counsel.domain.enums.CounselState;
 import com.onz.modules.counsel.domain.enums.QnaGubn;
 import com.onz.modules.counsel.domain.enums.QnaItem;
 import com.onz.modules.counsel.web.dto.request.counsel.CounselSearchRequest;
-import com.onz.modules.review.web.dto.FindEstaRequestDto;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.JPQLQuery;

@@ -1,15 +1,10 @@
 package com.onz.modules.review.domain.dto;
 
-import com.onz.common.enums.InterestCompanyConverter;
 import com.onz.common.enums.YN;
-import com.onz.modules.company.domain.enums.CharItemConverter;
-import com.onz.modules.company.domain.enums.EstablishmentType;
-import com.onz.modules.company.domain.enums.EstablishmentTypeConverter;
 import com.onz.modules.review.domain.enums.ItemCode;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 

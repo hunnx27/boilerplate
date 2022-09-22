@@ -2,6 +2,11 @@ package com.onz.modules.review.application;
 
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
+import com.onz.modules.review.domain.YearAmtReview;
+import com.onz.modules.review.web.dto.AmtRequestDto;
+import com.onz.modules.review.web.dto.AmtReviewDetailResponseDto;
+import com.onz.modules.review.web.dto.FindEstaRequestDto;
+import com.onz.modules.review.web.dto.YearAmtResponseDto;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.common.address.infra.AddressRepository;
 import com.onz.modules.common.address.infra.dto.DistinctAddressResponse;
@@ -9,9 +14,7 @@ import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.infra.CompanyRepository;
 import com.onz.modules.company.web.dto.reponse.YearAmtAvgResponseDto;
 import com.onz.modules.company.web.dto.reponse.YearAmtListResponseDto;
-import com.onz.modules.review.domain.YearAmtReview;
 import com.onz.modules.review.infra.AmtReviewRepository;
-import com.onz.modules.review.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -64,7 +67,7 @@ public class AmtReviewService {
         return yearAmtAvgResponseDto;
     }
 
-    public List<YearAmtListResponseDto> amtReviewList(FindEstaRequestDto findEstaRequestDto,Pageable pageable) {
+    public List<YearAmtListResponseDto> amtReviewList(FindEstaRequestDto findEstaRequestDto, Pageable pageable) {
         List<YearAmtListResponseDto> list = amtReviewRepository.ListAmt(findEstaRequestDto,pageable);
         List<YearAmtListResponseDto> array = list.stream().map(res -> {
             String[] one = res.getEtcItems().split(",");

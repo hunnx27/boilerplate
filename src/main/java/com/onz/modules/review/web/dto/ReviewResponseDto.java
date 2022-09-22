@@ -1,19 +1,13 @@
 package com.onz.modules.review.web.dto;
 
-import com.onz.common.enums.YN;
-import com.onz.common.web.BaseApiController;
+import com.onz.modules.review.domain.dto.ReviewAllDto;
 import com.onz.modules.company.domain.enums.EstablishmentType;
 import com.onz.modules.review.domain.CompanyReview;
-import com.onz.modules.review.domain.dto.ReviewAll;
-import com.onz.modules.review.domain.dto.ReviewAllDto;
-import com.onz.modules.review.domain.enums.ItemCode;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.EnumSet;
-import java.util.NoSuchElementException;
 
 
 @Getter

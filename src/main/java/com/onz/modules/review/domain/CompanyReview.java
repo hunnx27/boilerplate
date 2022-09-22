@@ -4,12 +4,11 @@ import com.onz.common.domain.BaseEntity;
 import com.onz.common.enums.YN;
 import com.onz.common.util.dto.AttachDto;
 import com.onz.modules.account.domain.Account;
-import com.onz.modules.company.domain.Company;
-import com.onz.modules.review.domain.dto.ReviewAll;
 import com.onz.modules.review.domain.dto.ReviewAllDto;
 import com.onz.modules.review.domain.embed.Images;
 import com.onz.modules.review.domain.enums.ItemCode;
 import com.onz.modules.review.web.dto.CompanyReviewRequestDto;
+import com.onz.modules.company.domain.Company;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -118,7 +117,7 @@ public class CompanyReview extends BaseEntity {
 
 
     public void setImages(List<AttachDto> filelist){
-        com.onz.modules.review.domain.embed.Images embedImages = new com.onz.modules.review.domain.embed.Images();
+        Images embedImages = new Images();
         if(filelist!=null && filelist.size()>0){
             for(int i=0; i<filelist.size(); i++){
                 AttachDto atttach = filelist.get(i);

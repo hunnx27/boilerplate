@@ -2,14 +2,7 @@ package com.onz.modules.review.infra;
 
 
 import com.onz.modules.company.domain.Company;
-import com.onz.modules.review.domain.dto.ReviewAll;
-import com.onz.modules.review.web.dto.FindEstaRequestDto;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
-import java.lang.reflect.Field;
-import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Company, Long>,
         ReviewRepositoryExtension {

@@ -1,6 +1,5 @@
 package com.onz.modules.company.application;
 
-import com.onz.common.web.ApiR;
 import com.onz.modules.common.address.infra.AddressRepository;
 import com.onz.modules.common.address.infra.dto.DistinctAddressResponse;
 import com.onz.modules.company.application.util.AggregateCompany;
@@ -13,19 +12,15 @@ import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
 import com.onz.modules.company.infra.CompanyRepository;
 import com.onz.modules.review.domain.CompanyReview;
 import com.onz.modules.review.infra.CompanyReviewRepository;
-import com.onz.modules.review.web.dto.FindEstaRequestDto;
-import com.onz.modules.review.web.dto.ReviewResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

@@ -1,27 +1,18 @@
 package com.onz.modules.admin.menu.application;
 
-import com.onz.common.enums.ErrorCode;
 import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
-import com.onz.common.web.advice.GlobalExceptionHandler;
 import com.onz.modules.admin.menu.domain.Menu;
 import com.onz.modules.admin.menu.infra.MenuRepository;
 import com.onz.modules.admin.menu.web.dto.response.MenuSelectResponseDto;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.admin.menu.web.dto.request.MenuRequsetDto;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

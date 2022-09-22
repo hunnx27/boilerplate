@@ -6,14 +6,10 @@ import com.onz.modules.company.web.dto.reponse.CompanySearchResponse;
 import com.onz.modules.company.web.dto.request.CompanySearchRequest;
 import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
 import com.onz.modules.company.domain.Company;
-import com.onz.modules.review.domain.dto.ReviewAll;
-import com.onz.modules.review.web.dto.FindEstaRequestDto;
-import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CompanyRepositoryExtension {
     List<CompanyDetailResponse> convertlist(Company company);

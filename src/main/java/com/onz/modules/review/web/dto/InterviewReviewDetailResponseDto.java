@@ -1,7 +1,7 @@
 package com.onz.modules.review.web.dto;
 
-import com.onz.modules.review.domain.InterviewReview;
 import com.onz.modules.review.domain.InterviewReviewItem;
+import com.onz.modules.review.domain.InterviewReview;
 import lombok.Getter;
 import lombok.Setter;
 

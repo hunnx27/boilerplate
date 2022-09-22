@@ -2,12 +2,9 @@ package com.onz.modules.review.web.dto;
 
 import com.onz.common.domain.BaseEntity;
 import com.onz.common.enums.YN;
-import com.onz.modules.company.domain.Company;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter

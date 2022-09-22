@@ -1,11 +1,9 @@
 package com.onz.modules.review.web.dto;
 
-import com.onz.modules.company.web.dto.reponse.CompanyReviewListResponseDto;
 import com.onz.modules.review.domain.CompanyReview;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter

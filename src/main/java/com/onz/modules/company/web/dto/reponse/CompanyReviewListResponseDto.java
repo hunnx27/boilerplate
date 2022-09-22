@@ -1,16 +1,10 @@
 package com.onz.modules.company.web.dto.reponse;
 
-import com.onz.common.enums.YN;
 import com.onz.modules.review.domain.CompanyReview;
-import com.onz.modules.review.domain.InterviewReview;
 import com.onz.modules.review.web.dto.ReviewCommonResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
-
-import javax.persistence.Column;
-import java.time.ZonedDateTime;
 
 @Getter
 @Setter

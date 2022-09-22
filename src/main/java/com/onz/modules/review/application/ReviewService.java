@@ -1,5 +1,11 @@
 package com.onz.modules.review.application;
 
+import com.onz.modules.review.domain.dto.ReviewAllDto;
+import com.onz.modules.review.infra.CompanyReviewRepository;
+import com.onz.modules.review.infra.InterviewReviewRepository;
+import com.onz.modules.review.infra.ReviewRepository;
+import com.onz.modules.review.web.dto.FindEstaRequestDto;
+import com.onz.modules.review.web.dto.ReviewResponseDto;
 import com.onz.modules.common.address.infra.AddressRepository;
 import com.onz.modules.common.address.infra.dto.DistinctAddressResponse;
 import com.onz.modules.company.domain.Company;
@@ -12,14 +18,7 @@ import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
 import com.onz.modules.company.infra.CompanyRepository;
 import com.onz.modules.review.domain.CompanyReview;
 import com.onz.modules.review.domain.InterviewReview;
-import com.onz.modules.review.domain.dto.ReviewAll;
-import com.onz.modules.review.domain.dto.ReviewAllDto;
 import com.onz.modules.review.infra.AmtReviewRepository;
-import com.onz.modules.review.infra.CompanyReviewRepository;
-import com.onz.modules.review.infra.InterviewReviewRepository;
-import com.onz.modules.review.infra.ReviewRepository;
-import com.onz.modules.review.web.dto.*;
-import com.querydsl.jpa.impl.JPAQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -31,7 +30,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.lang.Double.max;
@@ -205,7 +203,7 @@ public class ReviewService {
         return new InterviewcountResponsedto(writCount, patCount, mockCount, lowLevCount, midLevCount, highLevCount, totalLevel,goalCount,waitCount,noCount,totalGoal);
     }
 
-    public List<ReviewResponseDto> findByAllReview(FindEstaRequestDto findEstaRequestDto,Pageable pageable) {
+    public List<ReviewResponseDto> findByAllReview(FindEstaRequestDto findEstaRequestDto, Pageable pageable) {
         List<ReviewAllDto> list = reviewRepository.findByAllReview(findEstaRequestDto,pageable);
 //        List<ReviewAll>  >> List<ReviewResponseDto>
         List<ReviewResponseDto> array = list.stream().map(res -> {

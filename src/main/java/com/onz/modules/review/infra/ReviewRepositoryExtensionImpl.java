@@ -1,14 +1,10 @@
 package com.onz.modules.review.infra;
 
 import com.onz.modules.company.domain.Company;
-import com.onz.modules.company.domain.QCompany;
 import com.onz.modules.review.domain.dto.ReviewAllDto;
 import com.onz.modules.review.web.dto.FindEstaRequestDto;
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.query.NativeQuery;
-import org.hibernate.transform.Transformers;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
@@ -17,8 +13,6 @@ import javax.persistence.Query;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static com.onz.modules.review.infra.ReviewRepository.*;
 

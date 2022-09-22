@@ -1,11 +1,7 @@
 package com.onz.modules.admin.menu.infra;
 
 import com.onz.modules.admin.menu.domain.Menu;
-import com.onz.modules.admin.menu.web.dto.response.MenuSelectResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 

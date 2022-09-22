@@ -2,7 +2,6 @@ package com.onz.modules.review.web.dto;
 
 import com.onz.common.domain.BaseEntity;
 import com.onz.common.enums.YN;
-import com.onz.modules.review.domain.embed.Images;
 import com.onz.modules.review.domain.enums.ItemCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

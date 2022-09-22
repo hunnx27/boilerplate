@@ -1,21 +1,13 @@
 package com.onz.modules.review.infra;
 
-import com.onz.modules.company.domain.Company;
-import com.onz.modules.company.web.dto.reponse.InterviewListResponseDto;
-import com.onz.modules.counsel.domain.Counsel;
-import com.onz.modules.review.domain.InterviewReview;
 import com.onz.modules.review.domain.QYearAmtReview;
 import com.onz.modules.review.domain.YearAmtReview;
 import com.onz.modules.company.web.dto.reponse.YearAmtListResponseDto;
 import com.onz.modules.review.web.dto.FindEstaRequestDto;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
-import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.EnumPath;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 

@@ -1,12 +1,10 @@
 package com.onz.modules.review.web.dto;
 
 import com.onz.common.enums.YN;
-import com.onz.modules.company.domain.enums.EstablishmentType;
 import lombok.Setter;
 import net.minidev.json.annotate.JsonIgnore;
 
 import java.time.ZonedDateTime;
-import java.util.EnumSet;
 
 public class ReviewCommonResponseDto {
     /**

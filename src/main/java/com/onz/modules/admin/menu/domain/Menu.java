@@ -1,13 +1,12 @@
 package com.onz.modules.admin.menu.domain;
 
 import com.onz.common.domain.BaseEntity;
-import com.onz.modules.admin.menu.web.dto.request.MenuRequsetDto;
 import com.onz.modules.admin.menu.web.dto.response.MenuSelectResponseDto;
+import com.onz.modules.admin.menu.web.dto.request.MenuRequsetDto;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

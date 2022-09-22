@@ -14,9 +14,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @Getter
 @Setter

@@ -1,7 +1,7 @@
 package com.onz.modules.review.infra;
 
 import com.onz.common.enums.YN;
-import com.onz.modules.company.web.dto.reponse.YearAmtListResponseDto;
+import com.onz.modules.review.domain.CompanyReview;
 import com.onz.modules.review.domain.*;
 import com.onz.modules.company.web.dto.reponse.CompanyReviewListResponseDto;
 import com.onz.modules.review.web.dto.FindEstaRequestDto;
