@@ -15,6 +15,7 @@ import com.onz.modules.auth.application.UserDetailServiceImpl;
 import com.onz.modules.auth.application.util.CookieUtils;
 import com.onz.modules.auth.application.util.JwtProvider;
 import com.onz.modules.auth.application.util.MD5Utils;
+import com.onz.modules.auth.application.util.MysqlSHA2Util;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.auth.web.dto.response.AuthResponse;
 import lombok.RequiredArgsConstructor;
@@ -76,9 +77,13 @@ public class AdminAuthService {
         Account savedAccount = accountRepository.save(new Account(adminCreateRequestDto));
         Admin admin = new Admin(adminCreateRequestDto, savedAccount);
         try {
-            adminAuthRepository.save(admin);
+            if(adminAuthRepository.existsByAccount_UserId(MysqlSHA2Util.getSHA512(adminCreateRequestDto.getUserId()))){
+                //아마 디코드해야함 true
+            }else {
+                adminAuthRepository.save(admin);
+            }
         } catch (CustomException e) {
-            throw new CustomException(ErrorCode.INVALID_AUTH_TOKEN);
+            throw new CustomException(ErrorCode.NOT_ACCEPTABLE);
         }
         return admin;
     }

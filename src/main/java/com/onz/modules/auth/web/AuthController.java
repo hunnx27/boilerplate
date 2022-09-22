@@ -128,11 +128,6 @@ public class AuthController {
     /**
      * 회원가입후 서비스 처리
      */
-    @Operation(summary = "회원가입 축하 포인트 API", description = "회원가입 축하 포인트 추가")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "포인트 적립 완료", content = @Content(schema = @Schema(implementation = PointTable.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PointTable.class)))
-    })
     private void afterJoinService(Account account) {
         try {
             // 회원가입 최초 포인트(+3000point)

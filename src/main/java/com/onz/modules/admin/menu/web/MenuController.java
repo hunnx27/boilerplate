@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@Tag(name = "어드민", description = "어드민 제어관련 api")
+@Tag(name = "어드민 제어", description = "어드민 제어관련 api")
 public class MenuController extends BaseApiController {
 
     private final MenuService menuService;

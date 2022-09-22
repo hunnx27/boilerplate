@@ -4,4 +4,5 @@ import com.onz.modules.account.domain.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AdminAuthRepository extends JpaRepository<Admin, Long>{
+    boolean existsByAccount_UserId(String id);
 }

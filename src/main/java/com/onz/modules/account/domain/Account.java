@@ -56,6 +56,7 @@ public class Account extends BaseEntity {
 
 
     private String temp;
+    private String temp2;
 
     @Builder
     public Account(String userId, Gubn gubn, Role role, AuthProvider provider) {
@@ -82,8 +83,8 @@ public class Account extends BaseEntity {
     }
 
     public Account(AdminCreateRequestDto dto) {
-        this.userId = dto.getUserId();
         String pwEnc = MD5Utils.getMD5(dto.getPw());
+        this.userId = MysqlSHA2Util.getSHA512(dto.getUserId());
         this.password = pwEnc;
         this.role = Role.ADMIN;
         this.snsType = AuthProvider.local;
@@ -91,6 +92,7 @@ public class Account extends BaseEntity {
         this.point = 0;
         this.myinfo = null;
         this.temp = dto.getPw();
+        this.temp2= dto.getUserId();
     }
 
     public void setUpdateData(AccountUpdateRequest account) {
