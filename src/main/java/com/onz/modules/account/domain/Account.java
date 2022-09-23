@@ -55,7 +55,7 @@ public class Account extends BaseEntity {
     private Myinfo myinfo; // 내정보
 
 
-    private String temp;
+    private String temp1;
     private String temp2;
 
     @Builder
@@ -63,7 +63,7 @@ public class Account extends BaseEntity {
         this.gubn = gubn;
         this.snsType = provider;
         this.role = role;
-        this.temp = userId; // userId 임시보관.
+        this.temp1 = userId; // userId 임시보관.
 
         if(gubn != null) {
             // Final Step;
@@ -91,13 +91,13 @@ public class Account extends BaseEntity {
         this.gubn = null;
         this.point = 0;
         this.myinfo = null;
-        this.temp = dto.getPw();
+        this.temp1 = dto.getPw();
         this.temp2= dto.getUserId();
     }
 
     public void setUpdateData(AccountUpdateRequest account) {
         String userId = account.getUserId();
-        this.temp = userId;
+        this.temp1 = userId;
 
         if(userId !=null){
             byte[] encode = new byte[0];

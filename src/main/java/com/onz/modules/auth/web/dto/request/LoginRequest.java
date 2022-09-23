@@ -8,7 +8,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LoginRequest {
 
-    private String name;
+    private String userId;
     private String password;
 
 }

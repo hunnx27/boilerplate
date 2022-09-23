@@ -1,6 +1,5 @@
 package com.onz.modules.account.web;
 
-import com.onz.common.enums.YN;
 import com.onz.common.web.ApiR;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
@@ -11,9 +10,7 @@ import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.common.web.BaseApiController;
 import com.onz.modules.account.web.dto.response.AccountResponse;
 import com.onz.modules.auth.web.dto.UserPrincipal;
-import com.onz.modules.common.pointHistory.web.dto.request.PointHistorySearchRequest;
 import com.onz.modules.common.pointHistory.web.dto.response.PointHistoryResponse;
-import com.onz.modules.counsel.web.dto.request.counsel.CounselQCreateRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,7 +18,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,8 +28,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,10 +43,9 @@ public class AccountController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AccountCreateRequest.class)))
     })
     @PostMapping("/accounts")
-    public ResponseEntity<ApiR<?>> create(@RequestBody AccountCreateRequest accountCreateRequest) {
+    public ResponseEntity<ApiR<Account>> create(@RequestBody AccountCreateRequest accountCreateRequest) {
         try {
-            accountService.create(modelMapper.map(accountCreateRequest, Account.class));
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
+            return accountService.create(modelMapper.map(accountCreateRequest, Account.class));
         } catch (Exception e) {
             throw e;
         }

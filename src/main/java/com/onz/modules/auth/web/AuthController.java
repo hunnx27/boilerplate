@@ -6,6 +6,7 @@ import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
+import com.onz.modules.auth.application.UserLoginService;
 import com.onz.modules.auth.application.util.CookieUtils;
 import com.onz.modules.auth.application.UserDetailServiceImpl;
 import com.onz.modules.auth.application.util.JwtProvider;
@@ -46,10 +47,9 @@ import java.util.Iterator;
 public class AuthController {
 
     private final UserDetailServiceImpl userDetailService;
-    private final PasswordEncoder passwordEncoder;
+    private final UserLoginService userLoginService;
     private final JwtProvider jwtProvider;
     private final AccountService accountService;
-    private final PointHistoryService pointHistoryService;
 
     @Operation(summary = "로그인하기기", description = "로그인합니다..")
     @ApiResponses(value = {
@@ -60,22 +60,7 @@ public class AuthController {
     public ResponseEntity<ApiR<?>> login(HttpServletResponse response,
                                          @RequestBody LoginRequest loginRequest) {
         try {
-
-            UserDetails principal = userDetailService.loadUserByUsername(loginRequest.getName());
-            if (!passwordEncoder.matches(loginRequest.getPassword(), principal.getPassword())) {
-                throw new CustomException(ErrorCode.INVALID_PASSWORD);
-            }
-
-            Authentication authentication = new UsernamePasswordAuthenticationToken(principal,
-                    principal.getPassword(), principal.getAuthorities());
-            SecurityContext context = SecurityContextHolder.createEmptyContext();
-            context.setAuthentication(authentication);
-
-            String token = jwtProvider.createToken(authentication);
-            response.setHeader("Authorization", token);
-            CookieUtils.addCookie(response, "Authorization", token, 180);
-
-            return ResponseEntity.ok(ApiR.createSuccess(new AuthResponse(token)));
+            return userLoginService.login(response,loginRequest);
         } catch (Exception e) {
             throw e;
         }
