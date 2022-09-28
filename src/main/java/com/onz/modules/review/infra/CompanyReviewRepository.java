@@ -1,5 +1,6 @@
 package com.onz.modules.review.infra;
 
+import com.onz.modules.account.domain.Account;
 import com.onz.modules.review.domain.CompanyReview;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -9,4 +10,5 @@ public interface CompanyReviewRepository extends JpaRepository<CompanyReview, Lo
         CompanyReviewRepositoryExtension{
     
     List<CompanyReview> findByCompanyId(Long company_id);
+    Long countByAccount_Id(Long id);
 }

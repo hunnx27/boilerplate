@@ -6,11 +6,13 @@ import com.onz.modules.account.domain.enums.*;
 import com.onz.modules.account.web.dto.request.AccountMyinfoUpdateRequest;
 import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.common.domain.BaseEntity;
+import com.onz.modules.admin.LiveMember.domain.LiveMemberRequestDto;
 import com.onz.modules.admin.auth.domain.AdminCreateRequestDto;
 import com.onz.modules.auth.application.util.MD5Utils;
 import com.onz.modules.auth.application.util.MysqlAESUtil;
 import com.onz.modules.auth.application.util.MysqlSHA2Util;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.onz.modules.company.domain.Company;
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -54,6 +56,9 @@ public class Account extends BaseEntity {
     @Embedded
     private Myinfo myinfo; // 내정보
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "companyId", nullable = false)
+    private Company company;
 
     private String temp1;
     private String temp2;

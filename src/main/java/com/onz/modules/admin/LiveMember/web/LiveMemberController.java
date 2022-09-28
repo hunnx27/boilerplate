@@ -1,2 +1,53 @@
-package com.onz.modules.admin.LiveMember.web;public class LiveMemberController {
+package com.onz.modules.admin.LiveMember.web;
+
+import com.onz.common.exception.CustomException;
+import com.onz.common.web.ApiR;
+import com.onz.modules.account.domain.Account;
+import com.onz.modules.admin.LiveMember.application.LiveMemberService;
+import com.onz.modules.admin.LiveMember.domain.LiveMemberRequestDto;
+import com.onz.modules.admin.LiveMember.domain.LiveMemberResponseDto;
+import com.onz.modules.admin.auth.domain.AdminLonginRequestDto;
+import com.onz.modules.review.web.dto.ReviewResponseDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@Tag(name = "어드민 제어", description = "어드민을 제어하는 api.")
+public class LiveMemberController {
+
+    private final LiveMemberService liveMemberService;
+
+    @Operation(summary = "라이브 회원 관리 ", description = "회원 관리입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class)))
+    })
+    @GetMapping("/admin/liveMember")
+    public ResponseEntity<ApiR<?>> liveMember(HttpServletResponse response,LiveMemberRequestDto liveMemberRequestDto) {
+//        liveMemberService.liveMember(response,liveMemberRequestDto);
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(liveMemberService.liveMember(response,liveMemberRequestDto)));
+        } catch (CustomException e) {
+            throw e;
+        }
+    }
+
 }
