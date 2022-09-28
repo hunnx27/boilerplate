@@ -10,7 +10,7 @@ import lombok.Setter;
 public class AccountCreateRequest {
 
     private String name;
-    private String email;
+    private String userId;
     private String age;
     private String location;
     private String password;

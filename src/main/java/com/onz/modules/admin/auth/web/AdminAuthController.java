@@ -3,7 +3,6 @@ package com.onz.modules.admin.auth.web;
 import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
 import com.onz.common.web.BaseApiController;
-import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.Admin;
 import com.onz.modules.admin.auth.application.AdminAuthService;
 import com.onz.modules.admin.auth.domain.AdminCreateRequestDto;
@@ -51,10 +50,10 @@ public class AdminAuthController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = ReviewResponseDto.class)))
     })
     @PostMapping("/admin/signup")
-    public ResponseEntity<ApiR<?>> createAdmin(@RequestBody AdminCreateRequestDto createRequestDto){
+    public ResponseEntity<ApiR<Admin>> createAdmin(@RequestBody AdminCreateRequestDto createRequestDto){
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(adminAuthService.createAdmin(createRequestDto)));
-        }catch (Exception e){
+            return adminAuthService.createAdmin(createRequestDto);
+        }catch (CustomException e){
             throw e;
         }
     }

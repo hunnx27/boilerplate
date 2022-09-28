@@ -9,4 +9,5 @@ public interface InterviewReviewRepository  extends JpaRepository<InterviewRevie
         InterviewReviewRepositoryExtension{
 
     List<InterviewReview> findByCompanyId(Long company_id);
+    Long countByAccount_Id(Long id);;
 }

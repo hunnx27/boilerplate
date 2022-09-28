@@ -6,6 +6,7 @@ import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
+import com.onz.modules.auth.application.UserLoginService;
 import com.onz.modules.auth.application.util.CookieUtils;
 import com.onz.modules.auth.application.UserDetailServiceImpl;
 import com.onz.modules.auth.application.util.JwtProvider;
@@ -46,10 +47,9 @@ import java.util.Iterator;
 public class AuthController {
 
     private final UserDetailServiceImpl userDetailService;
-    private final PasswordEncoder passwordEncoder;
+    private final UserLoginService userLoginService;
     private final JwtProvider jwtProvider;
     private final AccountService accountService;
-    private final PointHistoryService pointHistoryService;
 
     @Operation(summary = "로그인하기기", description = "로그인합니다..")
     @ApiResponses(value = {
@@ -60,22 +60,7 @@ public class AuthController {
     public ResponseEntity<ApiR<?>> login(HttpServletResponse response,
                                          @RequestBody LoginRequest loginRequest) {
         try {
-
-            UserDetails principal = userDetailService.loadUserByUsername(loginRequest.getName());
-            if (!passwordEncoder.matches(loginRequest.getPassword(), principal.getPassword())) {
-                throw new CustomException(ErrorCode.INVALID_PASSWORD);
-            }
-
-            Authentication authentication = new UsernamePasswordAuthenticationToken(principal,
-                    principal.getPassword(), principal.getAuthorities());
-            SecurityContext context = SecurityContextHolder.createEmptyContext();
-            context.setAuthentication(authentication);
-
-            String token = jwtProvider.createToken(authentication);
-            response.setHeader("Authorization", token);
-            CookieUtils.addCookie(response, "Authorization", token, 180);
-
-            return ResponseEntity.ok(ApiR.createSuccess(new AuthResponse(token)));
+            return userLoginService.login(response,loginRequest);
         } catch (Exception e) {
             throw e;
         }
@@ -128,11 +113,6 @@ public class AuthController {
     /**
      * 회원가입후 서비스 처리
      */
-    @Operation(summary = "회원가입 축하 포인트 API", description = "회원가입 축하 포인트 추가")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "포인트 적립 완료", content = @Content(schema = @Schema(implementation = PointTable.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PointTable.class)))
-    })
     private void afterJoinService(Account account) {
         try {
             // 회원가입 최초 포인트(+3000point)

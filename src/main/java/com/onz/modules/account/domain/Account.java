@@ -6,11 +6,13 @@ import com.onz.modules.account.domain.enums.*;
 import com.onz.modules.account.web.dto.request.AccountMyinfoUpdateRequest;
 import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.common.domain.BaseEntity;
+import com.onz.modules.admin.LiveMember.domain.LiveMemberRequestDto;
 import com.onz.modules.admin.auth.domain.AdminCreateRequestDto;
 import com.onz.modules.auth.application.util.MD5Utils;
 import com.onz.modules.auth.application.util.MysqlAESUtil;
 import com.onz.modules.auth.application.util.MysqlSHA2Util;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.onz.modules.company.domain.Company;
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -54,15 +56,19 @@ public class Account extends BaseEntity {
     @Embedded
     private Myinfo myinfo; // 내정보
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "companyId", nullable = false)
+    private Company company;
 
-    private String temp;
+    private String temp1;
+    private String temp2;
 
     @Builder
     public Account(String userId, Gubn gubn, Role role, AuthProvider provider) {
         this.gubn = gubn;
         this.snsType = provider;
         this.role = role;
-        this.temp = userId; // userId 임시보관.
+        this.temp1 = userId; // userId 임시보관.
 
         if(gubn != null) {
             // Final Step;
@@ -82,20 +88,21 @@ public class Account extends BaseEntity {
     }
 
     public Account(AdminCreateRequestDto dto) {
-        this.userId = dto.getUserId();
         String pwEnc = MD5Utils.getMD5(dto.getPw());
+        this.userId = MysqlSHA2Util.getSHA512(dto.getUserId());
         this.password = pwEnc;
         this.role = Role.ADMIN;
         this.snsType = AuthProvider.local;
         this.gubn = null;
         this.point = 0;
         this.myinfo = null;
-        this.temp = dto.getPw();
+        this.temp1 = dto.getPw();
+        this.temp2= dto.getUserId();
     }
 
     public void setUpdateData(AccountUpdateRequest account) {
         String userId = account.getUserId();
-        this.temp = userId;
+        this.temp1 = userId;
 
         if(userId !=null){
             byte[] encode = new byte[0];

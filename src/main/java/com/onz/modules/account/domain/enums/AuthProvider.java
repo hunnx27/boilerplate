@@ -11,17 +11,18 @@ import java.util.stream.Stream;
 @Getter
 @AllArgsConstructor
 public enum AuthProvider {
-    local("L"),
-    facebook("F"),
-    google("G"),
-    kakao("K"),
-    naver("N"),
-    apple("A")
+    local("L", "-"),
+    facebook("F", "페이스북"),
+    google("G","구글"),
+    kakao("K","카카오톡"),
+    naver("N","네이버"),
+    apple("A","애플")
     ;
     private static final Map<String, String> CODE_MAP = Collections.unmodifiableMap(
             Stream.of(values()).collect(Collectors.toMap(AuthProvider::getCode, AuthProvider::name)));
 
     private String code;
+    private String name;
 
     public static AuthProvider of(final String code){
         return AuthProvider.valueOf(CODE_MAP.get(code));

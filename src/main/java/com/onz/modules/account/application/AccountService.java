@@ -1,14 +1,17 @@
 package com.onz.modules.account.application;
 
-import com.onz.common.enums.InterestCompany;
+import com.onz.common.enums.*;
+import com.onz.common.exception.CustomException;
+import com.onz.common.web.ApiR;
 import com.onz.modules.account.domain.embed.Myinfo;
 import com.onz.modules.account.web.dto.AccountConverter;
 import com.onz.modules.account.web.dto.request.AccountMyinfoUpdateRequest;
 import com.onz.modules.account.web.dto.request.AccountSearchRequest;
 import com.onz.modules.account.domain.enums.AuthProvider;
-import com.onz.common.enums.Gubn;
 import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
-import com.onz.common.enums.Role;
+import com.onz.modules.auth.application.util.MD5Utils;
+import com.onz.modules.auth.application.util.MysqlSHA2Util;
+import com.onz.modules.auth.web.AuthController;
 import com.onz.modules.auth.web.dto.request.SignupRequest;
 import com.onz.modules.common.pointHistory.domain.PointHistory;
 import com.onz.modules.common.pointHistory.domain.enums.PointTable;
@@ -16,12 +19,13 @@ import com.onz.modules.common.pointHistory.infra.PointHistoryRepository;
 import com.onz.modules.common.pointHistory.web.dto.response.PointHistoryResponse;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.infra.AccountRepository;
-import com.onz.common.enums.YN;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,14 +42,20 @@ import java.util.stream.Collectors;
 public class AccountService {
 
     private final AccountRepository accountRepository;
-    private final AccountConverter accountConverter;
-    private final PasswordEncoder passwordEncoder;
     private final PointHistoryRepository pointHistoryRepository;
 
-    public Account create(Account account) {
-        account.setPassword(passwordEncoder.encode(account.getPassword()));
+    public ResponseEntity<ApiR<Account>> create(Account account) throws CustomException {
+        account.setTemp1(account.getUserId());
+        account.setTemp2(account.getPassword());
+        account.setPassword(MD5Utils.getMD5(account.getPassword())); //수정 아이디 암호화
+        account.setUserId(MysqlSHA2Util.getSHA512(account.getUserId()));
         account.setRole(Role.USER);
-        return accountRepository.save(account);
+        if (accountRepository.existsByUserId(account.getUserId())) {
+            throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
+        } else {
+            createMyPointHistories(account, PointTable.WELCOME_JOIN);
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(accountRepository.save(account)));
+        }
     }
 
     public Page<Account> list(AccountSearchRequest accountSearchRequest, Pageable pageable) {
@@ -54,12 +64,12 @@ public class AccountService {
 
     public Account findOne(Long id) {
         return accountRepository.findById(id)
-            .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(NoSuchElementException::new);
     }
 
     public Long update(AccountUpdateRequest account) {
         Account findOne = accountRepository.findById(account.getId())
-            .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(NoSuchElementException::new);
         findOne.setUpdateData(account);
         return accountRepository.save(findOne).getId();
     }
@@ -70,10 +80,10 @@ public class AccountService {
         return true;
     }
 
-    public Account updateMyItem(Long id, AccountMyinfoUpdateRequest req){
+    public Account updateMyItem(Long id, AccountMyinfoUpdateRequest req) {
         Optional<Account> accountOpt = accountRepository.findById(id);
         Account rsAccount = null;
-        if(!accountOpt.isEmpty()){
+        if (!accountOpt.isEmpty()) {
             Account account = accountOpt.get();
             account.setUpdateMyinfo(req);
             rsAccount = accountRepository.save(account);
@@ -81,14 +91,14 @@ public class AccountService {
         return rsAccount;
     }
 
-    public Account deleteMeSoft(Long id){
+    public Account deleteMeSoft(Long id) {
         Account account = accountRepository.findById(id).orElseThrow();
         account.setIsDelete(YN.Y);
         accountRepository.save(account);
         return account;
     }
 
-    public Account getNewUser(SignupRequest signupRequest){
+    public Account getNewUser(SignupRequest signupRequest) {
         Account user = Account.builder()
                 .userId(signupRequest.getSocialId())
                 .gubn(Gubn.of(signupRequest.getGubnCode()))
@@ -99,7 +109,7 @@ public class AccountService {
         return user;
     }
 
-    public Account getMember(){
+    public Account getMember() {
         Account account = new Account();
         Myinfo myinfo = new Myinfo();
         myinfo.setInterestCompany(InterestCompany.valueOf("ALL"));
@@ -107,10 +117,10 @@ public class AccountService {
         return null;
     }
 
-    public void createMyPointHistories(Account account, PointTable pointTable){
+    public void createMyPointHistories(Account account, PointTable pointTable) {
 //        Account account = accountRepository.findById(id).orElseGet(null);
 //        if(account != null){
-            pointHistoryRepository.save(new PointHistory(account, pointTable));
+        pointHistoryRepository.save(new PointHistory(account, pointTable));
 //        }
     }
 
