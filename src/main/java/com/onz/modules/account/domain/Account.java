@@ -6,7 +6,6 @@ import com.onz.modules.account.domain.enums.*;
 import com.onz.modules.account.web.dto.request.AccountMyinfoUpdateRequest;
 import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.common.domain.BaseEntity;
-import com.onz.modules.admin.LiveMember.domain.LiveMemberRequestDto;
 import com.onz.modules.admin.auth.domain.AdminCreateRequestDto;
 import com.onz.modules.auth.application.util.MD5Utils;
 import com.onz.modules.auth.application.util.MysqlAESUtil;
@@ -20,9 +19,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Getter

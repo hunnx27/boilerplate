@@ -2,9 +2,10 @@ package com.onz.modules.admin.LiveMember.infra;
 
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.QAccount;
-import com.onz.modules.admin.LiveMember.domain.LiveMemberRequestDto;
-import com.onz.modules.admin.LiveMember.domain.LiveMemberResponseDto;
-import com.onz.modules.company.web.dto.request.CompanySearchRequest;
+import com.onz.modules.admin.LiveMember.web.dto.LiveMemberRequestDto;
+import com.onz.modules.admin.LiveMember.web.dto.LiveMemberResponseDto;
+import com.onz.modules.admin.LiveMember.web.dto.LiveMemberResponseWrapDto;
+import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.domain.QCounsel;
 import com.onz.modules.counsel.domain.enums.QnaGubn;
 import com.onz.modules.review.domain.QCompanyReview;
@@ -28,9 +29,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.onz.modules.company.domain.QCompany.company;
 import static com.querydsl.core.types.ExpressionUtils.in;
 
 @Repository
@@ -46,8 +47,9 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
         this.em = em;
     }
 
-    public List<LiveMemberResponseDto> findByLiveMember(LiveMemberRequestDto liveMemberRequestDto) {
-        QAccount account = QAccount.account;
+    private BooleanBuilder getWhere(LiveMemberRequestDto liveMemberRequestDto,
+                                    QAccount account, QCompanyReview companyReview, QInterviewReview interviewReview, QYearAmtReview amtReview, QCounsel counsel){
+
         BooleanBuilder where = new BooleanBuilder();
         String zoneCode = liveMemberRequestDto.getSido() + liveMemberRequestDto.getSigungu();
         if (liveMemberRequestDto.getSido() != null) {
@@ -92,10 +94,6 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
         if (liveMemberRequestDto.getUserId() != null) {
             where.and(account.userId.eq(liveMemberRequestDto.getUserId()));
         }
-        QCompanyReview companyReview = QCompanyReview.companyReview;
-        QInterviewReview interviewReview = QInterviewReview.interviewReview;
-        QYearAmtReview amtReview = QYearAmtReview.yearAmtReview;
-        QCounsel counsel = QCounsel.counsel;
 
         if (liveMemberRequestDto.getReviewCount() != null) {
             if (!liveMemberRequestDto.getReviewCount().equals("N")) {
@@ -176,58 +174,198 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
             }
         }
         //goe 이상 loe 이하
+        if (liveMemberRequestDto.getSido() != null) {
+            //sido가 널이 아닐떄
+            if (liveMemberRequestDto.getSido() == null) {
+                //모두검색
+            }
+            if (liveMemberRequestDto.getSigungu() == null) {//Sido값은들어옴 ,만약 군구가 널이라면
+                where.and(QAccount.account.myinfo.interestZone.startsWith(liveMemberRequestDto.getSido()));//시도로검색
+            } else {
+                //만약 null이 아니라면
+                log.info(String.valueOf(account.myinfo.interestZone));
+                where.and((QAccount.account.myinfo.interestZone.eq(zoneCode)));
+            }
+        }
+        if (liveMemberRequestDto.getGubn() == null) {
+            //gubun은 이넘으로 all을 받기 떄문에 처리 ㄴㄴ -> 해야할듯
+        } else {
+            where.and(account.gubn.eq(liveMemberRequestDto.getGubn()));
+        }
+        if (liveMemberRequestDto.getBirthYYYYo() != null) {
+            if (liveMemberRequestDto.getBirthYYYYt() != null) {
+//                Long one = Long.valueOf(liveMemberRequestDto.getBirthYYYYo());
+//                Long two = Long.valueOf(liveMemberRequestDto.getBirthYYYYt());
+                where.and(account.myinfo.birthYYYY.between(liveMemberRequestDto.getBirthYYYYo(), liveMemberRequestDto.getBirthYYYYt()));
+            }
+        }
+        if (liveMemberRequestDto.getCreateAtA() != null) {
+            if (liveMemberRequestDto.getCreateAtD() != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//                String ccc = String.format(account.createdAt.toString(), "yyyy-MM-dd");
+                ZonedDateTime aaa = ZonedDateTime.of(LocalDateTime.parse(liveMemberRequestDto.getCreateAtA() + " 00:00:00", formatter), ZoneId.of("Asia/Seoul"));
+                ZonedDateTime bbb = ZonedDateTime.of(LocalDateTime.parse(liveMemberRequestDto.getCreateAtD() + " 23:59:59", formatter), ZoneId.of("Asia/Seoul"));
+                where.and(account.createdAt.between(
+                        Expressions.dateTemplate(ZonedDateTime.class, "{0}", aaa),
+                        Expressions.dateTemplate(ZonedDateTime.class, "{0}", bbb)
+                ));
 
-        JPQLQuery<LiveMemberResponseDto> result = from(account).select(
-                        Projections.fields(LiveMemberResponseDto.class,
-                        account.id,
-                        account.gubn,
-                        account.userId,
-                        account.snsType,
-                        Expressions.asString("").as("rank"),
-                        account.point,
-                        account.createdAt,
-                        ExpressionUtils.as(
-                                JPAExpressions
+
+            }
+        }
+        if (liveMemberRequestDto.getUserId() != null) {
+            where.and(account.userId.eq(liveMemberRequestDto.getUserId()));
+        }
+
+        if (liveMemberRequestDto.getReviewCount() != null) {
+            if (!liveMemberRequestDto.getReviewCount().equals("N")) {
+                if (liveMemberRequestDto.getOptions().equals("goe")) {
+                    where.and(
+                            Expressions.asNumber(
+                                            JPAExpressions
+                                                    .select(companyReview.count())
+                                                    .from(companyReview)
+                                                    .where(companyReview.account.eq(account))
+                                    ).castToNum(Long.class)
+                                    .add(
+                                            Expressions.asNumber(
+                                                    JPAExpressions
+                                                            .select(interviewReview.count())
+                                                            .from(interviewReview)
+                                                            .where(interviewReview.account.eq(account))
+                                            ).castToNum(Long.class)
+                                    )
+                                    .add(
+                                            Expressions.asNumber(
+                                                    JPAExpressions
+                                                            .select(amtReview.count())
+                                                            .from(amtReview)
+                                                            .where(amtReview.account.eq(account))
+                                            ).castToNum(Long.class)
+                                    ).goe(liveMemberRequestDto.getReviewCountNum()));
+                } else {
+                    where.and(
+                            JPAExpressions
                                     .select(companyReview.count())
                                     .from(companyReview)
                                     .where(companyReview.account.eq(account))
-                            ,"companyReviewCnt"),
-                        ExpressionUtils.as(
-                                JPAExpressions
-                                        .select(interviewReview.count())
-                                        .from(interviewReview)
-                                        .where(interviewReview.account.eq(account))
-                                ,"interviewReviewCnt"),
-                        ExpressionUtils.as(
-                                JPAExpressions
-                                    .select(amtReview.count())
-                                    .from(amtReview)
-                                    .where(amtReview.account.eq(account))
-                                ,"amtReviewCnt"),
-                        ExpressionUtils.as(
-                                JPAExpressions
+                                    .loe(liveMemberRequestDto.getReviewCountNum()));
+                }
+            }
+        }
+
+        if (liveMemberRequestDto.getCounselQCount() != null) {
+            if (!liveMemberRequestDto.getCounselQCount().equals("N")) {
+                if (liveMemberRequestDto.getOptions().equals("goe")) {
+                    where.and(
+                            JPAExpressions
                                     .select(counsel.count())
                                     .from(counsel)
                                     .where(
                                             counsel.account.eq(account).and(counsel.qnaGubn.eq(QnaGubn.Q))
                                     )
-                                ,"counselQCnt"),
-                        ExpressionUtils.as(
-                                JPAExpressions
-                                        .select(counsel.count())
-                                        .from(counsel)
-                                        .where(
-                                                counsel.account.eq(account).and(counsel.qnaGubn.eq(QnaGubn.A))
-                                        )
-                            , "counselACnt")
-                    )
+                                    .goe(liveMemberRequestDto.getCounselQCountNum()));
+                } else {
+                    where.and(
+                            JPAExpressions
+                                    .select(counsel.count())
+                                    .from(counsel)
+                                    .where(counsel.account.eq(account).and(counsel.qnaGubn.eq(QnaGubn.Q)))
+                                    .loe(liveMemberRequestDto.getCounselQCountNum()));
+                }
+            }
+        }
+
+        if (liveMemberRequestDto.getCounselACount() != null) {
+            if (!liveMemberRequestDto.getCounselACount().equals("N")) {
+                if (liveMemberRequestDto.getOptions().equals("goe")) {
+                    where.and(
+                            JPAExpressions
+                                    .select((counsel.qnaGubn.eq(QnaGubn.A)).count())
+                                    .from(counsel)
+                                    .where(counsel.account.eq(account))
+                                    .goe(liveMemberRequestDto.getCounselACountNum()));
+                } else {
+                    where.and(
+                            JPAExpressions
+                                    .select((counsel.qnaGubn.eq(QnaGubn.A)).count())
+                                    .from(counsel)
+                                    .where(counsel.account.eq(account))
+                                    .loe(liveMemberRequestDto.getCounselACountNum()));
+                }
+            }
+        }
+
+        return where;
+    }
+
+    @Override
+    public List<LiveMemberResponseDto> findByLiveMember(LiveMemberRequestDto liveMemberRequestDto, Pageable pageable) {
+        // Q클래스 정의
+        QAccount account = QAccount.account;
+        QCompanyReview companyReview = QCompanyReview.companyReview;
+        QInterviewReview interviewReview = QInterviewReview.interviewReview;
+        QYearAmtReview amtReview = QYearAmtReview.yearAmtReview;
+        QCounsel counsel = QCounsel.counsel;
+
+        // where절 정의
+        BooleanBuilder where = this.getWhere(liveMemberRequestDto, account, companyReview, interviewReview, amtReview, counsel);
+
+        // 쿼리 생성(리스트)
+        JPQLQuery<LiveMemberResponseDto> result = from(account).select(
+                        Projections.fields(LiveMemberResponseDto.class,
+                                account.id,
+                                account.gubn,
+                                account.userId,
+                                account.snsType,
+                                Expressions.asString("").as("rank"),
+                                account.point,
+                                account.createdAt,
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .select(companyReview.count())
+                                                .from(companyReview)
+                                                .where(companyReview.account.eq(account))
+                                        , "companyReviewCnt"),
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .select(interviewReview.count())
+                                                .from(interviewReview)
+                                                .where(interviewReview.account.eq(account))
+                                        , "interviewReviewCnt"),
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .select(amtReview.count())
+                                                .from(amtReview)
+                                                .where(amtReview.account.eq(account))
+                                        , "amtReviewCnt"),
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .select(counsel.count())
+                                                .from(counsel)
+                                                .where(
+                                                        counsel.account.eq(account).and(counsel.qnaGubn.eq(QnaGubn.Q))
+                                                )
+                                        , "counselQCnt"),
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .select(counsel.count())
+                                                .from(counsel)
+                                                .where(
+                                                        counsel.account.eq(account).and(counsel.qnaGubn.eq(QnaGubn.A))
+                                                )
+                                        , "counselACnt")
+                        )
                 )
                 .where(where);
-
+        JPQLQuery<LiveMemberResponseDto> query = getQuerydsl().applyPagination(pageable, result);
 //        JPQLQuery<Account> result = from(account).where(where);
-        QueryResults<LiveMemberResponseDto> fetchResults = result.fetchResults();
-        List<LiveMemberResponseDto> list = fetchResults.getResults();
-        return list;
+
+        QueryResults<LiveMemberResponseDto> findLiveMemberResults = query.fetchResults();
+        List<LiveMemberResponseDto> findLiveMemberListResults = findLiveMemberResults.getResults();
+
+
+        return findLiveMemberListResults;
         //return list.stream().map(com -> new LiveMemberResponseDto(com)).collect(Collectors.toList());
 
         /*
@@ -238,6 +376,98 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
         List<YearAmtReview> list = fetchResults.getResults();
         return list.stream().map(com -> new YearAmtListResponseDto(com)).collect(Collectors.toList());
          */
+    }
+
+    @Override
+    public JPQLQuery<Long> findCountMember(LiveMemberRequestDto liveMemberRequestDto){
+        QAccount account = QAccount.account;
+        QCompanyReview companyReview = QCompanyReview.companyReview;
+        QInterviewReview interviewReview = QInterviewReview.interviewReview;
+        QYearAmtReview amtReview = QYearAmtReview.yearAmtReview;
+        QCounsel counsel = QCounsel.counsel;
+
+        BooleanBuilder where = this.getWhere(liveMemberRequestDto, account, companyReview, interviewReview, amtReview, counsel);
+
+        JPQLQuery<Long> findLiveMemberTotalCnt = from(account)
+                .select(account.count())
+                .where(where);
+        return findLiveMemberTotalCnt;
+
+    }
+
+    @Override
+    public LiveMemberResponseDto findByLiveMemberTotal(LiveMemberRequestDto liveMemberRequestDto) {
+        // Q클래스 정의
+        QAccount account = QAccount.account;
+        QCompanyReview companyReview = QCompanyReview.companyReview;
+        QInterviewReview interviewReview = QInterviewReview.interviewReview;
+        QYearAmtReview amtReview = QYearAmtReview.yearAmtReview;
+        QCounsel counsel = QCounsel.counsel;
+
+        // where절 정의
+        BooleanBuilder where = this.getWhere(liveMemberRequestDto, account, companyReview, interviewReview, amtReview, counsel);
+
+        // 쿼리 생성(집계)
+        JPQLQuery<LiveMemberResponseDto> findLiveMemberTotal = from(account).select(
+                Projections.constructor(LiveMemberResponseDto.class,
+//                        Expressions.asNumber(0L).as("id"),
+//                        Expressions.asEnum(Gubn.NULL).as("gubn"),
+//                        Expressions.asString("").as("userId"),
+//                        Expressions.asEnum(AuthProvider.NULL).as("snsType"),
+//                        Expressions.asString("").as("rank"),
+//                        Expressions.asNumber(0L).as("point"),
+//                        Expressions.asSimple(Expressions.nullExpression(ZonedDateTime.class)).as("createdAt"),
+//                        Expressions.asSimple(Expressions.template(ZonedDateTime.class, TemplateFactory.DEFAULT.create("cast(null as datetime)"))).as("createdAt"),
+//                        Expressions.asNumber(0L).as("companyReviewCnt"),
+//                        Expressions.asNumber(0L).as("amtReviewCnt"),
+//                        Expressions.asNumber(0L).as("counselQCnt"),
+//                        Expressions.asNumber(0L).as("counselACnt"),
+                        ExpressionUtils.as(
+                                Expressions.asNumber(
+                                        JPAExpressions
+                                                .select(companyReview.count())
+                                                .from(companyReview)
+                                                .where(companyReview.account.eq(account))).castToNum(Long.class).sum()
+                                , "companyReviewCnt"),
+//                        Expressions.asNumber().sum()
+                        ExpressionUtils.as(
+                                Expressions.asNumber(
+                                        JPAExpressions
+                                                .select(interviewReview.count())
+                                                .from(interviewReview)
+                                                .where(interviewReview.account.eq(account))).castToNum(Long.class).sum()
+                                , "interviewReviewCnt"),
+                        ExpressionUtils.as(
+                                Expressions.asNumber(
+                                        JPAExpressions
+                                                .select(amtReview.count())
+                                                .from(amtReview)
+                                                .where(amtReview.account.eq(account))).castToNum(Long.class).sum()
+                                , "amtReviewCnt"),
+                        ExpressionUtils.as(
+                                Expressions.asNumber(
+                                        JPAExpressions
+                                                .select(counsel.count())
+                                                .from(counsel)
+                                                .where(
+                                                        counsel.account.eq(account).and(counsel.qnaGubn.eq(QnaGubn.Q))
+                                                )).castToNum(Long.class).sum()
+                                , "counselQCnt"),
+                        ExpressionUtils.as(
+                                Expressions.asNumber(
+                                        JPAExpressions
+                                                .select(counsel.count())
+                                                .from(counsel)
+                                                .where(
+                                                        counsel.account.eq(account).and(counsel.qnaGubn.eq(QnaGubn.A))
+                                                )).castToNum(Long.class).sum()
+                                , "counselACnt")
+                )).where(where);
+        LiveMemberResponseDto fetchResulTd = findLiveMemberTotal.fetchOne();
+
+
+        return fetchResulTd;
+
     }
 
 }

@@ -2,12 +2,9 @@ package com.onz.modules.admin.LiveMember.web;
 
 import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
-import com.onz.modules.account.domain.Account;
 import com.onz.modules.admin.LiveMember.application.LiveMemberService;
-import com.onz.modules.admin.LiveMember.domain.LiveMemberRequestDto;
-import com.onz.modules.admin.LiveMember.domain.LiveMemberResponseDto;
-import com.onz.modules.admin.auth.domain.AdminLonginRequestDto;
-import com.onz.modules.review.web.dto.ReviewResponseDto;
+import com.onz.modules.admin.LiveMember.web.dto.LiveMemberRequestDto;
+import com.onz.modules.admin.LiveMember.web.dto.LiveMemberResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,17 +13,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,10 +33,10 @@ public class LiveMemberController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class)))
     })
     @GetMapping("/admin/liveMember")
-    public ResponseEntity<ApiR<?>> liveMember(HttpServletResponse response,LiveMemberRequestDto liveMemberRequestDto) {
+    public ResponseEntity<ApiR<?>> liveMember(HttpServletResponse response, LiveMemberRequestDto liveMemberRequestDto, Pageable pageable) {
 //        liveMemberService.liveMember(response,liveMemberRequestDto);
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(liveMemberService.liveMember(response,liveMemberRequestDto)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(liveMemberService.liveMember(response,liveMemberRequestDto,pageable)));
         } catch (CustomException e) {
             throw e;
         }

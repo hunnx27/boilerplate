@@ -1,4 +1,4 @@
-package com.onz.modules.admin.LiveMember.domain;
+package com.onz.modules.admin.LiveMember.web.dto;
 
 import com.onz.common.enums.Gubn;
 import com.onz.common.web.dto.request.BasePageRequest;

@@ -1,16 +1,15 @@
 package com.onz.modules.admin.LiveMember.application;
 
 import com.onz.common.exception.CustomException;
-import com.onz.modules.account.domain.Account;
-import com.onz.modules.admin.LiveMember.domain.LiveMemberRequestDto;
-import com.onz.modules.admin.LiveMember.domain.LiveMemberResponseDto;
+import com.onz.modules.admin.LiveMember.web.dto.LiveMemberRequestDto;
+import com.onz.modules.admin.LiveMember.web.dto.LiveMemberResponseDto;
 import com.onz.modules.admin.LiveMember.infra.LiveMemberRepository;
-import com.onz.modules.company.web.dto.reponse.YearAmtListResponseDto;
-import com.onz.modules.counsel.domain.enums.QnaGubn;
+import com.onz.modules.admin.LiveMember.web.dto.LiveMemberResponseWrapDto;
 import com.onz.modules.counsel.infra.counsel.CounselRepository;
 import com.onz.modules.review.infra.AmtReviewRepository;
 import com.onz.modules.review.infra.CompanyReviewRepository;
 import com.onz.modules.review.infra.InterviewReviewRepository;
+import com.querydsl.jpa.JPQLQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -18,10 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -35,9 +31,13 @@ public class LiveMemberService {
     private final CounselRepository counselRepository;
     private final InterviewReviewRepository interviewReviewRepository;
 
-    public List<LiveMemberResponseDto> liveMember(HttpServletResponse response, LiveMemberRequestDto liveMemberRequestDto) throws CustomException {
+    public LiveMemberResponseWrapDto liveMember(HttpServletResponse response, LiveMemberRequestDto liveMemberRequestDto, Pageable pageable) throws CustomException {
         //전체회원을 받아온다
-        List<LiveMemberResponseDto> result = liveMemberRepository.findByLiveMember(liveMemberRequestDto);
+        List<LiveMemberResponseDto> liveMemberListResult = liveMemberRepository.findByLiveMember(liveMemberRequestDto,pageable);
+        LiveMemberResponseDto liveMemberTotalResult = liveMemberRepository.findByLiveMemberTotal(liveMemberRequestDto);
+        JPQLQuery<Long> liveMemberTotalCnt = liveMemberRepository.findCountMember(liveMemberRequestDto);
+
+        LiveMemberResponseWrapDto result3 = new LiveMemberResponseWrapDto(liveMemberTotalCnt.fetchOne(),liveMemberTotalResult, liveMemberListResult);
 //        List<LiveMemberResponseDto> result = liveMemberResponseDtos.stream().map(e -> {
 //            LiveMemberResponseDto rs = new LiveMemberResponseDto(e);
 //            // 기관리뷰 개수
@@ -59,6 +59,6 @@ public class LiveMemberService {
 //            rs.setCounselACnt(counselACnt);
 //            return rs;
 //        }).collect(Collectors.toList());
-        return result;
+        return result3;
     }
 }
