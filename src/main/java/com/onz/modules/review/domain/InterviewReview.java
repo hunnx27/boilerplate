@@ -1,6 +1,7 @@
 package com.onz.modules.review.domain;
 
 import com.onz.common.domain.BaseEntity;
+import com.onz.common.enums.State;
 import com.onz.common.enums.YN;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.review.web.dto.InterviewRequestDto;
@@ -47,7 +48,8 @@ public class InterviewReview extends BaseEntity {
     private YN item_6;
 
     @ColumnDefault("'W'")
-    private String state;
+    @Enumerated(EnumType.STRING)
+    private State state;
 
     //    private Long reviewOrder;
 //    private String interviewQ;

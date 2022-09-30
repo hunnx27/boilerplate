@@ -1,12 +1,13 @@
 package com.onz.modules.admin.LiveMember.infra;
 
+import com.onz.common.enums.State;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.QAccount;
+import com.onz.modules.admin.LiveMember.web.dto.LiveMemberDetailResponse;
 import com.onz.modules.admin.LiveMember.web.dto.LiveMemberRequestDto;
 import com.onz.modules.admin.LiveMember.web.dto.LiveMemberResponseDto;
-import com.onz.modules.admin.LiveMember.web.dto.LiveMemberResponseWrapDto;
-import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.domain.QCounsel;
+import com.onz.modules.counsel.domain.enums.CounselState;
 import com.onz.modules.counsel.domain.enums.QnaGubn;
 import com.onz.modules.review.domain.QCompanyReview;
 import com.onz.modules.review.domain.QInterviewReview;
@@ -29,10 +30,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.querydsl.core.types.ExpressionUtils.in;
+import static com.querydsl.core.types.ExpressionUtils.*;
 
 @Repository
 @Slf4j
@@ -48,7 +48,7 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
     }
 
     private BooleanBuilder getWhere(LiveMemberRequestDto liveMemberRequestDto,
-                                    QAccount account, QCompanyReview companyReview, QInterviewReview interviewReview, QYearAmtReview amtReview, QCounsel counsel){
+                                    QAccount account, QCompanyReview companyReview, QInterviewReview interviewReview, QYearAmtReview amtReview, QCounsel counsel) {
 
         BooleanBuilder where = new BooleanBuilder();
         String zoneCode = liveMemberRequestDto.getSido() + liveMemberRequestDto.getSigungu();
@@ -379,7 +379,7 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
     }
 
     @Override
-    public JPQLQuery<Long> findCountMember(LiveMemberRequestDto liveMemberRequestDto){
+    public JPQLQuery<Long> findCountMember(LiveMemberRequestDto liveMemberRequestDto) {
         QAccount account = QAccount.account;
         QCompanyReview companyReview = QCompanyReview.companyReview;
         QInterviewReview interviewReview = QInterviewReview.interviewReview;
@@ -394,6 +394,201 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
         return findLiveMemberTotalCnt;
 
     }
+
+    public LiveMemberDetailResponse findByAccountDetail(Long id) {
+        QAccount account = QAccount.account;
+        QCompanyReview companyReview = QCompanyReview.companyReview;
+        QInterviewReview interviewReview = QInterviewReview.interviewReview;
+        QYearAmtReview amtReview = QYearAmtReview.yearAmtReview;
+        QCounsel counsel = QCounsel.counsel;
+
+        BooleanBuilder where = new BooleanBuilder();
+        where.and(account.id.eq(id));
+        JPQLQuery<LiveMemberDetailResponse> result = from(account).select(
+                Projections.fields(LiveMemberDetailResponse.class,
+                        account.id,
+                        account.createdAt,
+                        account.gubn,
+                        account.snsType,
+                        account.userId,
+                        account.modifiedAt,
+                        account.point,
+                        account.myinfo.interestCompany,
+                        account.myinfo.interestZone,
+                        account.myinfo.majorSchool,
+                        account.myinfo.majorDepartment,
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(companyReview.count())
+                                        .from(companyReview)
+                                        .where(companyReview.account.id.eq(id))
+                                , "madeReview"),
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(companyReview.count())
+                                        .from(companyReview)
+                                        .where(companyReview.account.id.eq(id).and(companyReview.state.eq(State.W)))
+                                , "reviewStateW"),
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(companyReview.count())
+                                        .from(companyReview)
+                                        .where(companyReview.account.id.eq(id).and(companyReview.state.eq(State.R)))
+                                , "reviewStateR"),
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(companyReview.count())
+                                        .from(companyReview)
+                                        .where(companyReview.account.id.eq(id).and(companyReview.state.eq(State.A)))
+                                , "reviewStateA"),
+                        //컴퍼니
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(amtReview.count())
+                                        .from(amtReview)
+                                        .where(amtReview.account.id.eq(id))
+                                , "madeAmt"),
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(amtReview.count())
+                                        .from(amtReview)
+                                        .where(amtReview.account.id.eq(id).and(amtReview.state.eq(State.W)))
+                                , "amtStateW"),
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(amtReview.count())
+                                        .from(amtReview)
+                                        .where(amtReview.account.id.eq(id).and(amtReview.state.eq(State.R)))
+                                , "amtStateR"),
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(amtReview.count())
+                                        .from(amtReview)
+                                        .where(amtReview.account.id.eq(id).and(amtReview.state.eq(State.A)))
+                                , "amtStateA"),
+                        //연봉
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(interviewReview.count())
+                                        .from(interviewReview)
+                                        .where(interviewReview.account.id.eq(id))
+                                , "madeInterview"),
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(interviewReview.count())
+                                        .from(interviewReview)
+                                        .where(interviewReview.account.id.eq(id).and(interviewReview.state.eq(State.W)))
+                                , "interviewStateW"),
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(interviewReview.count())
+                                        .from(interviewReview)
+                                        .where(interviewReview.account.id.eq(id).and(interviewReview.state.eq(State.R)))
+                                , "interviewStateR"),
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(interviewReview.count())
+                                        .from(interviewReview)
+                                        .where(interviewReview.account.id.eq(id).and(interviewReview.state.eq(State.A)))
+                                , "interviewStateA"),
+                        //인터뷰
+//                        ExpressionUtils.as(
+//                                JPAExpressions
+//                                        .select(amtReview.count())
+//                                        .from(amtReview)
+//                                        .where(amtReview.account.id.eq(id).and(companyReview.state.eq(State.A)))
+//                                , "stateA"),
+//                        ExpressionUtils.as(
+//                                JPAExpressions
+//                                        .select(interviewReview.count())
+//                                        .from(interviewReview)
+//                                        .where(interviewReview.account.id.eq(id).and(companyReview.state.eq(State.R)))
+//                                , "stateR"),
+
+                        //상태
+
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(counsel.count())
+                                        .from(counsel)
+                                        .where(counsel.account.id.eq(id).and(counsel.qnaGubn.eq(QnaGubn.Q)).and(counsel.counselState.eq(CounselState.R)))
+                                , "madeQCounselR"),//총 qounsel
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(counsel.count())
+                                        .from(counsel)
+                                        .where(counsel.account.id.eq(id).and(counsel.qnaGubn.eq(QnaGubn.Q)).and(counsel.counselState.eq(CounselState.A)))
+                                , "madeQCounselA"),//총 qounsel
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(counsel.count())
+                                        .from(counsel)
+                                        .where(counsel.account.id.eq(id).and(counsel.qnaGubn.eq(QnaGubn.A)))
+                                , "madeACounsel")
+
+
+                )
+        ).where(where);
+        LiveMemberDetailResponse fetchResulTd = result.fetchOne();
+        return fetchResulTd;
+    }
+//
+//    public List<LiveMemberDetailResponse> findByAccountDetailset(Long id) {
+//        QAccount account = QAccount.account;
+//        QCompanyReview companyReview = QCompanyReview.companyReview;
+//        QInterviewReview interviewReview = QInterviewReview.interviewReview;
+//        QYearAmtReview amtReview = QYearAmtReview.yearAmtReview;
+//        QCounsel counsel = QCounsel.counsel;
+//        BooleanBuilder where = new BooleanBuilder();
+//        where.and(account.id.eq(id));
+//        JPQLQuery<LiveMemberDetailResponse> result = from(account).select(
+//                Projections.fields(LiveMemberDetailResponse.class,
+//                        Expressions.asNumber(0L).as("totalPoint"),
+//                        ExpressionUtils.as(
+//                                JPAExpressions
+//                                        .select(account.point)
+//                                        .from(account)
+//                                        .where(where)
+//                                , "point"),
+//                        account.point,
+//                        Expressions.asNumber(0L).as("daycare"),
+//                        Expressions.asNumber(0L).as("kinder"),
+//                        ExpressionUtils.as(
+//                                JPAExpressions
+//                                        .select(companyReview.count())
+//                                        .from(companyReview)
+//                                        .where(where)
+//                                , "madeReview"),
+//                        ExpressionUtils.as(
+//                                JPAExpressions
+//                                        .select(amtReview.count())
+//                                        .from(amtReview)
+//                                        .where(where)
+//                                , "madeAmt"),
+//                        ExpressionUtils.as(
+//                                JPAExpressions
+//                                        .select(interviewReview.count())
+//                                        .from(interviewReview)
+//                                        .where(where)
+//                                , "madeInterview"),
+//                        ExpressionUtils.as(
+//                                JPAExpressions
+//                                        .select(counsel.count())
+//                                        .from(counsel)
+//                                        .where(where.and(counsel.qnaGubn.eq(QnaGubn.Q)))
+//                                , "madeQCounsel"),
+//                        ExpressionUtils.as(
+//                                JPAExpressions
+//                                        .select(counsel.count())
+//                                        .from(counsel)
+//                                        .where(where.and(counsel.qnaGubn.eq(QnaGubn.A)))
+//                                , "madeACounsel")
+//                ));
+//        QueryResults<LiveMemberDetailResponse> fetchResulTd = result.fetchResults();
+//        List<LiveMemberDetailResponse> findLiveMemberListResults = fetchResulTd.getResults();
+//
+//        return findLiveMemberListResults;
+//    }
 
     @Override
     public LiveMemberResponseDto findByLiveMemberTotal(LiveMemberRequestDto liveMemberRequestDto) {

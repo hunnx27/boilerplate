@@ -1,6 +1,7 @@
 package com.onz.modules.review.domain;
 
 import com.onz.common.domain.BaseEntity;
+import com.onz.common.enums.State;
 import com.onz.common.enums.YN;
 import com.onz.common.util.dto.AttachDto;
 import com.onz.modules.account.domain.Account;
@@ -74,7 +75,8 @@ public class CompanyReview extends BaseEntity {
     private ItemCode likeCode;
 
     @ColumnDefault("'W'")
-    private String state="W";
+    @Enumerated(EnumType.STRING)
+    private State state;
 
     @Builder
     public CompanyReview(CompanyReviewRequestDto companyReviewRequestDto, Company company, Account account) {

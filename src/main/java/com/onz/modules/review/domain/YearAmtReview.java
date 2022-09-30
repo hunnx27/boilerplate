@@ -3,6 +3,7 @@ package com.onz.modules.review.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.onz.common.domain.BaseEntity;
+import com.onz.common.enums.State;
 import com.onz.common.enums.YN;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.company.domain.Company;
@@ -46,7 +47,8 @@ public class YearAmtReview extends BaseEntity {
     private Long amtOld; //이전연봉
 
     @ColumnDefault("'W'")
-    private String state="W"; // 승인여부 A:승인 W:?
+    @Enumerated(EnumType.STRING)
+    private State state; // 승인여부 A:승인 W:?
 
     @Column(updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")

@@ -1,6 +1,7 @@
 package com.onz.modules.admin.LiveMember.application;
 
 import com.onz.common.exception.CustomException;
+import com.onz.modules.admin.LiveMember.web.dto.LiveMemberDetailResponse;
 import com.onz.modules.admin.LiveMember.web.dto.LiveMemberRequestDto;
 import com.onz.modules.admin.LiveMember.web.dto.LiveMemberResponseDto;
 import com.onz.modules.admin.LiveMember.infra.LiveMemberRepository;
@@ -9,12 +10,14 @@ import com.onz.modules.counsel.infra.counsel.CounselRepository;
 import com.onz.modules.review.infra.AmtReviewRepository;
 import com.onz.modules.review.infra.CompanyReviewRepository;
 import com.onz.modules.review.infra.InterviewReviewRepository;
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.JPQLQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
@@ -61,4 +64,10 @@ public class LiveMemberService {
 //        }).collect(Collectors.toList());
         return result3;
     }
+    public LiveMemberDetailResponse liveMemberDetail(HttpServletResponse response, @PathVariable Long id){
+        LiveMemberDetailResponse account = liveMemberRepository.findByAccountDetail(id);
+        return account;
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.onz.modules.review.domain.dto;
 
+import com.onz.common.enums.State;
 import com.onz.common.enums.YN;
 import com.onz.modules.review.domain.enums.ItemCode;
 import lombok.*;
@@ -28,7 +29,7 @@ public class ReviewAllDto {
 
     private Long accountId;
     private String isDelete;
-    private String state;
+    private State state;
     private YN workExpOpenYn;
     private String item_1;
     private YN item_2;
@@ -64,7 +65,7 @@ public class ReviewAllDto {
     private String image5;
 
     public ReviewAllDto(String type, Long id, Long accountId,
-                        String isDelete, String state, String workExpOpenYn, Long companyId, String companyName,
+                        String isDelete, State state, String workExpOpenYn, Long companyId, String companyName,
                         String establishmentType,String txt,
                         String item_1, String item_2, String item_3, String item_4, String item_5,String item_6,
                         String topQ1, String txtAdmin, Long workExp, String zonecode,
