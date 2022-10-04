@@ -5,6 +5,7 @@ import com.onz.common.web.ApiR;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.admin.LiveMember.application.LiveMemberService;
 import com.onz.modules.admin.LiveMember.web.dto.LiveMemberDetailResponse;
+import com.onz.modules.admin.LiveMember.web.dto.LiveMemberPointResponse;
 import com.onz.modules.admin.LiveMember.web.dto.LiveMemberRequestDto;
 import com.onz.modules.admin.LiveMember.web.dto.LiveMemberResponseDto;
 import com.querydsl.core.QueryResults;
@@ -59,5 +60,18 @@ public class LiveMemberController {
             throw e;
         }
     }
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = Account.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = Account.class)))
+    })
+    @GetMapping("/admin/liveMember/point/{id}")
+    public ResponseEntity<ApiR<?>> liveMemberResponseWrapPDto(HttpServletResponse response, @PathVariable Long id, Pageable pageable) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(liveMemberService.liveMemberResponseWrapPDto(response,id,pageable)));
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
 
 }

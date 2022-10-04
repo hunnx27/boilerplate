@@ -7,6 +7,7 @@ import com.onz.common.util.dto.AttachDto;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.auth.web.dto.UserPrincipal;
+import com.onz.modules.common.pointHistory.domain.enums.PointTable;
 import com.onz.modules.company.web.dto.reponse.CounselSearchCountDto;
 import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.domain.CounselRecommend;
@@ -61,6 +62,7 @@ public class CounselService {
     public void create(CounselQCreateRequest counselQCreateRequest, UserPrincipal me) {
         Account account = accountService.findOne(me.getId());
         Counsel counsel = new Counsel(counselQCreateRequest, account);
+        accountService.createMyPointHistories(account, PointTable.COUNCEL_QUESTION_REGIST);
         Counsel saved = counselRepository.save(counsel);
 
         // Image File Upload

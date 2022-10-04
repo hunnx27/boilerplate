@@ -1,0 +1,24 @@
+package com.onz.modules.admin.LiveMember.web.dto;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class LiveMemberPointResponse {
+    //--- Point --- //
+
+    //    private Long rank;
+//
+    // total point 와 잔여포인트 개념 설계 다시 해야함
+    private Integer ordersHistory;
+
+    private Long point;
+
+    public LiveMemberPointResponse(Integer ordersHistory, Long point) {
+        this.ordersHistory = ordersHistory;
+        this.point = point;
+    }
+}

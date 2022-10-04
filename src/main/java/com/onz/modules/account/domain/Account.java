@@ -17,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -50,6 +51,8 @@ public class Account extends BaseEntity {
     private Gubn gubn = Gubn.PARENT;
 
     private long point;
+
+
     @Embedded
     private Myinfo myinfo; // 내정보
 

@@ -25,6 +25,7 @@ public class LiveMemberResponseDto {
 
     @Getter
     private String rank;
+
     @Getter
     private Long point;
 

@@ -1,11 +1,11 @@
 package com.onz.modules.admin.LiveMember.infra;
 
 import com.onz.common.enums.State;
+import com.onz.common.exception.CustomException;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.QAccount;
-import com.onz.modules.admin.LiveMember.web.dto.LiveMemberDetailResponse;
-import com.onz.modules.admin.LiveMember.web.dto.LiveMemberRequestDto;
-import com.onz.modules.admin.LiveMember.web.dto.LiveMemberResponseDto;
+import com.onz.modules.admin.LiveMember.web.dto.*;
+import com.onz.modules.common.pointHistory.domain.QPointHistory;
 import com.onz.modules.counsel.domain.QCounsel;
 import com.onz.modules.counsel.domain.enums.CounselState;
 import com.onz.modules.counsel.domain.enums.QnaGubn;
@@ -308,6 +308,7 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
         QYearAmtReview amtReview = QYearAmtReview.yearAmtReview;
         QCounsel counsel = QCounsel.counsel;
 
+
         // where절 정의
         BooleanBuilder where = this.getWhere(liveMemberRequestDto, account, companyReview, interviewReview, amtReview, counsel);
 
@@ -319,6 +320,7 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
                                 account.userId,
                                 account.snsType,
                                 Expressions.asString("").as("rank"),
+                                //누적포인트
                                 account.point,
                                 account.createdAt,
                                 ExpressionUtils.as(
@@ -395,12 +397,57 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
 
     }
 
+    public LiveMemberPointResponse findByAccountPointDetail(Long id) {
+        QAccount account = QAccount.account;
+        QPointHistory pointHistory = QPointHistory.pointHistory;
+
+        BooleanBuilder where = new BooleanBuilder();
+        where.and(account.id.eq(id));
+
+        JPQLQuery<LiveMemberPointResponse> result = from(account).select(
+                Projections.fields(LiveMemberPointResponse.class,
+                        account.point,
+                                        Expressions.as(
+                                                JPAExpressions
+                                                        .select(pointHistory
+                                                                .pointInfo.amt.sum())
+                                                        .from(pointHistory)
+                                                        .where(pointHistory.account.id.eq(account.id).and(pointHistory.pointInfo.amt.goe(0)))
+                                                , "ordersHistory")
+                        )).where(where);
+        LiveMemberPointResponse fetchResulTd = result.fetchOne();
+        return fetchResulTd;
+    }
+    public List<LiveMemberPointListResponse> findByAccountPointList(Long id, Pageable pageable) throws CustomException {
+            QAccount account = QAccount.account;
+            QPointHistory pointHistory = QPointHistory.pointHistory;
+            BooleanBuilder where = new BooleanBuilder();
+            where.and(account.id.eq(id));
+            JPQLQuery<LiveMemberPointListResponse> result = from(pointHistory).orderBy(pointHistory.createdAt.desc()).select(
+                    Projections.fields(LiveMemberPointListResponse.class,
+                            pointHistory.createdAt,
+                            pointHistory.pointInfo.code,
+                            pointHistory.pointInfo.amt,
+                            pointHistory.pointInfo.totAmt
+                    )
+            ).where(where);
+            JPQLQuery<LiveMemberPointListResponse> query = getQuerydsl().applyPagination(pageable, result);
+//        JPQLQuery<Account> result = from(account).where(where);
+
+            QueryResults<LiveMemberPointListResponse> findLiveMemberResults = query.fetchResults();
+            List<LiveMemberPointListResponse> findLiveMemberListResults = findLiveMemberResults.getResults();
+
+
+            return findLiveMemberListResults;
+    }
+
     public LiveMemberDetailResponse findByAccountDetail(Long id) {
         QAccount account = QAccount.account;
         QCompanyReview companyReview = QCompanyReview.companyReview;
         QInterviewReview interviewReview = QInterviewReview.interviewReview;
         QYearAmtReview amtReview = QYearAmtReview.yearAmtReview;
         QCounsel counsel = QCounsel.counsel;
+        QPointHistory pointHistory = QPointHistory.pointHistory;
 
         BooleanBuilder where = new BooleanBuilder();
         where.and(account.id.eq(id));
@@ -412,6 +459,13 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
                         account.snsType,
                         account.userId,
                         account.modifiedAt,
+                        Expressions.as(
+                                JPAExpressions
+                                        .select(pointHistory
+                                                .pointInfo.amt.sum())
+                                        .from(pointHistory)
+                                        .where(pointHistory.account.id.eq(account.id).and(pointHistory.pointInfo.amt.goe(0)))
+                                , "ordersHistory"),
                         account.point,
                         account.myinfo.interestCompany,
                         account.myinfo.interestZone,

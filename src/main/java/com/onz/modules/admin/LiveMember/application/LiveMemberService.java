@@ -1,11 +1,8 @@
 package com.onz.modules.admin.LiveMember.application;
 
 import com.onz.common.exception.CustomException;
-import com.onz.modules.admin.LiveMember.web.dto.LiveMemberDetailResponse;
-import com.onz.modules.admin.LiveMember.web.dto.LiveMemberRequestDto;
-import com.onz.modules.admin.LiveMember.web.dto.LiveMemberResponseDto;
+import com.onz.modules.admin.LiveMember.web.dto.*;
 import com.onz.modules.admin.LiveMember.infra.LiveMemberRepository;
-import com.onz.modules.admin.LiveMember.web.dto.LiveMemberResponseWrapDto;
 import com.onz.modules.counsel.infra.counsel.CounselRepository;
 import com.onz.modules.review.infra.AmtReviewRepository;
 import com.onz.modules.review.infra.CompanyReviewRepository;
@@ -65,8 +62,15 @@ public class LiveMemberService {
         return result3;
     }
     public LiveMemberDetailResponse liveMemberDetail(HttpServletResponse response, @PathVariable Long id){
-        LiveMemberDetailResponse account = liveMemberRepository.findByAccountDetail(id);
-        return account;
+        return liveMemberRepository.findByAccountDetail(id);
+    }
+    public LiveMemberResponseWrapPDto liveMemberResponseWrapPDto(HttpServletResponse response, @PathVariable Long id,Pageable pageable) {
+        List<LiveMemberPointListResponse> liveMemberPointListResponses = liveMemberRepository.findByAccountPointList(id,pageable);
+        LiveMemberPointResponse liveMemberPointResponse = liveMemberRepository.findByAccountPointDetail(id);
+//
+        LiveMemberResponseWrapPDto result3 = new LiveMemberResponseWrapPDto(liveMemberPointResponse,liveMemberPointListResponses);
+//
+       return result3;
     }
 
 
