@@ -28,7 +28,7 @@ public class DelUserResponse {
         this.userId = userId;
         this.point = point;
         if (interestCompany != null && !"".equals(interestCompany)) {
-            this.interestCompany = InterestCompany.valueOf(interestCompany);
+            this.interestCompany = InterestCompany.valueOf(InterestCompany.valueOf(interestCompany).getDesc());
         }
         this.createAt = createAt;
         this.isDelete = isDelete;

@@ -19,6 +19,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 @Slf4j
@@ -60,7 +61,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 //                        account.getSnsType() + " account. Please use your " + account.getSnsType() +
 //                        " account to login.");
 //            }
-
+            account.setLastedAt(ZonedDateTime.now());
+            accountRepository.save(account);
             account = updateExistingUser(account, oAuth2UserInfo);
         } else {
             // 신규 유저면 등록(Step, ID저장안함.)

@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import java.time.ZonedDateTime;
 import java.util.*;
 
 public class UserPrincipal implements OAuth2User, UserDetails {
@@ -32,6 +33,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
                 singletonList(new SimpleGrantedAuthority(account.getRole().getRole()));
         String gubnCode = account.getGubn()!=null? account.getGubn().getCode() : null;
         String snsTypeCode = account.getSnsType()!=null? account.getSnsType().getCode() : null;
+
         return new UserPrincipal(
                 account.getId(),
                 account.getUserId(),

@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletResponse;
+import java.time.ZonedDateTime;
 
 @Slf4j
 @Service
@@ -45,6 +46,8 @@ public class UserLoginService {
                 if (accountId.getRole().equals(Role.ADMIN)) {
                     throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
                 } else {
+                    accountId.setLastedAt(ZonedDateTime.now());
+                    accountRepository.save(accountId);
                     UserPrincipal.create(accountId);
                     UserDetails principal = userDetailsService.loadUserByUsername(MysqlSHA2Util.getSHA512(loginRequest.getUserId()));
                     Authentication authentication = new UsernamePasswordAuthenticationToken(principal, principal.getPassword(), principal.getAuthorities());
