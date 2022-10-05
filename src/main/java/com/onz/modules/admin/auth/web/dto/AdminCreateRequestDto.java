@@ -1,4 +1,4 @@
-package com.onz.modules.admin.auth.domain;
+package com.onz.modules.admin.auth.web.dto;
 
 import com.onz.common.enums.Role;
 import com.onz.common.enums.YN;

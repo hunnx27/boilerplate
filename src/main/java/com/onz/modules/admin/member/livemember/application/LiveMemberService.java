@@ -1,13 +1,12 @@
-package com.onz.modules.admin.LiveMember.application;
+package com.onz.modules.admin.member.livemember.application;
 
 import com.onz.common.exception.CustomException;
-import com.onz.modules.admin.LiveMember.web.dto.*;
-import com.onz.modules.admin.LiveMember.infra.LiveMemberRepository;
+import com.onz.modules.admin.member.livemember.infra.LiveMemberRepository;
+import com.onz.modules.admin.member.livemember.web.dto.*;
 import com.onz.modules.counsel.infra.counsel.CounselRepository;
 import com.onz.modules.review.infra.AmtReviewRepository;
 import com.onz.modules.review.infra.CompanyReviewRepository;
 import com.onz.modules.review.infra.InterviewReviewRepository;
-import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.JPQLQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,10 +25,6 @@ import java.util.*;
 public class LiveMemberService {
 
     private final LiveMemberRepository liveMemberRepository;
-    private final CompanyReviewRepository companyReviewRepository;
-    private final AmtReviewRepository amtReviewRepository;
-    private final CounselRepository counselRepository;
-    private final InterviewReviewRepository interviewReviewRepository;
 
     public LiveMemberResponseWrapDto liveMember(HttpServletResponse response, LiveMemberRequestDto liveMemberRequestDto, Pageable pageable) throws CustomException {
         //전체회원을 받아온다
@@ -64,7 +59,7 @@ public class LiveMemberService {
     public LiveMemberDetailResponse liveMemberDetail(HttpServletResponse response, @PathVariable Long id){
         return liveMemberRepository.findByAccountDetail(id);
     }
-    public LiveMemberResponseWrapPDto liveMemberResponseWrapPDto(HttpServletResponse response, @PathVariable Long id,Pageable pageable) {
+    public LiveMemberResponseWrapPDto liveMemberResponseWrapPDto(HttpServletResponse response, @PathVariable Long id, Pageable pageable) {
         List<LiveMemberPointListResponse> liveMemberPointListResponses = liveMemberRepository.findByAccountPointList(id,pageable);
         LiveMemberPointResponse liveMemberPointResponse = liveMemberRepository.findByAccountPointDetail(id);
 //

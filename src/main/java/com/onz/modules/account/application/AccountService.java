@@ -30,6 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -74,9 +75,9 @@ public class AccountService {
         return accountRepository.save(findOne).getId();
     }
 
+    @Deprecated
     public boolean delete(Long id) {
         Account account = accountRepository.deleteAccount(id);
-
         return true;
     }
 
@@ -94,6 +95,7 @@ public class AccountService {
     public Account deleteMeSoft(Long id) {
         Account account = accountRepository.findById(id).orElseThrow();
         account.setIsDelete(YN.Y);
+        account.setDeletedAt(ZonedDateTime.now());
         accountRepository.save(account);
         return account;
     }

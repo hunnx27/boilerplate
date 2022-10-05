@@ -1,7 +1,6 @@
-package com.onz.modules.admin.LiveMember.infra;
+package com.onz.modules.admin.member.livemember.infra;
 
-import com.onz.modules.admin.LiveMember.web.dto.*;
-import com.querydsl.core.QueryResults;
+import com.onz.modules.admin.member.livemember.web.dto.*;
 import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.domain.Pageable;
 
@@ -15,6 +14,6 @@ public interface LiveMemberRepositoryExtension {
 //    List<LiveMemberDetailResponse> findByAccountDetail(Long id);
     LiveMemberDetailResponse findByAccountDetail(Long id);
     LiveMemberPointResponse findByAccountPointDetail(Long id);
-    List<LiveMemberPointListResponse> findByAccountPointList(Long id,Pageable pageable);
+    List<LiveMemberPointListResponse> findByAccountPointList(Long id, Pageable pageable);
 }
 

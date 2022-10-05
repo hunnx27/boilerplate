@@ -101,24 +101,24 @@ public class AccountController extends BaseApiController {
         }
     }
 
-    @Operation(summary = "계정 삭제", description = "변수를 이용하여 account 레코드를 삭제합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "계정 삭제 완료", content = @Content(schema = @Schema(implementation = SecurityContextHolder.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = SecurityContextHolder.class)))
-    })
-    @DeleteMapping("/accounts/{id}")
-    public ResponseEntity<ApiR<?>> delete(@PathVariable Long id) {
-        try {
-            boolean delete = accountService.delete(id);
-            if (delete) {
-                SecurityContextHolder.clearContext();
-            }
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
-        } catch (Exception e) {
-            throw e;
-        }
-
-    }
+//    @Operation(summary = "계정 삭제", description = "변수를 이용하여 account 레코드를 삭제합니다.")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "계정 삭제 완료", content = @Content(schema = @Schema(implementation = SecurityContextHolder.class))),
+//            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = SecurityContextHolder.class)))
+//    })
+//    @DeleteMapping("/accounts/{id}")
+//    public ResponseEntity<ApiR<?>> delete(@PathVariable Long id) {
+//        try {
+//            boolean delete = accountService.delete(id);
+//            if (delete) {
+//                SecurityContextHolder.clearContext();
+//            }
+//            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
+//        } catch (Exception e) {
+//            throw e;
+//        }
+//
+//    }
 
     @Operation(summary = "현재 접속한 계정 조회", description = "변수를 이용하여 접속한 계정 레코드를 조회합니다.")
     @ApiResponses(value = {

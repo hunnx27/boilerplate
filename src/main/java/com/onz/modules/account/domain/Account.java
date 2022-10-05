@@ -1,12 +1,13 @@
 package com.onz.modules.account.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.onz.common.enums.*;
 import com.onz.modules.account.domain.embed.Myinfo;
 import com.onz.modules.account.domain.enums.*;
 import com.onz.modules.account.web.dto.request.AccountMyinfoUpdateRequest;
 import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.common.domain.BaseEntity;
-import com.onz.modules.admin.auth.domain.AdminCreateRequestDto;
+import com.onz.modules.admin.auth.web.dto.AdminCreateRequestDto;
 import com.onz.modules.auth.application.util.MD5Utils;
 import com.onz.modules.auth.application.util.MysqlAESUtil;
 import com.onz.modules.auth.application.util.MysqlSHA2Util;
@@ -17,9 +18,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 @Entity
@@ -37,7 +38,6 @@ public class Account extends BaseEntity {
     private String userId;
     @JsonIgnore
     private String password;
-
 
     @Enumerated(EnumType.STRING)
     private Role role;

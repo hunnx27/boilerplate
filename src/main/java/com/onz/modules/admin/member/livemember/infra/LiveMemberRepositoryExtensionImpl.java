@@ -1,10 +1,10 @@
-package com.onz.modules.admin.LiveMember.infra;
+package com.onz.modules.admin.member.livemember.infra;
 
 import com.onz.common.enums.State;
 import com.onz.common.exception.CustomException;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.QAccount;
-import com.onz.modules.admin.LiveMember.web.dto.*;
+import com.onz.modules.admin.member.livemember.web.dto.*;
 import com.onz.modules.common.pointHistory.domain.QPointHistory;
 import com.onz.modules.counsel.domain.QCounsel;
 import com.onz.modules.counsel.domain.enums.CounselState;
@@ -31,8 +31,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
-import static com.querydsl.core.types.ExpressionUtils.*;
 
 @Repository
 @Slf4j

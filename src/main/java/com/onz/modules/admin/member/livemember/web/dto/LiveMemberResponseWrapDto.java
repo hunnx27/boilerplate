@@ -1,4 +1,4 @@
-package com.onz.modules.admin.LiveMember.web.dto;
+package com.onz.modules.admin.member.livemember.web.dto;
 
 import lombok.Getter;
 import lombok.Setter;

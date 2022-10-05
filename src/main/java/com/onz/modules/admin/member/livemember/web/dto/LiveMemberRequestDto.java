@@ -1,17 +1,13 @@
-package com.onz.modules.admin.LiveMember.web.dto;
+package com.onz.modules.admin.member.livemember.web.dto;
 
 import com.onz.common.enums.Gubn;
 import com.onz.common.web.dto.request.BasePageRequest;
 import lombok.Getter;
 
-import java.time.ZonedDateTime;
-import java.util.HashMap;
-import java.util.Map;
-
 @Getter
 public class LiveMemberRequestDto extends BasePageRequest {
 
-    private Gubn gubn = null;
+    private Gubn gubn;
     private final String userId;
     private final String createAtA;
     private final String createAtD;
@@ -19,13 +15,13 @@ public class LiveMemberRequestDto extends BasePageRequest {
     private final String birthYYYYt;
     private final String sido;
     private final String sigungu;
-    private String reviewCount;
-    private String counselQCount;
-    private String counselACount;
-    private Long reviewCountNum;
-    private Long counselQCountNum;
-    private Long counselACountNum;
-    private String options;
+    private final String reviewCount;
+    private final String counselQCount;
+    private final String counselACount;
+    private final Long reviewCountNum;
+    private final Long counselQCountNum;
+    private final Long counselACountNum;
+    private final String options;
 
     public LiveMemberRequestDto(String gubn, String userId, String createAtA, String createAtD, String birthYYYYo, String birthYYYYt, String sido, String sigungu
             , String reviewCount, String counselQCount, String counselACount, Long reviewCountNum, Long counselQCountNum, Long counselACountNum,String options) {

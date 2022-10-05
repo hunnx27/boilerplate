@@ -1,8 +1,7 @@
-package com.onz.modules.admin.LiveMember.infra;
+package com.onz.modules.admin.member.livemember.infra;
 
 import com.onz.common.enums.Gubn;
 import com.onz.modules.account.domain.Account;
-import com.onz.modules.admin.LiveMember.web.dto.LiveMemberDetailResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

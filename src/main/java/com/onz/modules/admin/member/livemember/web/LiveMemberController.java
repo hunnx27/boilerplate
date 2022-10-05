@@ -1,14 +1,12 @@
-package com.onz.modules.admin.LiveMember.web;
+package com.onz.modules.admin.member.livemember.web;
 
 import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
 import com.onz.modules.account.domain.Account;
-import com.onz.modules.admin.LiveMember.application.LiveMemberService;
-import com.onz.modules.admin.LiveMember.web.dto.LiveMemberDetailResponse;
-import com.onz.modules.admin.LiveMember.web.dto.LiveMemberPointResponse;
-import com.onz.modules.admin.LiveMember.web.dto.LiveMemberRequestDto;
-import com.onz.modules.admin.LiveMember.web.dto.LiveMemberResponseDto;
-import com.querydsl.core.QueryResults;
+import com.onz.modules.admin.member.livemember.application.LiveMemberService;
+import com.onz.modules.admin.member.livemember.web.dto.LiveMemberDetailResponse;
+import com.onz.modules.admin.member.livemember.web.dto.LiveMemberRequestDto;
+import com.onz.modules.admin.member.livemember.web.dto.LiveMemberResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

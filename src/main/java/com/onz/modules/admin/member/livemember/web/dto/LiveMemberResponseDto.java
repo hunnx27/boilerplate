@@ -1,4 +1,4 @@
-package com.onz.modules.admin.LiveMember.web.dto;
+package com.onz.modules.admin.member.livemember.web.dto;
 
 import com.onz.common.enums.Gubn;
 import com.onz.modules.account.domain.enums.AuthProvider;

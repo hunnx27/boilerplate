@@ -2,30 +2,15 @@ package com.onz.modules.auth.application;
 
 import com.onz.common.enums.ErrorCode;
 import com.onz.common.exception.CustomException;
-import com.onz.common.web.ApiR;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.infra.AccountRepository;
-import com.onz.modules.admin.auth.domain.AdminLonginRequestDto;
-import com.onz.modules.auth.application.util.CookieUtils;
-import com.onz.modules.auth.application.util.JwtProvider;
-import com.onz.modules.auth.application.util.MD5Utils;
 import com.onz.modules.auth.web.dto.UserPrincipal;
-import com.onz.modules.auth.web.dto.request.LoginRequest;
-import com.onz.modules.auth.web.dto.response.AuthResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 @Service

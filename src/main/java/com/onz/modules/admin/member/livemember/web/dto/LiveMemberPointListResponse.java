@@ -1,14 +1,10 @@
-package com.onz.modules.admin.LiveMember.web.dto;
+package com.onz.modules.admin.member.livemember.web.dto;
 
 import com.onz.modules.common.pointHistory.domain.enums.PointTable;
-import com.onz.modules.common.pointHistory.domain.enums.PointTableConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Convert;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 

@@ -1,11 +1,11 @@
 package com.onz.modules.account.domain;
 
 import com.onz.common.domain.BaseEntity;
-import com.onz.common.enums.Role;
+
 import java.time.ZonedDateTime;
 import javax.persistence.*;
 
-import com.onz.modules.admin.auth.domain.AdminCreateRequestDto;
+import com.onz.modules.admin.auth.web.dto.AdminCreateRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
