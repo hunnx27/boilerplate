@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -31,6 +32,13 @@ public class DelUserService {
     public List<DelUserListResponseDto> delUserList(HttpServletResponse response, DelUserRequestDto delUserRequestDto, Pageable pageable) throws CustomException {
         //전체회원을 받아온다
         List<DelUserListResponseDto> delUserListResponse = delUserRepository.findByDelUser(delUserRequestDto,pageable);
+
+        return delUserListResponse;
+    }
+
+    public DelUserResponse delUserDetail(@PathVariable Long id) throws CustomException {
+        //전체회원을 받아온다
+        DelUserResponse delUserListResponse = delUserRepository.findByDelUserDetail(id);
 
         return delUserListResponse;
     }

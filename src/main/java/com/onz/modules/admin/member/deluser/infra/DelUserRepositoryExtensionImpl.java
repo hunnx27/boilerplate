@@ -2,11 +2,12 @@ package com.onz.modules.admin.member.deluser.infra;
 
 
 import com.onz.common.enums.Role;
-import com.onz.common.enums.YN;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.QAccount;
 import com.onz.modules.admin.member.deluser.web.dto.DelUserListResponseDto;
 import com.onz.modules.admin.member.deluser.web.dto.DelUserRequestDto;
+import com.onz.modules.admin.member.deluser.web.dto.DelUserResponse;
+import com.onz.modules.admin.member.livemember.web.dto.LiveMemberDetailResponse;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
@@ -81,6 +82,28 @@ public class DelUserRepositoryExtensionImpl extends QuerydslRepositorySupport im
         List<DelUserListResponseDto> findLiveMemberListResults = findByDelUser.getResults();
 
         return findLiveMemberListResults;
+    }
+
+    @Override
+    public DelUserResponse findByDelUserDetail(Long id) {
+        // Q클래스 정의
+        QAccount account = QAccount.account;
+
+        // where절 정의
+        // 쿼리 생성(리스트)
+        JPQLQuery<DelUserResponse> result = from(account).select(
+                Projections.fields(DelUserResponse.class,
+                        account.userId,
+                        account.point,
+                        account.myinfo.interestCompany,
+                        account.createdAt,
+                        account.isDelete,
+                        account.gubn,
+                        account.snsType,
+                        account.myinfo.interestZone
+                                )).where(account.id.eq(id).and(account.role.eq(Role.USER).and(account.isDelete.eq(Y))));
+        DelUserResponse fetchResulTd = result.fetchOne();
+        return fetchResulTd;
     }
 
 }

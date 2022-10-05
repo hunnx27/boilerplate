@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DelUserController {
 
     private final DelUserService delUserService;
+
     @Operation(summary = "탈퇴 회원 관리 ", description = "탈퇴 관리입니다...")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = DelUserRequestDto.class))),
@@ -36,6 +38,20 @@ public class DelUserController {
     public ResponseEntity<ApiR<?>> delUserList(HttpServletResponse response, DelUserRequestDto delUserRequestDto, Pageable pageable) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(delUserService.delUserList(response,delUserRequestDto,pageable)));
+        } catch (CustomException e) {
+            throw e;
+        }
+    }
+
+    @Operation(summary = "탈퇴 회원 정보 조회 ", description = "탈퇴 관리입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = DelUserRequestDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = DelUserRequestDto.class)))
+    })
+    @GetMapping("/admin/deleted/{id}")
+    public ResponseEntity<ApiR<?>> delUserDetail(@PathVariable Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(delUserService.delUserDetail(id)));
         } catch (CustomException e) {
             throw e;
         }
