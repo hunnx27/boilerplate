@@ -100,10 +100,10 @@ public class DelUserRepositoryExtensionImpl extends QuerydslRepositorySupport im
                         account.isDelete,
                         account.gubn,
                         account.snsType,
-                        account.myinfo.interestZone
+                        account.myinfo.interestZone,
+                        account.lastedAt
                                 )).where(account.id.eq(id).and(account.role.eq(Role.USER).and(account.isDelete.eq(Y))));
         DelUserResponse fetchResulTd = result.fetchOne();
         return fetchResulTd;
     }
-
 }

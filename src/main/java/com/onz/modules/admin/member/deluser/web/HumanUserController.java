@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -42,4 +43,17 @@ public class HumanUserController {
         }
     }
 
+    @Operation(summary = "휴면 회원정보 단일 조회 ", description = "휴면 단일 조회입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = DelUserRequestDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = DelUserRequestDto.class)))
+    })
+    @GetMapping("/admin/human/{id}")
+    public ResponseEntity<ApiR<?>> humanAccountDetail(@PathVariable Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(humanService.humanAccountDetail(id)));
+        } catch (CustomException e) {
+            throw e;
+        }
+    }
 }

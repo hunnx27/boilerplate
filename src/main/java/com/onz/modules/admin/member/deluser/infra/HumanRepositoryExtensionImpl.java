@@ -3,30 +3,21 @@ package com.onz.modules.admin.member.deluser.infra;
 import com.onz.common.enums.Role;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.QAccount;
-import com.onz.modules.admin.member.deluser.web.dto.DelUserListResponseDto;
-import com.onz.modules.admin.member.deluser.web.dto.DelUserRequestDto;
-import com.onz.modules.admin.member.deluser.web.dto.HumanListRequestDto;
-import com.onz.modules.admin.member.deluser.web.dto.HumanListResponseDto;
+import com.onz.modules.admin.member.deluser.web.dto.*;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
-import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.DateTimePath;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.joda.time.DateTime;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static com.onz.common.enums.YN.N;
@@ -91,5 +82,29 @@ public class HumanRepositoryExtensionImpl extends QuerydslRepositorySupport impl
         List<HumanListResponseDto> findLiveMemberListResults = findByDelUser.getResults();
 
         return findLiveMemberListResults;
+    }
+
+    @Override
+    public HumanResponseDto findByHumanDetail(Long id) {
+        // Q클래스 정의
+        QAccount account = QAccount.account;
+
+        // where절 정의
+        // 쿼리 생성(리스트)
+        ZonedDateTime humanBase = ZonedDateTime.now().minusYears(1);
+        JPQLQuery<HumanResponseDto> result = from(account).select(
+                Projections.fields(HumanResponseDto.class,
+                        account.userId,
+                        account.point,
+                        account.myinfo.interestCompany,
+                        account.createdAt,
+                        account.isDelete,
+                        account.gubn,
+                        account.snsType,
+                        account.myinfo.interestZone,
+                        account.lastedAt
+                )).where(account.id.eq(id).and(account.role.eq(Role.USER)).and(account.lastedAt.before(ZonedDateTime.from(humanBase))));
+        HumanResponseDto fetchResulTd = result.fetchOne();
+        return fetchResulTd;
     }
 }

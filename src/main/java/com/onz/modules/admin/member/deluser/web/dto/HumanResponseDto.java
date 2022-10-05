@@ -13,8 +13,7 @@ import java.time.ZonedDateTime;
 @Setter
 @Getter
 @NoArgsConstructor
-public class DelUserResponse {
-
+public class HumanResponseDto {
     private String userId;
     private long point;
     private InterestCompany interestCompany;
@@ -25,7 +24,7 @@ public class DelUserResponse {
     private String interestZone;
     private ZonedDateTime lastedAt;
 
-    public DelUserResponse(String userId, long point, String interestCompany, ZonedDateTime createAt, YN isDelete, String gubn, String snsType, String interestZone,ZonedDateTime lastedAt) {
+    public HumanResponseDto(String userId, long point, String interestCompany, ZonedDateTime createAt, YN isDelete, String gubn, String snsType, String interestZone, ZonedDateTime lastedAt) {
         this.userId = userId;
         this.point = point;
         if (interestCompany != null && !"".equals(interestCompany)) {

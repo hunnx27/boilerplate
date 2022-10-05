@@ -3,15 +3,13 @@ package com.onz.modules.admin.member.deluser.application;
 import com.onz.common.exception.CustomException;
 import com.onz.modules.admin.member.deluser.infra.DelUserRepository;
 import com.onz.modules.admin.member.deluser.infra.HumanRepository;
-import com.onz.modules.admin.member.deluser.web.dto.DelUserListResponseDto;
-import com.onz.modules.admin.member.deluser.web.dto.DelUserRequestDto;
-import com.onz.modules.admin.member.deluser.web.dto.HumanListRequestDto;
-import com.onz.modules.admin.member.deluser.web.dto.HumanListResponseDto;
+import com.onz.modules.admin.member.deluser.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -30,6 +28,11 @@ public class HumanService {
 
         return humanListResponseDtoList;
     }
+    public HumanResponseDto humanAccountDetail(@PathVariable Long id) throws CustomException {
+        //전체회원을 받아온다
+        HumanResponseDto humanResponseDto = humanRepository.findByHumanDetail(id);
 
+        return humanResponseDto;
+    }
 
 }
