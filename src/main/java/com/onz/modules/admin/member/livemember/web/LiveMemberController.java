@@ -4,9 +4,7 @@ import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.admin.member.livemember.application.LiveMemberService;
-import com.onz.modules.admin.member.livemember.web.dto.LiveMemberDetailResponse;
-import com.onz.modules.admin.member.livemember.web.dto.LiveMemberRequestDto;
-import com.onz.modules.admin.member.livemember.web.dto.LiveMemberResponseDto;
+import com.onz.modules.admin.member.livemember.web.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,14 +12,20 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,7 +48,7 @@ public class LiveMemberController {
             throw e;
         }
     }
-
+    @Operation(summary = "라이브 회원 디테일 ", description = "회원 디테일입니다...")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = Account.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = Account.class)))
@@ -57,6 +61,7 @@ public class LiveMemberController {
             throw e;
         }
     }
+    @Operation(summary = "라이브 통계 관리 ", description = "회원 통계 관리입니다...")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = Account.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = Account.class)))
@@ -66,6 +71,22 @@ public class LiveMemberController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(liveMemberService.liveMemberResponseWrapPDto(response,id,pageable)));
         } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    @Operation(summary = "라이브 엑셀 내보내기 ", description = "회원 내보내기입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = Account.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = Account.class)))
+    })
+    @PostMapping("/excel/live")
+    public void getExcelFile(LiveMemberRequestDto liveMemberRequestDto , HttpServletResponse response) throws IOException {
+        try{
+            StringHttpMessageConverter converter = new StringHttpMessageConverter(StandardCharsets.UTF_8);
+            converter.setWriteAcceptCharset(false);
+            liveMemberService.getExcelFile(response,liveMemberRequestDto);
+        } catch (IOException e) {
             throw e;
         }
     }

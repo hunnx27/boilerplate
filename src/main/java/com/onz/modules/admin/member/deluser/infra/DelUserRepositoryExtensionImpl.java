@@ -7,7 +7,6 @@ import com.onz.modules.account.domain.QAccount;
 import com.onz.modules.admin.member.deluser.web.dto.DelUserListResponseDto;
 import com.onz.modules.admin.member.deluser.web.dto.DelUserRequestDto;
 import com.onz.modules.admin.member.deluser.web.dto.DelUserResponse;
-import com.onz.modules.admin.member.livemember.web.dto.LiveMemberDetailResponse;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
@@ -80,6 +79,28 @@ public class DelUserRepositoryExtensionImpl extends QuerydslRepositorySupport im
         JPQLQuery<DelUserListResponseDto> query = getQuerydsl().applyPagination(pageable, result);
         QueryResults<DelUserListResponseDto> findByDelUser = query.fetchResults();
         List<DelUserListResponseDto> findLiveMemberListResults = findByDelUser.getResults();
+
+        return findLiveMemberListResults;
+    }
+    @Override
+    public List<DelUserListResponseDto> findByDelUser(DelUserRequestDto delUserRequestDto) {
+        // Q클래스 정의
+        QAccount account = QAccount.account;
+
+        // where절 정의
+        BooleanBuilder where = this.getWhere(delUserRequestDto, account);
+
+        // 쿼리 생성(리스트)
+        JPQLQuery<DelUserListResponseDto> result = from(account).select(
+                Projections.fields(DelUserListResponseDto.class,
+                        account.id,
+                        account.gubn,
+                        account.userId,
+                        account.snsType,
+                        account.createdAt,
+                        account.deletedAt)).where(where);
+        QueryResults<DelUserListResponseDto> findLiveMemberResults = result.fetchResults();
+        List<DelUserListResponseDto> findLiveMemberListResults = findLiveMemberResults.getResults();
 
         return findLiveMemberListResults;
     }

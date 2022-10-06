@@ -379,6 +379,70 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
     }
 
     @Override
+    public List<LiveMemberResponseDto> findByLiveMember(LiveMemberRequestDto liveMemberRequestDto) {
+        // Q클래스 정의
+        QAccount account = QAccount.account;
+        QCompanyReview companyReview = QCompanyReview.companyReview;
+        QInterviewReview interviewReview = QInterviewReview.interviewReview;
+        QYearAmtReview amtReview = QYearAmtReview.yearAmtReview;
+        QCounsel counsel = QCounsel.counsel;
+        // where절 정의
+        BooleanBuilder where = this.getWhere(liveMemberRequestDto, account, companyReview, interviewReview, amtReview, counsel);
+
+        // 쿼리 생성(리스트)
+        JPQLQuery<LiveMemberResponseDto> result = from(account).select(
+                        Projections.fields(LiveMemberResponseDto.class,
+                                account.id,
+                                account.gubn,
+                                account.userId,
+                                account.snsType,
+                                Expressions.asString("").as("rank"),
+                                //누적포인트
+                                account.point,
+                                account.createdAt,
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .select(companyReview.count())
+                                                .from(companyReview)
+                                                .where(companyReview.account.eq(account))
+                                        , "companyReviewCnt"),
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .select(interviewReview.count())
+                                                .from(interviewReview)
+                                                .where(interviewReview.account.eq(account))
+                                        , "interviewReviewCnt"),
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .select(amtReview.count())
+                                                .from(amtReview)
+                                                .where(amtReview.account.eq(account))
+                                        , "amtReviewCnt"),
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .select(counsel.count())
+                                                .from(counsel)
+                                                .where(
+                                                        counsel.account.eq(account).and(counsel.qnaGubn.eq(QnaGubn.Q))
+                                                )
+                                        , "counselQCnt"),
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .select(counsel.count())
+                                                .from(counsel)
+                                                .where(
+                                                        counsel.account.eq(account).and(counsel.qnaGubn.eq(QnaGubn.A))
+                                                )
+                                        , "counselACnt")
+                        )
+                )
+                .where(where);
+        QueryResults<LiveMemberResponseDto> findLiveMemberResults = result.fetchResults();
+        List<LiveMemberResponseDto> findLiveMemberListResults = findLiveMemberResults.getResults();
+
+        return findLiveMemberListResults;
+    }
+    @Override
     public JPQLQuery<Long> findCountMember(LiveMemberRequestDto liveMemberRequestDto) {
         QAccount account = QAccount.account;
         QCompanyReview companyReview = QCompanyReview.companyReview;

@@ -9,6 +9,7 @@ import java.util.List;
 public interface LiveMemberRepositoryExtension {
 
     List<LiveMemberResponseDto> findByLiveMember(LiveMemberRequestDto liveMemberRequestDto, Pageable pageable);
+    List<LiveMemberResponseDto> findByLiveMember(LiveMemberRequestDto liveMemberRequestDto);
     LiveMemberResponseDto findByLiveMemberTotal(LiveMemberRequestDto liveMemberRequestDto);
     JPQLQuery<Long> findCountMember(LiveMemberRequestDto liveMemberRequestDto);
 //    List<LiveMemberDetailResponse> findByAccountDetail(Long id);

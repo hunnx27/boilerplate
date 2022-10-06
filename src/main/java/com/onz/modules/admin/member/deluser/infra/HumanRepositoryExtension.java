@@ -8,5 +8,7 @@ import java.util.List;
 public interface HumanRepositoryExtension {
     List<HumanListResponseDto> findByHumanList(HumanListRequestDto humanListRequestDto, Pageable pageable);
 
+    List<HumanListResponseDto> findByHumanUser(HumanListRequestDto humanListRequestDto);
+
     HumanResponseDto findByHumanDetail(Long id);
 }

@@ -1,21 +1,25 @@
 package com.onz.modules.admin.member.livemember.application;
 
 import com.onz.common.exception.CustomException;
+import com.onz.common.web.ApiR;
 import com.onz.modules.admin.member.livemember.infra.LiveMemberRepository;
 import com.onz.modules.admin.member.livemember.web.dto.*;
-import com.onz.modules.counsel.infra.counsel.CounselRepository;
-import com.onz.modules.review.infra.AmtReviewRepository;
-import com.onz.modules.review.infra.CompanyReviewRepository;
-import com.onz.modules.review.infra.InterviewReviewRepository;
 import com.querydsl.jpa.JPQLQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
 
 @Slf4j
@@ -28,11 +32,11 @@ public class LiveMemberService {
 
     public LiveMemberResponseWrapDto liveMember(HttpServletResponse response, LiveMemberRequestDto liveMemberRequestDto, Pageable pageable) throws CustomException {
         //전체회원을 받아온다
-        List<LiveMemberResponseDto> liveMemberListResult = liveMemberRepository.findByLiveMember(liveMemberRequestDto,pageable);
+        List<LiveMemberResponseDto> liveMemberListResult = liveMemberRepository.findByLiveMember(liveMemberRequestDto, pageable);
         LiveMemberResponseDto liveMemberTotalResult = liveMemberRepository.findByLiveMemberTotal(liveMemberRequestDto);
         JPQLQuery<Long> liveMemberTotalCnt = liveMemberRepository.findCountMember(liveMemberRequestDto);
 
-        LiveMemberResponseWrapDto result3 = new LiveMemberResponseWrapDto(liveMemberTotalCnt.fetchOne(),liveMemberTotalResult, liveMemberListResult);
+        LiveMemberResponseWrapDto result3 = new LiveMemberResponseWrapDto(liveMemberTotalCnt.fetchOne(), liveMemberTotalResult, liveMemberListResult);
 //        List<LiveMemberResponseDto> result = liveMemberResponseDtos.stream().map(e -> {
 //            LiveMemberResponseDto rs = new LiveMemberResponseDto(e);
 //            // 기관리뷰 개수
@@ -56,17 +60,121 @@ public class LiveMemberService {
 //        }).collect(Collectors.toList());
         return result3;
     }
-    public LiveMemberDetailResponse liveMemberDetail(HttpServletResponse response, @PathVariable Long id){
+
+    public LiveMemberDetailResponse liveMemberDetail(HttpServletResponse response, @PathVariable Long id) {
         return liveMemberRepository.findByAccountDetail(id);
     }
+
     public LiveMemberResponseWrapPDto liveMemberResponseWrapPDto(HttpServletResponse response, @PathVariable Long id, Pageable pageable) {
-        List<LiveMemberPointListResponse> liveMemberPointListResponses = liveMemberRepository.findByAccountPointList(id,pageable);
+        List<LiveMemberPointListResponse> liveMemberPointListResponses = liveMemberRepository.findByAccountPointList(id, pageable);
         LiveMemberPointResponse liveMemberPointResponse = liveMemberRepository.findByAccountPointDetail(id);
 //
-        LiveMemberResponseWrapPDto result3 = new LiveMemberResponseWrapPDto(liveMemberPointResponse,liveMemberPointListResponses);
+        LiveMemberResponseWrapPDto result3 = new LiveMemberResponseWrapPDto(liveMemberPointResponse, liveMemberPointListResponses);
 //
-       return result3;
+        return result3;
+    }
+
+    public static Sheet wbSetting(String[] headerStrings, Workbook wb){
+        Font headerFont = wb.createFont();
+        headerFont.setBold(true);
+        headerFont.setColor(IndexedColors.BLACK.getIndex());
+
+        CellStyle headerCellStyle = wb.createCellStyle();
+        headerCellStyle.setFont(headerFont);
+        headerCellStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        headerCellStyle.setBorderRight(BorderStyle.THIN);
+        headerCellStyle.setBorderTop(BorderStyle.THIN);
+        headerCellStyle.setBorderBottom(BorderStyle.THIN);
+        headerCellStyle.setBorderLeft(BorderStyle.THIN);
+        /* 글꼴 */
+        Sheet sheet = wb.createSheet("첫번째 시트");
+
+        /* 스타일 */
+
+        int idx = 0;
+        Cell headerCell = null;
+        Row headerRow = sheet.createRow(0);
+
+        for(String s : headerStrings)
+        {
+            headerCell = headerRow.createCell(idx++);
+            headerCell.setCellValue(s);
+            headerCell.setCellStyle(headerCellStyle);
+        }
+        return sheet;
+    }
+    public static HttpServletResponse getFile(Workbook wb,HttpServletResponse response) {
+        try {
+            //excel
+            String fileName = "  _" + DateFormatUtils.format(new Date(), "yyyyMMdd_HHmmss") + ".xls";
+            //
+            fileName = new String(fileName.getBytes(), "ISO8859-1");
+            response.setContentType("application/octet-stream;charset=UTF-8");
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            response.addHeader("Pargam", "no-cache");
+            response.addHeader("Cache-Control", "no-cache");
+            //
+            OutputStream os = response.getOutputStream();
+            wb.write(os);
+            os.flush();
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error(">>>         ！" + e.getMessage());
+        }
+        return response;
     }
 
 
+    public void getExcelFile(HttpServletResponse response, LiveMemberRequestDto liveMemberRequestDto) throws IOException {
+        //전체회원을 받아온다
+        List<LiveMemberResponseDto> liveMemberListResult = liveMemberRepository.findByLiveMember(liveMemberRequestDto);
+
+        Workbook wb = new XSSFWorkbook();
+
+
+        String[] headerStrings = {"회원구분","ID(메일주소)","SNS타입","포인트","리뷰","연봉","면접","상담(질문)","상담(답변)","가입일"};
+
+        Sheet sheet = wbSetting(headerStrings,wb);
+
+        Row bodyRow = null;
+        Cell bodyCell = null;
+        int index = 1;
+        // Body
+        for (LiveMemberResponseDto liveMemberResponseDto : liveMemberListResult) {
+            bodyRow = sheet.createRow(index++);
+            bodyCell = bodyRow.createCell(0);
+            bodyCell.setCellValue(liveMemberResponseDto.getGubnName());
+            bodyCell = bodyRow.createCell(1);
+            bodyCell.setCellValue(liveMemberResponseDto.getUserId());
+            bodyCell = bodyRow.createCell(2);
+            bodyCell.setCellValue(liveMemberResponseDto.getSnsTypeName());
+            bodyCell = bodyRow.createCell(3);
+            bodyCell.setCellValue(liveMemberResponseDto.getPoint());
+            bodyCell = bodyRow.createCell(4);
+            bodyCell.setCellValue(liveMemberResponseDto.getCompanyReviewCnt());
+            bodyCell = bodyRow.createCell(5);
+            bodyCell.setCellValue(liveMemberResponseDto.getAmtReviewCnt());
+            bodyCell = bodyRow.createCell(6);
+            bodyCell.setCellValue(liveMemberResponseDto.getInterviewReviewCnt());
+            bodyCell = bodyRow.createCell(7);
+            bodyCell.setCellValue(liveMemberResponseDto.getCounselQCnt());
+            bodyCell = bodyRow.createCell(8);
+            bodyCell.setCellValue(liveMemberResponseDto.getCounselACnt());
+            bodyCell = bodyRow.createCell(9);
+            bodyCell.setCellValue(liveMemberResponseDto.getCreatedAt());
+        }
+
+        for (int i=0; i<headerStrings.length; i++){
+            sheet.autoSizeColumn(i);
+            sheet.setColumnWidth(i, (sheet.getColumnWidth(i))+(short)1024);
+        }
+        getFile(wb,response);
+    }
 }
+
+
+/*
+
+ */

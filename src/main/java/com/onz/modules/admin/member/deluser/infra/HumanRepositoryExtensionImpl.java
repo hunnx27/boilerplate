@@ -21,7 +21,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.onz.common.enums.YN.N;
-import static com.onz.common.enums.YN.Y;
 
 public class HumanRepositoryExtensionImpl extends QuerydslRepositorySupport implements HumanRepositoryExtension{
     private final JPAQueryFactory qf;
@@ -80,6 +79,30 @@ public class HumanRepositoryExtensionImpl extends QuerydslRepositorySupport impl
         JPQLQuery<HumanListResponseDto> query = getQuerydsl().applyPagination(pageable, result);
         QueryResults<HumanListResponseDto> findByDelUser = query.fetchResults();
         List<HumanListResponseDto> findLiveMemberListResults = findByDelUser.getResults();
+
+        return findLiveMemberListResults;
+    }
+
+    @Override
+    public List<HumanListResponseDto> findByHumanUser(HumanListRequestDto humanListRequestDto) {
+        // Q클래스 정의
+        QAccount account = QAccount.account;
+        // where절 정의
+        BooleanBuilder where = this.getWhere(humanListRequestDto, account);
+        ZonedDateTime humanBase = ZonedDateTime.now().minusYears(1);
+        where.and(account.lastedAt.before(ZonedDateTime.from(humanBase)));
+        // 쿼리 생성(리스트)
+        JPQLQuery<HumanListResponseDto> result = from(account).select(
+                Projections.fields(HumanListResponseDto.class,
+                        account.id,
+                        account.gubn,
+                        account.userId,
+                        account.snsType,
+                        account.createdAt,
+                        account.lastedAt)
+        ).where(where);
+        QueryResults<HumanListResponseDto> findLiveMemberResults = result.fetchResults();
+        List<HumanListResponseDto> findLiveMemberListResults = findLiveMemberResults.getResults();
 
         return findLiveMemberListResults;
     }

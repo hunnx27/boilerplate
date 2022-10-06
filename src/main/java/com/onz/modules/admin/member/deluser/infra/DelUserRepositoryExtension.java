@@ -10,5 +10,7 @@ import java.util.List;
 public interface DelUserRepositoryExtension {
     List<DelUserListResponseDto> findByDelUser(DelUserRequestDto delUserRequestDto, Pageable pageable);
 
+    List<DelUserListResponseDto> findByDelUser(DelUserRequestDto delUserRequestDto);
+
     DelUserResponse findByDelUserDetail(Long id);
 }
