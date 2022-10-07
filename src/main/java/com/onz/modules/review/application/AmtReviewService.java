@@ -1,13 +1,9 @@
 package com.onz.modules.review.application;
 
-import com.onz.common.enums.ErrorCode;
-import com.onz.common.exception.CustomException;
-import com.onz.common.web.ApiR;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.infra.AccountRepository;
 import com.onz.modules.common.pointHistory.domain.enums.PointTable;
-import com.onz.modules.common.pointHistory.infra.PointHistoryRepository;
 import com.onz.modules.review.domain.YearAmtReview;
 import com.onz.modules.review.web.dto.AmtRequestDto;
 import com.onz.modules.review.web.dto.AmtReviewDetailResponseDto;
@@ -24,8 +20,6 @@ import com.onz.modules.review.infra.AmtReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;

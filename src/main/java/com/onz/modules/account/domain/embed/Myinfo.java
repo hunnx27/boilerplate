@@ -1,7 +1,7 @@
 package com.onz.modules.account.domain.embed;
 
-import com.onz.common.enums.InterestCompany;
-import com.onz.common.enums.InterestCompanyConverter;
+import com.onz.common.web.dto.response.enums.InterestCompany;
+import com.onz.common.web.dto.response.enums.InterestCompanyConverter;
 import lombok.Getter;
 import lombok.Setter;
 

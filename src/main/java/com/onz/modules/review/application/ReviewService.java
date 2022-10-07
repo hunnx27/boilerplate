@@ -210,7 +210,7 @@ public class ReviewService {
             ReviewResponseDto aaa = new ReviewResponseDto(res);
 
             aaa.setImpCost(res.getImpCost());
-            if (res.getEtcItems() != null) {
+            if (res.getEtcItems() != null && !"".equals(res.getEtcItems())) {
                 String[] one = res.getEtcItems().split(",");
                 String[] two = res.getEtcAmt().split(",");
                 int total = 0;

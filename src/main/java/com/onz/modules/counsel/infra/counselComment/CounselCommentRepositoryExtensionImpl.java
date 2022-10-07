@@ -1,11 +1,8 @@
 package com.onz.modules.counsel.infra.counselComment;
 
-import com.onz.common.enums.YN;
-import com.onz.modules.counsel.domain.Counsel;
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.counsel.domain.CounselComment;
-import com.onz.modules.counsel.domain.QCounsel;
 import com.onz.modules.counsel.domain.QCounselComment;
-import com.onz.modules.counsel.domain.enums.QnaGubn;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.JPQLQuery;

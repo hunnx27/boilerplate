@@ -1,7 +1,7 @@
 package com.onz.modules.admin.member.deluser.infra;
 
 
-import com.onz.common.enums.Role;
+import com.onz.common.web.dto.response.enums.Role;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.QAccount;
 import com.onz.modules.admin.member.deluser.web.dto.DelUserListResponseDto;
@@ -23,7 +23,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static com.onz.common.enums.YN.*;
+import static com.onz.common.web.dto.response.enums.YN.*;
 
 public class DelUserRepositoryExtensionImpl extends QuerydslRepositorySupport implements DelUserRepositoryExtension {
     private final JPAQueryFactory qf;

@@ -1,6 +1,6 @@
 package com.onz.modules.review.web.dto;
 
-import com.onz.common.enums.InterestCompany;
+import com.onz.common.web.dto.response.enums.InterestCompany;
 import com.onz.common.web.dto.request.BasePageRequest;
 import com.onz.modules.company.domain.enums.EstablishmentType;
 import lombok.Getter;

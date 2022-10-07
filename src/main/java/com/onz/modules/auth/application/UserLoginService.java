@@ -1,7 +1,7 @@
 package com.onz.modules.auth.application;
 
-import com.onz.common.enums.ErrorCode;
-import com.onz.common.enums.Role;
+import com.onz.common.web.dto.response.enums.ErrorCode;
+import com.onz.common.web.dto.response.enums.Role;
 import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
 import com.onz.modules.account.domain.Account;

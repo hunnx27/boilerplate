@@ -1,6 +1,6 @@
 package com.onz.common.web.filter;
 
-import com.onz.common.enums.ErrorCode;
+import com.onz.common.web.dto.response.enums.ErrorCode;
 import com.onz.common.exception.CustomException;
 import com.onz.common.web.dto.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;

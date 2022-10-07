@@ -1,9 +1,6 @@
 package com.onz.modules.counsel.infra.counselRecommend;
 
-import com.onz.common.enums.YN;
-import com.onz.modules.counsel.domain.CounselComment;
 import com.onz.modules.counsel.domain.CounselRecommend;
-import com.onz.modules.counsel.domain.QCounselComment;
 import com.onz.modules.counsel.domain.QCounselRecommend;
 import com.onz.modules.counsel.domain.enums.RecommendGubn;
 import com.querydsl.core.BooleanBuilder;

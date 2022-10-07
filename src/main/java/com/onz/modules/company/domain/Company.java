@@ -1,13 +1,16 @@
 package com.onz.modules.company.domain;
 
-import com.onz.common.enums.*;
 import com.onz.common.domain.BaseEntity;
 
 import java.time.ZonedDateTime;
 
+import com.onz.common.web.dto.response.enums.InterestCompany;
+import com.onz.common.web.dto.response.enums.InterestCompanyConverter;
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.company.domain.enums.CharItem;
 import com.onz.modules.company.domain.enums.CharItemConverter;
 import com.onz.modules.company.domain.enums.EstablishmentType;
+import com.onz.modules.company.domain.enums.EstablishmentTypeConverter;
 import com.onz.modules.review.domain.dto.ReviewAllDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,12 +26,12 @@ import java.util.List;
                         @ColumnResult(name = "type", type = String.class),
                         @ColumnResult(name = "id", type = Long.class),
                         @ColumnResult(name = "accountId", type = Long.class),
+                        @ColumnResult(name = "establishmentTypeValue",type=String.class),
                         @ColumnResult(name = "isDelete", type = String.class),
                         @ColumnResult(name = "state", type = String.class),
                         @ColumnResult(name = "workExpOpenYn", type = String.class),
                         @ColumnResult(name = "companyId", type = Long.class),
                         @ColumnResult(name = "companyName", type = String.class),
-                        @ColumnResult(name = "establishmentTypeValue",type=String.class),
                         @ColumnResult(name = "txt",type = String.class),
                         @ColumnResult(name = "item_1",type= String.class),
                         @ColumnResult(name = "item_2",type= String.class),
@@ -79,7 +82,8 @@ public class Company extends BaseEntity {
     @Convert(converter = InterestCompanyConverter.class)
     private InterestCompany interestCompany;
     //추가
-//    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
+//    @Convert(converter = EstablishmentTypeConverter.class)
     EstablishmentType establishmentType;
     private ZonedDateTime eventBannerDate;
     private String officeName;

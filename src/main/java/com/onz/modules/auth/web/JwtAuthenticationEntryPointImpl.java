@@ -1,6 +1,6 @@
 package com.onz.modules.auth.web;
 
-import com.onz.common.enums.ErrorCode;
+import com.onz.common.web.dto.response.enums.ErrorCode;
 import com.onz.common.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;

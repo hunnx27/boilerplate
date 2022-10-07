@@ -1,12 +1,8 @@
 package com.onz.modules.admin.member.deluser.web.dto;
 
-import com.onz.common.domain.BaseEntity;
-import com.onz.common.enums.Gubn;
+import com.onz.common.web.dto.response.enums.Gubn;
 import com.onz.common.web.dto.request.BasePageRequest;
 import lombok.Getter;
-
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Getter
 public class DelUserRequestDto extends BasePageRequest {

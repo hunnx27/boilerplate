@@ -1,8 +1,8 @@
 package com.onz.modules.counsel.domain;
 
 import com.onz.common.domain.BaseEntity;
-import com.onz.common.enums.Gubn;
-import com.onz.common.enums.GubnConverter;
+import com.onz.common.web.dto.response.enums.Gubn;
+import com.onz.common.web.dto.response.enums.GubnConverter;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.counsel.web.dto.request.counselComment.CounselCommentCreateRequest;
 import com.onz.modules.counsel.web.dto.request.counselComment.CounselCommentUpdateRequest;

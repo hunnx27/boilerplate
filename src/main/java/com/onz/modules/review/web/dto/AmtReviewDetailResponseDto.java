@@ -1,6 +1,6 @@
 package com.onz.modules.review.web.dto;
 
-import com.onz.common.enums.YN;
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.review.domain.YearAmtReview;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

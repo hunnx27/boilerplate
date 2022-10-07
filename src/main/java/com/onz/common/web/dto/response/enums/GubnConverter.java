@@ -1,4 +1,4 @@
-package com.onz.common.enums;
+package com.onz.common.web.dto.response.enums;
 
 import javax.persistence.AttributeConverter;
 import java.util.EnumSet;

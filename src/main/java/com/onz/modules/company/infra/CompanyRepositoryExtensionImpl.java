@@ -1,6 +1,6 @@
 package com.onz.modules.company.infra;
 
-import com.onz.common.enums.YN;
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.common.address.infra.AddressRepository;
 import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.domain.QCompany;

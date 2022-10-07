@@ -1,6 +1,6 @@
 package com.onz.modules.company.web.dto.request;
 
-import com.onz.common.enums.InterestCompany;
+import com.onz.common.web.dto.response.enums.InterestCompany;
 import com.onz.common.web.dto.request.BasePageRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

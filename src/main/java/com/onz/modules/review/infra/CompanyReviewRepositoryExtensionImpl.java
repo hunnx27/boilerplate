@@ -1,6 +1,6 @@
 package com.onz.modules.review.infra;
 
-import com.onz.common.enums.YN;
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.review.domain.CompanyReview;
 import com.onz.modules.review.domain.*;
 import com.onz.modules.company.web.dto.reponse.CompanyReviewListResponseDto;

@@ -1,6 +1,6 @@
 package com.onz.modules.counsel.infra.counsel;
 
-import com.onz.common.enums.YN;
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.domain.QCounsel;
 import com.onz.modules.counsel.domain.enums.CounselState;

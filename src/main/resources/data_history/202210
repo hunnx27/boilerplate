@@ -1,0 +1,15 @@
+/**
+ company.establishment_type의 밸류를 변경
+ ex)
+ 01 > P01 or C01
+ 02 > P02 or C02
+ ...
+*/
+update company
+set establishment_type =
+        case  interest_company
+            when 'CT' then concat('C', establishment_type)
+            when 'PT' then concat('P', establishment_type)
+            else establishment_type
+        end
+

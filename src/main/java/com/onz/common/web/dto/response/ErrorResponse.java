@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.onz.common.enums.ErrorCode;
+import com.onz.common.web.dto.response.enums.ErrorCode;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

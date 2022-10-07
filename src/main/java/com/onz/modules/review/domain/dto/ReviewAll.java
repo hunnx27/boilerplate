@@ -1,6 +1,6 @@
 package com.onz.modules.review.domain.dto;
 
-import com.onz.common.enums.YN;
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.review.domain.enums.ItemCode;
 
 public interface ReviewAll {

@@ -1,12 +1,9 @@
 package com.onz.modules.counsel.infra.counsel;
 
 
-import com.onz.common.enums.Gubn;
 import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.domain.enums.QnaGubn;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 public interface CounselRepository extends JpaRepository<Counsel, Long>,
         CounselRepositoryExtension {

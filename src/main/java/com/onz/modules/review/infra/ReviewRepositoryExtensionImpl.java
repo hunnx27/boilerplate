@@ -73,7 +73,7 @@ public class ReviewRepositoryExtensionImpl extends QuerydslRepositorySupport imp
                 //전체검색
             }else{
                 where1 += " AND c.establishment_type = :esta ";
-                params.put("esta",findEstaRequestDto.getEstablishmentType().getValue());
+                params.put("esta",findEstaRequestDto.getEstablishmentType().name());
             }
         }
         if(findEstaRequestDto.getInterestCompany()!=null){
@@ -110,7 +110,7 @@ public class ReviewRepositoryExtensionImpl extends QuerydslRepositorySupport imp
                 //전체검색
             }else{
                 where2 += " AND c.establishment_type = :esta ";
-                params.put("esta",findEstaRequestDto.getEstablishmentType().getValue());
+                params.put("esta",findEstaRequestDto.getEstablishmentType().name());
             }
         }
         if(findEstaRequestDto.getInterestCompany()!=null){
@@ -147,7 +147,7 @@ public class ReviewRepositoryExtensionImpl extends QuerydslRepositorySupport imp
                 //전체검색
             }else{
                 where3 += " AND c.establishment_type = :esta ";
-                params.put("esta",findEstaRequestDto.getEstablishmentType().getValue());
+                params.put("esta",findEstaRequestDto.getEstablishmentType().name());
             }
         }
         if(findEstaRequestDto.getInterestCompany()!=null){
@@ -161,6 +161,7 @@ public class ReviewRepositoryExtensionImpl extends QuerydslRepositorySupport imp
         query3 += where3;
 
         String query = query1 + " UNION ALL " + query2 + " UNION ALL " + query3;
+//        String query = query1;
         Query nativequery = em
                 .createNativeQuery(query, "reviewUnion");
 

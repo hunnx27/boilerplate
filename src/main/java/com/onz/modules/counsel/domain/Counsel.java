@@ -2,8 +2,7 @@ package com.onz.modules.counsel.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.onz.common.domain.BaseEntity;
-import com.onz.common.enums.*;
-import com.onz.common.enums.InterestCompany;
+import com.onz.common.web.dto.response.enums.*;
 import com.onz.common.util.dto.AttachDto;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.counsel.domain.embed.Images;

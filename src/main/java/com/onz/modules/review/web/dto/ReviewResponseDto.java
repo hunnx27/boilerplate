@@ -1,8 +1,11 @@
 package com.onz.modules.review.web.dto;
 
+import com.onz.common.web.dto.response.enums.State;
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.review.domain.dto.ReviewAllDto;
 import com.onz.modules.company.domain.enums.EstablishmentType;
 import com.onz.modules.review.domain.CompanyReview;
+import com.onz.modules.review.domain.enums.ItemCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,18 +24,18 @@ public class ReviewResponseDto extends ReviewCommonResponseDto{
 //    private String apprId;
 //    private String apprTxt;
 //    private String zonecode;
-//    private String txtAdmin;
-//    private YN isDelete;
+    private String txtAdmin;
+    private YN isDelete;
 //    private String ModifiedAt;
-//    private String state;
+    private State state;
 //    private String CreatedAt;
 //    private String topchoiceDt;
 //    private YN topchoiceYn;
-//    private String image1;
-//    private String image2;
-//    private String image3;
-//    private String image4;
-//    private String image5;
+    private String image1;
+    private String image2;
+    private String image3;
+    private String image4;
+    private String image5;
 
     /**
      * Company
@@ -42,15 +45,15 @@ public class ReviewResponseDto extends ReviewCommonResponseDto{
     private int starJumsuWorkload;
     private int starJumsuJobSatisfaction;
     private int starJumsuWorkAtmosphere;
-//    private String item_b1;
-//    private String item_b2;
-//    private String item_b3;
-//    private String item_c1;
-//    private String item_c2;
-//    private String item_c3;
-//    private String item_d1;
-//    private String item_d2;
-//    private String likeCode;
+    private String item_b1;
+    private String item_b2;
+    private String item_b3;
+    private String item_c1;
+    private String item_c2;
+    private String item_c3;
+    private String item_d1;
+    private String item_d2;
+    private String likeCode;
 
     /**
      * Interview
@@ -75,8 +78,8 @@ public class ReviewResponseDto extends ReviewCommonResponseDto{
     private String addCost; // 누리과정수당
     @Setter
     private String etcCost; // 기타
-//    private String etcAmt;
-//    private String etcItems;
+    private String etcAmt;
+    private String etcItems;
 //    private String endAtmYn;
 //    private String etcYn;
 //    private YN annYn;
@@ -97,10 +100,10 @@ public class ReviewResponseDto extends ReviewCommonResponseDto{
         this.q_1=reviewAll.getTopQ1();
         this.companyId = reviewAll.getCompanyId();
         this.companyName = reviewAll.getCompanyName();
-        EstablishmentType type = EnumSet.allOf(EstablishmentType.class).stream()
-                .filter(e->e.getValue().equals(reviewAll.getEstablishmentType()))
-                .findAny().orElse(EstablishmentType.C99);
-        this.establishmentTypeName = type.getName();
+//        EstablishmentType type = EnumSet.allOf(EstablishmentType.class).stream()
+//                .filter(e->e.getValue().equals(reviewAll.getEstablishmentType()))
+//                .findAny().orElse(EstablishmentType.C99);
+//        this.establishmentTypeName =  EstablishmentType.valueOf(reviewAll.getEstablishmentTypeValue()).getName();
         this.accountId = reviewAll.getAccountId();
         this.workExpOpenYn=reviewAll.getWorkExpOpenYn();
         this.workExp = reviewAll.getWorkExp();
@@ -116,14 +119,14 @@ public class ReviewResponseDto extends ReviewCommonResponseDto{
         }
         this.Txt = reviewAll.getTxt();
 
-//        this.etcAmt = reviewAll.getEtcAmt();
-//        this.etcItems = reviewAll.getEtcItems();
+        this.etcAmt = reviewAll.getEtcAmt();
+        this.etcItems = reviewAll.getEtcItems() != null ? reviewAll.getEtcItems() : "0";
         this.zoneCode = reviewAll.getZonecode();
-//        this.state = reviewAll.getState();
-//        this.isDelete = reviewAll.getIsDelete();
+        this.state = reviewAll.getState();
+        this.isDelete = reviewAll.getIsDelete();
 //        this.ModifiedAt = reviewAll.getModifiedAt();
 //        this.CreatedAt = reviewAll.getCreatedAt();
-//        this.txtAdmin = reviewAll.getTxtAdmin();
+        this.txtAdmin = reviewAll.getTxtAdmin();
 //        this.amtOld = reviewAll.getAmtOld();
 //        this.apprDt = reviewAll.getApprDt();
 //        this.apprId = reviewAll.getApprId();
@@ -133,20 +136,20 @@ public class ReviewResponseDto extends ReviewCommonResponseDto{
 //        this.topchoiceDt = reviewAll.getTopchoiceDt();
 //        this.topchoiceYn = reviewAll.getTopchoiceYn();
 //        this.annYn = reviewAll.getAnnYn();
-//        this.image1 = reviewAll.getImage1();
-//        this.image2 = reviewAll.getImage2();
-//        this.image3 = reviewAll.getImage3();
-//        this.image4 = reviewAll.getImage4();
-//        this.image5 = reviewAll.getImage5();
-//        this.item_b1 = reviewAll.getItemB1()!=null? reviewAll.getItemB1().name() : null;
-//        this.item_b2 = reviewAll.getItemB2()!=null? reviewAll.getItemB2().name() : null;
-//        this.item_b3 = reviewAll.getItemB3()!=null? reviewAll.getItemB3().name() : null;
-//        this.item_c1 = reviewAll.getItemC1()!=null? reviewAll.getItemC1().name() : null;
-//        this.item_c2 = reviewAll.getItemC2()!=null? reviewAll.getItemC2().name() : null;
-//        this.item_c3 = reviewAll.getItemC3()!=null? reviewAll.getItemC3().name() : null;
-//        this.item_d1 = reviewAll.getItemD1()!=null? reviewAll.getItemD1().name() : null;
-//        this.item_d2 = reviewAll.getItemD2()!=null? reviewAll.getItemD2().name() : null;
-//        this.likeCode = reviewAll.getLikeCode()!=null? reviewAll.getLikeCode().name() : null;
+        this.image1 = reviewAll.getImage1();
+        this.image2 = reviewAll.getImage2();
+        this.image3 = reviewAll.getImage3();
+        this.image4 = reviewAll.getImage4();
+        this.image5 = reviewAll.getImage5();
+        this.item_b1 = reviewAll.getItemB1()!=null? reviewAll.getItemB1().name() : null;
+        this.item_b2 = reviewAll.getItemB2()!=null? reviewAll.getItemB2().name() : null;
+        this.item_b3 = reviewAll.getItemB3()!=null? reviewAll.getItemB3().name() : null;
+        this.item_c1 = reviewAll.getItemC1()!=null? reviewAll.getItemC1().name() : null;
+        this.item_c2 = reviewAll.getItemC2()!=null? reviewAll.getItemC2().name() : null;
+        this.item_c3 = reviewAll.getItemC3()!=null? reviewAll.getItemC3().name() : null;
+        this.item_d1 = reviewAll.getItemD1()!=null? reviewAll.getItemD1().name() : null;
+        this.item_d2 = reviewAll.getItemD2()!=null? reviewAll.getItemD2().name() : null;
+        this.likeCode = reviewAll.getLikeCode()!=null? reviewAll.getLikeCode().name() : null;
 //        this.impCost = reviewAll.getImpCost();
 //        this.workCost = reviewAll.getWorkCost();
 //        this.addCost = reviewAll.getAddCost();

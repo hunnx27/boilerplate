@@ -1,6 +1,5 @@
 package com.onz.modules.counsel.web;
 
-import com.onz.common.enums.Gubn;
 import com.onz.common.web.ApiR;
 import com.onz.common.web.BaseApiController;
 import com.onz.modules.auth.web.dto.UserPrincipal;
@@ -8,7 +7,6 @@ import com.onz.modules.common.pointHistory.web.dto.response.PointHistoryResponse
 import com.onz.modules.company.web.dto.reponse.CounselSearchCountDto;
 import com.onz.modules.counsel.application.CounselService;
 import com.onz.modules.counsel.domain.Counsel;
-import com.onz.modules.counsel.domain.enums.QnaItem;
 import com.onz.modules.counsel.web.dto.request.counsel.*;
 import com.onz.modules.counsel.web.dto.response.CounselAnswerListResponse;
 import com.onz.modules.counsel.web.dto.response.counsel.CounselAnswerDetailResponse;

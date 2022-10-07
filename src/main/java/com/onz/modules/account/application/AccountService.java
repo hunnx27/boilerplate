@@ -1,17 +1,15 @@
 package com.onz.modules.account.application;
 
-import com.onz.common.enums.*;
 import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
+import com.onz.common.web.dto.response.enums.*;
 import com.onz.modules.account.domain.embed.Myinfo;
-import com.onz.modules.account.web.dto.AccountConverter;
 import com.onz.modules.account.web.dto.request.AccountMyinfoUpdateRequest;
 import com.onz.modules.account.web.dto.request.AccountSearchRequest;
 import com.onz.modules.account.domain.enums.AuthProvider;
 import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.modules.auth.application.util.MD5Utils;
 import com.onz.modules.auth.application.util.MysqlSHA2Util;
-import com.onz.modules.auth.web.AuthController;
 import com.onz.modules.auth.web.dto.request.SignupRequest;
 import com.onz.modules.common.pointHistory.domain.PointHistory;
 import com.onz.modules.common.pointHistory.domain.enums.PointTable;
@@ -26,7 +24,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

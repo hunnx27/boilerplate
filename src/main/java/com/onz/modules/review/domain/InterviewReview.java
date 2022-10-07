@@ -1,8 +1,8 @@
 package com.onz.modules.review.domain;
 
 import com.onz.common.domain.BaseEntity;
-import com.onz.common.enums.State;
-import com.onz.common.enums.YN;
+import com.onz.common.web.dto.response.enums.State;
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.review.web.dto.InterviewRequestDto;
 import com.onz.modules.company.domain.Company;

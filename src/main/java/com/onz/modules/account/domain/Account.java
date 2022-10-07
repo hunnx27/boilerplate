@@ -1,7 +1,9 @@
 package com.onz.modules.account.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.onz.common.enums.*;
+import com.onz.common.web.dto.response.enums.Gubn;
+import com.onz.common.web.dto.response.enums.GubnConverter;
+import com.onz.common.web.dto.response.enums.InterestCompany;
+import com.onz.common.web.dto.response.enums.Role;
 import com.onz.modules.account.domain.embed.Myinfo;
 import com.onz.modules.account.domain.enums.*;
 import com.onz.modules.account.web.dto.request.AccountMyinfoUpdateRequest;
@@ -20,7 +22,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
 import java.util.Objects;
 
 @Entity

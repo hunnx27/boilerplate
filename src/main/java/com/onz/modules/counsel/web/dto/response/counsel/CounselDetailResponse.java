@@ -1,7 +1,6 @@
 package com.onz.modules.counsel.web.dto.response.counsel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.onz.common.enums.YN;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.counsel.domain.Counsel;
 import lombok.Getter;

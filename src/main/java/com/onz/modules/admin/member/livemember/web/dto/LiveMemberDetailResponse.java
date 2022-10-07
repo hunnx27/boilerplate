@@ -1,7 +1,7 @@
 package com.onz.modules.admin.member.livemember.web.dto;
 
-import com.onz.common.enums.Gubn;
-import com.onz.common.enums.InterestCompany;
+import com.onz.common.web.dto.response.enums.Gubn;
+import com.onz.common.web.dto.response.enums.InterestCompany;
 import com.onz.modules.account.domain.enums.AuthProvider;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

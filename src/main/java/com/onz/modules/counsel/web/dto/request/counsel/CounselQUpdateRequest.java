@@ -1,7 +1,7 @@
 package com.onz.modules.counsel.web.dto.request.counsel;
 
-import com.onz.common.enums.InterestCompany;
-import com.onz.common.enums.YN;
+import com.onz.common.web.dto.response.enums.InterestCompany;
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.counsel.domain.enums.QnaItem;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

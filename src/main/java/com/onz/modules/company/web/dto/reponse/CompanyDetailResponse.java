@@ -1,17 +1,13 @@
 package com.onz.modules.company.web.dto.reponse;
 
-import com.onz.common.enums.InterestCompany;
-import com.onz.common.enums.InterestCompanyConverter;
-import com.onz.common.enums.YN;
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.company.domain.Company;
-import com.onz.modules.company.domain.enums.EstablishmentType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 

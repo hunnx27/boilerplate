@@ -1,6 +1,6 @@
 package com.onz.modules.counsel.application;
 
-import com.onz.common.enums.YN;
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.common.util.FileUtil;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;

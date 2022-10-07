@@ -1,6 +1,6 @@
 package com.onz.modules.admin.member.livemember.infra;
 
-import com.onz.common.enums.State;
+import com.onz.common.web.dto.response.enums.State;
 import com.onz.common.exception.CustomException;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.QAccount;

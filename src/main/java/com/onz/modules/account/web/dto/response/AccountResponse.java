@@ -1,11 +1,11 @@
 package com.onz.modules.account.web.dto.response;
 
-import com.onz.common.enums.Role;
-import com.onz.common.enums.YN;
+import com.onz.common.web.dto.response.enums.Role;
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.embed.Myinfo;
 import com.onz.modules.account.domain.enums.AuthProvider;
-import com.onz.common.enums.Gubn;
+import com.onz.common.web.dto.response.enums.Gubn;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

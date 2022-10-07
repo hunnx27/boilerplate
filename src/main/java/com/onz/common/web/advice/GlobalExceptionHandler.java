@@ -1,6 +1,6 @@
 package com.onz.common.web.advice;
 
-import com.onz.common.enums.ErrorCode;
+import com.onz.common.web.dto.response.enums.ErrorCode;
 import com.onz.common.web.dto.response.ErrorResponse;
 import com.onz.common.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +10,6 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 

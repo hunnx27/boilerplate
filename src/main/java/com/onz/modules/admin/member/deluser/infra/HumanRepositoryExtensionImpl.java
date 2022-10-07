@@ -1,6 +1,6 @@
 package com.onz.modules.admin.member.deluser.infra;
 
-import com.onz.common.enums.Role;
+import com.onz.common.web.dto.response.enums.Role;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.QAccount;
 import com.onz.modules.admin.member.deluser.web.dto.*;
@@ -20,7 +20,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static com.onz.common.enums.YN.N;
+import static com.onz.common.web.dto.response.enums.YN.N;
 
 public class HumanRepositoryExtensionImpl extends QuerydslRepositorySupport implements HumanRepositoryExtension{
     private final JPAQueryFactory qf;

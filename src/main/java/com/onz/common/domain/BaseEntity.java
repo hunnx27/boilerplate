@@ -1,7 +1,7 @@
 package com.onz.common.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.onz.common.enums.YN;
+import com.onz.common.web.dto.response.enums.YN;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;

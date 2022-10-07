@@ -1,10 +1,8 @@
 package com.onz.modules.admin.member.deluser.web.dto;
 
-import com.onz.common.enums.Gubn;
+import com.onz.common.web.dto.response.enums.Gubn;
 import com.onz.common.web.dto.request.BasePageRequest;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 public class HumanListRequestDto extends BasePageRequest {

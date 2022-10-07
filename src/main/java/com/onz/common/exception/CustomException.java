@@ -1,10 +1,9 @@
 package com.onz.common.exception;
 
 
-import com.onz.common.enums.ErrorCode;
+import com.onz.common.web.dto.response.enums.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 
 @Getter

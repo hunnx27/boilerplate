@@ -16,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.onz.common.enums.ErrorCode.DUPLICATE_RESOURCE;
-import static com.onz.common.enums.ErrorCode.NOT_ACCEPTABLE;
+import static com.onz.common.web.dto.response.enums.ErrorCode.DUPLICATE_RESOURCE;
+import static com.onz.common.web.dto.response.enums.ErrorCode.NOT_ACCEPTABLE;
 
 @Service
 @Slf4j

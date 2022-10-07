@@ -1,7 +1,7 @@
 package com.onz.modules.review.domain.dto;
 
-import com.onz.common.enums.State;
-import com.onz.common.enums.YN;
+import com.onz.common.web.dto.response.enums.State;
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.review.domain.enums.ItemCode;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ public class ReviewAllDto {
     private ZonedDateTime ModifiedAt;
 
     private Long accountId;
-    private String isDelete;
+    private YN isDelete;
     private State state;
     private YN workExpOpenYn;
     private String item_1;
@@ -40,7 +40,7 @@ public class ReviewAllDto {
     private String topQ1;
     private Long companyId;
     private String companyName;
-    private String establishmentType;
+    private String establishmentTypeValue;
     private Long workExp;
     private String zonecode;
     private Long amt;
@@ -64,24 +64,26 @@ public class ReviewAllDto {
     private String image4;
     private String image5;
 
-    public ReviewAllDto(String type, Long id, Long accountId,
-                        String isDelete, State state, String workExpOpenYn, Long companyId, String companyName,
-                        String establishmentType,String txt,
+    public ReviewAllDto(String type, Long id, Long accountId, String establishmentTypeValue,
+                        String isDelete,
+                        String state, String workExpOpenYn, Long companyId, String companyName,
+                        String txt,
                         String item_1, String item_2, String item_3, String item_4, String item_5,String item_6,
                         String topQ1, String txtAdmin, Long workExp, String zonecode,
                         Long amt, String etcAmt,String etcItems, String mapsidogunguName,
                         String image1, String image2, String image3, String image4, String image5,
-                        String itemB1, String itemB2, String itemB3, String itemC1, String itemC2, String itemC3, String itemD1, String itemD2, String likeCode) {
+                        String itemB1, String itemB2, String itemB3, String itemC1, String itemC2, String itemC3, String itemD1, String itemD2, String likeCode
+    ) {
         this.type = type;
         this.id = id;
         this.accountId = accountId;
-        this.isDelete = isDelete;
-        this.state = state;
+        this.establishmentTypeValue= establishmentTypeValue;
+        this.isDelete = isDelete != null ? YN.valueOf(isDelete):YN.Y;
+        this.state = state !=null ? State.valueOf(state):State.W;
         this.workExpOpenYn = workExpOpenYn != null ? YN.valueOf(workExpOpenYn) : YN.Y;
         this.companyId = companyId;
         this.companyName = companyName;
         this.txt = txt;
-        this.establishmentType= establishmentType;
         this.item_1 = item_1;
         this.item_2 = item_2 != null ? YN.valueOf(item_2) : YN.Y;
         this.item_3 = item_3 != null ? YN.valueOf(item_3) : YN.Y;
@@ -119,6 +121,16 @@ public class ReviewAllDto {
         this.likeCode = likeCode != null ? ItemCode.valueOf(likeCode) : null;
 
     }
+//
+//        public ReviewAllDto(String type, Long id, Long accountId, String establishmentTypeValue) {
+//            this.type=type;
+//            this.id=id;
+//            this.accountId=accountId;
+//            this.establishmentTypeValue=establishmentTypeValue;
+//
+//        }
+
+
 //       this.itemB1 = ItemCode.valueOf(itemB1);
 //        this.itemB2 = ItemCode.valueOf(itemB2);
 //        this.itemB3 = ItemCode.valueOf(itemB3);

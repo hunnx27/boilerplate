@@ -1,6 +1,6 @@
 package com.onz.modules.auth.application;
 
-import com.onz.common.enums.Role;
+import com.onz.common.web.dto.response.enums.Role;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.enums.AuthProvider;
 import com.onz.modules.account.infra.AccountRepository;

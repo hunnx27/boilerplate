@@ -1,4 +1,4 @@
-package com.onz.common.enums;
+package com.onz.common.web.dto.response.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

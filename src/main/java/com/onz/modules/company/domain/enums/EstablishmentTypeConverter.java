@@ -6,6 +6,7 @@ import javax.persistence.AttributeConverter;
 import java.util.EnumSet;
 import java.util.NoSuchElementException;
 
+@Deprecated
 public class EstablishmentTypeConverter implements AttributeConverter<EstablishmentType, String> {
     @Override
     public String convertToDatabaseColumn(EstablishmentType type) {
