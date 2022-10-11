@@ -21,6 +21,7 @@ public class DelUserListResponseDto {
     private String snsTypeName;
     private ZonedDateTime createdAt;
     private ZonedDateTime deletedAt;
+
     public String getGubnName() {
         String gubnName = this.gubnName;
         if(this.gubn != null && this.gubnName==null){
