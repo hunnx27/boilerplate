@@ -138,6 +138,7 @@ public class CompaniesService {
             }
             companiesDetailResponseDto.setJipyoScore(jipyoScore);
         }
+        
         return companiesDetailResponseDto;
     }
 
