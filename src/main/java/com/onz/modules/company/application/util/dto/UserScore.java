@@ -1,6 +1,7 @@
 package com.onz.modules.company.application.util.dto;
 
 import com.onz.modules.company.application.util.AggregateCompany;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -39,5 +40,19 @@ public class UserScore{
             this.scorePartnership = Math.round(aggCompany.getAvgItemD1());
             this.scoreLeadership = Math.round(aggCompany.getAvgItemD2());
         }
+    }
+
+    @Builder
+    public UserScore(long scoreTot, long scoreKeepWork, long scoreEvent, long scoreDcoWork, long scoreReadyClass, long scorePersonalPC, long scoreSelfDev, long scoreKizRest, long scorePartnership, long scoreLeadership) {
+        this.scoreTot = scoreTot;
+        this.scoreKeepWork = scoreKeepWork;
+        this.scoreEvent = scoreEvent;
+        this.scoreDcoWork = scoreDcoWork;
+        this.scoreReadyClass = scoreReadyClass;
+        this.scorePersonalPC = scorePersonalPC;
+        this.scoreSelfDev = scoreSelfDev;
+        this.scoreKizRest = scoreKizRest;
+        this.scorePartnership = scorePartnership;
+        this.scoreLeadership = scoreLeadership;
     }
 }

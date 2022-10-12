@@ -2,29 +2,22 @@ package com.onz.modules.admin.companies.application;
 
 import com.onz.common.exception.CustomException;
 import com.onz.modules.admin.companies.infra.CompaniesRepository;
-import com.onz.modules.admin.companies.web.dto.CompaniesRequestDto;
-import com.onz.modules.admin.companies.web.dto.CompaniesResponseDto;
-import com.onz.modules.admin.member.livemember.infra.LiveMemberRepository;
-import com.onz.modules.admin.member.livemember.web.dto.LiveMemberRequestDto;
-import com.onz.modules.admin.member.livemember.web.dto.LiveMemberResponseDto;
-import com.onz.modules.admin.member.livemember.web.dto.LiveMemberResponseWrapDto;
+import com.onz.modules.admin.companies.web.dto.*;
 import com.onz.modules.company.application.util.AggregateCompany;
 import com.onz.modules.company.application.util.dto.EvaluationScore;
 import com.onz.modules.company.application.util.dto.UserScore;
 import com.onz.modules.company.domain.Company;
 import com.onz.modules.review.domain.CompanyReview;
 import com.onz.modules.review.infra.CompanyReviewRepository;
-import com.querydsl.jpa.JPQLQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,4 +72,125 @@ public class CompaniesService {
 //        }).collect(Collectors.toList());
         return companiesSearchListResultAddJipyoScore;
     }
+
+    public CompaniesDetailResponseDto companiesDetail(HttpServletResponse response, @PathVariable Long id) {
+        CompaniesDetailResponseDto companiesDetailResponseDto = companiesRepository.findByCompaniesDetail(id);
+        Company company = companiesRepository.findById(companiesDetailResponseDto.getId()).orElse(null);
+        if (company != null) {
+            List<CompanyReview> reviews = companyReviewRepository.listCompanyReviewByCompanyId(companiesDetailResponseDto.getId());
+            AggregateCompany agg = reviews.stream().collect(AggregateCompany::new, AggregateCompany::add, AggregateCompany::merge);
+            EvaluationScore escore = new EvaluationScore(company);
+            UserScore uscore = new UserScore(agg);
+            long evalTot = escore.getScoreTot();
+            long userTot = uscore.getScoreTot();
+            EvaluationScore evaluationScore = EvaluationScore.builder()
+                        .scoreTot(escore.getScoreTot())
+                        .scoreCareEnv(escore.getScoreCareEnv())
+                        .scoreOprManage(escore.getScoreOprManage())
+                        .scoreCareCourse(escore.getScoreCareCourse())
+                        .scoreTeach(escore.getScoreTeach())
+                        .scoreHealth(escore.getScoreHealth())
+                        .scoreSafty(escore.getScoreSafty())
+                        .build();
+            companiesDetailResponseDto.setEvaluationScore(evaluationScore);
+            int avgCnt = 0;
+            if (evalTot > 0) avgCnt++;
+            if (userTot > 0) avgCnt++;
+            Long jipyoScore = avgCnt != 0 ? (evalTot + userTot) / avgCnt : 0;
+
+            if (company.getAgePeoples() != null && !"".equals(company.getAgePeoples())) {
+                String[] one = company.getAgePeoples().split(",");
+                Child child = Child.builder()
+                        .zeroAge(Long.parseLong(one.length > 1 ? one[0] : "0"))
+                        .oneAge(Long.parseLong(one.length > 1 ? one[1] : "0"))
+                        .twoAge(Long.parseLong(one.length > 1 ? one[2] : "0"))
+                        .threeAge(Long.parseLong(one.length > 1 ? one[3] : "0"))
+                        .forAge(Long.parseLong(one.length > 1 ? one[4] : "0"))
+                        .fiveAge(Long.parseLong(one.length > 1 ? one[5] : "0"))
+                        .infantMix(Long.parseLong(one.length > 1 ? one[6] : "0"))
+                        .childMix(Long.parseLong(one.length > 1 ? one[7] : "0"))
+                        .disabled(Long.parseLong(one.length > 1 ? one[8] : "0"))
+                        .build();
+                companiesDetailResponseDto.setChild(child);
+//                mpas.put("zeroage", one.length>1 ? one[0] : "0");
+//                mpas.put("oneage", one.length>2 ? one[1] : "0");
+//                mpas.put("oneage", one.length>2 ? one[1] : "0");
+//                mpas.put("oneage", one.length>2 ? one[1] : "0");
+//                mpas.put("oneage", one.length>2 ? one[1] : "0");
+//                mpas.put("oneage", one.length>2 ? one[1] : "0");
+//                mpas.put("oneage", one.length>2 ? one[1] : "0");
+            }
+            if(company.getPerItems() !=null && !"".equals(company.getPerItems())){
+                String[] two = company.getPerItems().split(",");
+                Staff staff = Staff.builder()
+                        .total(Long.parseLong(two.length > 1 ? two[0] : "0"))
+                        .director(Long.parseLong(two.length > 1 ? two[1] : "0"))
+                        .daycareT(Long.parseLong(two.length > 1 ? two[2] : "0"))
+                        .specialT(Long.parseLong(two.length > 1 ? two[3] : "0"))
+                        .healerT(Long.parseLong(two.length > 1 ? two[4] : "0"))
+                        .dietitianT(Long.parseLong(two.length > 1 ? two[5] : "0"))
+                        .nurseT(Long.parseLong(two.length > 1 ? two[6] : "0"))
+                        .nursingAide(Long.parseLong(two.length > 1 ? two[7] : "0"))
+                        .cook(Long.parseLong(two.length > 1 ? two[8] : "0"))
+                        .officeWorker(Long.parseLong(two.length > 1 ? two[9] : "0"))
+                        .build();
+                companiesDetailResponseDto.setStaff(staff);
+            }
+            companiesDetailResponseDto.setJipyoScore(jipyoScore);
+        }
+        return companiesDetailResponseDto;
+    }
+
+
+    public CompaniesDetailReviewDto companiesDetailReview(HttpServletResponse response, @PathVariable Long id) {
+        CompaniesDetailReviewDto companiesDetailReviewDto = companiesRepository.findByCompaniesDetailReview(id);
+        long totalCnt=0;
+        totalCnt=companiesDetailReviewDto.getReviewCnt()+ companiesDetailReviewDto.getAmtCnt()+ companiesDetailReviewDto.getInterviewCnt();
+        companiesDetailReviewDto.setTotalCnt(totalCnt);
+        return companiesDetailReviewDto;
+    }
+
+    public CompaniesDetailJipyoDto companiesDetailJipyo(HttpServletResponse response, @PathVariable Long id) {
+        CompaniesDetailJipyoDto companiesDetailJipyoDto = companiesRepository.findByCompaniesDtailJipyo(id);
+//        =scoreA+scoreT/2;
+        Company company = companiesRepository.findById(companiesDetailJipyoDto.getId()).orElse(null);
+        if (company != null) {
+            List<CompanyReview> reviews = companyReviewRepository.listCompanyReviewByCompanyId(companiesDetailJipyoDto.getId());
+            AggregateCompany agg = reviews.stream().collect(AggregateCompany::new, AggregateCompany::add, AggregateCompany::merge);
+            EvaluationScore escore = new EvaluationScore(company);
+            UserScore uscore = new UserScore(agg);
+
+            EvaluationScore evaluationScore = EvaluationScore.builder()
+                    .scoreTot(escore.getScoreTot())
+                    .scoreCareEnv(escore.getScoreCareEnv())
+                    .scoreOprManage(escore.getScoreOprManage())
+                    .scoreCareCourse(escore.getScoreCareCourse())
+                    .scoreTeach(escore.getScoreTeach())
+                    .scoreHealth(escore.getScoreHealth())
+                    .scoreSafty(escore.getScoreSafty())
+                    .build();
+            companiesDetailJipyoDto.setEvaluationScore(evaluationScore);
+            companiesDetailJipyoDto.setScoreA(evaluationScore.getScoreTot());
+
+            UserScore userScore = UserScore.builder()
+                    .scoreTot(uscore.getScoreTot())
+                    .scoreKeepWork(uscore.getScoreKeepWork())
+                    .scoreEvent(uscore.getScoreEvent())
+                    .scoreDcoWork(uscore.getScoreDcoWork())
+                    .scoreReadyClass(uscore.getScoreReadyClass())
+                    .scorePersonalPC(uscore.getScorePersonalPC())
+                    .scoreSelfDev(uscore.getScoreSelfDev())
+                    .scoreKizRest(uscore.getScoreKizRest())
+                    .scoreLeadership(uscore.getScoreLeadership())
+                    .scorePartnership(uscore.getScorePartnership())
+                    .scoreLeadership(uscore.getScoreLeadership())
+                    .build();
+            companiesDetailJipyoDto.setUserScore(userScore);
+            companiesDetailJipyoDto.setScoreT(userScore.getScoreTot());
+            companiesDetailJipyoDto.setScoreJ((companiesDetailJipyoDto.getScoreA()+ companiesDetailJipyoDto.getScoreT())/2);
+
+        }
+        return companiesDetailJipyoDto;
+    }
+
 }

@@ -618,7 +618,6 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
                                                 .from(companyReview)
                                                 .where(companyReview.account.eq(account))).castToNum(Long.class).sum()
                                 , "companyReviewCnt"),
-//                        Expressions.asNumber().sum()
                         ExpressionUtils.as(
                                 Expressions.asNumber(
                                         JPAExpressions

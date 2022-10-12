@@ -2,8 +2,13 @@ package com.onz.modules.admin.companies.web;
 
 import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
+import com.onz.modules.account.domain.Account;
 import com.onz.modules.admin.companies.application.CompaniesService;
+import com.onz.modules.admin.companies.web.dto.CompaniesDetailResponseDto;
+import com.onz.modules.admin.companies.web.dto.CompaniesDetailReviewDto;
 import com.onz.modules.admin.companies.web.dto.CompaniesRequestDto;
+import com.onz.modules.admin.companies.web.dto.CompaniesResponseDto;
+import com.onz.modules.admin.member.livemember.web.dto.LiveMemberDetailResponse;
 import com.onz.modules.admin.member.livemember.web.dto.LiveMemberRequestDto;
 import com.onz.modules.admin.member.livemember.web.dto.LiveMemberResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -30,8 +36,8 @@ public class CompaniesController {
 
     @Operation(summary = "기관 검색 관리 ", description = "기관 검색 입니다...")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class)))
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
     })
     @GetMapping("/admin/companies")
     public ResponseEntity<ApiR<?>> companiesSearch(HttpServletResponse response, CompaniesRequestDto companiesRequestDto, Pageable pageable) {
@@ -42,4 +48,48 @@ public class CompaniesController {
             throw e;
         }
     }
+
+    @Operation(summary = "기관 디테일 ", description = "기관 디테일입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesDetailResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesDetailResponseDto.class)))
+    })
+    @GetMapping("/admin/companies/{id}")
+    public ResponseEntity<ApiR<?>> companiesDetail(HttpServletResponse response, @PathVariable Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companiesService.companiesDetail(response,id)));
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    @Operation(summary = "기관-> 리뷰 ", description = "기관 디테일입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesDetailReviewDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesDetailReviewDto.class)))
+    })
+    @GetMapping("/admin/companies/review/{id}")
+    public ResponseEntity<ApiR<?>> companiesDetailReview(HttpServletResponse response, @PathVariable Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companiesService.companiesDetailReview(response,id)));
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    @Operation(summary = "기관-> 지표 ", description = "기관 디테일입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = Account.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = Account.class)))
+    })
+    @GetMapping("/admin/companies/jipyo/{id}")
+    public ResponseEntity<ApiR<?>> companiesDetailJipyo(HttpServletResponse response, @PathVariable Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companiesService.companiesDetailJipyo(response,id)));
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+
 }

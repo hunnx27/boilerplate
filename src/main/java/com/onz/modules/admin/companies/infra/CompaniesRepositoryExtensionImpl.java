@@ -1,11 +1,17 @@
 package com.onz.modules.admin.companies.infra;
 
+import com.onz.common.web.dto.response.enums.State;
 import com.onz.modules.account.domain.Account;
-import com.onz.modules.admin.companies.web.dto.CompaniesRequestDto;
-import com.onz.modules.admin.companies.web.dto.CompaniesResponseDto;
+import com.onz.modules.account.domain.QAccount;
+import com.onz.modules.admin.companies.web.dto.*;
+import com.onz.modules.admin.member.livemember.web.dto.LiveMemberDetailResponse;
+import com.onz.modules.common.pointHistory.domain.QPointHistory;
 import com.onz.modules.company.application.util.AggregateCompany;
 import com.onz.modules.company.domain.QCompany;
 import com.onz.modules.company.web.dto.reponse.CompanyJipyoResponse;
+import com.onz.modules.counsel.domain.QCounsel;
+import com.onz.modules.counsel.domain.enums.CounselState;
+import com.onz.modules.counsel.domain.enums.QnaGubn;
 import com.onz.modules.review.domain.CompanyReview;
 import com.onz.modules.review.domain.QCompanyReview;
 import com.onz.modules.review.domain.QInterviewReview;
@@ -45,7 +51,7 @@ public class CompaniesRepositoryExtensionImpl extends QuerydslRepositorySupport 
     }
 
     private BooleanBuilder getWhere(CompaniesRequestDto companiesRequestDto,
-                                    QCompany company,QCompanyReview companyReview,QInterviewReview interviewReview,QYearAmtReview amtReview) {
+                                    QCompany company, QCompanyReview companyReview, QInterviewReview interviewReview, QYearAmtReview amtReview) {
 
         BooleanBuilder where = new BooleanBuilder();
         String zoneCode = companiesRequestDto.getSiDo() + companiesRequestDto.getSigunGu();
@@ -131,7 +137,7 @@ public class CompaniesRepositoryExtensionImpl extends QuerydslRepositorySupport 
         QCompanyReview companyReview = QCompanyReview.companyReview;
         QInterviewReview interviewReview = QInterviewReview.interviewReview;
         QYearAmtReview amtReview = QYearAmtReview.yearAmtReview;
-        QCompany company =QCompany.company;
+        QCompany company = QCompany.company;
 
 
         // where절 정의
@@ -175,5 +181,91 @@ public class CompaniesRepositoryExtensionImpl extends QuerydslRepositorySupport 
         List<CompaniesResponseDto> findLiveMemberListResults = findLiveMemberResults.getResults();
 
         return findLiveMemberListResults;
+    }
+
+    @Override
+    public CompaniesDetailResponseDto findByCompaniesDetail(Long id) {
+        QCompany company = QCompany.company;
+
+
+        BooleanBuilder where = new BooleanBuilder();
+        where.and(company.id.eq(id));
+        JPQLQuery<CompaniesDetailResponseDto> result = from(company).select(
+                Projections.fields(CompaniesDetailResponseDto.class,
+                        company.id,
+                        company.officeName,
+                        company.createdAt,
+                        company.modifiedAt,
+                        company.interestCompany,
+                        company.juso,
+                        company.zonecode,
+                        company.establishmentType,
+                        company.isDelete,
+                        company.director,
+                        company.openDt,
+                        company.useYn,
+                        company.fill,
+                        company.totPeople,
+                        company.agePeoples,
+                        company.perItems,
+                        company.currPeople
+                )
+        ).where(where);
+        CompaniesDetailResponseDto fetchResulTd = result.fetchOne();
+        return fetchResulTd;
+    }
+
+    @Override
+    public CompaniesDetailReviewDto findByCompaniesDetailReview(Long id) {
+        QCompany company = QCompany.company;
+        QInterviewReview interviewReview = QInterviewReview.interviewReview;
+        QYearAmtReview amtReview = QYearAmtReview.yearAmtReview;
+        QCompanyReview companyReview = QCompanyReview.companyReview;
+        BooleanBuilder where = new BooleanBuilder();
+        where.and(company.id.eq(id));
+        JPQLQuery<CompaniesDetailReviewDto> result = from(company).select(
+                        Projections.fields(CompaniesDetailReviewDto.class,
+                                company.id,
+                                company.officeName,
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .select(companyReview.count())
+                                                .from(companyReview)
+                                                .where(companyReview.company.id.eq(id))
+                                        , "reviewCnt"),
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .select(interviewReview.count())
+                                                .from(interviewReview)
+                                                .where(interviewReview.company.id.eq(id))
+                                        , "interviewCnt"),
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .select(amtReview.count())
+                                                .from(amtReview)
+                                                .where(amtReview.company.id.eq(id))
+                                        , "amtCnt"),
+                                Expressions.asNumber(0L).as("totalCnt")
+                                )
+                )
+                .where(where);
+        CompaniesDetailReviewDto fetchResulTd = result.fetchOne();
+        return fetchResulTd;
+    }
+
+    @Override
+    public CompaniesDetailJipyoDto findByCompaniesDtailJipyo(Long id) {
+        QCompany company = QCompany.company;
+        BooleanBuilder where = new BooleanBuilder();
+        where.and(company.id.eq(id));
+        JPQLQuery<CompaniesDetailJipyoDto> result = from(company).select(
+                        Projections.fields(CompaniesDetailJipyoDto.class,
+                                company.id,
+                                company.officeName
+                        )
+                )
+                .where(where);
+        CompaniesDetailJipyoDto fetchResulTd = result.fetchOne();
+        return fetchResulTd;
     }
 }

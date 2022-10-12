@@ -1,6 +1,7 @@
 package com.onz.modules.company.application.util.dto;
 
 import com.onz.modules.company.domain.Company;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,6 +38,16 @@ public class EvaluationScore {
                 log.error("evals : {} :: {}",evals[0], e.getMessage());
             }
         }
+        this.scoreTot = scoreTot;
+        this.scoreCareEnv = scoreCareEnv;
+        this.scoreOprManage = scoreOprManage;
+        this.scoreCareCourse = scoreCareCourse;
+        this.scoreTeach = scoreTeach;
+        this.scoreHealth = scoreHealth;
+        this.scoreSafty = scoreSafty;
+    }
+    @Builder
+    public EvaluationScore(long scoreTot, long scoreCareEnv, long scoreOprManage, long scoreCareCourse, long scoreTeach, long scoreHealth, long scoreSafty) {
         this.scoreTot = scoreTot;
         this.scoreCareEnv = scoreCareEnv;
         this.scoreOprManage = scoreOprManage;
