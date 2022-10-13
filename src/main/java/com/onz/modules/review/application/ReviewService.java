@@ -1,5 +1,6 @@
 package com.onz.modules.review.application;
 
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.review.domain.dto.ReviewAllDto;
 import com.onz.modules.review.infra.CompanyReviewRepository;
 import com.onz.modules.review.infra.InterviewReviewRepository;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.lang.Double.max;
@@ -56,10 +58,10 @@ public class ReviewService {
     private String totalGoal;
     private int companyCount = 0;
     double totalLevelPer = 0;
-    double totalGoalPer=0;
-    private int goalCount=0;
-    private int waitCount=0;
-    private int noCount=0;
+    double totalGoalPer = 0;
+    private int goalCount = 0;
+    private int waitCount = 0;
+    private int noCount = 0;
 
 
     public Page<Company> list(CompanySearchRequest searchRequest) {
@@ -70,13 +72,13 @@ public class ReviewService {
         List<YearAmtListResponseDto> list = amtReviewRepository.findByCompanyId(id);
         List<YearAmtListResponseDto> array = list.stream().map(res -> {
             List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(res.zoneCode);
-        if (addressList.size() > 0) {
-            DistinctAddressResponse address = addressList.get(0);
-            String mapsidogunguName = address.getSidoName() + " " + address.getSigunguName();
-            res.setMapsidogunguName(mapsidogunguName);
-        }
-        return res;
-    }).collect(Collectors.toList());
+            if (addressList.size() > 0) {
+                DistinctAddressResponse address = addressList.get(0);
+                String mapsidogunguName = address.getSidoName() + " " + address.getSigunguName();
+                res.setMapsidogunguName(mapsidogunguName);
+            }
+            return res;
+        }).collect(Collectors.toList());
         return array;
     }
 
@@ -119,44 +121,72 @@ public class ReviewService {
         lowLevCount = 0;
         midLevCount = 0;
         highLevCount = 0;
-        goalCount=0;
-        waitCount=0;
-        noCount=0;
+        goalCount = 0;
+        waitCount = 0;
+        noCount = 0;
 
         List<InterviewReview> list = interviewReviewRepository.findByCompanyId(id);
         List<InterviewListResponseDto> array = list.stream().map(res -> {
             companyCount++;
-            if (res.getItem_2()!=null && res.getItem_2().name().equals("Y")) {
-                writCount += 1;
+            if (res.getItem_1() != null) {
+                mockCount += 1;
             }
-            if (res.getItem_3()!=null && res.getItem_3().name().equals("Y")) {
-                patCount += 1;
+            if (res.getItem_2() != null) {
+                if (res.getItem_2().equals(YN.Y)) {
+                    writCount += 1;
+                }
             }
-            if(res.getItem_1()!=null){  //FIXME (NULL OR N)
-                mockCount+=1;
+            if (res.getItem_3() != null) {
+                if (res.getItem_3().equals(YN.Y)) {
+                    patCount += 1;
+                }
             }
-            int key = res.getItem_5()!=null ? Integer.parseInt(res.getItem_5()) : 0;
-            switch (key) {
+//            if (res.getItem_1()!=null &) {
+//                writCount += 1;
+//            }
+//            if (res.getItem_1()!=null && res.getItem_3().name().equals("Y")) {
+//                patCount += 1;
+//            }
+//            if(res.getItem_1()!=null && res.getItem_1().equals("N")){
+//                mockCount+=1;
+//            }
+//            int key = res.getItem_5() != null ? Integer.parseInt(res.getItem_5()) : 0;
+//            switch (key) {
+//                case 1:
+//                    lowLevCount += 1;
+//                    break;
+//                case 2:
+//                    midLevCount += 1;
+//                    break;
+//                case 3:
+//                    highLevCount += 1;
+//                    break;
+//            }
+
+                String temp = res.getItem_5().replaceAll("A10","");
+                switch (res.getItem_5() != null ? temp : "999") {
+                    case "1":
+                        this.lowLevCount += 1;
+                        break;
+                    case "2":
+                        this.midLevCount += 1;
+                        break;
+                    case "3":
+                        this.highLevCount += 1;
+                        break;
+                    default:
+                        break;
+                }
+            int key1 = res.getItem_4() != null ? Integer.parseInt(res.getItem_4()) : 0;
+            switch (key1) {
                 case 1:
-                    lowLevCount += 1;
+                    goalCount += 1;
                     break;
                 case 2:
-                    midLevCount += 1;
+                    waitCount += 1;
                     break;
                 case 3:
-                    highLevCount += 1;
-                    break;
-            }
-            int key1 = res.getItem_4()!=null ? Integer.parseInt(res.getItem_4()) : 0;
-            switch (key1){
-                case 1:
-                    goalCount +=1;
-                    break;
-                case 2:
-                    waitCount +=1;
-                    break;
-                case 3:
-                    noCount +=1;
+                    noCount += 1;
                     break;
             }
 
@@ -165,14 +195,14 @@ public class ReviewService {
             return bbb;
         }).collect(Collectors.toList());
 //            companySearchInterviewCount(writCount,patCount);
-        if(companyCount!=0){
+        if (companyCount != 0) {
             lowLevCount = (lowLevCount * 100) / companyCount;
             midLevCount = (midLevCount * 100) / companyCount;
             highLevCount = (highLevCount * 100) / companyCount;
             goalCount = (goalCount * 100) / companyCount;
             waitCount = (waitCount * 100) / companyCount;
             noCount = (noCount * 100) / companyCount;
-        }else{
+        } else {
             lowLevCount = 0;
             midLevCount = 0;
             highLevCount = 0;
@@ -200,11 +230,11 @@ public class ReviewService {
         }
 
 
-        return new InterviewcountResponsedto(writCount, patCount, mockCount, lowLevCount, midLevCount, highLevCount, totalLevel,goalCount,waitCount,noCount,totalGoal);
+        return new InterviewcountResponsedto(writCount, patCount, mockCount, lowLevCount, midLevCount, highLevCount, totalLevel, goalCount, waitCount, noCount, totalGoal);
     }
 
     public List<ReviewResponseDto> findByAllReview(FindEstaRequestDto findEstaRequestDto, Pageable pageable) {
-        List<ReviewAllDto> list = reviewRepository.findByAllReview(findEstaRequestDto,pageable);
+        List<ReviewAllDto> list = reviewRepository.findByAllReview(findEstaRequestDto, pageable);
 //        List<ReviewAll>  >> List<ReviewResponseDto>
         List<ReviewResponseDto> array = list.stream().map(res -> {
             ReviewResponseDto aaa = new ReviewResponseDto(res);

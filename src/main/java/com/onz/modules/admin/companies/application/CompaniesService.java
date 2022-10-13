@@ -1,14 +1,26 @@
 package com.onz.modules.admin.companies.application;
 
 import com.onz.common.exception.CustomException;
+import com.onz.common.web.dto.response.enums.Role;
+import com.onz.common.web.dto.response.enums.State;
+import com.onz.modules.account.application.AccountService;
+import com.onz.modules.account.domain.Account;
+import com.onz.modules.account.infra.AccountRepository;
+import com.onz.modules.admin.auth.application.AdminAuthService;
+import com.onz.modules.admin.companies.domain.Companies;
 import com.onz.modules.admin.companies.infra.CompaniesRepository;
 import com.onz.modules.admin.companies.web.dto.*;
+import com.onz.modules.auth.web.dto.UserPrincipal;
+import com.onz.modules.common.pointHistory.domain.enums.PointTable;
 import com.onz.modules.company.application.util.AggregateCompany;
 import com.onz.modules.company.application.util.dto.EvaluationScore;
 import com.onz.modules.company.application.util.dto.UserScore;
 import com.onz.modules.company.domain.Company;
+import com.onz.modules.company.infra.CompanyRepository;
 import com.onz.modules.review.domain.CompanyReview;
+import com.onz.modules.review.domain.YearAmtReview;
 import com.onz.modules.review.infra.CompanyReviewRepository;
+import com.onz.modules.review.web.dto.AmtRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +30,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,12 +41,14 @@ public class CompaniesService {
 
     private final CompaniesRepository companiesRepository;
     private final CompanyReviewRepository companyReviewRepository;
+    private final CompanyRepository companyRepository;
+    private final AccountService accountService;
 
     public List<CompaniesResponseDto> companiesSearch(HttpServletResponse response, CompaniesRequestDto companiesRequestDto, Pageable pageable) throws CustomException {
         //전체회원을 받아온다
         List<CompaniesResponseDto> companiesSearchListResult = companiesRepository.findByCompanies(companiesRequestDto, pageable);
         List<CompaniesResponseDto> companiesSearchListResultAddJipyoScore = companiesSearchListResult.stream().map(companiesResponseDto -> {
-            Company company = companiesRepository.findById(companiesResponseDto.getId()).orElse(null);
+            Company company = companyRepository.findById(companiesResponseDto.getId()).orElse(null);
             if(company != null){
                 List<CompanyReview> reviews = companyReviewRepository.listCompanyReviewByCompanyId(companiesResponseDto.getId());
                 AggregateCompany agg = reviews.stream().collect(AggregateCompany::new, AggregateCompany::add, AggregateCompany::merge);
@@ -75,7 +90,7 @@ public class CompaniesService {
 
     public CompaniesDetailResponseDto companiesDetail(HttpServletResponse response, @PathVariable Long id) {
         CompaniesDetailResponseDto companiesDetailResponseDto = companiesRepository.findByCompaniesDetail(id);
-        Company company = companiesRepository.findById(companiesDetailResponseDto.getId()).orElse(null);
+        Company company = companyRepository.findById(companiesDetailResponseDto.getId()).orElse(null);
         if (company != null) {
             List<CompanyReview> reviews = companyReviewRepository.listCompanyReviewByCompanyId(companiesDetailResponseDto.getId());
             AggregateCompany agg = reviews.stream().collect(AggregateCompany::new, AggregateCompany::add, AggregateCompany::merge);
@@ -154,7 +169,7 @@ public class CompaniesService {
     public CompaniesDetailJipyoDto companiesDetailJipyo(HttpServletResponse response, @PathVariable Long id) {
         CompaniesDetailJipyoDto companiesDetailJipyoDto = companiesRepository.findByCompaniesDtailJipyo(id);
 //        =scoreA+scoreT/2;
-        Company company = companiesRepository.findById(companiesDetailJipyoDto.getId()).orElse(null);
+        Company company = companyRepository.findById(companiesDetailJipyoDto.getId()).orElse(null);
         if (company != null) {
             List<CompanyReview> reviews = companyReviewRepository.listCompanyReviewByCompanyId(companiesDetailJipyoDto.getId());
             AggregateCompany agg = reviews.stream().collect(AggregateCompany::new, AggregateCompany::add, AggregateCompany::merge);
@@ -192,6 +207,47 @@ public class CompaniesService {
 
         }
         return companiesDetailJipyoDto;
+    }
+
+    public List<CompaniesFixResponseDto> companiesFixSearch(HttpServletResponse response, CompaniesFixRequestDto companiesFixRequestDto, Pageable pageable) throws CustomException {
+        //전체회원을 받아온다
+        List<CompaniesFixResponseDto> companiesFixResponseDtoList = companiesRepository.findByCompaniesFixList(companiesFixRequestDto, pageable);
+        return companiesFixResponseDtoList;
+    }
+
+
+    public CompaniesFixDetailResponseDto companiesFixDetail(HttpServletResponse response, @PathVariable Long id) {
+        CompaniesFixDetailResponseDto companiesFixDetailResponseDto = companiesRepository.findByCompaniesFixDetail(id);
+        return companiesFixDetailResponseDto;
+    }
+
+    public Companies create(CompaniesFixCreateRequestDto companiesFixCreateRequestDto, UserPrincipal me) {
+//        Companies company = companiesRepository.getById(companiesFixCreateRequestDto.getCompanyId());
+        Company company = companyRepository.findById(companiesFixCreateRequestDto.getCompanyId()).orElse(null);
+        Account account = accountService.findOne(me.getId());
+        if(account.getRole()== Role.USER) {
+            Companies companies = Companies.builder()
+                    .company(company)
+                    .account(account)
+                    .userId(me.getUserId())
+                    .state(State.W)
+                    .adminTxt(null)
+                    .fixText(companiesFixCreateRequestDto.getFixText())
+                    .build();
+            return companiesRepository.save(companies);
+        }
+        return null;
+    }
+
+    public void update(CompaniesFixUpdateRequestDto companiesFixUpdateRequestDto, UserPrincipal me,Long id) {
+        Companies companies = companiesRepository.findById(id).orElse(null);
+        if(companies!=null){
+                companies.setState(companiesFixUpdateRequestDto.getState());
+                companies.setAdminId(me.getUserId());
+                companies.setAdminTxt(companiesFixUpdateRequestDto.getAdminTxt());
+                companiesRepository.save(companies);
+        }
+//        Company company = companyRepository.findById(id).orElseThrow();
     }
 
 }

@@ -1,18 +1,16 @@
 package com.onz.modules.admin.companies.infra;
 
 import com.onz.common.web.dto.response.enums.State;
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.QAccount;
+import com.onz.modules.admin.companies.domain.Companies;
+import com.onz.modules.admin.companies.domain.QCompanies;
 import com.onz.modules.admin.companies.web.dto.*;
-import com.onz.modules.admin.member.livemember.web.dto.LiveMemberDetailResponse;
-import com.onz.modules.common.pointHistory.domain.QPointHistory;
-import com.onz.modules.company.application.util.AggregateCompany;
+import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.company.domain.QCompany;
-import com.onz.modules.company.web.dto.reponse.CompanyJipyoResponse;
-import com.onz.modules.counsel.domain.QCounsel;
 import com.onz.modules.counsel.domain.enums.CounselState;
 import com.onz.modules.counsel.domain.enums.QnaGubn;
-import com.onz.modules.review.domain.CompanyReview;
 import com.onz.modules.review.domain.QCompanyReview;
 import com.onz.modules.review.domain.QInterviewReview;
 import com.onz.modules.review.domain.QYearAmtReview;
@@ -34,9 +32,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 @Slf4j
@@ -86,8 +82,8 @@ public class CompaniesRepositoryExtensionImpl extends QuerydslRepositorySupport 
 
             }
         }
-        if (companiesRequestDto.getCompanyCh() != null) {
-            if (!companiesRequestDto.getCompanyCh().equals("N")) {
+        if (companiesRequestDto.getCompanySearchOption() != null) {
+            if (!companiesRequestDto.getCompanySearchOption().equals("all")) {
                 where.and(company.officeName.eq(companiesRequestDto.getCompanyNameCh()));
             }
         }
@@ -126,6 +122,53 @@ public class CompaniesRepositoryExtensionImpl extends QuerydslRepositorySupport 
                                     .where(companyReview.company.eq(company))
                                     .loe(companiesRequestDto.getReviewCountNum()));
                 }
+            }
+        }
+        return where;
+    }
+
+    private BooleanBuilder getWhereFix(CompaniesFixRequestDto companiesFixRequestDto,
+                                       QCompany company) {
+
+        BooleanBuilder where = new BooleanBuilder();
+        String zoneCode = companiesFixRequestDto.getSiDo() + companiesFixRequestDto.getSigunGu();
+        if (companiesFixRequestDto.getSiDo() != null) {
+            //sido가 널이 아닐떄
+            if (companiesFixRequestDto.getSiDo() == null) {
+                //모두검색
+            }
+            if (companiesFixRequestDto.getSigunGu() == null) {//Sido값은들어옴 ,만약 군구가 널이라면
+                where.and(company.zonecode.startsWith(companiesFixRequestDto.getSiDo()));//시도로검색
+            } else {
+                //만약 null이 아니라면
+                where.and((company.zonecode.eq(zoneCode)));
+            }
+        }
+        if (companiesFixRequestDto.getEstablishmentType() == null) {
+            //gubun은 이넘으로 all을 받기 떄문에 처리 ㄴㄴ -> 해야할듯
+        } else {
+            where.and(company.establishmentType.eq(companiesFixRequestDto.getEstablishmentType()));
+        }
+        if( companiesFixRequestDto.getInterestCompany()==null){
+            //그렇다
+        }else{
+            where.and(company.interestCompany.eq(companiesFixRequestDto.getInterestCompany()));
+        }
+        if (companiesFixRequestDto.getRequestEdtA() != null) {
+            if (companiesFixRequestDto.getRequestEdtB() != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//                String ccc = String.format(account.createdAt.toString(), "yyyy-MM-dd");
+                ZonedDateTime aaa = ZonedDateTime.of(LocalDateTime.parse(companiesFixRequestDto.getRequestEdtA() + " 00:00:00", formatter), ZoneId.of("Asia/Seoul"));
+                ZonedDateTime bbb = ZonedDateTime.of(LocalDateTime.parse(companiesFixRequestDto.getRequestEdtB() + " 23:59:59", formatter), ZoneId.of("Asia/Seoul"));
+                where.and(company.createdAt.between(
+                        Expressions.dateTemplate(ZonedDateTime.class, "{0}", aaa),
+                        Expressions.dateTemplate(ZonedDateTime.class, "{0}", bbb)
+                ));
+            }
+        }
+        if (companiesFixRequestDto.getCompanySearchOption() != null) {
+            if (!companiesFixRequestDto.getCompanySearchOption().equals("all")) {
+                where.and(company.officeName.eq(companiesFixRequestDto.getOfficeName()));
             }
         }
         return where;
@@ -246,7 +289,7 @@ public class CompaniesRepositoryExtensionImpl extends QuerydslRepositorySupport 
                                                 .where(amtReview.company.id.eq(id))
                                         , "amtCnt"),
                                 Expressions.asNumber(0L).as("totalCnt")
-                                )
+                        )
                 )
                 .where(where);
         CompaniesDetailReviewDto fetchResulTd = result.fetchOne();
@@ -268,4 +311,68 @@ public class CompaniesRepositoryExtensionImpl extends QuerydslRepositorySupport 
         CompaniesDetailJipyoDto fetchResulTd = result.fetchOne();
         return fetchResulTd;
     }
+
+    @Override
+    public List<CompaniesFixResponseDto> findByCompaniesFixList(CompaniesFixRequestDto companiesFixRequestDto, Pageable pageable) {
+        // Q클래스 정의
+        QCompanyReview companyReview = QCompanyReview.companyReview;
+        QInterviewReview interviewReview = QInterviewReview.interviewReview;
+        QYearAmtReview amtReview = QYearAmtReview.yearAmtReview;
+        QCompany company = QCompany.company;
+        QAccount account = QAccount.account;
+        QCompanies companies = QCompanies.companies;
+
+
+        // where절 정의
+        BooleanBuilder where = this.getWhereFix(companiesFixRequestDto, company);
+
+        // 쿼리 생성(리스트)
+        JPQLQuery<CompaniesFixResponseDto> result = from(companies).select(
+                        Projections.fields(CompaniesFixResponseDto.class,
+                                companies.id,
+                                company.interestCompany,
+                                company.establishmentType,
+                                company.officeName,
+                                company.zonecode,
+                                account.userId,
+                                companies.requestEdt,
+                                companies.state
+                        ))
+                .where(where);
+        JPQLQuery<CompaniesFixResponseDto> query = getQuerydsl().applyPagination(pageable, result);
+
+        QueryResults<CompaniesFixResponseDto> findLiveMemberResults = query.fetchResults();
+        List<CompaniesFixResponseDto> findLiveMemberListResults = findLiveMemberResults.getResults();
+
+        return findLiveMemberListResults;
+    }
+
+    @Override
+    public CompaniesFixDetailResponseDto findByCompaniesFixDetail(Long id) {
+        QCompanies companies = QCompanies.companies;
+        QCompany company = QCompany.company;
+        QAccount account = QAccount.account;
+        BooleanBuilder where = new BooleanBuilder();
+        where.and(companies.id.eq(id));
+        JPQLQuery<CompaniesFixDetailResponseDto> result = from(companies).select(
+                        Projections.fields(CompaniesFixDetailResponseDto.class,
+                                companies.id,
+                                account.userId,
+                                account.gubn,
+                                companies.requestEdt,
+                                companies.fixText,
+                                company.interestCompany,
+                                company.establishmentType,
+                                company.officeName,
+                                company.zonecode,
+                                companies.adminId,
+                                companies.state,
+                                companies.adminTxt
+                        )
+                )
+                .where(where);
+        CompaniesFixDetailResponseDto fetchResulTd = result.fetchOne();
+        return fetchResulTd;
+    }
 }
+

@@ -11,12 +11,11 @@ import lombok.Getter;
 public class CompaniesRequestDto  extends BasePageRequest {
 
     private EstablishmentType establishmentType;
-
     private final String siDo;
     private final String sigunGu;
     private final String createAtA;
     private final String createAtD;
-    private final String companyCh;
+    private final String companySearchOption;
     private final String companyNameCh;
     private final Long reviewCountNum;
     private final String reviewCountCheck;
@@ -26,8 +25,8 @@ CompanyCh = 기관 이름으로 검색할건데 Ch가 널이 아닐때만 검색
 commpanyname -> name으로 검색
 reviewcountcheck -> reviewcount 검색 
 * */
-    public CompaniesRequestDto(String establishmentType, String siDo, String sigunGu, String createAtA,
-                               String createAtD, String companyCh, String companyName, String companyNameCh, String reviewCountCheck, Long reviewCountNum, String options) {
+    public CompaniesRequestDto(String establishmentType , String siDo, String sigunGu, String createAtA,
+                               String createAtD, String companySearchOption, String companyNameCh, String reviewCountCheck, Long reviewCountNum, String options) {
         if(establishmentType != null && !"".equals(establishmentType)){
             this.establishmentType=EstablishmentType.valueOf(establishmentType);
         }
@@ -35,7 +34,7 @@ reviewcountcheck -> reviewcount 검색
         this.sigunGu = sigunGu;
         this.createAtA = createAtA;
         this.createAtD = createAtD;
-        this.companyCh = companyCh;
+        this.companySearchOption = companySearchOption;
         this.companyNameCh = companyNameCh;
         this.reviewCountNum=reviewCountNum;
         this.reviewCountCheck=reviewCountCheck;
