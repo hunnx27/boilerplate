@@ -7,6 +7,7 @@ import java.time.ZonedDateTime;
 import com.onz.common.web.dto.response.enums.InterestCompany;
 import com.onz.common.web.dto.response.enums.InterestCompanyConverter;
 import com.onz.common.web.dto.response.enums.YN;
+import com.onz.modules.admin.reviews.web.dto.ReviewMallResponseDto;
 import com.onz.modules.company.domain.enums.CharItem;
 import com.onz.modules.company.domain.enums.CharItemConverter;
 import com.onz.modules.company.domain.enums.EstablishmentType;
@@ -19,7 +20,6 @@ import javax.persistence.*;
 import java.util.List;
 
 @SqlResultSetMapping(
-
         name = "reviewUnion",
         classes = @ConstructorResult(targetClass = ReviewAllDto.class,
                 columns = {
@@ -71,6 +71,24 @@ import java.util.List;
                         @ColumnResult(name = "likeCode",type= String.class)
                 })
 )
+//admin용
+@SqlResultSetMapping(
+        name = "reviewAdminUnion",
+        classes = @ConstructorResult(targetClass = ReviewMallResponseDto.class,
+                columns = {
+                        @ColumnResult(name = "type", type = String.class),
+                        @ColumnResult(name = "id", type = Long.class),
+                        @ColumnResult(name = "state",type = String.class),
+                        @ColumnResult(name="interestCompany",type = String.class),
+                        @ColumnResult(name="establishmentTypeValue",type = String.class),
+                        @ColumnResult(name="companyName",type = String.class),
+                        @ColumnResult(name="userId",type = String.class),
+                        @ColumnResult(name="createdAt",type = String.class),
+                        @ColumnResult(name ="zonecode",type = String.class)
+                })
+)
+
+
 @Entity
 @Setter
 @Getter
