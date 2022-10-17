@@ -39,10 +39,10 @@ public class CompaniesController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
     })
     @GetMapping("/admin/companies")
-    public ResponseEntity<ApiR<?>> companiesSearch(HttpServletResponse response, CompaniesRequestDto companiesRequestDto, Pageable pageable) {
+    public ResponseEntity<ApiR<?>> companiesSearch(CompaniesRequestDto companiesRequestDto, Pageable pageable) {
 //        liveMemberService.liveMember(response,liveMemberRequestDto);
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companiesService.companiesSearch(response,companiesRequestDto,pageable)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companiesService.companiesSearch(companiesRequestDto,pageable)));
         } catch (CustomException e) {
             throw e;
         }
@@ -54,9 +54,9 @@ public class CompaniesController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesDetailResponseDto.class)))
     })
     @GetMapping("/admin/companies/{id}")
-    public ResponseEntity<ApiR<?>> companiesDetail(HttpServletResponse response, @PathVariable Long id) {
+    public ResponseEntity<ApiR<?>> companiesDetail(@PathVariable Long id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companiesService.companiesDetail(response,id)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companiesService.companiesDetail(id)));
         } catch (Exception e) {
             throw e;
         }
@@ -68,9 +68,9 @@ public class CompaniesController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesDetailReviewDto.class)))
     })
     @GetMapping("/admin/companies/review/{id}")
-    public ResponseEntity<ApiR<?>> companiesDetailReview(HttpServletResponse response, @PathVariable Long id) {
+    public ResponseEntity<ApiR<?>> companiesDetailReview(@PathVariable Long id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companiesService.companiesDetailReview(response,id)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companiesService.companiesDetailReview(id)));
         } catch (Exception e) {
             throw e;
         }
@@ -82,9 +82,9 @@ public class CompaniesController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesDetailJipyoDto.class)))
     })
     @GetMapping("/admin/companies/jipyo/{id}")
-    public ResponseEntity<ApiR<?>> companiesDetailJipyo(HttpServletResponse response, @PathVariable Long id) {
+    public ResponseEntity<ApiR<?>> companiesDetailJipyo(@PathVariable Long id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companiesService.companiesDetailJipyo(response,id)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companiesService.companiesDetailJipyo(id)));
         } catch (Exception e) {
             throw e;
         }
@@ -96,10 +96,10 @@ public class CompaniesController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
     })
     @GetMapping("/admin/companies/fix")
-    public ResponseEntity<ApiR<?>> companiesSearch(HttpServletResponse response, CompaniesFixRequestDto companiesFixRequestDto, Pageable pageable) {
+    public ResponseEntity<ApiR<?>> companiesSearch(CompaniesFixRequestDto companiesFixRequestDto, Pageable pageable) {
 //        liveMemberService.liveMember(response,liveMemberRequestDto);
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companiesService.companiesFixSearch(response,companiesFixRequestDto,pageable)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companiesService.companiesFixSearch(companiesFixRequestDto,pageable)));
         } catch (CustomException e) {
             throw e;
         }
@@ -111,9 +111,9 @@ public class CompaniesController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
     })
     @GetMapping("/admin/companies/fix/{id}")
-    public ResponseEntity<ApiR<?>> companiesFixDetail(HttpServletResponse response, @PathVariable Long id) {
+    public ResponseEntity<ApiR<?>> companiesFixDetail(@PathVariable Long id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companiesService.companiesFixDetail(response,id)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companiesService.companiesFixDetail(id)));
         } catch (CustomException e) {
             throw e;
         }

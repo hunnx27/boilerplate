@@ -44,7 +44,7 @@ public class CompaniesService {
     private final CompanyRepository companyRepository;
     private final AccountService accountService;
 
-    public List<CompaniesResponseDto> companiesSearch(HttpServletResponse response, CompaniesRequestDto companiesRequestDto, Pageable pageable) throws CustomException {
+    public List<CompaniesResponseDto> companiesSearch(CompaniesRequestDto companiesRequestDto, Pageable pageable) throws CustomException {
         //전체회원을 받아온다
         List<CompaniesResponseDto> companiesSearchListResult = companiesRepository.findByCompanies(companiesRequestDto, pageable);
         List<CompaniesResponseDto> companiesSearchListResultAddJipyoScore = companiesSearchListResult.stream().map(companiesResponseDto -> {
@@ -88,7 +88,7 @@ public class CompaniesService {
         return companiesSearchListResultAddJipyoScore;
     }
 
-    public CompaniesDetailResponseDto companiesDetail(HttpServletResponse response, @PathVariable Long id) {
+    public CompaniesDetailResponseDto companiesDetail(Long id) {
         CompaniesDetailResponseDto companiesDetailResponseDto = companiesRepository.findByCompaniesDetail(id);
         Company company = companyRepository.findById(companiesDetailResponseDto.getId()).orElse(null);
         if (company != null) {
@@ -158,7 +158,7 @@ public class CompaniesService {
     }
 
 
-    public CompaniesDetailReviewDto companiesDetailReview(HttpServletResponse response, @PathVariable Long id) {
+    public CompaniesDetailReviewDto companiesDetailReview(Long id) {
         CompaniesDetailReviewDto companiesDetailReviewDto = companiesRepository.findByCompaniesDetailReview(id);
         long totalCnt=0;
         totalCnt=companiesDetailReviewDto.getReviewCnt()+ companiesDetailReviewDto.getAmtCnt()+ companiesDetailReviewDto.getInterviewCnt();
@@ -166,7 +166,7 @@ public class CompaniesService {
         return companiesDetailReviewDto;
     }
 
-    public CompaniesDetailJipyoDto companiesDetailJipyo(HttpServletResponse response, @PathVariable Long id) {
+    public CompaniesDetailJipyoDto companiesDetailJipyo(Long id) {
         CompaniesDetailJipyoDto companiesDetailJipyoDto = companiesRepository.findByCompaniesDtailJipyo(id);
 //        =scoreA+scoreT/2;
         Company company = companyRepository.findById(companiesDetailJipyoDto.getId()).orElse(null);
@@ -209,14 +209,14 @@ public class CompaniesService {
         return companiesDetailJipyoDto;
     }
 
-    public List<CompaniesFixResponseDto> companiesFixSearch(HttpServletResponse response, CompaniesFixRequestDto companiesFixRequestDto, Pageable pageable) throws CustomException {
+    public List<CompaniesFixResponseDto> companiesFixSearch(CompaniesFixRequestDto companiesFixRequestDto, Pageable pageable) throws CustomException {
         //전체회원을 받아온다
         List<CompaniesFixResponseDto> companiesFixResponseDtoList = companiesRepository.findByCompaniesFixList(companiesFixRequestDto, pageable);
         return companiesFixResponseDtoList;
     }
 
 
-    public CompaniesFixDetailResponseDto companiesFixDetail(HttpServletResponse response, @PathVariable Long id) {
+    public CompaniesFixDetailResponseDto companiesFixDetail(Long id) {
         CompaniesFixDetailResponseDto companiesFixDetailResponseDto = companiesRepository.findByCompaniesFixDetail(id);
         return companiesFixDetailResponseDto;
     }

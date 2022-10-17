@@ -2,6 +2,7 @@ package com.onz.modules.admin.reviews.infra;
 
 import com.onz.modules.admin.reviews.web.dto.ReviewMallResponseDto;
 import com.onz.modules.admin.reviews.web.dto.ReviewsResponseDto;
+import com.onz.modules.review.domain.dto.ReviewAllDto;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;

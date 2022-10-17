@@ -74,6 +74,8 @@ public class CompanyReview extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ItemCode likeCode;
 
+    private String apprId;
+    private String apprTxt;
     @ColumnDefault("'W'")
     @Enumerated(EnumType.STRING)
     private State state;

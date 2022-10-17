@@ -3,6 +3,7 @@ package com.onz.modules.admin.reviews.infra;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.admin.member.livemember.infra.LiveMemberRepositoryExtension;
 import com.onz.modules.company.domain.Company;
+import com.onz.modules.review.domain.dto.ReviewAll;
 import com.onz.modules.review.domain.dto.ReviewAllDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -55,11 +55,12 @@ public class InterviewReviewDetailResponseDto {
     }
 
     @Getter
+    static
     class InterviewItemResponse{
-        private String interviewQ;
-        private String interviewA;
-        private String interviewAQ;
-        private String interviewAA;
+        private final String interviewQ;
+        private final String interviewA;
+        private final String interviewAQ;
+        private final String interviewAA;
 
         public InterviewItemResponse(InterviewReviewItem item) {
             this.interviewQ = item.getInterviewQ();

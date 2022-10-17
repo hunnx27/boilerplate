@@ -110,6 +110,7 @@ public class InterviewReview extends BaseEntity {
         this.topQ1=interviewReviewItem.getTopQ1();
     }
 
+
     public InterviewReview(InterviewRequestDto interviewRequestDto, Long id) {
         this.id = id;
 //        this.reviewOrder=reviewOrder;

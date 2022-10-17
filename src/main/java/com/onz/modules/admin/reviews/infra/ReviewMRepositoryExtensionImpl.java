@@ -3,6 +3,7 @@ package com.onz.modules.admin.reviews.infra;
 import com.onz.common.web.dto.response.enums.State;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.QAccount;
+import com.onz.modules.admin.member.livemember.web.dto.LiveMemberDetailResponse;
 import com.onz.modules.admin.member.livemember.web.dto.LiveMemberRequestDto;
 import com.onz.modules.admin.member.livemember.web.dto.LiveMemberResponseDto;
 import com.onz.modules.admin.reviews.web.dto.ReviewMRequestDto;
@@ -241,4 +242,6 @@ public class ReviewMRepositoryExtensionImpl extends QuerydslRepositorySupport im
 
         return findCompanyReviewResultsResults;
     }
+
+
 }

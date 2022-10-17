@@ -1,11 +1,13 @@
 package com.onz.modules.review.domain;
 
+import com.onz.modules.admin.reviews.web.dto.InterviewReviewResponseDto;
 import com.onz.modules.review.web.dto.InterviewRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -33,5 +35,6 @@ public class InterviewReviewItem {
         this.interviewAA= interview.getAa();
         this.interviewReview= interviewMom;
     }
+
 
 }
