@@ -26,7 +26,7 @@ public class ReviewMallResponseDto {
     private EstablishmentType establishmentType;
     private String establishmentTypeName;
     @Getter
-    private String companyName;
+    private String officeName;
     @Getter
     private String userId;
     @Getter
