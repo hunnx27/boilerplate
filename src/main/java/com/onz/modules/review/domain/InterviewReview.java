@@ -1,5 +1,6 @@
 package com.onz.modules.review.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.onz.common.domain.BaseEntity;
 import com.onz.common.web.dto.response.enums.State;
 import com.onz.common.web.dto.response.enums.YN;
@@ -14,6 +15,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Getter
@@ -77,8 +79,13 @@ public class InterviewReview extends BaseEntity {
     @JoinColumn(name = "interviewId")
     private List<InterviewReviewItem> interviewItems;
 
-    private String topQ1;
+    @Column(updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private ZonedDateTime apprDt;
 
+    private String apprTxt;
+    private String topQ1;
+    private String apprId; // 승인자 (관리자)
     //    //1 page
 //    private String interviewQ; // 인터뷰 질문
 //    private String interviewA; // 인터뷰 답변

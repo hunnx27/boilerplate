@@ -6,6 +6,7 @@ import com.onz.modules.account.domain.Account;
 import com.onz.modules.admin.member.livemember.web.dto.LiveMemberDetailResponse;
 import com.onz.modules.admin.member.livemember.web.dto.LiveMemberResponseDto;
 import com.onz.modules.admin.reviews.application.ReviewMService;
+import com.onz.modules.admin.reviews.web.dto.ReviewMRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,7 +30,7 @@ public class ReviewMController {
 
     private final ReviewMService reviewMService;
 
-    @Operation(summary = "리뷰 관리 ", description = "회원 관리입니다...")
+    @Operation(summary = "리뷰 관리 ", description = "승인 대기중인 리뷰 관리입니다...")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class)))
@@ -42,7 +43,7 @@ public class ReviewMController {
             throw e;
         }
     }
-    @Operation(summary = "기관 리뷰 관리 ", description = "회원 관리입니다...")
+    @Operation(summary = "기관 리뷰 관리 ", description = "승인 대기중인 기관 리뷰 관리입니다...")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class)))
@@ -55,7 +56,7 @@ public class ReviewMController {
             throw e;
         }
     }
-    @Operation(summary = "인터뷰 리뷰 관리 ", description = "회원 관리입니다...")
+    @Operation(summary = "인터뷰 리뷰 관리 ", description = "승인 대기중인 인터뷰 관리입니다...")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class)))
@@ -68,7 +69,7 @@ public class ReviewMController {
             throw e;
         }
     }
-    @Operation(summary = "연봉 리뷰 관리 ", description = "연봉 리뷰 관리입니다...")
+    @Operation(summary = "연봉 리뷰 관리 ", description = "승인 대기중인 연봉 리뷰 관리입니다...")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class)))
@@ -92,6 +93,20 @@ public class ReviewMController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(reviewMService.review(id,type)));
         } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    @Operation(summary = "전체 기관 리뷰 관리 ", description = "승인 상태 관계없이 기관 리뷰 관리입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class)))
+    })
+    @GetMapping("/admin/reviews/all/company")
+    public ResponseEntity<ApiR<?>> companyAllReview(HttpServletResponse response, ReviewMRequestDto reviewMRequestDto, Pageable pageable) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(reviewMService.companyAllReview(reviewMRequestDto,pageable)));
+        } catch (CustomException e) {
             throw e;
         }
     }

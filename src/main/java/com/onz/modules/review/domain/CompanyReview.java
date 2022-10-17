@@ -1,5 +1,6 @@
 package com.onz.modules.review.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.onz.common.domain.BaseEntity;
 import com.onz.common.web.dto.response.enums.State;
 import com.onz.common.web.dto.response.enums.YN;
@@ -18,6 +19,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Getter
@@ -40,6 +42,10 @@ public class CompanyReview extends BaseEntity {
 //
     @Embedded
     private Images images;
+
+    @Column(updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private ZonedDateTime apprDt;
 
     private String txt;
 //    private String grade;
@@ -74,12 +80,11 @@ public class CompanyReview extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ItemCode likeCode;
 
-    private String apprId;
     private String apprTxt;
     @ColumnDefault("'W'")
     @Enumerated(EnumType.STRING)
     private State state;
-
+    private String apprId; // 승인자 (관리자)
     @Builder
     public CompanyReview(CompanyReviewRequestDto companyReviewRequestDto, Company company, Account account) {
         this.account=account;

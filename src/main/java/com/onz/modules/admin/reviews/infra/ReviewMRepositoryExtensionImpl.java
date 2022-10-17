@@ -53,6 +53,69 @@ public class ReviewMRepositoryExtensionImpl extends QuerydslRepositorySupport im
         this.em = em;
     }
 
+    private BooleanBuilder getWhere(ReviewMRequestDto reviewMRequestDto, QAccount account,
+                                      QCompanyReview companyReview) {
+
+        BooleanBuilder where = new BooleanBuilder();
+        String zoneCode = reviewMRequestDto.getSiDo() + reviewMRequestDto.getSigunGu();
+        if (reviewMRequestDto.getSiDo() != null) {
+            //sido가 널이 아닐떄
+            if (reviewMRequestDto.getSiDo() == null) {
+                //모두검색
+            }
+            if (reviewMRequestDto.getSigunGu() == null) {//Sido값은들어옴 ,만약 군구가 널이라면
+                where.and(account.myinfo.interestZone.startsWith(reviewMRequestDto.getSiDo()));//시도로검색
+            } else {
+                //만약 null이 아니라면
+                where.and(account.myinfo.interestZone.eq(zoneCode));
+            }
+        }
+        if (reviewMRequestDto.getInterestCompany() != null) {
+            where.and(companyReview.company.interestCompany.eq(reviewMRequestDto.getInterestCompany()));
+        }
+        if (reviewMRequestDto.getEstablishmentType() != null) {
+            where.and(companyReview.company.establishmentType.eq(reviewMRequestDto.getEstablishmentType()));
+        }
+        if(reviewMRequestDto.getOfficeName()!=null){
+            where.and(companyReview.company.officeName.eq(reviewMRequestDto.getOfficeName()));
+        }
+        if(reviewMRequestDto.getState()!=null){
+            where.and(companyReview.state.eq(reviewMRequestDto.getState()));
+        }
+        if(reviewMRequestDto.getCreatedAtOption()!=null) {
+            if (reviewMRequestDto.getCreatedAtOption().equals("등록일")) {
+                if (reviewMRequestDto.getCreatedAtA() != null) {
+                    if (reviewMRequestDto.getCreatedAtB() != null) {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//                String ccc = String.format(account.createdAt.toString(), "yyyy-MM-dd");
+                        ZonedDateTime aaa = ZonedDateTime.of(LocalDateTime.parse(reviewMRequestDto.getCreatedAtA() + " 00:00:00", formatter), ZoneId.of("Asia/Seoul"));
+                        ZonedDateTime bbb = ZonedDateTime.of(LocalDateTime.parse(reviewMRequestDto.getCreatedAtB() + " 23:59:59", formatter), ZoneId.of("Asia/Seoul"));
+                        where.and(companyReview.createdAt.between(
+                                Expressions.dateTemplate(ZonedDateTime.class, "{0}", aaa),
+                                Expressions.dateTemplate(ZonedDateTime.class, "{0}", bbb)
+                        ));
+                    }
+                }
+            } else if (reviewMRequestDto.getCreatedAtOption().equals("승인일")) {
+                if (reviewMRequestDto.getCreatedAtA() != null) {
+                    if (reviewMRequestDto.getCreatedAtB() != null) {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//                String ccc = String.format(account.createdAt.toString(), "yyyy-MM-dd");
+                        ZonedDateTime aaa = ZonedDateTime.of(LocalDateTime.parse(reviewMRequestDto.getCreatedAtA() + " 00:00:00", formatter), ZoneId.of("Asia/Seoul"));
+                        ZonedDateTime bbb = ZonedDateTime.of(LocalDateTime.parse(reviewMRequestDto.getCreatedAtB() + " 23:59:59", formatter), ZoneId.of("Asia/Seoul"));
+                        where.and(companyReview.apprDt.between(
+                                Expressions.dateTemplate(ZonedDateTime.class, "{0}", aaa),
+                                Expressions.dateTemplate(ZonedDateTime.class, "{0}", bbb)
+                        ));
+
+
+                    }
+                }
+            }
+        }
+        return where;
+    }
+
     public List<ReviewMallResponseDto> findByAllReview(Pageable pageable) {
         //FIND_ALL_IDS
 //        String query = FIND_ALL_IDS;
@@ -73,6 +136,37 @@ public class ReviewMRepositoryExtensionImpl extends QuerydslRepositorySupport im
                 .createNativeQuery(query, "reviewAdminUnion");
         List<ReviewMallResponseDto> resultList = nativequery.getResultList();
         return resultList;
+    }
+
+    public List<ReviewMallResponseDto> findByAllCompanyReview(ReviewMRequestDto reviewMRequestDto, Pageable pageable) {
+        QAccount account = QAccount.account;
+        QCompany company = QCompany.company;
+        QCompanyReview companyReview = QCompanyReview.companyReview;
+
+        BooleanBuilder where = this.getWhere(reviewMRequestDto, account, companyReview);
+        // where절 정의
+        // 쿼리 생성(리스트)
+        JPQLQuery<ReviewMallResponseDto> result = from(companyReview).select(
+                        Projections.fields(ReviewMallResponseDto.class,
+                                Expressions.asString("COMPANY").as("type"),
+                                companyReview.id,
+                                companyReview.state,
+                                companyReview.company.interestCompany,
+                                companyReview.company.establishmentType,
+                                companyReview.company.officeName,
+                                companyReview.account.userId,
+                                companyReview.createdAt,
+                                companyReview.apprDt,
+                                companyReview.company.zonecode
+                        )
+                )
+                .where(where);
+        JPQLQuery<ReviewMallResponseDto> query = getQuerydsl().applyPagination(pageable, result);
+        QueryResults<ReviewMallResponseDto> findCompanyReviewResults = query.fetchResults();
+        List<ReviewMallResponseDto> findCompanyReviewResultsResults = findCompanyReviewResults.getResults();
+
+
+        return findCompanyReviewResultsResults;
     }
 
     public List<ReviewsResponseDto> findByCompanyReview(Pageable pageable) {
@@ -134,7 +228,7 @@ public class ReviewMRepositoryExtensionImpl extends QuerydslRepositorySupport im
     public List<ReviewsResponseDto> findByInterviewReview(Pageable pageable) {
         QAccount account = QAccount.account;
         QCompany company = QCompany.company;
-        QInterviewReview interviewReview= QInterviewReview.interviewReview;
+        QInterviewReview interviewReview = QInterviewReview.interviewReview;
 
         // where절 정의
         // 쿼리 생성(리스트)
@@ -190,7 +284,7 @@ public class ReviewMRepositoryExtensionImpl extends QuerydslRepositorySupport im
     public List<ReviewsResponseDto> findByAmtReview(Pageable pageable) {
         QAccount account = QAccount.account;
         QCompany company = QCompany.company;
-        QYearAmtReview amtReview= QYearAmtReview.yearAmtReview;
+        QYearAmtReview amtReview = QYearAmtReview.yearAmtReview;
 
         // where절 정의
         // 쿼리 생성(리스트)
@@ -244,4 +338,7 @@ public class ReviewMRepositoryExtensionImpl extends QuerydslRepositorySupport im
     }
 
 
+    public JPAQueryFactory getQf() {
+        return qf;
+    }
 }

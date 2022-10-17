@@ -1,5 +1,6 @@
 package com.onz.modules.admin.reviews.infra;
 
+import com.onz.modules.admin.reviews.web.dto.ReviewMRequestDto;
 import com.onz.modules.admin.reviews.web.dto.ReviewMallResponseDto;
 import com.onz.modules.admin.reviews.web.dto.ReviewsResponseDto;
 import com.onz.modules.review.domain.dto.ReviewAllDto;
@@ -12,4 +13,5 @@ public interface ReviewMRepositoryExtension {
     List<ReviewsResponseDto> findByCompanyReview(Pageable pageable);
     List<ReviewsResponseDto> findByInterviewReview(Pageable pageable);
     List<ReviewsResponseDto> findByAmtReview(Pageable pageable);
+    List<ReviewMallResponseDto> findByAllCompanyReview(ReviewMRequestDto reviewMRequestDto, Pageable pageable);
 }

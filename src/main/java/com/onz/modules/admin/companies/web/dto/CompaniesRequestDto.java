@@ -15,6 +15,7 @@ public class CompaniesRequestDto  extends BasePageRequest {
     private final String sigunGu;
     private final String createAtA;
     private final String createAtD;
+    private final String createdAtOption;
     private final String companySearchOption;
     private final String companyNameCh;
     private final Long reviewCountNum;
@@ -26,7 +27,7 @@ commpanyname -> name으로 검색
 reviewcountcheck -> reviewcount 검색 
 * */
     public CompaniesRequestDto(String establishmentType , String siDo, String sigunGu, String createAtA,
-                               String createAtD, String companySearchOption, String companyNameCh, String reviewCountCheck, Long reviewCountNum, String options) {
+                               String createAtD, String companySearchOption, String companyNameCh, String reviewCountCheck, Long reviewCountNum, String options,String createdAtOption) {
         if(establishmentType != null && !"".equals(establishmentType)){
             this.establishmentType=EstablishmentType.valueOf(establishmentType);
         }
@@ -39,5 +40,6 @@ reviewcountcheck -> reviewcount 검색
         this.reviewCountNum=reviewCountNum;
         this.reviewCountCheck=reviewCountCheck;
         this.options = options;
+        this.createdAtOption=createdAtOption;
     }
 }
