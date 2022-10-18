@@ -14,4 +14,6 @@ public interface ReviewMRepositoryExtension {
     List<ReviewsResponseDto> findByInterviewReview(Pageable pageable);
     List<ReviewsResponseDto> findByAmtReview(Pageable pageable);
     List<ReviewMallResponseDto> findByAllCompanyReview(ReviewMRequestDto reviewMRequestDto, Pageable pageable);
+    List<ReviewMallResponseDto> findByAllInterviewReview(ReviewMRequestDto reviewMRequestDto, Pageable pageable);
+    List<ReviewMallResponseDto> findByAllAmtReview(ReviewMRequestDto reviewMRequestDto, Pageable pageable);
 }

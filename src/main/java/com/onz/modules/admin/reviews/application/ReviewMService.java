@@ -91,4 +91,14 @@ public class ReviewMService {
         List<ReviewMallResponseDto> liveMemberListResult = reviewMRepository.findByAllCompanyReview(reviewMRequestDto, pageable);
         return liveMemberListResult;
     }
+    public List<ReviewMallResponseDto> interviewAllReview(ReviewMRequestDto reviewMRequestDto, Pageable pageable) throws CustomException {
+        //전체회원을 받아온다
+        List<ReviewMallResponseDto> liveMemberListResult = reviewMRepository.findByAllInterviewReview(reviewMRequestDto, pageable);
+        return liveMemberListResult;
+    }
+    public List<ReviewMallResponseDto> amtAllReview(ReviewMRequestDto reviewMRequestDto, Pageable pageable) throws CustomException {
+        //전체회원을 받아온다
+        List<ReviewMallResponseDto> liveMemberListResult = reviewMRepository.findByAllAmtReview(reviewMRequestDto, pageable);
+        return liveMemberListResult;
+    }
 }

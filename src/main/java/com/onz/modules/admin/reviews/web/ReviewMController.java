@@ -110,4 +110,31 @@ public class ReviewMController {
             throw e;
         }
     }
+    @Operation(summary = "전체 인터뷰 리뷰 관리 ", description = "승인 상태 관계없이 인터뷰 리뷰 관리입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class)))
+    })
+    @GetMapping("/admin/reviews/all/interview")
+    public ResponseEntity<ApiR<?>> interviewAllReview(HttpServletResponse response, ReviewMRequestDto reviewMRequestDto, Pageable pageable) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(reviewMService.interviewAllReview(reviewMRequestDto,pageable)));
+        } catch (CustomException e) {
+            throw e;
+        }
+    }
+
+    @Operation(summary = "전체 연봉 리뷰 관리 ", description = "승인 상태 관계없이 연봉 리뷰 관리입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = LiveMemberResponseDto.class)))
+    })
+    @GetMapping("/admin/reviews/all/amt")
+    public ResponseEntity<ApiR<?>> amtAllReview(HttpServletResponse response, ReviewMRequestDto reviewMRequestDto, Pageable pageable) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(reviewMService.amtAllReview(reviewMRequestDto,pageable)));
+        } catch (CustomException e) {
+            throw e;
+        }
+    }
 }
