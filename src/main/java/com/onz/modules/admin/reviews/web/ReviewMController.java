@@ -3,10 +3,14 @@ package com.onz.modules.admin.reviews.web;
 import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
 import com.onz.modules.account.domain.Account;
+import com.onz.modules.admin.companies.web.dto.CompaniesFixUpdateRequestDto;
 import com.onz.modules.admin.member.livemember.web.dto.LiveMemberDetailResponse;
 import com.onz.modules.admin.member.livemember.web.dto.LiveMemberResponseDto;
 import com.onz.modules.admin.reviews.application.ReviewMService;
 import com.onz.modules.admin.reviews.web.dto.ReviewMRequestDto;
+import com.onz.modules.admin.reviews.web.dto.ReviewStateUpdateRequestDto;
+import com.onz.modules.auth.web.dto.UserPrincipal;
+import com.onz.modules.review.web.dto.AmtRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,9 +21,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -134,6 +137,20 @@ public class ReviewMController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(reviewMService.amtAllReview(reviewMRequestDto,pageable)));
         } catch (CustomException e) {
+            throw e;
+        }
+    }
+
+    @Operation(summary = "리뷰 승인 API", description = "승인하거나 거절하세요")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "등록 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
+    })
+    @PutMapping("/admin/reviews/{id}")
+    public void update(@AuthenticationPrincipal UserPrincipal me, @RequestBody ReviewStateUpdateRequestDto reviewStateUpdateRequestDto, @PathVariable Long id,String type) {
+        try {
+            reviewMService.update(reviewStateUpdateRequestDto, me, id,type);
+        } catch (Exception e) {
             throw e;
         }
     }

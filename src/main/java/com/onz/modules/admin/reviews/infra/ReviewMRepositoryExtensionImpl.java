@@ -8,6 +8,7 @@ import com.onz.modules.admin.member.livemember.web.dto.LiveMemberRequestDto;
 import com.onz.modules.admin.member.livemember.web.dto.LiveMemberResponseDto;
 import com.onz.modules.admin.reviews.web.dto.ReviewMRequestDto;
 import com.onz.modules.admin.reviews.web.dto.ReviewMallResponseDto;
+import com.onz.modules.admin.reviews.web.dto.ReviewStateUpdateRequestDto;
 import com.onz.modules.admin.reviews.web.dto.ReviewsResponseDto;
 import com.onz.modules.company.domain.QCompany;
 import com.onz.modules.counsel.domain.QCounsel;

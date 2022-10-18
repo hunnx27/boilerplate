@@ -35,6 +35,10 @@ public class ReviewMallResponseDto {
     private ZonedDateTime apprDt;
     @Getter
     private String zonecode;
+    @Getter
+    private String adminId;
+    @Getter
+    private String adminTxt;
 /*
 순서 맞춰야함!!!!! 생성자에 들어오는 매개변수 순서 주의!
  */

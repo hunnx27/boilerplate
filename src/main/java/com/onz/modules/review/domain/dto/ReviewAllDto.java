@@ -121,6 +121,7 @@ public class ReviewAllDto {
         this.likeCode = likeCode != null ? ItemCode.valueOf(likeCode) : null;
 
     }
+
 //
 //        public ReviewAllDto(String type, Long id, Long accountId, String establishmentTypeValue) {
 //            this.type=type;

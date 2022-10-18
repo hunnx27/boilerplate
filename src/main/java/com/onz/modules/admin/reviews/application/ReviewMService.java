@@ -1,11 +1,15 @@
 package com.onz.modules.admin.reviews.application;
 
 import com.onz.common.exception.CustomException;
+import com.onz.modules.admin.companies.domain.Companies;
+import com.onz.modules.admin.companies.web.dto.CompaniesFixUpdateRequestDto;
 import com.onz.modules.admin.member.livemember.web.dto.LiveMemberRequestDto;
 import com.onz.modules.admin.member.livemember.web.dto.LiveMemberResponseDto;
 import com.onz.modules.admin.member.livemember.web.dto.LiveMemberResponseWrapDto;
 import com.onz.modules.admin.reviews.infra.ReviewMRepository;
 import com.onz.modules.admin.reviews.web.dto.*;
+import com.onz.modules.auth.web.dto.UserPrincipal;
+import com.onz.modules.company.domain.Company;
 import com.onz.modules.review.domain.CompanyReview;
 import com.onz.modules.review.domain.InterviewReview;
 import com.onz.modules.review.domain.YearAmtReview;
@@ -26,6 +30,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -100,5 +105,37 @@ public class ReviewMService {
         //전체회원을 받아온다
         List<ReviewMallResponseDto> liveMemberListResult = reviewMRepository.findByAllAmtReview(reviewMRequestDto, pageable);
         return liveMemberListResult;
+    }
+
+    public void update(ReviewStateUpdateRequestDto reviewStateUpdateRequestDto, UserPrincipal me, Long id,String type) {
+        switch (type) {
+            case "AMT":
+                YearAmtReview amtReview = amtReviewRepository.findById(id).orElse(null);
+                if (amtReview != null) {
+                amtReview.setState(reviewStateUpdateRequestDto.getState());
+                amtReview.setApprTxt(reviewStateUpdateRequestDto.getAdminTxt());
+                amtReview.setApprId(me.getUserId());
+                amtReviewRepository.save(amtReview);
+            }
+            case "INTERVIEW":
+                InterviewReview interviewReview = interviewReviewRepository.findById(id).orElse(null);
+                if (interviewReview != null) {
+                    interviewReview.setState(reviewStateUpdateRequestDto.getState());
+                    interviewReview.setApprTxt(reviewStateUpdateRequestDto.getAdminTxt());
+                    interviewReview.setApprId(me.getUserId());
+                    interviewReviewRepository.save(interviewReview);
+                }
+            case "COMPANY":
+                CompanyReview companyReview = companyReviewRepository.findById(id).orElse(null);
+                if (companyReview != null) {
+                    companyReview.setState(reviewStateUpdateRequestDto.getState());
+                    companyReview.setApprTxt(reviewStateUpdateRequestDto.getAdminTxt());
+                    companyReview.setApprId(me.getUserId());
+                    companyReviewRepository.save(companyReview);
+                }
+            default:
+                log.info("hi!");
+                break;
+        }
     }
 }

@@ -169,4 +169,5 @@ public interface ReviewMRepository extends JpaRepository<Company, Long>, ReviewM
                     "NULL AS item_d2 , " +
                     "NULL AS like_code " +
                     "FROM year_amt_review yar INNER JOIN company c INNER JOIN account a ON yar.company_id = c.id  WHERE yar.state='W' ";
+
 }
