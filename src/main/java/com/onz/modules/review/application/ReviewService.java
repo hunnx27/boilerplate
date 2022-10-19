@@ -164,7 +164,7 @@ public class ReviewService {
 //            }
 
                 String temp = res.getItem_5().replaceAll("A10","");
-                switch (res.getItem_5() != null ? temp : "999") {
+                switch (res.getItem_5() != null ? temp : "9") {
                     case "1":
                         this.lowLevCount += 1;
                         break;
@@ -241,6 +241,7 @@ public class ReviewService {
 
             aaa.setImpCost(res.getImpCost());
             if (res.getEtcItems() != null && !"".equals(res.getEtcItems())) {
+                System.out.println(res.getId());
                 String[] one = res.getEtcItems().split(",");
                 String[] two = res.getEtcAmt().split(",");
                 int total = 0;

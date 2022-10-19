@@ -2,7 +2,6 @@ package com.onz.modules.review.domain.dto;
 
 import com.onz.common.web.dto.response.enums.State;
 import com.onz.common.web.dto.response.enums.YN;
-import com.onz.modules.review.domain.enums.ItemCode;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,17 +14,17 @@ import java.time.ZonedDateTime;
 public class ReviewAllDto {
     private String type;
     private Long id;
-    private ItemCode itemB1;
-    private ItemCode itemB2;
-    private ItemCode itemB3;
-    private ItemCode itemC1;
-    private ItemCode itemC2;
-    private ItemCode itemC3;
-    private ItemCode itemD1;
-    private ItemCode itemD2;
-    private ItemCode likeCode;
-    private ZonedDateTime CreatedAt;
-    private ZonedDateTime ModifiedAt;
+    private String itemB1;
+    private String itemB2;
+    private String itemB3;
+    private String itemC1;
+    private String itemC2;
+    private String itemC3;
+    private String itemD1;
+    private String itemD2;
+    private String likeCode;
+    private String createdAt;
+    private ZonedDateTime modifiedAt;
 
     private Long accountId;
     private YN isDelete;
@@ -66,7 +65,7 @@ public class ReviewAllDto {
 
     public ReviewAllDto(String type, Long id, Long accountId, String establishmentTypeValue,
                         String isDelete,
-                        String state, String workExpOpenYn, Long companyId, String companyName,
+                        String state, String createdAt,String workExpOpenYn, Long companyId, String companyName,
                         String txt,
                         String item_1, String item_2, String item_3, String item_4, String item_5,String item_6,
                         String topQ1, String txtAdmin, Long workExp, String zonecode,
@@ -80,6 +79,7 @@ public class ReviewAllDto {
         this.establishmentTypeValue= establishmentTypeValue;
         this.isDelete = isDelete != null ? YN.valueOf(isDelete):YN.Y;
         this.state = state !=null ? State.valueOf(state):State.W;
+        this.createdAt =  createdAt;
         this.workExpOpenYn = workExpOpenYn != null ? YN.valueOf(workExpOpenYn) : YN.Y;
         this.companyId = companyId;
         this.companyName = companyName;
@@ -110,15 +110,15 @@ public class ReviewAllDto {
         this.image3 = image3;
         this.image4 = image4;
         this.image5 = image5;
-        this.itemB1 = itemB1 != null ? ItemCode.valueOf(itemB1) : null;
-        this.itemB2 = itemB2 != null ? ItemCode.valueOf(itemB2) : null;
-        this.itemB3 = itemB3 != null ? ItemCode.valueOf(itemB3) : null;
-        this.itemC1 = itemC1 != null ? ItemCode.valueOf(itemC1) : null;
-        this.itemC2 = itemC2 != null ? ItemCode.valueOf(itemC2) : null;
-        this.itemC3 = itemC3 != null ? ItemCode.valueOf(itemC3) : null;
-        this.itemD1 = itemD1 != null ? ItemCode.valueOf(itemD1) : null;
-        this.itemD2 = itemD2 != null ? ItemCode.valueOf(itemD2) : null;
-        this.likeCode = likeCode != null ? ItemCode.valueOf(likeCode) : null;
+        this.itemB1 = itemB1;
+        this.itemB2 = itemB2;
+        this.itemB3 = itemB3;
+        this.itemC1 = itemC1;
+        this.itemC2 = itemC2;
+        this.itemC3 = itemC3;
+        this.itemD1 = itemD1;
+        this.itemD2 = itemD2;
+        this.likeCode = likeCode;
 
     }
 

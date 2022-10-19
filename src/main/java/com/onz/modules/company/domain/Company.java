@@ -26,49 +26,50 @@ import java.util.List;
                         @ColumnResult(name = "type", type = String.class),
                         @ColumnResult(name = "id", type = Long.class),
                         @ColumnResult(name = "accountId", type = Long.class),
-                        @ColumnResult(name = "establishmentTypeValue",type=String.class),
+                        @ColumnResult(name = "establishmentTypeValue", type = String.class),
                         @ColumnResult(name = "isDelete", type = String.class),
                         @ColumnResult(name = "state", type = String.class),
+                        @ColumnResult(name = "createdAt", type = String.class),
                         @ColumnResult(name = "workExpOpenYn", type = String.class),
                         @ColumnResult(name = "companyId", type = Long.class),
                         @ColumnResult(name = "companyName", type = String.class),
-                        @ColumnResult(name = "txt",type = String.class),
-                        @ColumnResult(name = "item_1",type= String.class),
-                        @ColumnResult(name = "item_2",type= String.class),
-                        @ColumnResult(name = "item_3",type= String.class),
-                        @ColumnResult(name = "item_4",type= String.class),
-                        @ColumnResult(name = "item_5",type= String.class),
-                        @ColumnResult(name = "item_6",type= String.class),
-                        @ColumnResult(name = "topQ1",type = String.class),
-                        @ColumnResult(name = "txtAdmin",type =String.class),
-                        @ColumnResult(name = "workExp",type = Long.class),
-                        @ColumnResult(name = "zonecode",type = String.class),
-                        @ColumnResult(name = "amt",type = Long.class),
+                        @ColumnResult(name = "txt", type = String.class),
+                        @ColumnResult(name = "item_1", type = String.class),
+                        @ColumnResult(name = "item_2", type = String.class),
+                        @ColumnResult(name = "item_3", type = String.class),
+                        @ColumnResult(name = "item_4", type = String.class),
+                        @ColumnResult(name = "item_5", type = String.class),
+                        @ColumnResult(name = "item_6", type = String.class),
+                        @ColumnResult(name = "topQ1", type = String.class),
+                        @ColumnResult(name = "txtAdmin", type = String.class),
+                        @ColumnResult(name = "workExp", type = Long.class),
+                        @ColumnResult(name = "zonecode", type = String.class),
+                        @ColumnResult(name = "amt", type = Long.class),
 //                        @ColumnResult(name = "amtOld",type = Long.class),
 //                        @ColumnResult(name = "apprId",type = String.class),
 //                        @ColumnResult(name = "apprTxt",type = String.class),
 //                        @ColumnResult(name = "endAtmYn",type= String.class),
-                        @ColumnResult(name = "etcAmt",type = String.class),
-                        @ColumnResult(name = "etcItems",type= String.class),
+                        @ColumnResult(name = "etcAmt", type = String.class),
+                        @ColumnResult(name = "etcItems", type = String.class),
 //                        @ColumnResult(name = "etcYn",type= YN.class),
-                        @ColumnResult(name = "mapsidogunguName",type = String.class),
+                        @ColumnResult(name = "mapsidogunguName", type = String.class),
 //
 //                        @ColumnResult(name = "topchoiceYn",type = YN.class),
 //                        @ColumnResult(name = "annYn",type = YN.class),
-                        @ColumnResult(name = "image1",type = String.class),
-                        @ColumnResult(name = "image2",type= String.class),
-                        @ColumnResult(name = "image3",type= String.class),
-                        @ColumnResult(name = "image4",type= String.class),
-                        @ColumnResult(name = "image5",type= String.class),
-                        @ColumnResult(name = "itemB1",type= String.class),
-                        @ColumnResult(name = "itemB2",type= String.class),
-                        @ColumnResult(name = "itemB3",type= String.class),
-                        @ColumnResult(name = "itemC1",type= String.class),
-                        @ColumnResult(name = "itemC2",type= String.class),
-                        @ColumnResult(name = "itemC3",type= String.class),
-                        @ColumnResult(name = "itemD1",type= String.class),
-                        @ColumnResult(name = "itemD2",type= String.class),
-                        @ColumnResult(name = "likeCode",type= String.class)
+                        @ColumnResult(name = "image1", type = String.class),
+                        @ColumnResult(name = "image2", type = String.class),
+                        @ColumnResult(name = "image3", type = String.class),
+                        @ColumnResult(name = "image4", type = String.class),
+                        @ColumnResult(name = "image5", type = String.class),
+                        @ColumnResult(name = "itemB1", type = String.class),
+                        @ColumnResult(name = "itemB2", type = String.class),
+                        @ColumnResult(name = "itemB3", type = String.class),
+                        @ColumnResult(name = "itemC1", type = String.class),
+                        @ColumnResult(name = "itemC2", type = String.class),
+                        @ColumnResult(name = "itemC3", type = String.class),
+                        @ColumnResult(name = "itemD1", type = String.class),
+                        @ColumnResult(name = "itemD2", type = String.class),
+                        @ColumnResult(name = "likeCode", type = String.class)
                 })
 )
 //admin용
@@ -78,13 +79,13 @@ import java.util.List;
                 columns = {
                         @ColumnResult(name = "type", type = String.class),
                         @ColumnResult(name = "id", type = Long.class),
-                        @ColumnResult(name = "state",type = String.class),
-                        @ColumnResult(name="interestCompany",type = String.class),
-                        @ColumnResult(name="establishmentTypeValue",type = String.class),
-                        @ColumnResult(name="companyName",type = String.class),
-                        @ColumnResult(name="userId",type = String.class),
-                        @ColumnResult(name="createdAt",type = String.class),
-                        @ColumnResult(name ="zonecode",type = String.class)
+                        @ColumnResult(name = "state", type = String.class),
+                        @ColumnResult(name = "interestCompany", type = String.class),
+                        @ColumnResult(name = "establishmentTypeValue", type = String.class),
+                        @ColumnResult(name = "companyName", type = String.class),
+                        @ColumnResult(name = "userId", type = String.class),
+                        @ColumnResult(name = "createdAt", type = String.class),
+                        @ColumnResult(name = "zonecode", type = String.class)
                 })
 )
 
@@ -102,7 +103,7 @@ public class Company extends BaseEntity {
     //추가
     @Enumerated(EnumType.STRING)
 //    @Convert(converter = EstablishmentTypeConverter.class)
-    EstablishmentType establishmentType;
+            EstablishmentType establishmentType;
     private ZonedDateTime eventBannerDate;
     private String officeName;
     private String juso;

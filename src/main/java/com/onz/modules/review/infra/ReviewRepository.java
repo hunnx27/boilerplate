@@ -58,7 +58,7 @@ public interface ReviewRepository extends JpaRepository<Company, Long>,
             "cr.item_d1 AS itemD1 , " +
             "cr.item_d2 AS itemD2 , " +
             "cr.like_code AS likeCode " +
-            "FROM company_review cr INNER JOIN company c ON cr.company_id = c.id WHERE 1=1 " ;
+            "FROM company_review cr INNER JOIN company c ON cr.company_id = c.id WHERE 1=1  ";
     String FIND_TWO_IDS =
             "SELECT " +
                     "'INTERVIEW' AS type, " +
@@ -66,7 +66,7 @@ public interface ReviewRepository extends JpaRepository<Company, Long>,
                     "ir.is_delete AS is_delete , " +
                     "ir.modified_at AS modified_at , " +
                     "ir.state AS state , " +
-                    "ir.created_at AS created_at , " +
+                    "ir.created_at AS createdAt , " +
                     "ir.work_exp_open_yn AS work_exp_open_yn , " +
                     "c.id AS companyId, " +
                     "c.office_name AS companyName, " +
@@ -118,7 +118,7 @@ public interface ReviewRepository extends JpaRepository<Company, Long>,
                     "yar.is_delete AS is_delete , " +
                     "yar.modified_at AS modified_at , " +
                     "yar.state AS state , " +
-                    "yar.created_at AS created_at , " +
+                    "yar.created_at AS createdAt , " +
                     "yar.work_exp_open_yn AS work_exp_open_yn , " +
                     "c.id AS companyId, " +
                     "c.office_name AS companyName, " +

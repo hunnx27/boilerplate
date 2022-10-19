@@ -1,8 +1,10 @@
 package com.onz.modules.admin.reviews.web.dto;
 
+import com.onz.OnzApplication;
 import com.onz.common.web.dto.response.enums.InterestCompany;
 import com.onz.common.web.dto.response.enums.State;
 import com.onz.common.web.dto.response.enums.YN;
+import com.onz.modules.common.code.application.TestData;
 import com.onz.modules.company.domain.enums.EstablishmentType;
 import com.onz.modules.review.domain.CompanyReview;
 import com.onz.modules.review.domain.dto.ReviewAllDto;
@@ -15,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+
 
 @Slf4j
 @Setter
@@ -75,20 +78,21 @@ public class CompanyReviewResponseDto {
         this.modifiedAt = cr.getModifiedAt();
         this.workExp = cr.getWork_exp();
         this.expOpenYn = cr.getWorkExpOpenYn();
-        this.likecode = cr.getLikeCode().getName();
+        this.likecode = cr.getLikeCode();
         this.jumsuTotal = cr.getStarJumsuTotalAvg();
         this.jumsuJobSatisfaction=cr.getStarJumsuJobSatisfaction();
         this.jumsuWorkload=cr.getStarJumsuWorkload();
         this.JumsuWorkAtmosphere=cr.getStarJumsuWorkAtmosphere();
         this.images=cr.getImages();
-        this.itemB1=cr.getItemB1().getName();
-        this.itemB2=cr.getItemB2().getName();
-        this.itemB3=cr.getItemB3().getName();
-        this.itemC1=cr.getItemC1().getName();
-        this.itemC2=cr.getItemC2().getName();
-        this.itemC3=cr.getItemC3().getName();
-        this.itemD1=cr.getItemD1().getName();
-        this.itemD2=cr.getItemD2().getName();
+//        this.itemB1=cr.getItemB1().getName();
+        this.itemB1= String.valueOf(TestData.hi.get(cr.getItemB1()).get("name"));
+        this.itemB2= String.valueOf(TestData.hi.get(cr.getItemB2()).get("name"));
+        this.itemB3= String.valueOf(TestData.hi.get(cr.getItemB3()).get("name"));
+        this.itemC1= String.valueOf(TestData.hi.get(cr.getItemC1()).get("name"));
+        this.itemC2= String.valueOf(TestData.hi.get(cr.getItemC2()).get("name"));
+        this.itemC3= String.valueOf(TestData.hi.get(cr.getItemC3()).get("name"));
+        this.itemD1= String.valueOf(TestData.hi.get(cr.getItemD1()).get("name"));
+        this.itemD2= String.valueOf(TestData.hi.get(cr.getItemD2()).get("name"));
     }
 
 }

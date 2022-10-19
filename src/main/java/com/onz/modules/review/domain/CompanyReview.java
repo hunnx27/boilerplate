@@ -1,11 +1,13 @@
 package com.onz.modules.review.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.onz.OnzApplication;
 import com.onz.common.domain.BaseEntity;
 import com.onz.common.web.dto.response.enums.State;
 import com.onz.common.web.dto.response.enums.YN;
 import com.onz.common.util.dto.AttachDto;
 import com.onz.modules.account.domain.Account;
+import com.onz.modules.common.code.application.TestData;
 import com.onz.modules.review.domain.dto.ReviewAllDto;
 import com.onz.modules.review.domain.embed.Images;
 import com.onz.modules.review.domain.enums.ItemCode;
@@ -21,6 +23,7 @@ import org.hibernate.annotations.DynamicInsert;
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.List;
+
 
 @Getter
 @Setter
@@ -54,31 +57,31 @@ public class CompanyReview extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private YN workExpOpenYn;
     @Column(name = "item_B1")
-    @Enumerated(EnumType.STRING)
-    private ItemCode itemB1;
+//    @Enumerated(EnumType.STRING)
+    private String itemB1;
     @Column(name = "item_B2")
-    @Enumerated(EnumType.STRING)
-    private ItemCode itemB2;
+//    @Enumerated(EnumType.STRING)
+    private String itemB2;
     @Column(name = "item_B3")
-    @Enumerated(EnumType.STRING)
-    private ItemCode itemB3;
+//    @Enumerated(EnumType.STRING)
+    private String itemB3;
     @Column(name = "item_C1")
-    @Enumerated(EnumType.STRING)
-    private ItemCode itemC1;
+//    @Enumerated(EnumType.STRING)
+    private String itemC1;
     @Column(name = "item_C2")
-    @Enumerated(EnumType.STRING)
-    private ItemCode itemC2;
+//    @Enumerated(EnumType.STRING)
+    private String itemC2;
     @Column(name = "item_C3")
-    @Enumerated(EnumType.STRING)
-    private ItemCode itemC3;
+//    @Enumerated(EnumType.STRING)
+    private String itemC3;
     @Column(name = "item_D1")
-    @Enumerated(EnumType.STRING)
-    private ItemCode itemD1;
+//    @Enumerated(EnumType.STRING)
+    private String itemD1;
     @Column(name = "item_D2")
-    @Enumerated(EnumType.STRING)
-    private ItemCode itemD2;
-    @Enumerated(EnumType.STRING)
-    private ItemCode likeCode;
+//    @Enumerated(EnumType.STRING)
+    private String itemD2;
+//    @Enumerated(EnumType.STRING)
+    private String likeCode;
 
     private String apprTxt;
     @ColumnDefault("'W'")
@@ -179,11 +182,15 @@ public class CompanyReview extends BaseEntity {
      * @return
      */
     public int getJumsuWorkload(){
-        int jumsu = (this.itemB1.getScore() + this.itemB2.getScore() + this.itemB3.getScore()) / 3;
+        int itemB1Score = TestData.hi.get(this.itemB1).get("score")!=null? Integer.parseInt(String.valueOf(TestData.hi.get(this.itemB1).get("score"))) : 0;
+        int itemB2Score = TestData.hi.get(this.itemB2).get("score")!=null? Integer.parseInt(String.valueOf(TestData.hi.get(this.itemB2).get("score"))) : 0;
+        int itemB3Score = TestData.hi.get(this.itemB3).get("score")!=null? Integer.parseInt(String.valueOf(TestData.hi.get(this.itemB3).get("score"))) : 0;
+        int jumsu = (itemB1Score  + itemB2Score + itemB3Score) / 3;
         return jumsu;
     }
     public int getJumsuLikeload(){
-        int likejumsu = (this.likeCode.getScore());
+        int likeCodeScore = TestData.hi.get(this.likeCode).get("score")!=null? Integer.parseInt(String.valueOf(TestData.hi.get(this.likeCode).get("score"))):0;
+        int likejumsu = likeCodeScore;
         return likejumsu;
     }
     /**
@@ -200,7 +207,10 @@ public class CompanyReview extends BaseEntity {
      * @return
      */
     public int getJumsuJobSatisfaction(){
-        int jumsu = (this.itemC1.getScore() + this.itemC2.getScore() + this.itemC3.getScore()) / 3;
+        int itemC1Score = TestData.hi.get(this.itemC1).get("score")!=null? Integer.parseInt(String.valueOf(TestData.hi.get(this.itemC1).get("score"))) : 0;
+        int itemC2Score = TestData.hi.get(this.itemC2).get("score")!=null? Integer.parseInt(String.valueOf(TestData.hi.get(this.itemC2).get("score"))) : 0;
+        int itemC3Score = TestData.hi.get(this.itemC3).get("score")!=null? Integer.parseInt(String.valueOf(TestData.hi.get(this.itemC3).get("score"))) : 0;
+        int jumsu = (itemC1Score+itemC2Score+itemC3Score) / 3;
         return jumsu;
     }
     /**
@@ -217,7 +227,9 @@ public class CompanyReview extends BaseEntity {
      * @return
      */
     public int getJumsuWorkAtmosphere(){
-        int jumsu = (this.itemD1.getScore() + this.itemD2.getScore()) / 2;
+        int itemD1Score = TestData.hi.get(this.itemD1).get("score")!=null? Integer.parseInt(String.valueOf(TestData.hi.get(this.itemD1).get("score"))) : 0;
+        int itemD2Score = TestData.hi.get(this.itemD2).get("score")!=null? Integer.parseInt(String.valueOf(TestData.hi.get(this.itemD2).get("score"))) : 0;
+        int jumsu = (itemD1Score+itemD2Score) / 2;
         return jumsu;
     }
     /**

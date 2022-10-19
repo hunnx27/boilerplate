@@ -3,6 +3,7 @@ package com.onz.modules.review.domain.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@Deprecated
 @Getter
 @AllArgsConstructor
 public enum ItemCode {

@@ -6,6 +6,7 @@ import com.onz.modules.review.web.dto.FindEstaRequestDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import javax.persistence.EntityManager;
@@ -160,7 +161,7 @@ public class ReviewRepositoryExtensionImpl extends QuerydslRepositorySupport imp
         }
         query3 += where3;
 
-        String query = query1 + " UNION ALL " + query2 + " UNION ALL " + query3;
+        String query = query1 + " UNION ALL " + query2 + " UNION ALL " + query3 + " ORDER BY createdAt DESC ";
 //        String query = query1;
         Query nativequery = em
                 .createNativeQuery(query, "reviewUnion");
@@ -168,7 +169,6 @@ public class ReviewRepositoryExtensionImpl extends QuerydslRepositorySupport imp
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             nativequery.setParameter(entry.getKey(), entry.getValue());
         }
-
         List<ReviewAllDto> resultList = nativequery.getResultList();
 //        resultList.stream().map(res -> {
 //            if (res.getZonecode() != null) {

@@ -25,7 +25,8 @@ public class InterviewListResponseDto extends ReviewCommonResponseDto {
         this.itemTest1 = interviewReview.getItem_1()!=null? "O" : "X";
         this.itemTest2 = interviewReview.getItem_2()!=null&&"Y".equals(interviewReview.getItem_2().name())? "O" : "X";
         this.itemTest3 = interviewReview.getItem_3()!=null&&"Y".equals(interviewReview.getItem_3().name())? "O" : "X";
-        switch(interviewReview.getItem_5()!=null?interviewReview.getItem_5():"999"){
+        String test = String.valueOf(interviewReview.getItem_5().charAt(3));
+        switch(interviewReview.getItem_5()!=null?test:"9"){
             case "1": this.itemMood = "여유";break;
             case "2": this.itemMood = "편안";break;
             case "3": this.itemMood = "긴장";break;

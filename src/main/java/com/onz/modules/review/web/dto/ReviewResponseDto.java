@@ -1,7 +1,9 @@
 package com.onz.modules.review.web.dto;
 
+import com.onz.OnzApplication;
 import com.onz.common.web.dto.response.enums.State;
 import com.onz.common.web.dto.response.enums.YN;
+import com.onz.modules.common.code.application.TestData;
 import com.onz.modules.review.domain.dto.ReviewAllDto;
 import com.onz.modules.company.domain.enums.EstablishmentType;
 import com.onz.modules.review.domain.CompanyReview;
@@ -11,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.EnumSet;
+
 
 
 @Getter
@@ -91,11 +94,22 @@ public class ReviewResponseDto extends ReviewCommonResponseDto{
         this.itemTest1 = reviewAll.getItem_1()!=null? "O" : "X";
         this.itemTest2 = reviewAll.getItem_2()!=null&&"Y".equals(reviewAll.getItem_2())? "O" : "X";
         this.itemTest3 = reviewAll.getItem_3()!=null&&"Y".equals(reviewAll.getItem_3())? "O" : "X";
-        switch(reviewAll.getItem_5()!=null?reviewAll.getItem_5():"999"){
-            case "1": this.itemMood = "여유";break;
-            case "2": this.itemMood = "편안";break;
-            case "3": this.itemMood = "긴장";break;
-            default: this.itemMood = "-";break;
+        if(reviewAll.getItem_5()!=null) {
+            String test = String.valueOf(reviewAll.getItem_5().charAt(3));
+            switch (test) {
+                case "1":
+                    this.itemMood = "여유";
+                    break;
+                case "2":
+                    this.itemMood = "편안";
+                    break;
+                case "3":
+                    this.itemMood = "긴장";
+                    break;
+                default:
+                    this.itemMood = "-";
+                    break;
+            }
         }
         this.q_1=reviewAll.getTopQ1();
         this.companyId = reviewAll.getCompanyId();
@@ -141,15 +155,16 @@ public class ReviewResponseDto extends ReviewCommonResponseDto{
         this.image3 = reviewAll.getImage3();
         this.image4 = reviewAll.getImage4();
         this.image5 = reviewAll.getImage5();
-        this.item_b1 = reviewAll.getItemB1()!=null? reviewAll.getItemB1().name() : null;
-        this.item_b2 = reviewAll.getItemB2()!=null? reviewAll.getItemB2().name() : null;
-        this.item_b3 = reviewAll.getItemB3()!=null? reviewAll.getItemB3().name() : null;
-        this.item_c1 = reviewAll.getItemC1()!=null? reviewAll.getItemC1().name() : null;
-        this.item_c2 = reviewAll.getItemC2()!=null? reviewAll.getItemC2().name() : null;
-        this.item_c3 = reviewAll.getItemC3()!=null? reviewAll.getItemC3().name() : null;
-        this.item_d1 = reviewAll.getItemD1()!=null? reviewAll.getItemD1().name() : null;
-        this.item_d2 = reviewAll.getItemD2()!=null? reviewAll.getItemD2().name() : null;
-        this.likeCode = reviewAll.getLikeCode()!=null? reviewAll.getLikeCode().name() : null;
+//        this.item_b1 = reviewAll.getItemB1()!=null? reviewAll.getItemB1().name() : null;
+        this.item_b1 = reviewAll.getItemB1()!=null ? String.valueOf(TestData.hi.get(reviewAll.getItemB1()).get("name")) : null;
+        this.item_b2 = reviewAll.getItemB2()!=null? String.valueOf(TestData.hi.get(reviewAll.getItemB2()).get("name")) : null;
+        this.item_b3 = reviewAll.getItemB3()!=null? String.valueOf(TestData.hi.get(reviewAll.getItemB3()).get("name")) : null;
+        this.item_c1 = reviewAll.getItemC1()!=null? String.valueOf(TestData.hi.get(reviewAll.getItemC1()).get("name")) : null;
+        this.item_c2 = reviewAll.getItemC2()!=null? String.valueOf(TestData.hi.get(reviewAll.getItemC2()).get("name")) : null;
+        this.item_c3 = reviewAll.getItemC3()!=null? String.valueOf(TestData.hi.get(reviewAll.getItemC3()).get("name")) : null;
+        this.item_d1 = reviewAll.getItemD1()!=null? String.valueOf(TestData.hi.get(reviewAll.getItemD1()).get("name")) : null;
+        this.item_d2 = reviewAll.getItemD2()!=null? String.valueOf(TestData.hi.get(reviewAll.getItemD2()).get("name")) : null;
+        this.likeCode = reviewAll.getLikeCode()!=null? String.valueOf(TestData.hi.get(reviewAll.getLikeCode()).get("name")) : null;
 //        this.impCost = reviewAll.getImpCost();
 //        this.workCost = reviewAll.getWorkCost();
 //        this.addCost = reviewAll.getAddCost();
