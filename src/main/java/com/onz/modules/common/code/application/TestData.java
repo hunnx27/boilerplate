@@ -1,5 +1,6 @@
 package com.onz.modules.common.code.application;
 
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.common.code.domain.CommonCode;
 import com.onz.modules.common.code.infra.CommonJRepository;
 import com.onz.modules.common.code.infra.CommonRepository;
@@ -28,13 +29,15 @@ public class TestData {
 
         commonCode.stream().map(res->{
 //            if(res.getCodeSebu().charAt(0) == 'A'){
-                Map<String,Object>itemMap = new HashMap<>();
-                itemMap.put("name",res.getCodeName());
-                itemMap.put("score",20*Integer.parseInt(String.valueOf(res.getCodeSebu().charAt(6))));
-                String temp = res.getCodeSebu().substring(0,5);
-                String result = temp.replaceAll("@","");
-                hi.put(result, itemMap);
+            if(res.getUseYn()!=null && res.getUseYn().equals(YN.Y)) {
+                    Map<String, Object> itemMap = new HashMap<>();
+                    itemMap.put("name", res.getCodeName());
+                    itemMap.put("score", 20 * Integer.parseInt(String.valueOf(res.getCodeSebu().charAt(6))));
+                    String temp = res.getCodeSebu().substring(0, 5);
+                    String result = temp.replaceAll("@", "");
+                    hi.put(result, itemMap);
 //            }
+            }
 //            commonCodeSerivce.save(res);
             return null;
         }).collect(Collectors.toList());
