@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface CommonJRepository extends JpaRepository<CommonCode, Long> {
     List<CommonCode> findAllByCode(String code);
+    List<CommonCode> findAllByOrderByCodeSebuAsc();
 }

@@ -231,7 +231,7 @@ public class CompaniesService {
                     .account(account)
                     .userId(me.getUserId())
                     .state(State.W)
-                    .adminTxt(null)
+                    .apprTxt(null)
                     .fixText(companiesFixCreateRequestDto.getFixText())
                     .build();
             return companiesRepository.save(companies);
@@ -243,8 +243,8 @@ public class CompaniesService {
         Companies companies = companiesRepository.findById(id).orElse(null);
         if(companies!=null){
                 companies.setState(companiesFixUpdateRequestDto.getState());
-                companies.setAdminId(me.getUserId());
-                companies.setAdminTxt(companiesFixUpdateRequestDto.getAdminTxt());
+                companies.setApprId(me.getUserId());
+                companies.setApprTxt(companiesFixUpdateRequestDto.getAdminTxt());
                 companiesRepository.save(companies);
         }
 //        Company company = companyRepository.findById(id).orElseThrow();

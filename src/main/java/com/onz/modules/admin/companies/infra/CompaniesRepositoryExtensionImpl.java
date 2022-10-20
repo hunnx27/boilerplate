@@ -380,9 +380,9 @@ public class CompaniesRepositoryExtensionImpl extends QuerydslRepositorySupport 
                                 company.establishmentType,
                                 company.officeName,
                                 company.zonecode,
-                                companies.adminId,
+                                companies.apprId,
                                 companies.state,
-                                companies.adminTxt
+                                companies.apprTxt
                         )
                 )
                 .where(where);

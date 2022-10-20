@@ -30,14 +30,14 @@ public interface ReviewMRepository extends JpaRepository<Company, Long>, ReviewM
             "NULL AS item_5 , " +
             "NULL AS item_6 , " +
             "NULL AS topQ1 , " +
-            "NULL AS txtAdmin , " +
+            "NULL AS txt_admin , " +
             "cr.work_exp AS workExp , " +
             "c.zonecode AS zonecode , " +
             "NULL AS amt , " +
             "NULL AS amtOld , " +
-            "NULL AS apprDt , " +
-            "NULL AS apprId , " +
-            "NULL AS apprTxt , " +
+            "cr.appr_dt AS apprDt , " +
+            "cr.appr_id AS apprId , " +
+            "cr.appr_txt AS apprTxt , " +
             "NULL AS endAtmYn , " +
             "NULL AS etcAmt , " +
             "NULL AS etcItems , " +
@@ -89,9 +89,9 @@ public interface ReviewMRepository extends JpaRepository<Company, Long>, ReviewM
                     "c.zonecode AS zonecode , " +
                     "NULL AS amt , " +
                     "NULL AS amt_old , " +
-                    "NULL AS appr_dt , " +
-                    "NULL AS appr_id , " +
-                    "NULL AS appr_txt , " +
+                    "ir.appr_dt AS appr_dt , " +
+                    "ir.appr_id AS appr_id , " +
+                    "ir.appr_txt AS appr_txt , " +
                     "NULL AS end_atm_yn , " +
                     "NULL AS etc_amt , " +
                     "NULL AS etc_items , " +

@@ -33,10 +33,10 @@ public class Companies {
     //company에서 받아오기
 
     //처리현황 adminid는 account에서 받아오기
-    private String adminId;
+    private String apprId;
     @Enumerated(EnumType.STRING)
     private State state;
-    private String adminTxt;
+    private String apprTxt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "accountId")
@@ -46,12 +46,12 @@ public class Companies {
     private Company company;
 
     @Builder
-    public Companies(Long id, String fixText, String adminId, State state, String adminTxt, Account account, Company company,String userId) {
+    public Companies(Long id, String fixText, String apprId, State state, String apprTxt, Account account, Company company,String userId) {
         this.id = id;
         this.fixText = fixText;
-        this.adminId = adminId;
+        this.apprId = apprId;
         this.state = state;
-        this.adminTxt = adminTxt;
+        this.apprTxt = apprTxt;
         this.account = account;
         this.company = company;
         this.userId=userId;
@@ -61,8 +61,8 @@ public class Companies {
         this.id = companies.getId();
         this.requestEdt = companies.getRequestEdt();
         this.fixText = companies.getFixText();
-        this.adminId = companies.getAdminId();
-        this.adminTxt = companies.getAdminTxt();
+        this.apprId = companies.getApprId();
+        this.apprTxt = companies.getApprTxt();
         this.account = companies.getAccount();
         this.company = companies.getCompany();
     }

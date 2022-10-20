@@ -23,7 +23,7 @@ public class CompaniesFixDetailResponseDto {
     private String officeName;
     private String zonecode;
     //처리현황
-    private String adminId;
+    private String apprId;
     private State state;
-    private String adminTxt;
+    private String apprTxt;
 }

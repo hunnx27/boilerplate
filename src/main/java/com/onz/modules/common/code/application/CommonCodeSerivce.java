@@ -54,20 +54,20 @@ public class CommonCodeSerivce {
     }
 
     public List<CommonCodeInitResponseDto> allCommonCode() {
-        List<CommonCode> commonCode = commonJRepository.findAll();
+        List<CommonCode> commonCode = commonJRepository.findAllByOrderByCodeSebuAsc();
         List<CommonCodeInitResponseDto> response = commonCode.stream().map(res -> {
             CommonCodeInitResponseDto commonCodeInitResponseDto = new CommonCodeInitResponseDto();
             String temp = res.getCodeSebu().replaceAll("@", "").substring(0, 4);
             if (res.getCodeSebu().charAt(6) != '0') {
-                commonCodeInitResponseDto.setFiveScore(res.getCodeSebu() != null ? Integer.parseInt(String.valueOf(TestData.hi.get(temp).get("score"))) : 0); //5점환산
+                commonCodeInitResponseDto.setFiveScore(res.getCodeSebu() != null ? Integer.parseInt(String.valueOf(res.getCodeSebu().charAt(6))) * 20 : 0); //5점환산
                 commonCodeInitResponseDto.setScore(res.getCodeSebu() != null ? Integer.parseInt(String.valueOf(res.getCodeSebu().charAt(6))) : 0);//100점 환산
                 commonCodeInitResponseDto.setCodeName(String.valueOf(TestData.hi.get(temp).get("name")));
                 commonCodeInitResponseDto.setCodeSebu(temp);
             } else {
-                commonCodeInitResponseDto.setGubn(String.valueOf(TestData.hi.get(temp).get("name"))); // FIXME
-                commonCodeInitResponseDto.setSebuCode(String.valueOf(TestData.hi.get(temp).get("name")));
-                commonCodeInitResponseDto.setScore(Integer.parseInt(String.valueOf(TestData.hi.get(temp).get("score"))));
-                commonCodeInitResponseDto.setFiveScore(Integer.parseInt(String.valueOf(TestData.hi.get(temp).get("score"))));
+                commonCodeInitResponseDto.setGubn(res.getCodeName()); // FIXME
+                commonCodeInitResponseDto.setSebuCode(res.getCodeName());
+                commonCodeInitResponseDto.setScore(Integer.parseInt(String.valueOf(res.getCodeSebu().charAt(6))));
+                commonCodeInitResponseDto.setFiveScore(Integer.parseInt(String.valueOf(res.getCodeSebu().charAt(6))));
                 commonCodeInitResponseDto.setCodeSebu(temp);
             }
             return commonCodeInitResponseDto;

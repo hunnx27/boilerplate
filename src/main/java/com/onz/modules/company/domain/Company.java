@@ -46,9 +46,9 @@ import java.util.List;
                         @ColumnResult(name = "zonecode", type = String.class),
                         @ColumnResult(name = "amt", type = Long.class),
 //                        @ColumnResult(name = "amtOld",type = Long.class),
-//                        @ColumnResult(name = "apprId",type = String.class),
-//                        @ColumnResult(name = "apprTxt",type = String.class),
-//                        @ColumnResult(name = "endAtmYn",type= String.class),
+                        @ColumnResult(name = "apprId",type = String.class),
+                        @ColumnResult(name = "apprTxt",type = String.class),
+                        @ColumnResult(name = "endAtmYn",type= String.class),
                         @ColumnResult(name = "etcAmt", type = String.class),
                         @ColumnResult(name = "etcItems", type = String.class),
 //                        @ColumnResult(name = "etcYn",type= YN.class),
@@ -85,7 +85,10 @@ import java.util.List;
                         @ColumnResult(name = "companyName", type = String.class),
                         @ColumnResult(name = "userId", type = String.class),
                         @ColumnResult(name = "createdAt", type = String.class),
-                        @ColumnResult(name = "zonecode", type = String.class)
+                        @ColumnResult(name = "apprDt", type = String.class),
+                        @ColumnResult(name = "zonecode", type = String.class),
+                        @ColumnResult(name = "apprId", type = String.class),
+                        @ColumnResult(name = "apprTxt", type = String.class)
                 })
 )
 

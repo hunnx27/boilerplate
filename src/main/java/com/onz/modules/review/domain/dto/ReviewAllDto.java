@@ -52,6 +52,7 @@ public class ReviewAllDto {
     private Long amtOld;
     private String apprId;
     private String apprTxt;
+    private String apprDt;
     private String ectAmt;
     private YN endAtmYn;
     private YN etcYn;
@@ -69,7 +70,7 @@ public class ReviewAllDto {
                         String txt,
                         String item_1, String item_2, String item_3, String item_4, String item_5,String item_6,
                         String topQ1, String txtAdmin, Long workExp, String zonecode,
-                        Long amt, String etcAmt,String etcItems, String mapsidogunguName,
+                        Long amt,String apprId,String apprTxt,String apprDt, String etcAmt,String etcItems, String mapsidogunguName,
                         String image1, String image2, String image3, String image4, String image5,
                         String itemB1, String itemB2, String itemB3, String itemC1, String itemC2, String itemC3, String itemD1, String itemD2, String likeCode
     ) {
@@ -96,9 +97,10 @@ public class ReviewAllDto {
         this.zonecode = zonecode;
         this.amt = amt;
 //        this.amtOld = amtOld;
-//        this.apprId = apprId;
-//        this.apprTxt = apprTxt;
-//        this.endAtmYn = endAtmYn!=null? YN.valueOf(String.valueOf(endAtmYn)):YN.Y;;
+        this.apprId = apprId;
+        this.apprTxt = apprTxt;
+        this.apprDt=apprDt;
+        this.endAtmYn = endAtmYn!=null? YN.valueOf(String.valueOf(endAtmYn)):YN.Y;;
         this.etcAmt = etcAmt;
         this.etcItems = etcItems;
 //        this.etcYn = etcYn!=null? YN.valueOf(etcYn):YN.Y;;
