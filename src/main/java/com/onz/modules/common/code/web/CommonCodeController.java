@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +38,19 @@ public class CommonCodeController {
         try {
             commonCodeSerivce.create(commonCodeInitRequestDto);
             ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    @Operation(summary = "전체 공통 코드 보기", description = "어드민메뉴의 공통코드를 읽어옵니다")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "메뉴전체읽기성공", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
+    })
+    @GetMapping("/admin/common")
+    public ResponseEntity<ApiR<?>> allCommonCode() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(commonCodeSerivce.allCommonCode()));
         } catch (Exception e) {
             throw e;
         }
