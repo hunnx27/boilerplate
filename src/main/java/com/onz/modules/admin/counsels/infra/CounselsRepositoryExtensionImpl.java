@@ -95,8 +95,51 @@ public class CounselsRepositoryExtensionImpl extends QuerydslRepositorySupport i
         }
         return where;
     }
+    private BooleanBuilder getWhere2(CounselsRequestDto counselsRequestDto,
+                                    QCounsel counsel) {
+
+        BooleanBuilder where = new BooleanBuilder();
+        where.and(counsel.qnaGubn.eq(QnaGubn.A));
+        if (counselsRequestDto.getInterestCompany() == null) {
+            //gubun은 이넘으로 all을 받기 떄문에 처리 ㄴㄴ -> 해야할듯
+        } else {
+            where.and(counsel.interestCompany.eq(InterestCompany.valueOf(counselsRequestDto.getInterestCompany())));
+        }
+        if (counselsRequestDto.getCreateAdt() != null) {
+            if (counselsRequestDto.getCreateBdt() != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//                String ccc = String.format(account.createdAt.toString(), "yyyy-MM-dd");
+                ZonedDateTime aaa = ZonedDateTime.of(LocalDateTime.parse(counselsRequestDto.getCreateAdt() + " 00:00:00", formatter), ZoneId.of("Asia/Seoul"));
+                ZonedDateTime bbb = ZonedDateTime.of(LocalDateTime.parse(counselsRequestDto.getCreateBdt() + " 23:59:59", formatter), ZoneId.of("Asia/Seoul"));
+                where.and(counsel.createdAt.between(
+                        Expressions.dateTemplate(ZonedDateTime.class, "{0}", aaa),
+                        Expressions.dateTemplate(ZonedDateTime.class, "{0}", bbb)
+                ));
+            }
+        }
+        if (counselsRequestDto.getCounselState() != null) {
+            switch (counselsRequestDto.getCounselState()) {
+                case "A":
+                    where.and(counsel.counselState.eq(CounselState.A));
+                    break;
+                case "R":
+                    where.and(counsel.counselState.eq(CounselState.R));
+                    break;
+                case "X":
+                    where.and(counsel.qnaGubn.eq(QnaGubn.A).and(counsel.parentCounsel.id.eq(counsel.id)));
+                    break;
+                case "all":
+                default:
+                    break;
+            }
+        }
+        if (counselsRequestDto.getTxt() != null) {
+            where.and(counsel.txt.contains(counselsRequestDto.getTxt()));
+        }
+        return where;
+    }
     @Override
-    public List<CounselsResponseDto> findcounselsItemSearch(CounselsRequestDto counselsRequestDto, Pageable pageable,String qnaItem) {
+    public List<CounselsResponseDto> findcounselsItemSearchQ(CounselsRequestDto counselsRequestDto, Pageable pageable,String qnaItem) {
         BooleanBuilder where = this.getWhere(counselsRequestDto, counsel);
         where.and(counsel.qnaItem.eq(QnaItem.valueOf(qnaItem)));
         QCounsel counsel2 = new QCounsel("counsel2");
@@ -126,7 +169,7 @@ public class CounselsRepositoryExtensionImpl extends QuerydslRepositorySupport i
         return findLiveMemberListResults;
     }
     @Override
-    public List<CounselsResponseDto> findcounselsSearch(CounselsRequestDto counselsRequestDto, Pageable pageable) {
+    public List<CounselsResponseDto> findcounselsSearchQ(CounselsRequestDto counselsRequestDto, Pageable pageable) {
         BooleanBuilder where = this.getWhere(counselsRequestDto, counsel);
         QCounsel counsel2 = new QCounsel("counsel2");
         JPQLQuery<CounselsResponseDto> result = from(counsel).select(
@@ -158,7 +201,7 @@ public class CounselsRepositoryExtensionImpl extends QuerydslRepositorySupport i
     public CountEvent findcount(CounselsRequestDto counselsRequestDto) {
         // Q클래스 정의
         QCounsel counsel = QCounsel.counsel;
-        BooleanBuilder where = this.getWhere(counselsRequestDto, counsel);
+        BooleanBuilder where = this.getWhere2(counselsRequestDto, counsel);
         // 쿼리 생성(집계)
         return qf.select(
                 Projections.constructor(CountEvent.class,
@@ -233,6 +276,64 @@ public class CounselsRepositoryExtensionImpl extends QuerydslRepositorySupport i
         ).where(counsel.parentCounsel.id.eq(answerId));
         QueryResults<CounselAnswerListResponseDto> findLiveMemberResults = result.fetchResults();
         List<CounselAnswerListResponseDto> findLiveMemberListResults = findLiveMemberResults.getResults();
+        return findLiveMemberListResults;
+    }
+
+    @Override
+    public List<CounselsAresponseDto> findcounselsSearchA(CounselsRequestDto counselsRequestDto, Pageable pageable) {
+        BooleanBuilder where = this.getWhere2(counselsRequestDto, counsel);
+        QCounsel counsel2 = new QCounsel("counsel2");
+        JPQLQuery<CounselsAresponseDto> result = from(counsel).select(
+                        Projections.fields(CounselsAresponseDto.class,
+                                counsel.gubn,
+                                counsel.qnaItem,
+                                counsel.txt,
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .select(counsel.parentCounsel.txt)
+                                                .from(counsel2)
+                                                .where(counsel2.id.eq(counsel.id))
+                                        , "txtA"),
+                                counsel.counselState,
+                                counsel.account.userId,
+                                counsel.shortOpenYn,
+                                counsel.createdAt,
+                                counsel.isDelete
+                        )
+                )
+                .where(where);
+        JPQLQuery<CounselsAresponseDto> query = getQuerydsl().applyPagination(pageable, result);
+        QueryResults<CounselsAresponseDto> findLiveMemberResults = query.fetchResults();
+        List<CounselsAresponseDto> findLiveMemberListResults = findLiveMemberResults.getResults();
+        return findLiveMemberListResults;
+    }
+    @Override
+    public List<CounselsAresponseDto> findcounselsItemSearchA(CounselsRequestDto counselsRequestDto, Pageable pageable,String qnaItem) {
+        BooleanBuilder where = this.getWhere2(counselsRequestDto, counsel);
+        QCounsel counsel2 = new QCounsel("counsel2");
+        where.and(counsel.qnaItem.eq(QnaItem.valueOf(qnaItem)));
+        JPQLQuery<CounselsAresponseDto> result = from(counsel).select(
+                        Projections.fields(CounselsAresponseDto.class,
+                                counsel.gubn,
+                                counsel.qnaItem,
+                                counsel.txt,
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .select(counsel.parentCounsel.txt)
+                                                .from(counsel2)
+                                                .where(counsel2.id.eq(counsel.id))
+                                        , "txtA"),
+                                counsel.counselState,
+                                counsel.account.userId,
+                                counsel.shortOpenYn,
+                                counsel.createdAt,
+                                counsel.isDelete
+                        )
+                )
+                .where(where);
+        JPQLQuery<CounselsAresponseDto> query = getQuerydsl().applyPagination(pageable, result);
+        QueryResults<CounselsAresponseDto> findLiveMemberResults = query.fetchResults();
+        List<CounselsAresponseDto> findLiveMemberListResults = findLiveMemberResults.getResults();
         return findLiveMemberListResults;
     }
 }

@@ -27,17 +27,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class CounselsController {
 
     private final CounselsService counselsService;
-    private final CounselsRepository counselsRepository;
 
     @Operation(summary = "상담 검색  ", description = "상담 검색 입니다...")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
     })
-    @GetMapping("/admin/counsels")
-    public ResponseEntity<ApiR<?>> counselsSearch(CounselsRequestDto counselsRequestDto,Pageable pageable) {
+    @GetMapping("/admin/counsels/q")
+    public ResponseEntity<ApiR<?>> counselsSearchQ(CounselsRequestDto counselsRequestDto,Pageable pageable) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(counselsService.counselsSearch(counselsRequestDto,pageable)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(counselsService.counselsSearchQ(counselsRequestDto,pageable)));
         } catch (CustomException e) {
             throw e;
         }
@@ -47,10 +46,10 @@ public class CounselsController {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
     })
-    @GetMapping("/admin/counsels/item")
-    public ResponseEntity<ApiR<?>> counselsItem(CounselsRequestDto counselsRequestDto,String qnaItem,Pageable pageable) {
+    @GetMapping("/admin/counsels/q/item")
+    public ResponseEntity<ApiR<?>> counselsQItem(CounselsRequestDto counselsRequestDto,String qnaItem,Pageable pageable) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(counselsService.counselsItem(counselsRequestDto,qnaItem,pageable)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(counselsService.counselsQItem(counselsRequestDto,qnaItem,pageable)));
         } catch (CustomException e) {
             throw e;
         }
@@ -60,10 +59,50 @@ public class CounselsController {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
     })
-    @GetMapping("/admin/counsels/{id}")
-    public ResponseEntity<ApiR<?>> counselItem(@PathVariable Long id) {
+    @GetMapping("/admin/counsels/q/{id}")
+    public ResponseEntity<ApiR<?>> counselQItem(@PathVariable Long id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(counselsService.counselItem(id)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(counselsService.counselQItem(id)));
+        } catch (CustomException e) {
+            throw e;
+        }
+    }
+
+    @Operation(summary = "답변 리스트 검색  ", description = "상담 답변 검색 입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
+    })
+    @GetMapping("/admin/counsels/a")
+    public ResponseEntity<ApiR<?>> counselsSearchA(CounselsRequestDto counselsRequestDto,Pageable pageable) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(counselsService.counselsSearchA(counselsRequestDto,pageable)));
+        } catch (CustomException e) {
+            throw e;
+        }
+    }
+    @Operation(summary = "상담답변 카테고리로 검색  ", description = "상담 검색 입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
+    })
+    @GetMapping("/admin/counsels/a/item")
+    public ResponseEntity<ApiR<?>> counselsAItem(CounselsRequestDto counselsRequestDto,String qnaItem,Pageable pageable) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(counselsService.counselsAItem(counselsRequestDto,qnaItem,pageable)));
+        } catch (CustomException e) {
+            throw e;
+        }
+    }
+    @Operation(summary = "상담답변 디테일  ", description = "상담 검색 입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
+    })
+    @GetMapping("/admin/counsels/a/{id}")
+    public ResponseEntity<ApiR<?>> counselAItem(@PathVariable Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(counselsService.counselAItem(id)));
         } catch (CustomException e) {
             throw e;
         }
