@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -41,7 +42,7 @@ public class CounselsController {
             throw e;
         }
     }
-    @Operation(summary = "상담 아이템 디테일  ", description = "상담 검색 입니다...")
+    @Operation(summary = "상담 카테고리로 검색  ", description = "상담 검색 입니다...")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
@@ -50,6 +51,19 @@ public class CounselsController {
     public ResponseEntity<ApiR<?>> counselsItem(CounselsRequestDto counselsRequestDto,String qnaItem,Pageable pageable) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(counselsService.counselsItem(counselsRequestDto,qnaItem,pageable)));
+        } catch (CustomException e) {
+            throw e;
+        }
+    }
+    @Operation(summary = "상담 디테일  ", description = "상담 검색 입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
+    })
+    @GetMapping("/admin/counsels/{id}")
+    public ResponseEntity<ApiR<?>> counselItem(@PathVariable Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(counselsService.counselItem(id)));
         } catch (CustomException e) {
             throw e;
         }

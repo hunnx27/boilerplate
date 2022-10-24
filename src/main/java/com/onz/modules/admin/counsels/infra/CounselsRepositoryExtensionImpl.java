@@ -2,13 +2,14 @@ package com.onz.modules.admin.counsels.infra;
 
 import com.onz.common.web.dto.response.enums.Gubn;
 import com.onz.common.web.dto.response.enums.InterestCompany;
+import com.onz.common.web.dto.response.enums.State;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.QAccount;
-import com.onz.modules.admin.counsels.web.dto.CounselsRequestDto;
-import com.onz.modules.admin.counsels.web.dto.CounselsResponseDto;
-import com.onz.modules.admin.counsels.web.dto.CountEvent;
+import com.onz.modules.admin.counsels.web.dto.*;
+import com.onz.modules.admin.member.livemember.web.dto.LiveMemberDetailResponse;
 import com.onz.modules.admin.member.livemember.web.dto.LiveMemberRequestDto;
 import com.onz.modules.admin.member.livemember.web.dto.LiveMemberResponseDto;
+import com.onz.modules.company.domain.Company;
 import com.onz.modules.counsel.domain.QCounsel;
 import com.onz.modules.counsel.domain.enums.CounselState;
 import com.onz.modules.counsel.domain.enums.QnaGubn;
@@ -35,6 +36,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static com.onz.modules.company.domain.QCompany.company;
 import static java.lang.String.valueOf;
 
 public class CounselsRepositoryExtensionImpl extends QuerydslRepositorySupport implements
@@ -214,6 +216,23 @@ public class CounselsRepositoryExtensionImpl extends QuerydslRepositorySupport i
                                 .then(1)
                                 .otherwise(0).sum().as("QI06")
                 )).from(counsel).where(where).fetchOne();
+    }
+    public List<CounselAnswerListResponseDto> findByAnswer(Long answerId){
+        QCounsel counsel = QCounsel.counsel;
+        // 쿼리 생성(집계)
 
+//                counsel.parentCounsel.counselState).from(counsel).where(counsel.parentCounsel.id.eq(id)).fetchOne();
+        JPQLQuery<CounselAnswerListResponseDto> result = from(counsel).select(
+                Projections.fields(CounselAnswerListResponseDto.class,
+                        counsel.parentCounsel.txt,
+                        counsel.parentCounsel.images,
+                        counsel.parentCounsel.account.userId,
+                        counsel.parentCounsel.createdAt,
+                        counsel.parentCounsel.counselState
+                )
+        ).where(counsel.parentCounsel.id.eq(answerId));
+        QueryResults<CounselAnswerListResponseDto> findLiveMemberResults = result.fetchResults();
+        List<CounselAnswerListResponseDto> findLiveMemberListResults = findLiveMemberResults.getResults();
+        return findLiveMemberListResults;
     }
 }

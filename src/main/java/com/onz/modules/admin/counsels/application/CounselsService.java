@@ -2,10 +2,9 @@ package com.onz.modules.admin.counsels.application;
 
 import com.onz.common.exception.CustomException;
 import com.onz.modules.admin.counsels.infra.CounselsRepository;
-import com.onz.modules.admin.counsels.web.dto.CounselsRequestDto;
-import com.onz.modules.admin.counsels.web.dto.CounselsResponseDto;
-import com.onz.modules.admin.counsels.web.dto.CounselsWrapResponseDto;
-import com.onz.modules.admin.counsels.web.dto.CountEvent;
+import com.onz.modules.admin.counsels.web.dto.*;
+import com.onz.modules.counsel.domain.Counsel;
+import com.onz.modules.counsel.domain.enums.QnaGubn;
 import com.querydsl.jpa.JPQLQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -38,6 +38,18 @@ public class CounselsService {
     public List<CounselsResponseDto> counselsItem(CounselsRequestDto counselsRequestDto,String qnaItem,Pageable pageable) {
        List<CounselsResponseDto> list = counselsRepository.findcounselsItemSearch(counselsRequestDto,pageable,qnaItem);
         return list;
+    }
+    public CounselsDetailResponseDto counselItem(Long id) {
+        Optional<Counsel> result = counselsRepository.findById(id);
+        CounselsDetailResponseDto counselsDetailResponseDto = new CounselsDetailResponseDto();
+        if(result.isEmpty()){
+            throw new IllegalArgumentException();
+        }
+        if(result.get().getQnaGubn().equals(QnaGubn.Q)){
+            List<CounselAnswerListResponseDto> answer = counselsRepository.findByAnswer(id);
+            counselsDetailResponseDto = new CounselsDetailResponseDto(result,answer);
+        }
+        return counselsDetailResponseDto;
     }
 //    public List<CounselsResponseDto> Result(String type,CounselsResponseDto counselsResponseDto){
 //
