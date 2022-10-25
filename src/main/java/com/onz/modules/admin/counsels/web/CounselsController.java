@@ -121,4 +121,17 @@ public class CounselsController {
             throw e;
         }
     }
+    @Operation(summary = "상담답변 태그로 검색  ", description = "상담 검색 입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
+    })
+    @GetMapping("/admin/counsels/q/tag")
+    public ResponseEntity<ApiR<?>> tagCounselQ(TagRequestDto tagRequestDto,Pageable pageable) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(counselsService.tagCounselQ(tagRequestDto,pageable)));
+        } catch (CustomException e) {
+            throw e;
+        }
+    }
 }

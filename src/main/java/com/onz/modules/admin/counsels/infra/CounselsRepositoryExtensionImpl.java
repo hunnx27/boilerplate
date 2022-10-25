@@ -274,6 +274,68 @@ public class CounselsRepositoryExtensionImpl extends QuerydslRepositorySupport i
                                 .otherwise(0).sum().as("QI06")
                 )).from(counsel).where(where).fetchOne();
     }
+    public CountEvent findcount2(TagRequestDto tagRequestDto) {
+        // Q클래스 정의
+        QCounsel counsel = QCounsel.counsel;
+        BooleanBuilder where = this.getWhere3(tagRequestDto, counsel);
+        // 쿼리 생성(집계)
+        return qf.select(
+                Projections.constructor(CountEvent.class,
+                        counsel.qnaItem.count().as("all"),
+                        new CaseBuilder()
+                                .when(counsel.qnaItem.in(QnaItem.QS01))
+                                .then(1)
+                                .otherwise(0).sum().as("QS01"),
+                        new CaseBuilder()
+                                .when(counsel.qnaItem.in(QnaItem.QS02))
+                                .then(1)
+                                .otherwise(0).sum().as("QS02"),
+                        new CaseBuilder()
+                                .when(counsel.qnaItem.in(QnaItem.QS03))
+                                .then(1)
+                                .otherwise(0).sum().as("QS03"),
+                        new CaseBuilder()
+                                .when(counsel.qnaItem.in(QnaItem.QS04))
+                                .then(1)
+                                .otherwise(0).sum().as("QS04"),
+                        new CaseBuilder()
+                                .when(counsel.qnaItem.in(QnaItem.QS05))
+                                .then(1)
+                                .otherwise(0).sum().as("QS05"),
+                        new CaseBuilder()
+                                .when(counsel.qnaItem.in(QnaItem.QS06))
+                                .then(1)
+                                .otherwise(0).sum().as("QS06"),
+                        new CaseBuilder()
+                                .when(counsel.qnaItem.in(QnaItem.QS07))
+                                .then(1)
+                                .otherwise(0).sum().as("QS07"),
+                        new CaseBuilder()
+                                .when(counsel.qnaItem.in(QnaItem.QI01))
+                                .then(1)
+                                .otherwise(0).sum().as("QI01"),
+                        new CaseBuilder()
+                                .when(counsel.qnaItem.in(QnaItem.QI02))
+                                .then(1)
+                                .otherwise(0).sum().as("QI02"),
+                        new CaseBuilder()
+                                .when(counsel.qnaItem.in(QnaItem.QI03))
+                                .then(1)
+                                .otherwise(0).sum().as("QI03"),
+                        new CaseBuilder()
+                                .when(counsel.qnaItem.in(QnaItem.QI04))
+                                .then(1)
+                                .otherwise(0).sum().as("QI04"),
+                        new CaseBuilder()
+                                .when(counsel.qnaItem.in(QnaItem.QI05))
+                                .then(1)
+                                .otherwise(0).sum().as("QI05"),
+                        new CaseBuilder()
+                                .when(counsel.qnaItem.in(QnaItem.QI06))
+                                .then(1)
+                                .otherwise(0).sum().as("QI06")
+                )).from(counsel).where(where).fetchOne();
+    }
     public List<CounselAnswerListResponseDto> findByAnswer(Long answerId){
         QCounsel counsel = QCounsel.counsel;
         // 쿼리 생성(집계)
@@ -364,6 +426,36 @@ public class CounselsRepositoryExtensionImpl extends QuerydslRepositorySupport i
         JPQLQuery<TagResponseDto> query = getQuerydsl().applyPagination(pageable, result);
         QueryResults<TagResponseDto> findLiveMemberResults = query.fetchResults();
         List<TagResponseDto> findLiveMemberListResults = findLiveMemberResults.getResults();
+        return findLiveMemberListResults;
+    }
+
+    @Override
+    public List<CounselsResponseDto> findTagCounselQ(TagRequestDto tagRequestDto,Pageable pageable) {
+        QCounsel counsel2 = new QCounsel("counsel2");
+        BooleanBuilder where = this.getWhere3(tagRequestDto,counsel);
+        JPQLQuery<CounselsResponseDto> result = from(counsel).select(
+                        Projections.fields(CounselsResponseDto.class,
+                                counsel.gubn,
+                                counsel.qnaItem,
+                                counsel.inputTag,
+                                counsel.txt,
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .select(counsel2.count())
+                                                .from(counsel2)
+                                                .where(counsel2.parentCounsel.id.eq(counsel.id))
+                                        , "qCount"),
+                                counsel.counselState,
+                                counsel.account.userId,
+                                counsel.shortOpenYn,
+                                counsel.createdAt,
+                                counsel.isDelete
+                        )
+                )
+                .where(where);
+        JPQLQuery<CounselsResponseDto> query = getQuerydsl().applyPagination(pageable, result);
+        QueryResults<CounselsResponseDto> findLiveMemberResults = query.fetchResults();
+        List<CounselsResponseDto> findLiveMemberListResults = findLiveMemberResults.getResults();
         return findLiveMemberListResults;
     }
 }

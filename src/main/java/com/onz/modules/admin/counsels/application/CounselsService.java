@@ -33,6 +33,11 @@ public class CounselsService {
         CountEvent countEvent = counselsRepository.findcount(counselsRequestDto);
         return countEvent;
     }
+    public CountEvent eventCount2(TagRequestDto tagRequestDto) {
+        CountEvent countEvent = counselsRepository.findcount2(tagRequestDto);
+        return countEvent;
+    }
+
 
     public List<CounselsResponseDto> counselsQItem(CounselsRequestDto counselsRequestDto, String qnaItem, Pageable pageable) {
         List<CounselsResponseDto> list = counselsRepository.findcounselsItemSearchQ(counselsRequestDto, pageable, qnaItem);
@@ -70,7 +75,13 @@ public class CounselsService {
         List<TagResponseDto> list = counselsRepository.findTag(tagRequestDto, pageable);
         return list;
     }
-
+    public CounselsQWrapResponseDto tagCounselQ(TagRequestDto tagRequestDto, Pageable pageable) throws CustomException {
+        // 모든 리뷰 조회하는데 state가 W인 항목만
+        List<CounselsResponseDto> Result = counselsRepository.findTagCounselQ(tagRequestDto, pageable);
+        CountEvent countEvent = eventCount2(tagRequestDto);
+        CounselsQWrapResponseDto counselsWrapResponseDto = new CounselsQWrapResponseDto(countEvent, Result);
+        return counselsWrapResponseDto;
+    }
     public CounselADetailResponseDto counselAItem(Long id) {
         Optional<Counsel> result = counselsRepository.findById(id);
         CounselADetailResponseDto counselADetailResponseDto = new CounselADetailResponseDto();
