@@ -7,6 +7,7 @@ import com.onz.modules.admin.companies.web.dto.CompaniesResponseDto;
 import com.onz.modules.admin.counsels.application.CounselsService;
 import com.onz.modules.admin.counsels.infra.CounselsRepository;
 import com.onz.modules.admin.counsels.web.dto.CounselsRequestDto;
+import com.onz.modules.admin.counsels.web.dto.TagRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -103,6 +104,19 @@ public class CounselsController {
     public ResponseEntity<ApiR<?>> counselAItem(@PathVariable Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(counselsService.counselAItem(id)));
+        } catch (CustomException e) {
+            throw e;
+        }
+    }
+    @Operation(summary = "태그로 검색  ", description = "태그 검색 입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
+    })
+    @GetMapping("/admin/counsels/tag")
+    public ResponseEntity<ApiR<?>> counselTag(TagRequestDto tagRequestDto, Pageable pageable) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(counselsService.counselTag(tagRequestDto,pageable)));
         } catch (CustomException e) {
             throw e;
         }

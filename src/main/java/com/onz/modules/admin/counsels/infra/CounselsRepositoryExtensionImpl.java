@@ -138,6 +138,20 @@ public class CounselsRepositoryExtensionImpl extends QuerydslRepositorySupport i
         }
         return where;
     }
+    private BooleanBuilder getWhere3(TagRequestDto tag,
+                                    QCounsel counsel) {
+
+        BooleanBuilder where = new BooleanBuilder();
+        if (tag.getGubn() == null) {
+            //gubun은 이넘으로 all을 받기 떄문에 처리 ㄴㄴ -> 해야할듯
+        } else {
+            where.and(counsel.gubn.eq(Gubn.valueOf(String.valueOf(tag.getGubn()))));
+        }
+        if (tag.getTag() != null) {
+            where.and(counsel.inputTag.contains(tag.getTag()));
+        }
+        return where;
+    }
     @Override
     public List<CounselsResponseDto> findcounselsItemSearchQ(CounselsRequestDto counselsRequestDto, Pageable pageable,String qnaItem) {
         BooleanBuilder where = this.getWhere(counselsRequestDto, counsel);
@@ -334,6 +348,21 @@ public class CounselsRepositoryExtensionImpl extends QuerydslRepositorySupport i
         JPQLQuery<CounselsAresponseDto> query = getQuerydsl().applyPagination(pageable, result);
         QueryResults<CounselsAresponseDto> findLiveMemberResults = query.fetchResults();
         List<CounselsAresponseDto> findLiveMemberListResults = findLiveMemberResults.getResults();
+        return findLiveMemberListResults;
+    }
+    @Override
+    public List<TagResponseDto> findTag(TagRequestDto tagRequestDto, Pageable pageable) {
+        BooleanBuilder where = this.getWhere3(tagRequestDto, counsel);
+        JPQLQuery<TagResponseDto> result = from(counsel).select(
+                        Projections.fields(TagResponseDto.class,
+                                counsel.gubn,
+                                counsel.inputTag
+                        )
+                )
+                .where(where);
+        JPQLQuery<TagResponseDto> query = getQuerydsl().applyPagination(pageable, result);
+        QueryResults<TagResponseDto> findLiveMemberResults = query.fetchResults();
+        List<TagResponseDto> findLiveMemberListResults = findLiveMemberResults.getResults();
         return findLiveMemberListResults;
     }
 }

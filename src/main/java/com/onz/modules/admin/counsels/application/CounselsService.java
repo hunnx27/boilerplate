@@ -64,6 +64,10 @@ public class CounselsService {
         List<CounselsAresponseDto> list = counselsRepository.findcounselsItemSearchA(counselsRequestDto, pageable, qnaItem);
         return list;
     }
+    public List<TagResponseDto> counselTag(TagRequestDto tagRequestDto , Pageable pageable) {
+        List<TagResponseDto> list = counselsRepository.findTag(tagRequestDto, pageable);
+        return list;
+    }
     public CounselADetailResponseDto counselAItem(Long id) {
         Optional<Counsel> result = counselsRepository.findById(id);
         CounselADetailResponseDto counselADetailResponseDto = new CounselADetailResponseDto();

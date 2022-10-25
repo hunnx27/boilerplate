@@ -13,4 +13,5 @@ public interface CounselsRepositoryExtension {
     List<CounselAnswerListResponseDto> findByAnswer(Long answerId);
     List<CounselsAresponseDto> findcounselsSearchA (CounselsRequestDto counselsRequestDto, Pageable pageable);
     List<CounselsAresponseDto> findcounselsItemSearchA (CounselsRequestDto counselsRequestDto, Pageable pageable,String qnaItem);
+    List<TagResponseDto> findTag(TagRequestDto tagRequestDto, Pageable pageable);
 }
