@@ -356,9 +356,10 @@ public class CounselsRepositoryExtensionImpl extends QuerydslRepositorySupport i
         JPQLQuery<TagResponseDto> result = from(counsel).select(
                         Projections.fields(TagResponseDto.class,
                                 counsel.gubn,
-                                counsel.inputTag
+                                counsel.inputTag,
+                                counsel.inputTag.count().as("count")
                         )
-                )
+                ).groupBy(counsel.inputTag)
                 .where(where);
         JPQLQuery<TagResponseDto> query = getQuerydsl().applyPagination(pageable, result);
         QueryResults<TagResponseDto> findLiveMemberResults = query.fetchResults();

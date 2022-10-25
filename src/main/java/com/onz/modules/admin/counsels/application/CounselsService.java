@@ -11,8 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -60,14 +60,17 @@ public class CounselsService {
         return counselsAWrapResponseDto;
 
     }
+
     public List<CounselsAresponseDto> counselsAItem(CounselsRequestDto counselsRequestDto, String qnaItem, Pageable pageable) {
         List<CounselsAresponseDto> list = counselsRepository.findcounselsItemSearchA(counselsRequestDto, pageable, qnaItem);
         return list;
     }
-    public List<TagResponseDto> counselTag(TagRequestDto tagRequestDto , Pageable pageable) {
+
+    public List<TagResponseDto> counselTag(TagRequestDto tagRequestDto, Pageable pageable) {
         List<TagResponseDto> list = counselsRepository.findTag(tagRequestDto, pageable);
         return list;
     }
+
     public CounselADetailResponseDto counselAItem(Long id) {
         Optional<Counsel> result = counselsRepository.findById(id);
         CounselADetailResponseDto counselADetailResponseDto = new CounselADetailResponseDto();
