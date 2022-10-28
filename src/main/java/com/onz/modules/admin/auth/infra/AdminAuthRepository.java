@@ -6,5 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface AdminAuthRepository extends JpaRepository<Admin, Long>{
-    boolean findByAccount_UserId(String userId);
 }

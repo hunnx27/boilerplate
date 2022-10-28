@@ -83,10 +83,10 @@ public class FileUtil {
                 fileList.add(attach);
 
             } catch (IOException e) {
-                throw new FileException("[" + multipartFile.getOriginalFilename() + "] failed to save file...");
+                throw new FileException("[" + multipartFile.getOriginalFilename() + "] failed to save file... : " + e.getMessage());
 
             } catch (Exception e) {
-                throw new FileException("[" + multipartFile.getOriginalFilename() + "] failed to save file...");
+                throw new FileException("[" + multipartFile.getOriginalFilename() + "] failed to save file... : " + e.getMessage());
             }
         }
 

@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.NoSuchElementException;
 
 @Service
 @Slf4j
@@ -67,13 +68,13 @@ public class AdminAuthService {
     }
 
     public ResponseEntity<ApiR<Admin>> createAdmin(AdminCreateRequestDto adminCreateRequestDto) throws CustomException {
-            if (accountRepository.existsAccountByUserId(MysqlSHA2Util.getSHA512(adminCreateRequestDto.getUserId()))) {
-                //아마 디코드해야함 true
-                throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
-            } else {
-                Account savedAccount = accountRepository.save(new Account(adminCreateRequestDto));
-                Admin admin = new Admin(adminCreateRequestDto, savedAccount);
-                return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(adminAuthRepository.save(admin)));
-            }
+        if (accountRepository.existsAccountByUserId(MysqlSHA2Util.getSHA512(adminCreateRequestDto.getUserId()))) {
+            //아마 디코드해야함 true
+            throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
+        } else {
+            Account savedAccount = accountRepository.save(new Account(adminCreateRequestDto));
+            Admin admin = new Admin(adminCreateRequestDto, savedAccount);
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(adminAuthRepository.save(admin)));
+        }
     }
 }

@@ -20,6 +20,8 @@ public class Images {
     private String image4;
     @Size(max=200)
     private String image5;
+    @Size(max =200)
+    private String imgUrl;
 
     public Images() {
     }

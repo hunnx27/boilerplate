@@ -13,3 +13,17 @@ set establishment_type =
             else establishment_type
         end
 
+/**
+notice.device_gubn 의 벨류를 변경
+ex)
+0 -> P
+*/
+/**
+update notice
+set device_gubn =
+        case  device_gubn
+            when '0' then concat('P', device_gubn)
+            else device_gubn
+        end
+*/
+
