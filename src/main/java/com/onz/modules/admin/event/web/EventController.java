@@ -6,6 +6,7 @@ import com.onz.modules.admin.companies.web.dto.CompaniesResponseDto;
 import com.onz.modules.admin.event.application.EventService;
 import com.onz.modules.admin.event.web.dto.EventCreateRequestDto;
 import com.onz.modules.admin.event.web.dto.EventSearchRequestDto;
+import com.onz.modules.admin.notice.web.dto.NoticeRequestDto;
 import com.onz.modules.admin.notice.web.dto.NoticeSearchRequestDto;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,9 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -54,6 +53,45 @@ public class EventController {
     public ResponseEntity<ApiR<?>> eventSearch(EventSearchRequestDto eventSearchRequestDto, Pageable pageable) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(eventService.eventSearch(eventSearchRequestDto,pageable)));
+        } catch (CustomException e) {
+            throw e;
+        }
+    }
+    @Operation(summary = "이벤트 단일 선택  ", description = "이벤트 단일 선택 입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
+    })
+    @GetMapping("/admin/event/{id}")
+    public ResponseEntity<ApiR<?>> eventSearchDetail(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal me) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(eventService.eventSearchDetail(id,me)));
+        } catch (CustomException e) {
+            throw e;
+        }
+    }
+    @Operation(summary = "공지사항 업데이트  ", description = "공지사항 업데이트 입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
+    })
+    @PutMapping("/admin/event/{id}")
+    public ResponseEntity<ApiR<?>> eventSearchDetailfix(@PathVariable Long id, EventCreateRequestDto eventCreateRequestDto, @AuthenticationPrincipal UserPrincipal me) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(eventService.eventSearchDetailfix(id,eventCreateRequestDto,me)));
+        } catch (CustomException e) {
+            throw e;
+        }
+    }
+    @Operation(summary = "공지사항 삭제  ", description = "공지사항 업데이트 입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
+    })
+    @DeleteMapping("/admin/event/{id}")
+    public ResponseEntity<ApiR<?>> eventSearchDelete(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal me) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(eventService.eventSearchDelete(id,me)));
         } catch (CustomException e) {
             throw e;
         }
