@@ -8,6 +8,7 @@ import com.onz.modules.admin.event.web.dto.EventSearchRequestDto;
 import com.onz.modules.admin.faq.application.FaqService;
 import com.onz.modules.admin.faq.web.dto.FaqCreateRequestDto;
 import com.onz.modules.admin.faq.web.dto.FaqSearchRequestDto;
+import com.onz.modules.admin.notice.web.dto.NoticeRequestDto;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,10 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RequiredArgsConstructor
@@ -69,6 +67,19 @@ public class FaqController {
     public ResponseEntity<ApiR<?>> faqSearchDetail(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal me) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(faqService.faqSearchDetail(id,me)));
+        } catch (CustomException e) {
+            throw e;
+        }
+    }
+    @Operation(summary = "FAQ 업데이트  ", description = "FAQ 업데이트 입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
+    })
+    @PutMapping("/admin/faq/{id}")
+    public ResponseEntity<ApiR<?>> faqSearchDetailfix(@PathVariable Long id, FaqCreateRequestDto faqCreateRequestDto, @AuthenticationPrincipal UserPrincipal me) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(faqService.faqSearchDetailfix(id,faqCreateRequestDto,me)));
         } catch (CustomException e) {
             throw e;
         }

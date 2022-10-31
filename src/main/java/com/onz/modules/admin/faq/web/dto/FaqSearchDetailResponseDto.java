@@ -29,6 +29,14 @@ public class FaqSearchDetailResponseDto {
         this.content = faq.get().getContent();
         this.createDt = faq.get().getCreateDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh-mm-ss"));
     }
+
+    public FaqSearchDetailResponseDto(Faq faq) {
+        this.title = faq.getTitle();
+        this.category = faq.getCategory().getName();
+        this.deviceGubn = faq.getDeviceGubn().getName();
+        this.useYn = faq.getUseYn().name();
+        this.content = faq.getContent();
+    }
 }
 
 //public class NoticeSearchDetailResponseDto {

@@ -3,13 +3,17 @@ package com.onz.modules.admin.faq.application;
 
 import com.onz.common.web.ApiR;
 import com.onz.common.web.dto.response.enums.Role;
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.admin.faq.domian.Faq;
+import com.onz.modules.admin.faq.domian.enums.Category;
 import com.onz.modules.admin.faq.infra.FaqRepository;
 import com.onz.modules.admin.faq.web.dto.FaqCreateRequestDto;
 import com.onz.modules.admin.faq.web.dto.FaqSearchDetailResponseDto;
 import com.onz.modules.admin.faq.web.dto.FaqSearchRequestDto;
 import com.onz.modules.admin.faq.web.dto.FaqSearchResponseDto;
 import com.onz.modules.admin.notice.domain.Notice;
+import com.onz.modules.admin.notice.domain.enums.DeviceGubn;
+import com.onz.modules.admin.notice.web.dto.NoticeRequestDto;
 import com.onz.modules.admin.notice.web.dto.NoticeSearchDetailResponseDto;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import lombok.RequiredArgsConstructor;
@@ -45,5 +49,20 @@ public class FaqService {
         Optional<Faq> result = faqRepository.findById(id);
         FaqSearchDetailResponseDto faqSearchDetailResponseDto = new FaqSearchDetailResponseDto(result);
             return faqSearchDetailResponseDto;
+    }
+    public FaqSearchDetailResponseDto faqSearchDetailfix(Long id, FaqCreateRequestDto faqCreateRequestDto, UserPrincipal me) {
+        Faq faq = faqRepository.getById(id);
+        if(faq.getUserId().equals(me.getUserId())) {
+            faq.setTitle(faqCreateRequestDto.getTitle());
+            faq.setDeviceGubn(DeviceGubn.valueOf(faqCreateRequestDto.getDeviceGubn()));
+            faq.setUseYn(YN.valueOf(faqCreateRequestDto.getUseYn()));
+            faq.setContent(faqCreateRequestDto.getContent());
+            faq.setCategory(Category.valueOf(faqCreateRequestDto.getCategory()));
+            faqRepository.save(faq);
+            FaqSearchDetailResponseDto faqSearchDetailResponseDto = new FaqSearchDetailResponseDto(faq);
+            return faqSearchDetailResponseDto;
+        }else{
+            return null;
+        }
     }
 }
