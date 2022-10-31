@@ -31,7 +31,7 @@ public class NoticeController {
 
     private final NoticeService noticeService;
 
-    @Operation(summary = "메세지 등록", description = "어드민 메뉴를 등록합니다..")
+    @Operation(summary = "공지사항 등록", description = "어드민 메뉴를 등록합니다..")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "등록 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))

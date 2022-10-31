@@ -15,6 +15,8 @@ set establishment_type =
 
 /**
 notice.device_gubn 의 벨류를 변경
+event_gubn.device_gubn의 벨류를 변경
+faq.device_gubn 의 벨류를 변경
 ex)
 0 -> P
 */

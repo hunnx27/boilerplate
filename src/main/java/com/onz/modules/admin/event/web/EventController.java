@@ -70,7 +70,7 @@ public class EventController {
             throw e;
         }
     }
-    @Operation(summary = "공지사항 업데이트  ", description = "공지사항 업데이트 입니다...")
+    @Operation(summary = "이벤트 업데이트  ", description = "이벤트 입니다...")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
@@ -83,7 +83,7 @@ public class EventController {
             throw e;
         }
     }
-    @Operation(summary = "공지사항 삭제  ", description = "공지사항 업데이트 입니다...")
+    @Operation(summary = "이벤트 삭제  ", description = " 이벤트 삭제 입니다...")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))

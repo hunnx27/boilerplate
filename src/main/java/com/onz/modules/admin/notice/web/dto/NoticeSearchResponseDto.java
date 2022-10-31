@@ -15,8 +15,13 @@ public class NoticeSearchResponseDto {
     @Getter
     private Long id;
     private DeviceGubn deviceGubn;
-    private String getDeviceGubn(){
-        return deviceGubn != null ? deviceGubn.getName() : null;
+    private String deviceName;
+    public String getDevicegubn(){
+        String deviceName= this.deviceName;
+        if(deviceGubn!=null&& this.deviceName==null){
+            deviceName=deviceGubn.getName();
+        }
+        return deviceName;
     }
     @Getter
     private String title;

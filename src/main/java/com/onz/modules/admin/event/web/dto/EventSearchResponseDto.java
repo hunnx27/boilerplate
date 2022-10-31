@@ -27,15 +27,20 @@ public class EventSearchResponseDto {
     private YN submitPopup;
     private String submitPopupStr;
     private String endDtName;
-    private String getStartDtName;
+    private String startDtName;
     private String createDtName;
     private String userYnStr;
-    private String getDeviceGubn() {
-        return deviceGubn != null ? deviceGubn.getName() : null;
+    private String deviceName;
+
+    public String getDevicegubn(){
+        String deviceName= this.deviceName;
+        if(deviceGubn!=null&& this.deviceName==null){
+            deviceName=deviceGubn.getName();
+        }
+        return deviceName;
     }
 
-
-    public String getCreateDtName() {
+    public String getCreateDt() {
         String createDtName = this.createDtName;
         if (createDt != null && this.createDtName == null) {
             createDtName = this.createDt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh-mm-ss"));
@@ -43,12 +48,12 @@ public class EventSearchResponseDto {
         return createDtName;
     }
 
-    public String getGetStartDtName() {
-        String getStartDtName = this.getStartDtName;
-        if (startDt != null && this.getStartDtName == null) {
-            getStartDtName = this.startDt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh-mm-ss"));
+    public String getStartDt() {
+        String startDtName = this.startDtName;
+        if (startDt != null && this.startDtName == null) {
+            startDtName = this.startDt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh-mm-ss"));
         }
-        return getStartDtName;
+        return startDtName;
     }
 
 
