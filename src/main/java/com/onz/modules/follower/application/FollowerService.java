@@ -4,17 +4,27 @@ import com.onz.common.web.ApiR;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.infra.AccountRepository;
 import com.onz.modules.auth.web.dto.UserPrincipal;
+import com.onz.modules.company.application.util.AggregateCompany;
+import com.onz.modules.company.application.util.dto.EvaluationScore;
+import com.onz.modules.company.application.util.dto.UserScore;
 import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.infra.CompanyRepository;
 import com.onz.modules.follower.domain.Follower;
 import com.onz.modules.follower.infra.FollowerRepository;
+import com.onz.modules.follower.web.dto.FollowerFindResponseDto;
+import com.onz.modules.review.domain.CompanyReview;
+import com.onz.modules.review.infra.CompanyReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.Check;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -24,12 +34,13 @@ public class FollowerService {
     private final FollowerRepository followerRepository;
     private final AccountRepository accountRepository;
     private final CompanyRepository companyRepository;
+    private final CompanyReviewRepository companyReviewRepository;
 
     public ApiR<?> create(UserPrincipal me, Long id) {
         Account account = accountRepository.findById(me.getId()).orElse(null);
         Company company = companyRepository.findById(id).orElse(null);
         Follower follower = followerRepository.findById(id).orElse(null);
-        Follower check = followerRepository.findByCompanyIdAndAccount_Id(id,me.getId());
+        Follower check = followerRepository.findByCompanyIdAndAccount_Id(id, me.getId());
         if (check != null) {
             if (!check.getAccount().getId().equals(me.getId())) {
                 if (account != null && company != null) {
@@ -64,5 +75,26 @@ public class FollowerService {
             }
         }
         return ApiR.createError(HttpStatus.NOT_FOUND.getReasonPhrase());
+    }
+
+    public List<FollowerFindResponseDto> findFollower(UserPrincipal me, Long id) {
+        List<Follower> check = followerRepository.findByAccount_Id(id);
+        List<FollowerFindResponseDto> responseDtos = new ArrayList<>();
+        responseDtos= check.stream().map(res -> {
+            List<CompanyReview> reviews = companyReviewRepository.listCompanyReviewByCompanyId(res.getCompany().getId());
+            AggregateCompany agg = reviews.stream().collect(AggregateCompany::new, AggregateCompany::add, AggregateCompany::merge);
+            EvaluationScore escore = new EvaluationScore(res.getCompany());
+            UserScore uscore = new UserScore(agg);
+            long evalTot = escore.getScoreTot();
+            long userTot = uscore.getScoreTot();
+            int avgCnt = 0;
+            if (evalTot > 0) avgCnt++;
+            if (userTot > 0) avgCnt++;
+            Long jipyoScore = avgCnt != 0 ? (evalTot + userTot) / avgCnt : 0;
+            FollowerFindResponseDto followerFindResponseDto = new FollowerFindResponseDto(res);
+            followerFindResponseDto.setJipyo(jipyoScore);
+            return followerFindResponseDto;
+        }).collect(Collectors.toList());
+        return responseDtos;
     }
 }
