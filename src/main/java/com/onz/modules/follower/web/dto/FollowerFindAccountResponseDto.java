@@ -1,23 +1,18 @@
 package com.onz.modules.follower.web.dto;
 
 import com.onz.common.web.dto.response.enums.InterestCompany;
-import com.onz.modules.company.application.util.AggregateCompany;
-import com.onz.modules.company.application.util.dto.EvaluationScore;
-import com.onz.modules.company.application.util.dto.UserScore;
 import com.onz.modules.company.domain.enums.EstablishmentType;
 import com.onz.modules.follower.domain.Follower;
-import com.onz.modules.review.domain.CompanyReview;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @Setter
 @Getter
 @NoArgsConstructor
-public class FollowerFindResponseDto {
+public class FollowerFindAccountResponseDto {
     private EstablishmentType establishmentType;
     private InterestCompany interestCompany;
     private String officeName;
@@ -25,7 +20,7 @@ public class FollowerFindResponseDto {
     private Long jipyo;
     private ZonedDateTime createDt;
 
-    public FollowerFindResponseDto(Follower follower) {
+    public FollowerFindAccountResponseDto(Follower follower) {
         this.establishmentType = follower.getCompany().getEstablishmentType();
         this.interestCompany = follower.getCompany().getInterestCompany();
         this.officeName = follower.getCompany().getOfficeName();
