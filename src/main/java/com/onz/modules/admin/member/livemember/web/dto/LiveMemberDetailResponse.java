@@ -47,7 +47,7 @@ public class LiveMemberDetailResponse {
 
     //--- Point --- //
 
-    //    private Long rank;
+    private String code;
 //
     // total point 와 잔여포인트 개념 설계 다시 해야함
     private Integer ordersHistory;
@@ -104,13 +104,13 @@ public class LiveMemberDetailResponse {
     private Long madeACounsel;
 
     /*
-    String fromSchool, String major, String interestTag, YN notification, YN notificationNotice, Long rank, Long totalPoint,Long stateA
+    String fromSchool, String major, String interestTag, YN notification, YN notificationNotice , Long totalPoint,Long stateA
      */
     public LiveMemberDetailResponse(ZonedDateTime createdAt, Gubn gubn, AuthProvider snsType, String userId, ZonedDateTime modifiedAt, InterestCompany interestCompany, String interestZone,Integer ordersHistory, Long point, Long daycare, Long kinder, Long madeReview,
                                     Long madeAmt, Long madeInterview, Long madeQCounselR, Long madeQCounselA, Long madeACounsel,
                                     Long reviewStateW, Long reviewStateR,Long reviewStateA
                                     ,Long amtStateW,Long amtStateR,Long amtStateA,
-                                    Long interviewStateW ,Long interviewStateA ,Long interviewStateR
+                                    Long interviewStateW ,Long interviewStateA ,Long interviewStateR,String code
 
     ) {
         this.createdAt = createdAt;
@@ -125,7 +125,6 @@ public class LiveMemberDetailResponse {
 //        this.interestTag = interestTag;
 //        this.notification = notification;
 //        this.notificationNotice = notificationNotice;
-//        this.rank = rank;
 //        this.totalPoint = totalPoint;
         this.ordersHistory=ordersHistory;
         this.point = point;
@@ -146,7 +145,7 @@ public class LiveMemberDetailResponse {
         this.madeQCounselR = madeQCounselR;
         this.madeQCounselA = madeQCounselA;
         this.madeACounsel = madeACounsel;
-
+        this.code=code;
 //        this.stateA=getStateA()!=null?getStateA():0L;
 //        companyReview.getCreatedAt()!=null? companyReview.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) : "";
 //        this.stateR=getStateR()!=null?getStateR():0L;

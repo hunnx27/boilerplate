@@ -10,7 +10,7 @@ import lombok.Setter;
 public class LiveMemberPointResponse {
     //--- Point --- //
 
-    //    private Long rank;
+        private String code;
 //
     // total point 와 잔여포인트 개념 설계 다시 해야함
     private Integer ordersHistory;

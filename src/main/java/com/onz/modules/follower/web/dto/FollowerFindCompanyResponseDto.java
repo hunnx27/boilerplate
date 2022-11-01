@@ -18,12 +18,13 @@ import java.util.stream.Collectors;
 public class FollowerFindCompanyResponseDto {
     private Gubn gubn;
     private String userId;
-    private String rank;
+    private String code;
     private ZonedDateTime createDt;
 
     public FollowerFindCompanyResponseDto(Follower follower) {
         this.gubn=follower.getAccount().getGubn();
         this.userId = follower.getAccount().getUserId();
         this.createDt = follower.getCreatedAt();
+        this.code = follower.getAccount().getCode();
     }
 }

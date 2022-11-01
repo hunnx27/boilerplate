@@ -23,8 +23,7 @@ public class LiveMemberResponseDto {
     private AuthProvider snsType;
     private String snsTypeName;
 
-    @Getter
-    private String rank;
+
 
     @Getter
     private Long point;
@@ -41,7 +40,8 @@ public class LiveMemberResponseDto {
     private long counselQCnt;
     @Getter
     private long counselACnt;
-
+    @Getter
+    private String code;
 //    @Getter
 //    private long totalCompanyReviewCnt;
 //    @Getter
@@ -75,13 +75,13 @@ public class LiveMemberResponseDto {
 
     public String getCreatedAt() {
         String createdAtStr = "";
-        if(this.createdAt!=null){
+        if (this.createdAt != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             createdAtStr = this.createdAt.format(formatter);
         }
         return createdAtStr;
-
     }
+
 
     public LiveMemberResponseDto(long companyReviewCnt, long interviewReviewCnt, long amtReviewCnt, long counselQCnt, long counselACnt) {
         this.gubnName="합계";
