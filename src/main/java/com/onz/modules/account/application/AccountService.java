@@ -11,6 +11,8 @@ import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.modules.auth.application.util.MD5Utils;
 import com.onz.modules.auth.application.util.MysqlSHA2Util;
 import com.onz.modules.auth.web.dto.request.SignupRequest;
+import com.onz.modules.common.grade.domain.Grade;
+import com.onz.modules.common.grade.infra.GradeRepository;
 import com.onz.modules.common.pointHistory.domain.PointHistory;
 import com.onz.modules.common.pointHistory.domain.enums.PointTable;
 import com.onz.modules.common.pointHistory.infra.PointHistoryRepository;
@@ -41,6 +43,7 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final PointHistoryRepository pointHistoryRepository;
+    private final GradeRepository gradeRepository;
 
     public ResponseEntity<ApiR<Account>> create(Account account) throws CustomException {
         account.setTemp1(account.getUserId());
@@ -48,6 +51,8 @@ public class AccountService {
         account.setPassword(MD5Utils.getMD5(account.getPassword())); //수정 아이디 암호화
         account.setUserId(MysqlSHA2Util.getSHA512(account.getUserId()));
         account.setRole(Role.USER);
+        Grade grade = gradeRepository.findByCode("1");
+        account.setCode(grade.getCode());
         if (accountRepository.existsByUserId(account.getUserId())) {
             throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
         } else {
@@ -98,11 +103,13 @@ public class AccountService {
     }
 
     public Account getNewUser(SignupRequest signupRequest) {
+        Grade grade = gradeRepository.findByCode("1");
         Account user = Account.builder()
                 .userId(signupRequest.getSocialId())
                 .gubn(Gubn.of(signupRequest.getGubnCode()))
                 .provider(AuthProvider.of(signupRequest.getSnsTypeCode()))
                 .role(Role.USER)
+                .code(grade.getCode())
                 .build();
         accountRepository.save(user);
         return user;

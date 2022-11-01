@@ -14,6 +14,7 @@ import com.onz.modules.auth.application.util.MD5Utils;
 import com.onz.modules.auth.application.util.MysqlAESUtil;
 import com.onz.modules.auth.application.util.MysqlSHA2Util;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.onz.modules.common.grade.domain.Grade;
 import com.onz.modules.company.domain.Company;
 import com.sun.istack.NotNull;
 import lombok.Builder;
@@ -61,16 +62,19 @@ public class Account extends BaseEntity {
     @JoinColumn(name = "companyId", nullable = false)
     private Company company;
 
+
+    private String code;
+
     private String temp1;
     private String temp2;
 
     @Builder
-    public Account(String userId, Gubn gubn, Role role, AuthProvider provider) {
+    public Account(String userId, Gubn gubn, Role role,String code, AuthProvider provider) {
         this.gubn = gubn;
         this.snsType = provider;
         this.role = role;
         this.temp1 = userId; // userId 임시보관.
-
+        this.code = code;
         if(gubn != null) {
             // Final Step;
             byte[] encode = new byte[0];
@@ -125,6 +129,7 @@ public class Account extends BaseEntity {
         myinfo.setInterestZone(req.getInterestZone());
         myinfo.setMajorSchool(req.getMajorSchool());
         myinfo.setMajorDepartment(req.getMajorDepartment());
+
     }
 
     public Account update(String registrationId) {
