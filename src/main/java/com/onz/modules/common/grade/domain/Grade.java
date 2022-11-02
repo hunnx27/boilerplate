@@ -8,10 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -37,7 +34,7 @@ public class Grade {
     private Long replayRate;
 
     private Long replyCnt;
-
+    @Enumerated(EnumType.STRING)
     private YN useYn;
 
     private ZonedDateTime createDt;

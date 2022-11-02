@@ -22,8 +22,8 @@ spring:
 
   jpa:
     hibernate:
-#      ddl-auto: create-drop
-      ddl-auto: update
+      ddl-auto: create-drop
+#      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
@@ -33,7 +33,8 @@ spring:
     defer-datasource-initialization: true
   sql:
     init:
-      mode: never; # always/embedded/never #FIXME 최초실행시 always로 실행(기초데이터입력)
+#      mode: never; # always/embedded/never #FIXME 최초실행시 always로 실행(기초데이터입력)
+    mode: always
 
   config:
     activate:

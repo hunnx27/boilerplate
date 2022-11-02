@@ -1,6 +1,7 @@
 package com.onz.modules.account.web;
 
 import com.onz.common.web.ApiR;
+import com.onz.common.web.dto.response.enums.Role;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.web.dto.request.AccountCreateRequest;
@@ -78,7 +79,11 @@ public class AccountController extends BaseApiController {
     public ResponseEntity<ApiR<?>> findOne(@PathVariable Long id) {
         try {
             Account one = accountService.findOne(id);
-            return ResponseEntity.status(HttpStatus.OK).body((ApiR.createSuccess(one)));
+            if(one.getRole().equals(Role.USER)) {
+                accountService.updateGrade(one);
+                return ResponseEntity.status(HttpStatus.OK).body((ApiR.createSuccess(one)));
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body((ApiR.createError(HttpStatus.UNAUTHORIZED.getReasonPhrase())));
         } catch (Exception e) {
             throw e;
         }

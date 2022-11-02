@@ -195,7 +195,7 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
                                 account.gubn,
                                 account.userId,
                                 account.snsType,
-                                account.code,
+                                account.grade.code,
                                 //누적포인트
                                 account.point,
                                 account.createdAt,
@@ -232,8 +232,7 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
                                                 .where(
                                                         counsel.account.eq(account).and(counsel.qnaGubn.eq(QnaGubn.A))
                                                 )
-                                        , "counselACnt"),
-                                account.code
+                                        , "counselACnt")
                         )
                 )
                 .where(where);
@@ -275,7 +274,7 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
                                 account.gubn,
                                 account.userId,
                                 account.snsType,
-                                account.code,
+                                account.grade.code,
                                 //누적포인트
                                 account.point,
                                 account.createdAt,
@@ -348,7 +347,7 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
         JPQLQuery<LiveMemberPointResponse> result = from(account).select(
                 Projections.fields(LiveMemberPointResponse.class,
                         account.point,
-                        account.code,
+                        account.grade.code,
                                         Expressions.as(
                                                 JPAExpressions
                                                         .select(pointHistory
@@ -521,7 +520,7 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
                                         .from(counsel)
                                         .where(counsel.account.id.eq(id).and(counsel.qnaGubn.eq(QnaGubn.A)))
                                 , "madeACounsel")
-,account.code
+,account.grade.code
 
                 )
         ).where(where);

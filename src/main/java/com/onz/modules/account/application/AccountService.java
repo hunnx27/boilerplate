@@ -14,6 +14,7 @@ import com.onz.modules.auth.web.dto.request.SignupRequest;
 import com.onz.modules.common.grade.domain.Grade;
 import com.onz.modules.common.grade.infra.GradeRepository;
 import com.onz.modules.common.pointHistory.domain.PointHistory;
+import com.onz.modules.common.pointHistory.domain.embed.PointInfo;
 import com.onz.modules.common.pointHistory.domain.enums.PointTable;
 import com.onz.modules.common.pointHistory.infra.PointHistoryRepository;
 import com.onz.modules.common.pointHistory.web.dto.response.PointHistoryResponse;
@@ -28,11 +29,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.expression.Maps;
 
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,8 +51,7 @@ public class AccountService {
         account.setPassword(MD5Utils.getMD5(account.getPassword())); //수정 아이디 암호화
         account.setUserId(MysqlSHA2Util.getSHA512(account.getUserId()));
         account.setRole(Role.USER);
-        Grade grade = gradeRepository.findByCode("1");
-        account.setCode(grade.getCode());
+        account.setGrade(gradeRepository.findByCode("1"));
         if (accountRepository.existsByUserId(account.getUserId())) {
             throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
         } else {
@@ -66,6 +65,7 @@ public class AccountService {
     }
 
     public Account findOne(Long id) {
+
         return accountRepository.findById(id)
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -103,13 +103,11 @@ public class AccountService {
     }
 
     public Account getNewUser(SignupRequest signupRequest) {
-        Grade grade = gradeRepository.findByCode("1");
         Account user = Account.builder()
                 .userId(signupRequest.getSocialId())
                 .gubn(Gubn.of(signupRequest.getGubnCode()))
                 .provider(AuthProvider.of(signupRequest.getSnsTypeCode()))
                 .role(Role.USER)
-                .code(grade.getCode())
                 .build();
         accountRepository.save(user);
         return user;
@@ -126,6 +124,7 @@ public class AccountService {
     public void createMyPointHistories(Account account, PointTable pointTable) {
 //        Account account = accountRepository.findById(id).orElseGet(null);
 //        if(account != null){
+        updateGrade(account);
         pointHistoryRepository.save(new PointHistory(account, pointTable));
 //        }
     }
@@ -137,6 +136,14 @@ public class AccountService {
         Page<PointHistory> pageList = pointHistoryRepository.findByAccountId(accountId, pageable);
         List<PointHistoryResponse> rs = pageList.get().map(PointHistoryResponse::new).collect(Collectors.toList());
         return new PageImpl<>(rs);
+    }
+    public void updateGrade(Account account){
+        Grade temp = gradeRepository.pointCheck(account);
+        //Grade grade = gradeRepository.findByCode(temp);
+        if(!temp.getCode().equals(account.getGrade().getCode())) {
+            account.setGrade(temp);
+            accountRepository.save(account);
+        }
     }
 
 

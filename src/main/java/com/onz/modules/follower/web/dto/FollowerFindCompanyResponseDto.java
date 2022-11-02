@@ -25,6 +25,5 @@ public class FollowerFindCompanyResponseDto {
         this.gubn=follower.getAccount().getGubn();
         this.userId = follower.getAccount().getUserId();
         this.createDt = follower.getCreatedAt();
-        this.code = follower.getAccount().getCode();
     }
 }

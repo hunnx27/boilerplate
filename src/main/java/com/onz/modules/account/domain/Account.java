@@ -59,22 +59,24 @@ public class Account extends BaseEntity {
     private Myinfo myinfo; // 내정보
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "companyId", nullable = false)
+    @JoinColumn(name = "companyId", nullable = true)
     private Company company;
 
 
-    private String code;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "code",nullable = true)
+    private Grade grade;
 
     private String temp1;
     private String temp2;
 
     @Builder
-    public Account(String userId, Gubn gubn, Role role,String code, AuthProvider provider) {
+    public Account(String userId, Gubn gubn, Role role,Grade grade, AuthProvider provider) {
         this.gubn = gubn;
         this.snsType = provider;
         this.role = role;
         this.temp1 = userId; // userId 임시보관.
-        this.code = code;
+        this.grade = grade;
         if(gubn != null) {
             // Final Step;
             byte[] encode = new byte[0];
