@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-                .antMatchers("/api/admin/login","/api/accounts","/admin/grade").permitAll()
+                .antMatchers("/api/admin/login","/api/accounts").permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
             .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
             .antMatchers(HttpMethod.GET, "/download/**").permitAll()

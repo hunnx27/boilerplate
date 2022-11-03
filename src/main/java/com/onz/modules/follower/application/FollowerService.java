@@ -1,6 +1,7 @@
 package com.onz.modules.follower.application;
 
 import com.onz.common.web.ApiR;
+import com.onz.common.web.dto.response.enums.Role;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.infra.AccountRepository;
 import com.onz.modules.auth.web.dto.UserPrincipal;
@@ -42,8 +43,25 @@ public class FollowerService {
         Company company = companyRepository.findById(id).orElse(null);
         Follower follower = followerRepository.findById(id).orElse(null);
         Follower check = followerRepository.findByCompanyIdAndAccount_Id(id, me.getId());
-        if (check != null) {
-            if (!check.getAccount().getId().equals(me.getId())) {
+        if(account.getRole().equals(Role.USER)) {
+            if (check != null) {
+                if (!check.getAccount().getId().equals(me.getId())) {
+                    if (account != null && company != null) {
+                        if (follower == null) {
+                            follower = Follower.builder()
+                                    .createdAt(ZonedDateTime.now())
+                                    .gubnCode(company.getInterestCompany())
+                                    .account(account)
+                                    .company(company)
+                                    .build();
+                            followerRepository.save(follower);
+                            return ApiR.createSuccess(HttpStatus.OK);
+                        } else {
+                            return null;
+                        }
+                    }
+                }
+            } else {
                 if (account != null && company != null) {
                     if (follower == null) {
                         follower = Follower.builder()
@@ -57,21 +75,6 @@ public class FollowerService {
                     } else {
                         return null;
                     }
-                }
-            }
-        } else {
-            if (account != null && company != null) {
-                if (follower == null) {
-                    follower = Follower.builder()
-                            .createdAt(ZonedDateTime.now())
-                            .gubnCode(company.getInterestCompany())
-                            .account(account)
-                            .company(company)
-                            .build();
-                    followerRepository.save(follower);
-                    return ApiR.createSuccess(HttpStatus.OK);
-                } else {
-                    return null;
                 }
             }
         }
