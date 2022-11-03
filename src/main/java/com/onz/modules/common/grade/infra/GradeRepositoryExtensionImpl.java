@@ -33,7 +33,7 @@ public class GradeRepositoryExtensionImpl extends QuerydslRepositorySupport impl
 
         Grade result = null;
         if(account.getGrade().getCode()!=null) {
-            if (account2.point != null && account.getPoint() >= 3501) { //  FIXME 3500이 아니라 DB에서 가져온 데이터로 비교
+            if (account2.point != null && account.getPoint() >= 3501) {
                 result = jpaQueryFactory.select(grade).from(grade).where(where).fetchOne();
             }
         }

@@ -108,6 +108,7 @@ public class AccountService {
                 .gubn(Gubn.of(signupRequest.getGubnCode()))
                 .provider(AuthProvider.of(signupRequest.getSnsTypeCode()))
                 .role(Role.USER)
+                .grade(gradeRepository.findByCode("1"))
                 .build();
         accountRepository.save(user);
         return user;

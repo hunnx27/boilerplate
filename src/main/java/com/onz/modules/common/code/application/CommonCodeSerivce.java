@@ -59,11 +59,13 @@ public class CommonCodeSerivce {
             CommonCodeInitResponseDto commonCodeInitResponseDto = new CommonCodeInitResponseDto();
             String temp = res.getCodeSebu().replaceAll("@", "").substring(0, 4);
             if (res.getCodeSebu().charAt(6) != '0') {
+                commonCodeInitResponseDto.setId(res.getId());
                 commonCodeInitResponseDto.setFiveScore(res.getCodeSebu() != null ? Integer.parseInt(String.valueOf(res.getCodeSebu().charAt(6))) * 20 : 0); //5점환산
                 commonCodeInitResponseDto.setScore(res.getCodeSebu() != null ? Integer.parseInt(String.valueOf(res.getCodeSebu().charAt(6))) : 0);//100점 환산
                 commonCodeInitResponseDto.setCodeName(String.valueOf(TestData.hi.get(temp).get("name")));
                 commonCodeInitResponseDto.setCodeSebu(temp);
             } else {
+                commonCodeInitResponseDto.setId(res.getId());
                 commonCodeInitResponseDto.setGubn(res.getCodeName()); // FIXME
                 commonCodeInitResponseDto.setSebuCode(res.getCodeName());
                 commonCodeInitResponseDto.setScore(Integer.parseInt(String.valueOf(res.getCodeSebu().charAt(6))));
