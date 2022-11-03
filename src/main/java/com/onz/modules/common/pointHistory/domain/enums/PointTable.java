@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum PointTable {
     WELCOME_JOIN("MJ", "회원가입", 3000),
     LOGIN_ATTEND("MA", "로그인-출석", 50),
-    ATTEND_100PERCENT("MP", "출석-100%", 1000),
+    ATTEND_100PERCENT("MP", "출석-100%", 1000),//포인트 히스토리로 체크
     TAG_REGIST("MT", "관심 #태그등록", 50),
     REVIEW_REGIST("RR", "리뷰등록", 1000),
     AMT_REGIST("RS", "연봉등록", 500),

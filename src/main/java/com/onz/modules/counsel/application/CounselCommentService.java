@@ -5,6 +5,7 @@ import com.onz.common.util.FileUtil;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.auth.web.dto.UserPrincipal;
+import com.onz.modules.common.pointHistory.domain.enums.PointTable;
 import com.onz.modules.counsel.domain.CounselComment;
 import com.onz.modules.counsel.infra.counsel.CounselRepository;
 import com.onz.modules.counsel.infra.counselComment.CounselCommentRepository;
@@ -39,6 +40,7 @@ public class CounselCommentService {
         counselCommentCreateRequest.setParentCounsel(counselRepository.findById(counselCommentCreateRequest.getParentCounselId()).orElseGet(null));
         CounselComment counselComment = new CounselComment(counselCommentCreateRequest, account);
         CounselComment saved = counselCommentRepository.save(counselComment);
+        accountService.createMyPointHistories(account, PointTable.COUNCEL_ANSWER_REGIST);
     }
 
     public List<CounselCommentListResponse> commentList(Long answerId, Pageable pageable, UserPrincipal me){

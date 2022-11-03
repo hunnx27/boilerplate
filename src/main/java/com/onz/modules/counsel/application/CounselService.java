@@ -7,6 +7,7 @@ import com.onz.common.util.dto.AttachDto;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.auth.web.dto.UserPrincipal;
+import com.onz.modules.common.pointHistory.domain.PointHistory;
 import com.onz.modules.common.pointHistory.domain.enums.PointTable;
 import com.onz.modules.company.web.dto.reponse.CounselSearchCountDto;
 import com.onz.modules.counsel.domain.Counsel;
@@ -31,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.onz.modules.common.pointHistory.domain.enums.PointTable.COUNCEL_SELECT;
 
 @Slf4j
 @Service
@@ -117,8 +120,10 @@ public class CounselService {
 
     public Counsel deleteCounselSoft(Long id) {
         Counsel counsel = counselRepository.findById(id).orElseThrow();
+        Account account = accountService.findOne(counsel.getAccount().getId());
         counsel.setIsDelete(YN.Y);
         counselRepository.save(counsel);
+        accountService.createMyPointHistories(account, PointTable.COUNCEL_DELETE);
         return counsel;
     }
 
@@ -207,9 +212,12 @@ public class CounselService {
     }
 
     public Counsel updateAnswerAdopt(Long id, CounselAAdoptRequest counselAAdoptRequest, UserPrincipal me) {
-//        Account account = accountService.findOne(me.getId());
+        Account account = accountService.findOne(me.getId());
         Counsel counsel = counselRepository.findById(id).get();
         Counsel parent = counselRepository.findById(counselAAdoptRequest.getParentCounselId()).orElseGet(null);
+        Account answer = accountService.findOne(counsel.getAccount().getId());
+        accountService.createMyPointHistories(account, PointTable.COUNCEL_SELECT);
+        accountService.createMyPointHistories(answer, PointTable.COUNCEL_CHOSEN);
         parent.updateCounselAdopted();
         counselAAdoptRequest.setParentCounsel(parent);
         counsel.updateAnswerAdopt(counselAAdoptRequest);

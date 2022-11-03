@@ -1,12 +1,14 @@
 package com.onz.modules.auth.application;
 
 import com.onz.common.web.dto.response.enums.Role;
+import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.enums.AuthProvider;
 import com.onz.modules.account.infra.AccountRepository;
 import com.onz.modules.auth.application.util.OAuth2UserInfoFactory;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.auth.web.dto.oauth.OAuth2UserInfo;
+import com.onz.modules.common.pointHistory.domain.enums.PointTable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,11 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Optional;
 
 @Slf4j
@@ -28,6 +34,7 @@ import java.util.Optional;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Autowired
     private AccountRepository accountRepository;
+    private final AccountService accountService;
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
@@ -40,7 +47,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new InternalAuthenticationServiceException(ex.getMessage(), ex.getCause());
         }
     }
-    private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
+    private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) throws ParseException {
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
 
         if(ObjectUtils.isEmpty(oAuth2UserInfo.getId())) {
@@ -61,7 +68,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 //                        account.getSnsType() + " account. Please use your " + account.getSnsType() +
 //                        " account to login.");
 //            }
-            account.setLastedAt(ZonedDateTime.now());
+
             accountRepository.save(account);
             account = updateExistingUser(account, oAuth2UserInfo);
         } else {
@@ -69,6 +76,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             account = getNewUser(oAuth2UserRequest, oAuth2UserInfo);
 
         }
+        if (account.getLastedAt() != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            String temp1 = account.getLastedAt().format(formatter);
+            String temp2 = ZonedDateTime.now().format(formatter);
+            Date tempResult = new SimpleDateFormat("yyyy/MM/dd").parse(temp1);
+            Date tempResult2 = new SimpleDateFormat("yyyy/MM/dd").parse(temp2);
+            long diffSec = (tempResult2.getTime()-tempResult.getTime())/1000;
+            if(diffSec>=60*60*24){
+                accountService.createMyPointHistories(account, PointTable.LOGIN_ATTEND);
+            }
+        }
+        account.setLastedAt(ZonedDateTime.now());
+        accountRepository.save(account);
         return UserPrincipal.create(account, oAuth2User.getAttributes());
     }
     private Account getNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {

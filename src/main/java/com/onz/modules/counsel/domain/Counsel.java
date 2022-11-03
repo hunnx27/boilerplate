@@ -5,6 +5,7 @@ import com.onz.common.domain.BaseEntity;
 import com.onz.common.web.dto.response.enums.*;
 import com.onz.common.util.dto.AttachDto;
 import com.onz.modules.account.domain.Account;
+import com.onz.modules.common.pointHistory.domain.PointHistory;
 import com.onz.modules.counsel.domain.embed.Images;
 import com.onz.modules.counsel.domain.enums.CounselState;
 import com.onz.modules.counsel.domain.enums.JobGubn;

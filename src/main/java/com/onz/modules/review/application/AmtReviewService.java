@@ -45,9 +45,9 @@ public class AmtReviewService {
         Long companyId = amtRequestDto.getCompanyId();
         Account account = accountService.findOne(me.getId());
         Company company = companyRepository.findById(companyId).orElse(null);
-        accountService.createMyPointHistories(account, PointTable.AMT_REGIST);
         YearAmtReview yearAmtReview = new YearAmtReview(amtRequestDto, company, account);
         amtReviewRepository.save(yearAmtReview);
+        accountService.createMyPointHistories(account, PointTable.AMT_REGIST);
         return yearAmtReview;
     }
 

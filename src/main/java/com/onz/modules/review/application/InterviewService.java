@@ -2,6 +2,7 @@ package com.onz.modules.review.application;
 
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
+import com.onz.modules.common.pointHistory.domain.enums.PointTable;
 import com.onz.modules.review.domain.InterviewReviewItem;
 import com.onz.modules.review.infra.InterviewReviewRepository;
 import com.onz.modules.auth.web.dto.UserPrincipal;
@@ -48,7 +49,7 @@ public class InterviewService {
 
         InterviewReview interviewReview = new InterviewReview(interviewRequestDto, company,account);
         InterviewReview mom = interviewReviewRepository.save(interviewReview);
-
+        accountService.createMyPointHistories(account, PointTable.INTERVIEW_REGIST);
         List<InterviewRequestDto.Interview> interviews = interviewRequestDto.getInterviews();
         for(int i=0; i<interviews.size(); i++){
             //sava...

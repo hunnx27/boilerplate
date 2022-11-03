@@ -35,6 +35,8 @@ public class GradeRepositoryExtensionImpl extends QuerydslRepositorySupport impl
         if(account.getGrade().getCode()!=null) {
             if (account2.point != null && account.getPoint() >= 3501) {
                 result = jpaQueryFactory.select(grade).from(grade).where(where).fetchOne();
+            }else{
+                result= jpaQueryFactory.select(grade).from(grade).where(grade.code.eq("1")).fetchOne();
             }
         }
 

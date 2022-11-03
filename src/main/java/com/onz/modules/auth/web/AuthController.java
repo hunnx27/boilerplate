@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,7 +50,7 @@ public class AuthController {
     })
     @PostMapping("/auth/login")
     public ResponseEntity<ApiR<?>> login(HttpServletResponse response,
-                                         @RequestBody LoginRequest loginRequest) {
+                                         @RequestBody LoginRequest loginRequest) throws ParseException {
         try {
             return userLoginService.login(response,loginRequest);
         } catch (Exception e) {

@@ -3,6 +3,7 @@ package com.onz.modules.review.application;
 import com.onz.common.util.dto.AttachDto;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
+import com.onz.modules.common.pointHistory.domain.enums.PointTable;
 import com.onz.modules.review.infra.CompanyReviewRepository;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.common.util.FileUtil;
@@ -42,6 +43,7 @@ public class CompanyReviewService {
         Company company = companyRepository.findById(companyId).orElse(null);
         CompanyReview companyReview = new CompanyReview(companyReviewRequestDto, company, account);
         CompanyReview saved = companyReviewRepository.save(companyReview);
+        accountService.createMyPointHistories(account, PointTable.REVIEW_REGIST);
         // Image File Upload
         if (companyReviewRequestDto.getFiles() != null && companyReviewRequestDto.getFiles().size() > 0) {
             try {
