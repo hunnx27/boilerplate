@@ -20,7 +20,7 @@ public class GradeListResponseDto {
     private YN useYn;
 
     public GradeListResponseDto(Grade grade) {
-        this.code = grade.getCode();
+        this.code = grade.getGrade();
         this.iconUrl = grade.getIconUrl();
         this.startTot = grade.getStartTot();
         this.endTot = grade.getEndTot();

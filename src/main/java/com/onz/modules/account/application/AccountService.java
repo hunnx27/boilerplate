@@ -51,7 +51,7 @@ public class AccountService {
         account.setPassword(MD5Utils.getMD5(account.getPassword())); //수정 아이디 암호화
         account.setUserId(MysqlSHA2Util.getSHA512(account.getUserId()));
         account.setRole(Role.USER);
-        account.setGrade(gradeRepository.findByCode("1"));
+        account.setGrade(gradeRepository.findByGrade("1"));
         if (accountRepository.existsByUserId(account.getUserId())) {
             throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
         } else {
@@ -108,7 +108,7 @@ public class AccountService {
                 .gubn(Gubn.of(signupRequest.getGubnCode()))
                 .provider(AuthProvider.of(signupRequest.getSnsTypeCode()))
                 .role(Role.USER)
-                .grade(gradeRepository.findByCode("1"))
+                .grade(gradeRepository.findByGrade("1"))
                 .build();
         accountRepository.save(user);
         return user;
@@ -141,7 +141,7 @@ public class AccountService {
     public void updateGrade(Account account){
         Grade temp = gradeRepository.pointCheck(account);
         //Grade grade = gradeRepository.findByCode(temp);
-        if(!temp.getCode().equals(account.getGrade().getCode())) {
+        if(!temp.getGrade().equals(account.getGrade().getGrade())) {
             account.setGrade(temp);
             accountRepository.save(account);
         }

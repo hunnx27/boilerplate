@@ -22,7 +22,7 @@ public class Grade {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String code;
+    private String grade;
 
     @Size(max=200)
     private String iconUrl;
@@ -46,7 +46,7 @@ public class Grade {
         }
     }
     public Grade(GradeCreateRequestDto gradeCreateRequestDto) {
-        this.code = gradeCreateRequestDto.getCode();
+        this.grade = gradeCreateRequestDto.getGrade();
         this.startTot = gradeCreateRequestDto.getStartTot();
         this.endTot = gradeCreateRequestDto.getEndTot();
         this.replayRate = gradeCreateRequestDto.getReplayRate();

@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class GradeCreateRequestDto {
-    private String code;
+    private String grade;
     private List<MultipartFile> iconUrl;
     private Long startTot;
     private Long endTot;

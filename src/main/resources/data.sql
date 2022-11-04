@@ -567,14 +567,14 @@ INSERT INTO plates.common_code(id, code, code_sebu, code_name, create_dt) VALUE 
 INSERT INTO plates.common_code(id, code, code_sebu, code_name, create_dt) VALUE ('2654', 'SC', 'D2@02@5', '민주', '2016-04-01 09:28:42');
 INSERT INTO plates.common_code(id, code, code_sebu, code_name, create_dt) VALUE ('2655', 'SC', 'D2@03@1', '방임', '2016-04-01 09:28:42');
 INSERT INTO plates.common_code(id, code, code_sebu, code_name, create_dt) VALUE ('2656', 'SC', 'D2@04@2', '권위', '2016-04-01 09:28:42');
-INSERT INTO plates.grade(id, code, create_dt, end_tot, icon_url, replay_rate, reply_cnt, start_tot, use_yn)
+INSERT INTO plates.grade(id, grade, create_dt, end_tot, icon_url, replay_rate, reply_cnt, start_tot, use_yn)
 VALUES (1, '1', '2016-03-02 13:21:03.031219000', 3500, 'new_1.png', 0, 0, 0, 'Y');
-INSERT INTO plates.grade(id, code, create_dt, end_tot, icon_url, replay_rate, reply_cnt, start_tot, use_yn)
+INSERT INTO plates.grade(id, grade, create_dt, end_tot, icon_url, replay_rate, reply_cnt, start_tot, use_yn)
 VALUES (2, '2', '2016-03-02 13:21:03.031219000', 7300, 'new_2.png', 0, 1, 3501, 'Y');
-INSERT INTO plates.grade(id, code, create_dt, end_tot, icon_url, replay_rate, reply_cnt, start_tot, use_yn)
+INSERT INTO plates.grade(id, grade, create_dt, end_tot, icon_url, replay_rate, reply_cnt, start_tot, use_yn)
 VALUES (3, '3', '2016-11-02 13:21:03.031219000', 14300, 'new_3.png', 0, 1, 7301, 'Y');
 INSERT INTO plates.grade
-(id, code, create_dt, end_tot, icon_url, replay_rate, reply_cnt, start_tot, use_yn)
+(id, grade, create_dt, end_tot, icon_url, replay_rate, reply_cnt, start_tot, use_yn)
 VALUES (4, '4', '2022-11-02 13:21:03.031219000', 20000,
         '/Data/202211/20221102132103-5ee4ea55674950278222afb640930aca.jpg',
         7, 0, 14301, 'Y');
@@ -582,7 +582,7 @@ VALUES (4, '4', '2022-11-02 13:21:03.031219000', 20000,
 
 INSERT INTO plates.account (id, created_at, deleted_at, is_delete, lasted_at, modified_at, gubn, birthyyyy,
                             interest_company, interest_zone, major_department, major_school, password, `point`, `role`,
-                            sns_type, temp1, temp2, user_id, company_id, code)
+                            sns_type, temp1, temp2, user_id, company_id, grade)
 VALUES (1, '2022-11-02 15:37:11.129017000', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
         'e7458011c47caa60555fee93c4fe4e5f', 0, 'ADMIN', 'L', 'dlghtkd1',
         'ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff',

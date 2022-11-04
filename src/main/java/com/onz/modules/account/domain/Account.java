@@ -64,7 +64,7 @@ public class Account extends BaseEntity {
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "code",nullable = true)
+    @JoinColumn(name = "grade",nullable = true)
     private Grade grade;
 
     private String temp1;

@@ -24,7 +24,7 @@ public class GradeRepositoryExtensionImpl extends QuerydslRepositorySupport impl
     }
 
     public Grade pointCheck(Account account){
-        QGrade grade=QGrade.grade;
+        QGrade grade=QGrade.grade1;
         QAccount account2 = QAccount.account;
         BooleanBuilder where = new BooleanBuilder();
         // where.and(account2.isDelete.eq(YN.N)).and(account2.eq(account));
@@ -32,11 +32,11 @@ public class GradeRepositoryExtensionImpl extends QuerydslRepositorySupport impl
         where.and(grade.endTot.goe(account.getPoint()));
 
         Grade result = null;
-        if(account.getGrade().getCode()!=null) {
+        if(account.getGrade().getGrade()!=null) {
             if (account2.point != null && account.getPoint() >= 3501) {
                 result = jpaQueryFactory.select(grade).from(grade).where(where).fetchOne();
             }else{
-                result= jpaQueryFactory.select(grade).from(grade).where(grade.code.eq("1")).fetchOne();
+                result= jpaQueryFactory.select(grade).from(grade).where(grade.grade.eq("1")).fetchOne();
             }
         }
 

@@ -195,7 +195,7 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
                                 account.gubn,
                                 account.userId,
                                 account.snsType,
-                                account.grade.code,
+                                account.grade.grade,
                                 //누적포인트
                                 account.point,
                                 account.createdAt,
@@ -274,7 +274,7 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
                                 account.gubn,
                                 account.userId,
                                 account.snsType,
-                                account.grade.code,
+                                account.grade.grade,
                                 //누적포인트
                                 account.point,
                                 account.createdAt,
@@ -347,7 +347,7 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
         JPQLQuery<LiveMemberPointResponse> result = from(account).select(
                 Projections.fields(LiveMemberPointResponse.class,
                         account.point,
-                        account.grade.code,
+                        account.grade.grade,
                                         Expressions.as(
                                                 JPAExpressions
                                                         .select(pointHistory
@@ -520,7 +520,7 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
                                         .from(counsel)
                                         .where(counsel.account.id.eq(id).and(counsel.qnaGubn.eq(QnaGubn.A)))
                                 , "madeACounsel")
-,account.grade.code
+,account.grade.grade
 
                 )
         ).where(where);
