@@ -64,7 +64,7 @@ public class HumanUserController {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = Account.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = Account.class)))
     })
-    @PostMapping("/excel/human")
+    @PostMapping("/admin/excel/human")
     public void getExcelFile(HumanListRequestDto humanListRequestDto , HttpServletResponse response) throws IOException {
         try{
          humanService.getExcelFile(response,humanListRequestDto);

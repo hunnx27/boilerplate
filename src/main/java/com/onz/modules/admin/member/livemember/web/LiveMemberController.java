@@ -80,7 +80,7 @@ public class LiveMemberController {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = Account.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = Account.class)))
     })
-    @PostMapping("/excel/live")
+    @PostMapping("admin/excel/live")
     public void getExcelFile(LiveMemberRequestDto liveMemberRequestDto , HttpServletResponse response) throws IOException {
         try{
             StringHttpMessageConverter converter = new StringHttpMessageConverter(StandardCharsets.UTF_8);

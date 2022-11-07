@@ -15,3 +15,6 @@ public class CompaniesFixUpdateRequestDto {
     private State state;
     private String adminTxt;
 }
+//    modi_dt	처리날자
+//    modi_id	처리자_아이디
+//    modi_txt	처리내용

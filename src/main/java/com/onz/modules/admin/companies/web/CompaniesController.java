@@ -134,12 +134,12 @@ public class CompaniesController {
         }
     }
 
-    @Operation(summary = "기업 정보 수정", description = "요청을 등록합니다..")
+    @Operation(summary = "기업 정보 수정", description = "수정합니다..")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "등록 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
     })
-    @PutMapping("/help/companies/fix/{id}")
+    @PutMapping("/admin/companies/fix/{id}")
     public void update(@AuthenticationPrincipal UserPrincipal me,@RequestBody CompaniesFixUpdateRequestDto companiesFixUpdateRequestDto, @PathVariable Long id) {
         try {
             companiesService.update(companiesFixUpdateRequestDto, me, id);
@@ -147,5 +147,31 @@ public class CompaniesController {
             throw e;
         }
     }
-
+    @Operation(summary = "기업 추가 요청", description = "요청을 등록합니다..")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "등록 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
+    })
+    @PostMapping("/help/companies/request")
+    public void request(@AuthenticationPrincipal UserPrincipal me, @RequestBody CompaniesCreateRequestDto companiesCreateRequestDto) {
+        try {
+            companiesService.request(companiesCreateRequestDto, me);
+            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    @Operation(summary = "기업 정보 수정", description = "수정합니다..")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "등록 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
+    })
+    @PutMapping("/admin/companies/request/{id}")
+    public void addUpdate(@AuthenticationPrincipal UserPrincipal me,@RequestBody CompaniesFixUpdateRequestDto companiesFixUpdateRequestDto, @PathVariable Long id) {
+        try {
+            companiesService.addUpdate(companiesFixUpdateRequestDto, me, id);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 }

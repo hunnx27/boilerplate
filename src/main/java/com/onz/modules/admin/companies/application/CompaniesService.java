@@ -8,6 +8,7 @@ import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.infra.AccountRepository;
 import com.onz.modules.admin.auth.application.AdminAuthService;
 import com.onz.modules.admin.companies.domain.Companies;
+import com.onz.modules.admin.companies.domain.enums.FixOption;
 import com.onz.modules.admin.companies.infra.CompaniesRepository;
 import com.onz.modules.admin.companies.web.dto.*;
 import com.onz.modules.auth.web.dto.UserPrincipal;
@@ -29,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletResponse;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -231,6 +233,7 @@ public class CompaniesService {
                     .account(account)
                     .userId(me.getUserId())
                     .state(State.W)
+                    .fixOption(FixOption.FIX)
                     .apprTxt(null)
                     .fixText(companiesFixCreateRequestDto.getFixText())
                     .build();
@@ -242,12 +245,42 @@ public class CompaniesService {
     public void update(CompaniesFixUpdateRequestDto companiesFixUpdateRequestDto, UserPrincipal me,Long id) {
         Companies companies = companiesRepository.findById(id).orElse(null);
         if(companies!=null){
+            if(companies.getFixOption().equals(FixOption.FIX)) {
                 companies.setState(companiesFixUpdateRequestDto.getState());
                 companies.setApprId(me.getUserId());
+                companies.setApprDt(ZonedDateTime.now());
                 companies.setApprTxt(companiesFixUpdateRequestDto.getAdminTxt());
                 companiesRepository.save(companies);
+            }
         }
 //        Company company = companyRepository.findById(id).orElseThrow();
     }
 
+    public Companies request(CompaniesCreateRequestDto companiesCreateRequestDto, UserPrincipal me) {
+//        Companies company = companiesRepository.getById(companiesFixCreateRequestDto.getCompanyId());
+        Account account = accountService.findOne(me.getId());
+        if(account.getRole()== Role.USER) {
+            Companies companies = Companies.builder()
+                    .account(account)
+                    .state(State.W)
+                    .fixText(companiesCreateRequestDto.getTxt())
+                    .fixOption(FixOption.ADD)
+                    .build();
+            return companiesRepository.save(companies);
+        }
+        return null;
+    }
+    public void addUpdate(CompaniesFixUpdateRequestDto companiesFixUpdateRequestDto, UserPrincipal me,Long id) {
+        Companies companies = companiesRepository.findById(id).orElse(null);
+        if(companies!=null){
+            if(companies.getFixOption().equals(FixOption.ADD)) {
+                companies.setState(companiesFixUpdateRequestDto.getState());
+                companies.setApprId(me.getUserId());
+                companies.setApprDt(ZonedDateTime.now());
+                companies.setApprTxt(companiesFixUpdateRequestDto.getAdminTxt());
+                companiesRepository.save(companies);
+            }
+        }
+//        Company company = companyRepository.findById(id).orElseThrow();
+    }
 }
