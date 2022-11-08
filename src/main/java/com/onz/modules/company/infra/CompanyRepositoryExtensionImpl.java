@@ -143,11 +143,11 @@ public class CompanyRepositoryExtensionImpl extends QuerydslRepositorySupport im
 //    }
 
     @Override
-    public void update(CompanyUpdateRequest updateRequest) {
+    public void update(Long id,CompanyUpdateRequest updateRequest) {
         QCompany company = QCompany.company;
         update(company)
             .set(company.officeName, updateRequest.getName())
-            .where(company.id.eq(updateRequest.getId()))
+            .where(company.id.eq(id))
             .execute();
     }
 }

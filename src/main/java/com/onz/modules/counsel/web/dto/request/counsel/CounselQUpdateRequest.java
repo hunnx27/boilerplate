@@ -15,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 public class CounselQUpdateRequest {
 
-    private Long id;
     List<MultipartFile> files;
     private String addedTagData;
     private InterestCompany interestCommpanyName; // 관심 기관

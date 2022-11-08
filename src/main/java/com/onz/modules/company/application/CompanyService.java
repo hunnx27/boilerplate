@@ -43,8 +43,9 @@ public class CompanyService {
         companyRepository.save(company);
     }
 
-    public void update(CompanyUpdateRequest updateRequest) {
-        companyRepository.update(updateRequest);
+    public void update(Long id, CompanyUpdateRequest updateRequest) {
+        Company company = companyRepository.findById(id).orElseThrow();
+        companyRepository.update(id,updateRequest);
     }
 
     public CompanyDetailResponse findOne(Long id) {

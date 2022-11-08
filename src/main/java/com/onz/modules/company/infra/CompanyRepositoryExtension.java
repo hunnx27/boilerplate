@@ -45,6 +45,6 @@ public interface CompanyRepositoryExtension {
     //        return Optional.ofNullable(findedAccount);
     //    }
 
-    void update(CompanyUpdateRequest updateRequest);
+    void update(Long id,CompanyUpdateRequest updateRequest);
     List<Company> getListBaseCompany(Pageable pageable);
 }

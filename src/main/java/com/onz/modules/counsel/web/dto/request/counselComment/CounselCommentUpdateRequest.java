@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 public class CounselCommentUpdateRequest {
 
-    Long id;
     private String txt;
 
     // 자동처리

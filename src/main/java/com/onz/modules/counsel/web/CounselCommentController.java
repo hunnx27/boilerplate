@@ -37,7 +37,7 @@ public class CounselCommentController extends BaseApiController {
      *      ANSWER COMMENT
      *
      */
-    @Operation(summary = "상담 답변 불러오기", description = "N번째 상담에 있는 답변레코드를 리스트로 불러옵니다..")
+    @Operation(summary = "상담 답변 댓글 불러오기", description = "N번째 상담에 있는 답변레코드를 리스트로 불러옵니다..")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "불러오기 완료", content = @Content(schema = @Schema(implementation = CounselCommentListResponse.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselCommentListResponse.class)))
@@ -54,7 +54,7 @@ public class CounselCommentController extends BaseApiController {
         }
     }
 
-    @Operation(summary = "상담 답변 추가하기", description = "N번째 상담에 작성된 답글 추가하기.")
+    @Operation(summary = "상담 답변 댓글 추가하기", description = "N번째 상담에 작성된 답글 추가하기.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "답변 추가 완료", content = @Content(schema = @Schema(implementation = CounselCommentCreateRequest.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselCommentCreateRequest.class)))
@@ -69,7 +69,7 @@ public class CounselCommentController extends BaseApiController {
         }
     }
 
-    @Operation(summary = "상담 답변 수정하기", description = "N번째 상담에 작성된 답글 수정하기.")
+    @Operation(summary = "상담 답변 댓글 수정하기", description = "N번째 상담에 작성된 답글 수정하기.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "답변 수정 완료", content = @Content(schema = @Schema(implementation = CounselCommentUpdateRequest.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselCommentUpdateRequest.class)))
@@ -86,7 +86,7 @@ public class CounselCommentController extends BaseApiController {
         }
     }
 
-    @Operation(summary = "상담 답변 삭제하기", description = "N번째 상담에 작성된 답글 삭제하기.")
+    @Operation(summary = "상담 답변 댓글 삭제하기", description = "N번째 상담에 작성된 답글 삭제하기.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "답변 삭제 완료", content = @Content(schema = @Schema(implementation = CounselComment.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselComment.class)))

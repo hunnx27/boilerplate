@@ -1,5 +1,6 @@
 package com.onz.modules.account.infra;
 
+import com.onz.common.web.dto.response.enums.Role;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.QAccount;
 import com.onz.modules.account.domain.enums.AuthProvider;
@@ -47,6 +48,7 @@ public class AccountRepositoryExtensionImpl extends QuerydslRepositorySupport im
 
         BooleanBuilder where = new BooleanBuilder();
         where.and(account.isDelete.eq(YN.N));
+        where.and(account.role.eq(Role.USER));
 
         if (StringUtils.hasText(accountSearchRequest.getUserId())) {
             where.or(account.userId.containsIgnoreCase(accountSearchRequest.getUserId()));

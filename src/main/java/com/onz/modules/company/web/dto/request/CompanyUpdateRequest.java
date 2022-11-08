@@ -6,7 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CompanyUpdateRequest {
-
-    private Long id;
     private String name;
 }

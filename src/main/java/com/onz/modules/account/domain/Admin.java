@@ -34,6 +34,5 @@ public class Admin extends BaseEntity {
         this.team = adminCreateRequestDto.getTeam();
         this.name = adminCreateRequestDto.getName();
         account.setGubn(null);
-        account.getMyinfo().setInterestCompany(null);
     }
 }

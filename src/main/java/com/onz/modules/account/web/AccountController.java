@@ -95,11 +95,10 @@ public class AccountController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AccountUpdateRequest.class)))
     })
     @PutMapping("/accounts/{id}")
-    public void update(@PathVariable Long id,
+    public void update(@AuthenticationPrincipal UserPrincipal up,
                        @RequestBody AccountUpdateRequest accountUpdateRequest) {
         try {
-            accountUpdateRequest.setId(id);
-            Long update = accountService.update(accountUpdateRequest);
+            Long update = accountService.update(up,accountUpdateRequest);
             ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(update));
         } catch (Exception e) {
             throw e;

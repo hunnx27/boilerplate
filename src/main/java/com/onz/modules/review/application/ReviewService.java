@@ -287,9 +287,6 @@ public class ReviewService {
         companyRepository.save(company);
     }
 
-    public void update(CompanyUpdateRequest updateRequest) {
-        companyRepository.update(updateRequest);
-    }
 
     public Company findOne(Long id) {
         return companyRepository.findById(id)

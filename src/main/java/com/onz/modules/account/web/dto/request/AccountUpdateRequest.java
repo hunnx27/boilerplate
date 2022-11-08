@@ -8,8 +8,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class AccountUpdateRequest {
-
-    private Long id;
     private String name;
     private String userId;
     private String age;

@@ -134,46 +134,47 @@ public class EventService {
 
     public EventSearchDetailResponseDto eventSearchDetailfix(Long id, EventCreateRequestDto eventCreateRequestDto, UserPrincipal me) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        Event event = eventRepository.getById(id);
+        Optional<Event> event = eventRepository.findById(id);
+        Event event1 = event.orElseGet(null);
         if(eventCreateRequestDto.getStartDt()!=null){
             if(eventCreateRequestDto.getEndDt()!=null){
                 LocalDate end = LocalDate.parse(eventCreateRequestDto.getEndDt(), formatter);
                 LocalDate start = LocalDate.parse(eventCreateRequestDto.getStartDt(), formatter);
-                event.setEndDt(end.atStartOfDay(ZoneId.of("Asia/Seoul")));
-                event.setStartDt(start.atStartOfDay(ZoneId.of("Asia/Seoul")));
+                event1.setEndDt(end.atStartOfDay(ZoneId.of("Asia/Seoul")));
+                event1.setStartDt(start.atStartOfDay(ZoneId.of("Asia/Seoul")));
             }
         }
         if(eventCreateRequestDto.getTitle()!=null) {
-            event.setTitle(eventCreateRequestDto.getTitle());
+            event1.setTitle(eventCreateRequestDto.getTitle());
         }
         if(eventCreateRequestDto.getDeviceGubn()!=null) {
-            event.setDeviceGubn(DeviceGubn.valueOf(eventCreateRequestDto.getDeviceGubn()));
+            event1.setDeviceGubn(DeviceGubn.valueOf(eventCreateRequestDto.getDeviceGubn()));
         }
         if(eventCreateRequestDto.getUseYn()!=null) {
-            event.setUseYn(YN.valueOf(eventCreateRequestDto.getUseYn()));
+            event1.setUseYn(YN.valueOf(eventCreateRequestDto.getUseYn()));
         }
         if(eventCreateRequestDto.getContent()!=null) {
-            event.setContent(eventCreateRequestDto.getContent());
+            event1.setContent(eventCreateRequestDto.getContent());
         }
             if (eventCreateRequestDto.getFiles() != null && eventCreateRequestDto.getFiles().size() > 0) {
                 try {
-                    List<AttachDto> rs = fileUtil.uploadFiles(eventCreateRequestDto.getFiles(), event.getId());
-                    event.setImgUrl(rs);
+                    List<AttachDto> rs = fileUtil.uploadFiles(eventCreateRequestDto.getFiles(), event1.getId());
+                    event1.setImgUrl(rs);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         if(eventCreateRequestDto.getButtonLanding()!=null){
-            event.setButtonLanding(Landding.valueOf(eventCreateRequestDto.getButtonLanding()));
-            switch (event.getButtonLanding().getValue()){
+            event1.setButtonLanding(Landding.valueOf(eventCreateRequestDto.getButtonLanding()));
+            switch (event1.getButtonLanding().getValue()){
                 case "5":
                     if(eventCreateRequestDto.getNoticeId()!=null){
-                        event.setNoticeId(eventCreateRequestDto.getNoticeId());
+                        event1.setNoticeId(eventCreateRequestDto.getNoticeId());
                     }
                     break;
                 case "6":
                     if(eventCreateRequestDto.getLandingUrl()!=null){
-                        event.setLandingUrl(eventCreateRequestDto.getLandingUrl());
+                        event1.setLandingUrl(eventCreateRequestDto.getLandingUrl());
                     }
                     break;
                 default:
@@ -181,15 +182,15 @@ public class EventService {
             }
         }
         if(eventCreateRequestDto.getPopupShowOption()!=null){
-            event.setPopupShowOption(eventCreateRequestDto.getPopupShowOption());
+            event1.setPopupShowOption(eventCreateRequestDto.getPopupShowOption());
         }
         if(eventCreateRequestDto.getSubmit_popup()!=null){
-            event.setSubmitPopup(YN.valueOf(eventCreateRequestDto.getSubmit_popup()));
-            if(event.getSubmitPopup().equals(YN.Y)){
-                event.setSubmitPopupLocation(PopupLocation.valueOf(eventCreateRequestDto.getSubmit_popup_location()));
+            event1.setSubmitPopup(YN.valueOf(eventCreateRequestDto.getSubmit_popup()));
+            if(event1.getSubmitPopup().equals(YN.Y)){
+                event1.setSubmitPopupLocation(PopupLocation.valueOf(eventCreateRequestDto.getSubmit_popup_location()));
             }
         }
-        eventRepository.save(event);
+        eventRepository.save(event1);
         EventSearchDetailResponseDto eventSearchDetailResponseDto = new EventSearchDetailResponseDto(event);
         return eventSearchDetailResponseDto;
     }

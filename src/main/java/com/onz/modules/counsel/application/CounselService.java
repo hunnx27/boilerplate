@@ -12,6 +12,7 @@ import com.onz.modules.common.pointHistory.domain.enums.PointTable;
 import com.onz.modules.company.web.dto.reponse.CounselSearchCountDto;
 import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.domain.CounselRecommend;
+import com.onz.modules.counsel.domain.enums.QnaGubn;
 import com.onz.modules.counsel.domain.enums.QnaItem;
 import com.onz.modules.counsel.domain.enums.RecommendGubn;
 import com.onz.modules.counsel.infra.counsel.CounselRepository;
@@ -121,9 +122,11 @@ public class CounselService {
     public Counsel deleteCounselSoft(Long id) {
         Counsel counsel = counselRepository.findById(id).orElseThrow();
         Account account = accountService.findOne(counsel.getAccount().getId());
-        counsel.setIsDelete(YN.Y);
-        counselRepository.save(counsel);
-        accountService.createMyPointHistories(account, PointTable.COUNCEL_DELETE);
+        if(counsel.getQnaGubn().equals(QnaGubn.Q)) {
+            counsel.setIsDelete(YN.Y);
+            counselRepository.save(counsel);
+            accountService.createMyPointHistories(account, PointTable.COUNCEL_DELETE);
+        }
         return counsel;
     }
 
@@ -206,8 +209,10 @@ public class CounselService {
 
     public Counsel deleteAnswerSoft(Long id) {
         Counsel counsel = counselRepository.findById(id).orElseThrow();
-        counsel.setIsDelete(YN.Y);
-        counselRepository.save(counsel);
+        if(counsel.getQnaGubn().equals(QnaGubn.A)) {
+            counsel.setIsDelete(YN.Y);
+            counselRepository.save(counsel);
+        }
         return counsel;
     }
 
@@ -251,7 +256,8 @@ public class CounselService {
             if (null == res.getInputTag()) {
 
             } else {
-                String date[] = res.getInputTag().split("#");
+                String temp = res.getInputTag().replaceAll(" ","");
+                String date[] = temp.split("#");
                 System.out.println(date);
                 for (int i = 0; i < date.length; i++) {
                     if (date[i].equals(tag)) {

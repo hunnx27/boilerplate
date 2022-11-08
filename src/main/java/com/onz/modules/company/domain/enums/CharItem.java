@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum CharItem {
+public enum     CharItem {
     CHAR01("일반", "1"),
     CHAR02("영아 전담", "2"),
     CHAR03("장애아 전문", "3"),

@@ -10,6 +10,7 @@ import com.onz.modules.account.domain.enums.AuthProvider;
 import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.modules.auth.application.util.MD5Utils;
 import com.onz.modules.auth.application.util.MysqlSHA2Util;
+import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.auth.web.dto.request.SignupRequest;
 import com.onz.modules.common.grade.domain.Grade;
 import com.onz.modules.common.grade.infra.GradeRepository;
@@ -70,8 +71,8 @@ public class AccountService {
                 .orElseThrow(NoSuchElementException::new);
     }
 
-    public Long update(AccountUpdateRequest account) {
-        Account findOne = accountRepository.findById(account.getId())
+    public Long update(UserPrincipal up, AccountUpdateRequest account) {
+        Account findOne = accountRepository.findById(up.getId())
                 .orElseThrow(NoSuchElementException::new);
         findOne.setUpdateData(account);
         return accountRepository.save(findOne).getId();

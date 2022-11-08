@@ -62,9 +62,13 @@ public class CounselCommentService {
     public CounselComment updateCounselComment(Long id, CounselCommentUpdateRequest counselCommentUpdateRequest, UserPrincipal me){
         Account account = accountService.findOne(me.getId());
         CounselComment counselComment = counselCommentRepository.findById(id).get();
-        counselComment.updateCounselComment(counselCommentUpdateRequest, account);
-        CounselComment saved = counselCommentRepository.save(counselComment);
-        return saved;
+        if(counselComment.getAccount().getUserId().equals(account.getUserId())) {
+            counselComment.updateCounselComment(counselCommentUpdateRequest, account);
+            CounselComment saved = counselCommentRepository.save(counselComment);
+            return saved;
+        }else{
+            return counselComment;
+        }
     }
 
     public CounselComment deleteCounselCommentSoft(Long id){

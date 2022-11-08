@@ -1,0 +1,5 @@
+/**
+Company 데이터 이관시 is_delete 가 null인상태
+UPDATE plates.company Set is_delete ="N" WHERE is_delete =NULL
+ ...
+*/

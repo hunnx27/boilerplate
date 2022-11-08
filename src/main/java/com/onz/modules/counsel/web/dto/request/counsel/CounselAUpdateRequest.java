@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 public class CounselAUpdateRequest {
 
-    Long id;
     List<MultipartFile> files;
     private String txt;
     private Long parentCounselId;

@@ -12,9 +12,9 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CounselAAdoptRequest {
+public class
+CounselAAdoptRequest {
 
-    Long answerId;
     private String commentTxt;
     private Long parentCounselId;
     private Counsel parentCounsel;

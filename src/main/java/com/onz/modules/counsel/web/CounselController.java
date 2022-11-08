@@ -202,7 +202,7 @@ public class CounselController extends BaseApiController {
         }
     }
 
-    @Operation(summary = "상담 답변의 댓글 수정하기", description = "counsel 레코드의 answer에 작성된 답변을 수정합니다.")
+    @Operation(summary = "상담 채택하기", description = "counsel 레코드의 answer에 작성된 답변을 수정합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "상담 답변 댓글 수정 완료", content = @Content(schema = @Schema(implementation = CounselAAdoptRequest.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselAAdoptRequest.class)))
@@ -262,7 +262,7 @@ public class CounselController extends BaseApiController {
             throw e;
         }
     }
-    @Operation(summary = "11123", description = "테스트중")
+    @Operation(summary = "직업구분을 이용한 카테고리 통계", description = "직업구분을 이용한 카테고리 통계")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "접속한 계정의 포인트 조회 완료", content = @Content(schema = @Schema(implementation = PointHistoryResponse.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PointHistoryResponse.class)))

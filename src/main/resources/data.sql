@@ -579,15 +579,10 @@ VALUES (4, '4', '2022-11-02 13:21:03.031219000', 20000,
         '/Data/202211/20221102132103-5ee4ea55674950278222afb640930aca.jpg',
         7, 0, 14301, 'Y');
 
-
-INSERT INTO plates.account (id, created_at, deleted_at, is_delete, lasted_at, modified_at, gubn, birthyyyy,
-                            interest_company, interest_zone, major_department, major_school, password, `point`, `role`,
-                            sns_type, temp1, temp2, user_id, company_id, grade)
-VALUES (1, '2022-11-02 15:37:11.129017000', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-        'e7458011c47caa60555fee93c4fe4e5f', 0, 'ADMIN', 'L', 'dlghtkd1',
-        'ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff',
-        '5797448d5c775085bc82b808b9d01bb4ef795dfd05ea377d9b537d5e3495179f0b0c03f372518209db3dfbdae47c8529412ce9154dd1c5b99932cdf3b079c125',
-        NULL, NULL);
-
-
+INSERT INTO plates.account
+(id, created_at, deleted_at, is_delete, lasted_at, modified_at, gubn, birthyyyy, interest_company, interest_zone, major_department, major_school, password, `point`, `role`, sns_type, temp1, temp2, user_id, company_id, grade)
+VALUES(129, '2022-11-08 17:11:33.396843000', NULL, 'N', NULL, NULL, '', NULL, '', NULL, NULL, NULL, 'e7458011c47caa60555fee93c4fe4e5f', 0, 'ADMIN', 'L', 'dlghtkd1', 'itadmin', '31392f50b0cc1a109b11596c5d459106bf5a7448ebba719626087a542089fec73511006f8fbc3740a5fb620fbace5e6232d5ce733d97a470222b70659872b692', NULL, NULL);
+INSERT INTO plates.admin
+(id, created_at, deleted_at, is_delete, lasted_at, modified_at, last_login, name, team, account_id)
+VALUES(130, '2022-11-08 17:11:33.422845000', NULL, 'N', NULL, NULL, NULL, '이호상', 'IT', 129);
 

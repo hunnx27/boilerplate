@@ -68,9 +68,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 //                        account.getSnsType() + " account. Please use your " + account.getSnsType() +
 //                        " account to login.");
 //            }
-
-            accountRepository.save(account);
             account = updateExistingUser(account, oAuth2UserInfo);
+            account.setLastedAt(ZonedDateTime.now());
+            accountRepository.save(account);
         } else {
             // 신규 유저면 등록(Step, ID저장안함.)
             account = getNewUser(oAuth2UserRequest, oAuth2UserInfo);
@@ -87,8 +87,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 accountService.createMyPointHistories(account, PointTable.LOGIN_ATTEND);
             }
         }
-        account.setLastedAt(ZonedDateTime.now());
-        accountRepository.save(account);
+
         return UserPrincipal.create(account, oAuth2User.getAttributes());
     }
     private Account getNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
