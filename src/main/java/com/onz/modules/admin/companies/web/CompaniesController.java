@@ -90,7 +90,7 @@ public class CompaniesController {
         }
     }
 
-    @Operation(summary = "기관 정보수정요청 관리 ", description = "기관 검색 입니다...")
+    @Operation(summary = "기관 정보수정요청 목록 ", description = "기관 검색 입니다...")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
@@ -119,7 +119,7 @@ public class CompaniesController {
         }
     }
 
-    @Operation(summary = "기업 정보 수정 요청 등록", description = "요청을 등록합니다..")
+    @Operation(summary = "기업 정보 수정요청", description = "요청을 등록합니다..")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "등록 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
@@ -134,7 +134,7 @@ public class CompaniesController {
         }
     }
 
-    @Operation(summary = "기업 정보 수정", description = "수정합니다..")
+    @Operation(summary = "기업 정보 수정요청 승인", description = "수정합니다..")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "등록 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
@@ -161,7 +161,7 @@ public class CompaniesController {
             throw e;
         }
     }
-    @Operation(summary = "기업 정보 수정", description = "수정합니다..")
+    @Operation(summary = "기업 정보 추가 요청 승인", description = "수정합니다..")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "등록 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))

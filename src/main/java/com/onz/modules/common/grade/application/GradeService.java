@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -26,12 +27,12 @@ public class GradeService {
     private final GradeRepository gradeRepository;
     private final FileUtil fileUtil;
 
-    public void create(GradeCreateRequestDto gradeCreateRequestDto) {
+    public void create(GradeCreateRequestDto gradeCreateRequestDto,List<MultipartFile> iconUrl) {
         Grade grade = new Grade(gradeCreateRequestDto);
         grade.setCreateDt(ZonedDateTime.now());
-        if (gradeCreateRequestDto.getIconUrl() != null && gradeCreateRequestDto.getIconUrl().size() > 0) {
+        if (iconUrl != null && iconUrl.size() > 0) {
             try {
-                List<AttachDto> rs = fileUtil.uploadFiles(gradeCreateRequestDto.getIconUrl(), grade.getId());
+                List<AttachDto> rs = fileUtil.uploadFiles(iconUrl, grade.getId());
                 grade.setIconUrl((rs.get(0).getSaveName()));
             } catch (Exception e) {
                 e.printStackTrace();

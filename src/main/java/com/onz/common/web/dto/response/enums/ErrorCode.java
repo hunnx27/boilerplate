@@ -23,6 +23,7 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저 정보를 찾을 수 없습니다 : %s"),
     REFRESH_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "로그아웃 된 사용자입니다"),
     NOT_FOLLOW(HttpStatus.NOT_FOUND, "팔로우 중이지 않습니다"),
+    NOT_FOUND(HttpStatus.NOT_FOUND, "데이터를 찾을 수 없습니다"),
     /* 406 NOT_ACCEPTABLE : 허용되지 않은 요청값 */
 
     NOT_ACCEPTABLE(HttpStatus.NOT_ACCEPTABLE, "Not Acceptable"),

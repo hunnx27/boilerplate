@@ -298,7 +298,7 @@ public class ReviewMRepositoryExtensionImpl extends QuerydslRepositorySupport im
         // 쿼리 생성(리스트)
         JPQLQuery<ReviewMallResponseDto> result = from(interviewReview).select(
                         Projections.fields(ReviewMallResponseDto.class,
-                                Expressions.asString("COMPANY").as("type"),
+                                Expressions.asString("INTERVIEW").as("type"),
                                 interviewReview.id,
                                 interviewReview.state,
                                 interviewReview.company.interestCompany,
@@ -327,7 +327,7 @@ public class ReviewMRepositoryExtensionImpl extends QuerydslRepositorySupport im
         // 쿼리 생성(리스트)
         JPQLQuery<ReviewMallResponseDto> result = from(yearAmtReview).select(
                         Projections.fields(ReviewMallResponseDto.class,
-                                Expressions.asString("COMPANY").as("type"),
+                                Expressions.asString("AMT").as("type"),
                                 yearAmtReview.id,
                                 yearAmtReview.state,
                                 yearAmtReview.company.interestCompany,

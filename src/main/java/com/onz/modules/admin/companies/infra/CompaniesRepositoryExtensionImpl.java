@@ -6,6 +6,7 @@ import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.QAccount;
 import com.onz.modules.admin.companies.domain.Companies;
 import com.onz.modules.admin.companies.domain.QCompanies;
+import com.onz.modules.admin.companies.domain.enums.FixOption;
 import com.onz.modules.admin.companies.web.dto.*;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.company.domain.QCompany;
@@ -68,32 +69,34 @@ public class CompaniesRepositoryExtensionImpl extends QuerydslRepositorySupport 
         } else {
             where.and(company.establishmentType.eq(companiesRequestDto.getEstablishmentType()));
         }
-        if(companiesRequestDto.getCreatedAtOption().equals("기관등록일")) {
-            if (companiesRequestDto.getCreateAtA() != null) {
-                if (companiesRequestDto.getCreateAtD() != null) {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        if(companiesRequestDto.getCreatedAtOption()!=null) {
+            if (companiesRequestDto.getCreatedAtOption().equals("기관등록일")) {
+                if (companiesRequestDto.getCreateAtA() != null) {
+                    if (companiesRequestDto.getCreateAtD() != null) {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 //                String ccc = String.format(account.createdAt.toString(), "yyyy-MM-dd");
-                    ZonedDateTime aaa = ZonedDateTime.of(LocalDateTime.parse(companiesRequestDto.getCreateAtA() + " 00:00:00", formatter), ZoneId.of("Asia/Seoul"));
-                    ZonedDateTime bbb = ZonedDateTime.of(LocalDateTime.parse(companiesRequestDto.getCreateAtD() + " 23:59:59", formatter), ZoneId.of("Asia/Seoul"));
-                    where.and(company.createdAt.between(
-                            Expressions.dateTemplate(ZonedDateTime.class, "{0}", aaa),
-                            Expressions.dateTemplate(ZonedDateTime.class, "{0}", bbb)
-                    ));
+                        ZonedDateTime aaa = ZonedDateTime.of(LocalDateTime.parse(companiesRequestDto.getCreateAtA() + " 00:00:00", formatter), ZoneId.of("Asia/Seoul"));
+                        ZonedDateTime bbb = ZonedDateTime.of(LocalDateTime.parse(companiesRequestDto.getCreateAtD() + " 23:59:59", formatter), ZoneId.of("Asia/Seoul"));
+                        where.and(company.createdAt.between(
+                                Expressions.dateTemplate(ZonedDateTime.class, "{0}", aaa),
+                                Expressions.dateTemplate(ZonedDateTime.class, "{0}", bbb)
+                        ));
 
 
+                    }
                 }
-            }
-        }else if(companiesRequestDto.getCreatedAtOption().equals("기관정보업데이트일")) {
-            if (companiesRequestDto.getCreateAtA() != null) {
-                if (companiesRequestDto.getCreateAtD() != null) {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            } else if (companiesRequestDto.getCreatedAtOption().equals("기관정보업데이트일")) {
+                if (companiesRequestDto.getCreateAtA() != null) {
+                    if (companiesRequestDto.getCreateAtD() != null) {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 //                String ccc = String.format(account.createdAt.toString(), "yyyy-MM-dd");
-                    ZonedDateTime aaa = ZonedDateTime.of(LocalDateTime.parse(companiesRequestDto.getCreateAtA() + " 00:00:00", formatter), ZoneId.of("Asia/Seoul"));
-                    ZonedDateTime bbb = ZonedDateTime.of(LocalDateTime.parse(companiesRequestDto.getCreateAtD() + " 23:59:59", formatter), ZoneId.of("Asia/Seoul"));
-                    where.and(company.modifiedAt.between(
-                            Expressions.dateTemplate(ZonedDateTime.class, "{0}", aaa),
-                            Expressions.dateTemplate(ZonedDateTime.class, "{0}", bbb)
-                    ));
+                        ZonedDateTime aaa = ZonedDateTime.of(LocalDateTime.parse(companiesRequestDto.getCreateAtA() + " 00:00:00", formatter), ZoneId.of("Asia/Seoul"));
+                        ZonedDateTime bbb = ZonedDateTime.of(LocalDateTime.parse(companiesRequestDto.getCreateAtD() + " 23:59:59", formatter), ZoneId.of("Asia/Seoul"));
+                        where.and(company.modifiedAt.between(
+                                Expressions.dateTemplate(ZonedDateTime.class, "{0}", aaa),
+                                Expressions.dateTemplate(ZonedDateTime.class, "{0}", bbb)
+                        ));
+                    }
                 }
             }
         }
@@ -336,8 +339,6 @@ public class CompaniesRepositoryExtensionImpl extends QuerydslRepositorySupport 
         QCompany company = QCompany.company;
         QAccount account = QAccount.account;
         QCompanies companies = QCompanies.companies;
-
-
         // where절 정의
         BooleanBuilder where = this.getWhereFix(companiesFixRequestDto, company);
 
@@ -350,7 +351,7 @@ public class CompaniesRepositoryExtensionImpl extends QuerydslRepositorySupport 
                                 company.officeName,
                                 company.zonecode,
                                 account.userId,
-                                companies.requestEdt,
+                                companies.createDt,
                                 companies.state
                         ))
                 .where(where);
@@ -369,12 +370,13 @@ public class CompaniesRepositoryExtensionImpl extends QuerydslRepositorySupport 
         QAccount account = QAccount.account;
         BooleanBuilder where = new BooleanBuilder();
         where.and(companies.id.eq(id));
+        where.and(companies.fixOption.eq(FixOption.FIX));
         JPQLQuery<CompaniesFixDetailResponseDto> result = from(companies).select(
                         Projections.fields(CompaniesFixDetailResponseDto.class,
                                 companies.id,
                                 account.userId,
                                 account.gubn,
-                                companies.requestEdt,
+                                companies.createDt,
                                 companies.fixText,
                                 company.interestCompany,
                                 company.establishmentType,

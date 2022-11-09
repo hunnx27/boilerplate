@@ -235,8 +235,8 @@ public class CounselController extends BaseApiController {
 
     @Operation(summary = "상담 답변의 댓글을 신고하기", description = "counsel 레코드의 answer에 작성된 답변을 신고합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "상담 답변 댓글 신고 완료", content = @Content(schema = @Schema(implementation = UserPrincipal.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = UserPrincipal.class)))
+            @ApiResponse(responseCode = "200", description = "상담 답변 댓글 신고 완료", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = Long.class)))
     })
     @PostMapping("/counsel/answer/{id}/notice")
     public void noticeAnswer(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long id) {

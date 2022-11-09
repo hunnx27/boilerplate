@@ -1,5 +1,7 @@
 package com.onz.modules.counsel.application;
 
+import com.onz.common.exception.CustomException;
+import com.onz.common.web.dto.response.enums.ErrorCode;
 import com.onz.common.web.dto.response.enums.Gubn;
 import com.onz.common.web.dto.response.enums.YN;
 import com.onz.common.util.FileUtil;
@@ -233,7 +235,7 @@ public class CounselService {
     // 추천하기
     public void recommendAnswer(Long id, UserPrincipal me) {
         Account account = accountService.findOne(me.getId());
-        Counsel answerCounsel = counselRepository.findById(id).orElse(null);
+        Counsel answerCounsel = counselRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
         CounselRecommend counselRecommad = new CounselRecommend(account, answerCounsel, RecommendGubn.R);
         counselRecommendRepository.save(counselRecommad);
     }
@@ -241,7 +243,7 @@ public class CounselService {
     // 신고하기
     public void noticeAnswer(Long id, UserPrincipal me) {
         Account account = accountService.findOne(me.getId());
-        Counsel answerCounsel = counselRepository.findById(id).orElse(null);
+        Counsel answerCounsel = counselRepository.findById(id).orElseThrow(()->new CustomException(ErrorCode.NOT_FOUND));
         CounselRecommend counselRecommad = new CounselRecommend(account, answerCounsel, RecommendGubn.N);
         counselRecommendRepository.save(counselRecommad);
     }

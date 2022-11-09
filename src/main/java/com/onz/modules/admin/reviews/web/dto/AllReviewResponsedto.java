@@ -1,5 +1,6 @@
 package com.onz.modules.admin.reviews.web.dto;
 
+import com.onz.common.web.dto.response.enums.State;
 import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.review.domain.InterviewReview;
 import com.onz.modules.review.domain.InterviewReviewItem;
@@ -129,7 +130,7 @@ public class AllReviewResponsedto {
     public AllReviewResponsedto(AmtReviewResponseDto amtReviewResponseDto) {
         this.type = amtReviewResponseDto.getType();
         this.id = amtReviewResponseDto.getId();
-        this.state = amtReviewResponseDto.getState().getName();
+        this.state = amtReviewResponseDto.getState().getName()!=null?amtReviewResponseDto.getState().getName(): State.W.getName();
         this.txtAdmin = getTxtAdmin();
         this.interestCompany = amtReviewResponseDto.getInterestCompany().getDesc();
         this.establishmentType = amtReviewResponseDto.getEstablishmentType().getName();

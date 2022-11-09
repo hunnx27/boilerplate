@@ -60,7 +60,7 @@ public interface ReviewMRepository extends JpaRepository<Company, Long>, ReviewM
             "cr.item_d1 AS itemD1 , " +
             "cr.item_d2 AS itemD2 , " +
             "cr.like_code AS likeCode " +
-            "FROM company_review cr INNER JOIN company c INNER JOIN account a ON cr.company_id = c.id WHERE cr.state='W' " ;
+            "FROM company_review cr INNER JOIN company c ON cr.company_id = c.id INNER JOIN account a ON cr.account_id = a.id WHERE cr.state='W' " ;
     String FIND_TWO_ID =
             "SELECT " +
                     "'INTERVIEW' AS type, " +
@@ -114,7 +114,7 @@ public interface ReviewMRepository extends JpaRepository<Company, Long>, ReviewM
                     "NULL AS item_d1 , " +
                     "NULL AS item_d2 , " +
                     "NULL AS like_code " +
-                    "FROM interview_review ir INNER JOIN company c INNER JOIN account a ON ir.company_id = c.id  WHERE ir.state ='W' " ;
+                    "FROM interview_review ir INNER JOIN company c ON ir.company_id = c.id INNER JOIN account a ON ir.account_id = a.id  WHERE ir.state ='W' " ;
     String FIND_THR_ID =
             "SELECT " +
                     "'AMT' AS type, " +
@@ -168,6 +168,6 @@ public interface ReviewMRepository extends JpaRepository<Company, Long>, ReviewM
                     "NULL AS item_d1 , " +
                     "NULL AS item_d2 , " +
                     "NULL AS like_code " +
-                    "FROM year_amt_review yar INNER JOIN company c INNER JOIN account a ON yar.company_id = c.id  WHERE yar.state='W' ";
+                    "FROM year_amt_review yar INNER JOIN company c ON yar.company_id = c.id INNER JOIN account a ON yar.account_id = a.id  WHERE yar.state='W' ";
 
 }

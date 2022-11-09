@@ -58,7 +58,7 @@ public class AmtReviewResponseDto {
     public AmtReviewResponseDto(YearAmtReview rv) {
         this.type = "AMT";
         this.id = rv.getId();
-        this.state = rv.getState();
+        this.state = rv.getState()!=null?rv.getState():State.W;
         this.txtAdmin = rv.getApprTxt();
         this.interestCompany = rv.getCompany().getInterestCompany();
         this.establishmentType = rv.getCompany().getEstablishmentType();

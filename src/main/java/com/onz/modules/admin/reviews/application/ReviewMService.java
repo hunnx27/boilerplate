@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletResponse;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -115,6 +116,7 @@ public class ReviewMService {
                 amtReview.setState(reviewStateUpdateRequestDto.getState());
                 amtReview.setApprTxt(reviewStateUpdateRequestDto.getAdminTxt());
                 amtReview.setApprId(me.getUserId());
+                amtReview.setApprDt(ZonedDateTime.now());
                 amtReviewRepository.save(amtReview);
             }
             case "INTERVIEW":
@@ -123,6 +125,7 @@ public class ReviewMService {
                     interviewReview.setState(reviewStateUpdateRequestDto.getState());
                     interviewReview.setApprTxt(reviewStateUpdateRequestDto.getAdminTxt());
                     interviewReview.setApprId(me.getUserId());
+                    interviewReview.setApprDt(ZonedDateTime.now());
                     interviewReviewRepository.save(interviewReview);
                 }
             case "COMPANY":
@@ -131,6 +134,7 @@ public class ReviewMService {
                     companyReview.setState(reviewStateUpdateRequestDto.getState());
                     companyReview.setApprTxt(reviewStateUpdateRequestDto.getAdminTxt());
                     companyReview.setApprId(me.getUserId());
+                    companyReview.setApprDt(ZonedDateTime.now());
                     companyReviewRepository.save(companyReview);
                 }
             default:

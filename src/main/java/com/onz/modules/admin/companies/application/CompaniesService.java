@@ -5,34 +5,28 @@ import com.onz.common.web.dto.response.enums.Role;
 import com.onz.common.web.dto.response.enums.State;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
-import com.onz.modules.account.infra.AccountRepository;
-import com.onz.modules.admin.auth.application.AdminAuthService;
 import com.onz.modules.admin.companies.domain.Companies;
 import com.onz.modules.admin.companies.domain.enums.FixOption;
 import com.onz.modules.admin.companies.infra.CompaniesRepository;
 import com.onz.modules.admin.companies.web.dto.*;
 import com.onz.modules.auth.web.dto.UserPrincipal;
-import com.onz.modules.common.pointHistory.domain.enums.PointTable;
 import com.onz.modules.company.application.util.AggregateCompany;
 import com.onz.modules.company.application.util.dto.EvaluationScore;
 import com.onz.modules.company.application.util.dto.UserScore;
 import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.infra.CompanyRepository;
 import com.onz.modules.review.domain.CompanyReview;
-import com.onz.modules.review.domain.YearAmtReview;
 import com.onz.modules.review.infra.CompanyReviewRepository;
-import com.onz.modules.review.web.dto.AmtRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.servlet.http.HttpServletResponse;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -117,16 +111,20 @@ public class CompaniesService {
 
             if (company.getAgePeoples() != null && !"".equals(company.getAgePeoples())) {
                 String[] one = company.getAgePeoples().split(",");
+                List<String> list = new ArrayList<>(Arrays.asList(one));
+                if(company.getAgePeoples().split(",").length>=8){
+                    list.add("0");
+                }
                 Child child = Child.builder()
-                        .zeroAge(Long.parseLong(one.length > 1 ? one[0] : "0"))
-                        .oneAge(Long.parseLong(one.length > 1 ? one[1] : "0"))
-                        .twoAge(Long.parseLong(one.length > 1 ? one[2] : "0"))
-                        .threeAge(Long.parseLong(one.length > 1 ? one[3] : "0"))
-                        .forAge(Long.parseLong(one.length > 1 ? one[4] : "0"))
-                        .fiveAge(Long.parseLong(one.length > 1 ? one[5] : "0"))
-                        .infantMix(Long.parseLong(one.length > 1 ? one[6] : "0"))
-                        .childMix(Long.parseLong(one.length > 1 ? one[7] : "0"))
-                        .disabled(Long.parseLong(one.length > 1 ? one[8] : "0"))
+                        .zeroAge(Long.parseLong(one.length > 1 ? list.get(0) : "0"))
+                        .oneAge(Long.parseLong(one.length > 1 ? list.get(1) : "0"))
+                        .twoAge(Long.parseLong(one.length > 1 ? list.get(2) : "0"))
+                        .threeAge(Long.parseLong(one.length > 1 ? list.get(3) : "0"))
+                        .forAge(Long.parseLong(one.length > 1 ? list.get(4) : "0"))
+                        .fiveAge(Long.parseLong(one.length > 1 ? list.get(5) : "0"))
+                        .infantMix(Long.parseLong(one.length > 1 ? list.get(6) : "0"))
+                        .childMix(Long.parseLong(one.length > 1 ? list.get(7) : "0"))
+                        .disabled(Long.parseLong(one.length > 1 ? list.get(8) : "0"))
                         .build();
                 companiesDetailResponseDto.setChild(child);
 //                mpas.put("zeroage", one.length>1 ? one[0] : "0");
@@ -139,17 +137,21 @@ public class CompaniesService {
             }
             if(company.getPerItems() !=null && !"".equals(company.getPerItems())){
                 String[] two = company.getPerItems().split(",");
+                List<String> list = new ArrayList<>(Arrays.asList(two));
+                if(company.getPerItems().split(",").length>=9){
+                    list.add("0");
+                }
                 Staff staff = Staff.builder()
-                        .total(Long.parseLong(two.length > 1 ? two[0] : "0"))
-                        .director(Long.parseLong(two.length > 1 ? two[1] : "0"))
-                        .daycareT(Long.parseLong(two.length > 1 ? two[2] : "0"))
-                        .specialT(Long.parseLong(two.length > 1 ? two[3] : "0"))
-                        .healerT(Long.parseLong(two.length > 1 ? two[4] : "0"))
-                        .dietitianT(Long.parseLong(two.length > 1 ? two[5] : "0"))
-                        .nurseT(Long.parseLong(two.length > 1 ? two[6] : "0"))
-                        .nursingAide(Long.parseLong(two.length > 1 ? two[7] : "0"))
-                        .cook(Long.parseLong(two.length > 1 ? two[8] : "0"))
-                        .officeWorker(Long.parseLong(two.length > 1 ? two[9] : "0"))
+                        .total(Long.parseLong(two.length > 1 ? list.get(0) : "0"))
+                        .director(Long.parseLong(two.length > 1 ? list.get(1) : "0"))
+                        .daycareT(Long.parseLong(two.length > 1 ? list.get(2) : "0"))
+                        .specialT(Long.parseLong(two.length > 1 ? list.get(3) : "0"))
+                        .healerT(Long.parseLong(two.length > 1 ? list.get(4) : "0"))
+                        .dietitianT(Long.parseLong(two.length > 1 ? list.get(5) : "0"))
+                        .nurseT(Long.parseLong(two.length > 1 ? list.get(6) : "0"))
+                        .nursingAide(Long.parseLong(two.length > 1 ? list.get(7) : "0"))
+                        .cook(Long.parseLong(two.length > 1 ? list.get(8) : "0"))
+                        .officeWorker(Long.parseLong(two.length > 1 ? list.get(9) : "0"))
                         .build();
                 companiesDetailResponseDto.setStaff(staff);
             }

@@ -12,38 +12,67 @@ import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @Setter
-@Getter
 public class ReviewMallResponseDto {
-
+    @Getter
     private String type;
+    @Getter
     private Long id;
-    private String state;
-    private String interestCompany;
-    private String establishmentTypeValue;
-    private String companyName;
+
+    private State state;
+    private String stateName;
+    private InterestCompany interestCompany;
+    private String interestCompanyName;
+    private EstablishmentType establishmentType;
+    private String establishmentTypeValueName;
+    @Getter
+    private String officeName;
+    @Getter
     private String userId;
-    private String createdAt;
-    private String apprDt;
+    private ZonedDateTime createdAt;
+    private String createdAtStr;
+    private ZonedDateTime apprDt;
+    private String apprDtStr;
+    @Getter
     private String zonecode;
+    @Getter
     private String apprId;
+    @Getter
     private String apprTxt;
 
-    public ReviewMallResponseDto(String type, Long id, String state, String interestCompany, String establishmentTypeValue, String companyName, String userId, String createdAt, String apprDt, String zonecode, String apprId, String apprTxt) {
-        this.type = type;
-        this.id = id;
-        this.state = state;
-        this.interestCompany = interestCompany;
-        this.establishmentTypeValue = establishmentTypeValue;
-        this.companyName = companyName;
-        this.userId = userId;
-        this.createdAt = createdAt;
-        this.apprDt = apprDt;
-        this.zonecode = zonecode;
-        this.apprId = apprId;
-        this.apprTxt = apprTxt;
+    public String getInterestCompany() {
+        String interestCompanyName = this.interestCompany.getDesc();
+        if(this.interestCompany !=null && this.interestCompanyName==null){
+            interestCompanyName=this.interestCompany.getDesc();
+        }return interestCompanyName;
     }
-
-
+    public String getState() {
+        String stateName = this.state.getName();
+        if(this.state !=null && this.stateName==null){
+            stateName=this.state.getName();
+        }return stateName;
+    }
+    public String getEstablishmentType() {
+        String establishmentTypeName = this.establishmentType.getName();
+        if(this.establishmentType !=null&& this.establishmentTypeValueName==null){
+            establishmentTypeName = this.establishmentType.getName();
+        }return establishmentTypeName;
+    }
+    public String getCreatedAt(){
+        String createdAtStr = "";
+        if(this.createdAt!=null){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            createdAtStr = this.createdAt.format(formatter);
+        }
+        return createdAtStr;
+    }
+    public String getApprDt(){
+        String apprTxt = "";
+        if(this.apprDt!=null){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            apprTxt = this.apprDt.format(formatter);
+        }
+        return apprTxt;
+    }
 /*
 순서 맞춰야함!!!!! 생성자에 들어오는 매개변수 순서 주의!
  */

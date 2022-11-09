@@ -11,8 +11,6 @@ import java.time.ZonedDateTime;
 @Setter
 @NoArgsConstructor
 public class CommonCodeInitRequestDto {
-
-    private Long id;
     private String code;
     private String codeSebu;
     private String codeName;

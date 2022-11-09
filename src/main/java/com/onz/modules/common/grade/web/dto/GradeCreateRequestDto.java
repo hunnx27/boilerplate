@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 public class GradeCreateRequestDto {
     private String grade;
-    private List<MultipartFile> iconUrl;
     private Long startTot;
     private Long endTot;
     private Long replayRate;

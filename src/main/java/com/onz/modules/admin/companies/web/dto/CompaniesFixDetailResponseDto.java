@@ -15,7 +15,7 @@ public class CompaniesFixDetailResponseDto {
     private Long id;
     private String userId;
     private Gubn gubn;
-    private ZonedDateTime requestEdt;
+    private ZonedDateTime createDt;
     private String fixText;
     //기관정보탭
     private InterestCompany interestCompany;
