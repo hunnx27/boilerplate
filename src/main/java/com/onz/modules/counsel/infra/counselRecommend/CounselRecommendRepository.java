@@ -1,8 +1,12 @@
 package com.onz.modules.counsel.infra.counselRecommend;
 
 
+import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.domain.CounselRecommend;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface CounselRecommendRepository extends JpaRepository<CounselRecommend, Long>,
         CounselRecommendRepositoryExtension {

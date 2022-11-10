@@ -1,5 +1,6 @@
 package com.onz.modules.review.infra;
 
+import com.onz.common.web.dto.response.enums.State;
 import com.onz.modules.review.domain.QYearAmtReview;
 import com.onz.modules.review.domain.YearAmtReview;
 import com.onz.modules.company.web.dto.reponse.YearAmtListResponseDto;
@@ -28,6 +29,7 @@ public class AmtReviewRepositoryExtensionImpl extends QuerydslRepositorySupport 
         QYearAmtReview qYearAmtReview = QYearAmtReview.yearAmtReview;
         BooleanBuilder where = new BooleanBuilder();
         String zoneCode = findEstaRequestDto.getSido() + findEstaRequestDto.getGungu();
+        where.and(qYearAmtReview.state.eq(State.A));
         if (qYearAmtReview.company.zonecode != null) {
             if (findEstaRequestDto.getSido() != null) {
                 //sido가 널이 아닐떄
@@ -43,16 +45,20 @@ public class AmtReviewRepositoryExtensionImpl extends QuerydslRepositorySupport 
             }
         }
         if (qYearAmtReview.company.establishmentType != null) {
-            if (findEstaRequestDto.getEstablishmentType().name().equals("all")) {
-                //all
-            } else {
-                where.and(qYearAmtReview.company.establishmentType.eq(findEstaRequestDto.getEstablishmentType()));
+            if(findEstaRequestDto.getEstablishmentType()!=null) {
+                if (findEstaRequestDto.getEstablishmentType().name().equals("all")) {
+                    //all
+                } else {
+                    where.and(qYearAmtReview.company.establishmentType.eq(findEstaRequestDto.getEstablishmentType()));
+                }
             }
         }
         if (qYearAmtReview.company.interestCompany != null) {
-            if (findEstaRequestDto.getInterestCompany().name().equals("all")) {
-            } else {
-                where.and(qYearAmtReview.company.interestCompany.eq(findEstaRequestDto.getInterestCompany()));
+            if(findEstaRequestDto.getInterestCompany()!=null) {
+                if (findEstaRequestDto.getInterestCompany().name().equals("all")) {
+                } else {
+                    where.and(qYearAmtReview.company.interestCompany.eq(findEstaRequestDto.getInterestCompany()));
+                }
             }
         }
 

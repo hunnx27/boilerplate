@@ -1,5 +1,6 @@
 package com.onz.modules.review.infra;
 
+import com.onz.common.web.dto.response.enums.State;
 import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.review.domain.CompanyReview;
 import com.onz.modules.review.domain.*;
@@ -29,6 +30,7 @@ public class CompanyReviewRepositoryExtensionImpl extends QuerydslRepositorySupp
     public List<CompanyReviewListResponseDto> listCompanyReview(FindEstaRequestDto findEstaRequestDto, Pageable pageable) {
         QCompanyReview qCompanyReview = QCompanyReview.companyReview;
         BooleanBuilder where = new BooleanBuilder();
+        where.and(qCompanyReview.state.eq(State.A));
         String zoneCode = findEstaRequestDto.getSido() + findEstaRequestDto.getGungu();
         if (qCompanyReview.company.zonecode != null) {
             if (findEstaRequestDto.getSido() != null) {
@@ -45,16 +47,20 @@ public class CompanyReviewRepositoryExtensionImpl extends QuerydslRepositorySupp
             }
         }
         if (qCompanyReview.company.establishmentType != null) {
-            if (findEstaRequestDto.getEstablishmentType().name().equals("all")) {
-                //all
-            } else {
-                where.and(qCompanyReview.company.establishmentType.eq(findEstaRequestDto.getEstablishmentType()));
+            if(findEstaRequestDto.getEstablishmentType()!=null) {
+                if (findEstaRequestDto.getEstablishmentType().name().equals("all")) {
+                    //all
+                } else {
+                    where.and(qCompanyReview.company.establishmentType.eq(findEstaRequestDto.getEstablishmentType()));
+                }
             }
         }
         if (qCompanyReview.company.interestCompany != null) {
-            if (findEstaRequestDto.getInterestCompany().name().equals("all")) {
-            } else {
-                where.and(qCompanyReview.company.interestCompany.eq(findEstaRequestDto.getInterestCompany()));
+            if(findEstaRequestDto.getInterestCompany()!=null) {
+                if (findEstaRequestDto.getInterestCompany().name().equals("all")) {
+                } else {
+                    where.and(qCompanyReview.company.interestCompany.eq(findEstaRequestDto.getInterestCompany()));
+                }
             }
         }
 

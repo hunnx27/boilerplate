@@ -98,6 +98,7 @@ public class YearAmtReview extends BaseEntity {
         this.endAtmYn = amtRequestDto.getEndAtmYn();
         this.etcYn = amtRequestDto.getEtcYn();
         this.etcAmt = amtRequestDto.getEtcAmt();
+        this.state=State.W;
         this.etcItems = amtRequestDto.getEtcItems();
         this.company=company;
         this.zonecode=company.getZonecode();

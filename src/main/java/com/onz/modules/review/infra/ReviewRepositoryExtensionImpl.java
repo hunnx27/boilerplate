@@ -50,7 +50,7 @@ public class ReviewRepositoryExtensionImpl extends QuerydslRepositorySupport imp
 //        String query = FIND_ALL_IDS;
         // 기관리뷰
         String query1 = FIND_ONE_IDS;
-        String where1 = "";
+        String where1 = " AND cr.state= A ";
         Map<String, Object> params = new HashMap<>();
         if (findEstaRequestDto.getSido()!=null) {
             //전체검색 시도가 11,22 일떄
@@ -88,7 +88,7 @@ public class ReviewRepositoryExtensionImpl extends QuerydslRepositorySupport imp
         query1 += where1;
         // 인터뷰리뷰
         String query2 = FIND_TWO_IDS;
-        String where2 = "";
+        String where2 = " AND ir.state= A ";
         if (findEstaRequestDto.getSido()!=null) {
             //전체검색 시도가 11,22 일떄
             if (findEstaRequestDto.getGungu() == null) {//군구가 널이라면 11  11000          }
@@ -125,7 +125,7 @@ public class ReviewRepositoryExtensionImpl extends QuerydslRepositorySupport imp
         query2 += where2;
         // 연봉리뷰
         String query3 = FIND_THR_IDS;
-        String where3 = "";
+        String where3 = " AND yar.state = A ";
         if (findEstaRequestDto.getSido()!=null) {
             //전체검색 시도가 11,22 일떄
             if (findEstaRequestDto.getGungu() == null) {//군구가 널이라면 11  11000          }

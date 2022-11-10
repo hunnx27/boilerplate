@@ -14,6 +14,7 @@ import com.onz.modules.common.pointHistory.domain.enums.PointTable;
 import com.onz.modules.company.web.dto.reponse.CounselSearchCountDto;
 import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.domain.CounselRecommend;
+import com.onz.modules.counsel.domain.enums.CounselState;
 import com.onz.modules.counsel.domain.enums.QnaGubn;
 import com.onz.modules.counsel.domain.enums.QnaItem;
 import com.onz.modules.counsel.domain.enums.RecommendGubn;
@@ -34,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.onz.modules.common.pointHistory.domain.enums.PointTable.COUNCEL_SELECT;
@@ -236,16 +238,30 @@ public class CounselService {
     public void recommendAnswer(Long id, UserPrincipal me) {
         Account account = accountService.findOne(me.getId());
         Counsel answerCounsel = counselRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
-        CounselRecommend counselRecommad = new CounselRecommend(account, answerCounsel, RecommendGubn.R);
-        counselRecommendRepository.save(counselRecommad);
-    }
+        if(answerCounsel!=null){
+            List<CounselRecommend>counselRecommends = counselRecommendRepository.findRecommendCheck(id,me.getId());
+            if(counselRecommends.isEmpty()){
+                CounselRecommend counselRecommend = new CounselRecommend(account,answerCounsel,RecommendGubn.R);
+                counselRecommendRepository.save(counselRecommend);
+            }else {
+                throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
+            }
+        }
 
+    }
     // 신고하기
     public void noticeAnswer(Long id, UserPrincipal me) {
         Account account = accountService.findOne(me.getId());
         Counsel answerCounsel = counselRepository.findById(id).orElseThrow(()->new CustomException(ErrorCode.NOT_FOUND));
-        CounselRecommend counselRecommad = new CounselRecommend(account, answerCounsel, RecommendGubn.N);
-        counselRecommendRepository.save(counselRecommad);
+        if(answerCounsel!=null){
+            List<CounselRecommend>counselRecommends = counselRecommendRepository.findRecommendCheckN(id,me.getId());
+            if(counselRecommends.isEmpty()){
+                CounselRecommend counselRecommad = new CounselRecommend(account, answerCounsel, RecommendGubn.N);
+                counselRecommendRepository.save(counselRecommad);
+            }else {
+                throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
+            }
+        }
     }
 
     /**

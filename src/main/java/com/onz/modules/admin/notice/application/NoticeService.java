@@ -88,7 +88,8 @@ public class NoticeService {
     public ResponseEntity noticeSearchDelete(Long id, UserPrincipal me) {
         Notice notice = noticeRepository.getById(id);
         if(notice.getAccount().getUserId().equals(me.getUserId())) {
-            noticeRepository.delete(notice);
+            notice.setUseYn(YN.N);
+            noticeRepository.save(notice);
         }
         return null;
     }

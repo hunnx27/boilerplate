@@ -1,5 +1,6 @@
 package com.onz.modules.review.infra;
 
+import com.onz.common.web.dto.response.enums.State;
 import com.onz.modules.review.domain.InterviewReview;
 import com.onz.modules.review.web.dto.FindEstaRequestDto;
 import com.onz.modules.company.domain.Company;
@@ -25,7 +26,7 @@ public class InterviewReviewRepositoryExtensionImpl extends QuerydslRepositorySu
     public List<InterviewListResponseDto> ListInterview(FindEstaRequestDto findEstaRequestDto, Pageable pageable) {
         QInterviewReview qInterviewReview = QInterviewReview.interviewReview;
         BooleanBuilder where = new BooleanBuilder();
-
+        where.and(qInterviewReview.state.eq(State.A));
         String zoneCode = findEstaRequestDto.getSido() + findEstaRequestDto.getGungu();
         if (qInterviewReview.company.zonecode != null) {
             if (findEstaRequestDto.getSido() != null) {
@@ -42,16 +43,20 @@ public class InterviewReviewRepositoryExtensionImpl extends QuerydslRepositorySu
             }
         }
         if (qInterviewReview.company.establishmentType != null) {
-            if (findEstaRequestDto.getEstablishmentType().name().equals("all")) {
-                //all
-            } else {
-                where.and(qInterviewReview.company.establishmentType.eq(findEstaRequestDto.getEstablishmentType()));
+            if(findEstaRequestDto.getEstablishmentType()!=null) {
+                if (findEstaRequestDto.getEstablishmentType().name().equals("all")) {
+                    //all
+                } else {
+                    where.and(qInterviewReview.company.establishmentType.eq(findEstaRequestDto.getEstablishmentType()));
+                }
             }
         }
         if (qInterviewReview.company.interestCompany != null) {
-            if (findEstaRequestDto.getInterestCompany().name().equals("all")) {
-            } else {
-                where.and(qInterviewReview.company.interestCompany.eq(findEstaRequestDto.getInterestCompany()));
+            if(findEstaRequestDto.getInterestCompany()!=null) {
+                if (findEstaRequestDto.getInterestCompany().name().equals("all")) {
+                } else {
+                    where.and(qInterviewReview.company.interestCompany.eq(findEstaRequestDto.getInterestCompany()));
+                }
             }
         }
 
