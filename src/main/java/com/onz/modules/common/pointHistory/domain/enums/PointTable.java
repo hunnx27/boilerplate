@@ -24,5 +24,5 @@ public enum PointTable {
     ;
     String code;
     String codeName;
-    int amt;
+    Integer amt;
 }

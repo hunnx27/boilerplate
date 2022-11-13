@@ -15,7 +15,7 @@ import javax.persistence.Embeddable;
 public class PointInfo {
     @Convert(converter = PointTableConverter.class)
     private PointTable code;
-    private long totAmt;
+    private Integer totAmt;
     private int amt;
     private String description;
 

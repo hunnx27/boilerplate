@@ -10,6 +10,7 @@ import com.onz.modules.account.web.dto.request.AccountMyinfoUpdateRequest;
 import com.onz.modules.account.web.dto.request.AccountUpdateRequest;
 import com.onz.common.domain.BaseEntity;
 import com.onz.modules.admin.auth.web.dto.AdminCreateRequestDto;
+import com.onz.modules.admin.notice.domain.enums.DeviceGubn;
 import com.onz.modules.auth.application.util.MD5Utils;
 import com.onz.modules.auth.application.util.MysqlAESUtil;
 import com.onz.modules.auth.application.util.MysqlSHA2Util;
@@ -38,12 +39,14 @@ public class Account extends BaseEntity {
     @NotNull
     @Column(unique = true)
     private String userId;
+    private String snsId;
     @JsonIgnore
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private String deviceId;
     //@Enumerated(EnumType.STRING)
     @Convert(converter = AuthProviderConverter.class)
     private AuthProvider snsType = AuthProvider.local;
@@ -52,8 +55,7 @@ public class Account extends BaseEntity {
     @Convert(converter = GubnConverter.class)
     private Gubn gubn = Gubn.PARENT;
 
-    private long point;
-
+    private Integer point;
 
     @Embedded
     private Myinfo myinfo; // 내정보
@@ -62,6 +64,11 @@ public class Account extends BaseEntity {
     @JoinColumn(name = "companyId", nullable = true)
     private Company company;
 
+
+    private String deviceGubn ;//기기옵션
+
+    private String pushYn;
+    private String noticeYn;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "grade",nullable = true)

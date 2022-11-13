@@ -38,7 +38,7 @@ public class LiveMemberDetailResponse {
      
     private String majorDepartment; //출신학과
 
-//    private String interestTag;
+    private String interestTag;
 
     //--- PUSH ---//
 

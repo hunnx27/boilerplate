@@ -33,7 +33,7 @@ spring:
     init:
 #      mode: never; # always/embedded/never #FIXME 최초실행시 always로 실행(기초데이터입력)
       mode: never
-#      data-locations: classpath:company_data.sql
+      data-locations: classpath:company_data.sql
 #      schema-locations: classpath:schema.sql
 
   config:

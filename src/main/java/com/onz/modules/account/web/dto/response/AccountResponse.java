@@ -19,7 +19,7 @@ public class AccountResponse {
     private String userId;
     private Role role;
     private AuthProvider snsType;
-    private long point;
+    private Integer point;
     private Gubn gubn;
     private Myinfo myinfo;
     private YN isDelete;

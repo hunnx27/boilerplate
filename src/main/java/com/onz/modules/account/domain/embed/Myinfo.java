@@ -24,14 +24,18 @@ public class Myinfo {
 
     private String majorDepartment; // 학과
 
+    private String interestTag; //관심태그
+
+
     public Myinfo() {
     }
 
-    public Myinfo(InterestCompany interestCompany, String interestZone, String birthYYYY, String majorSchool, String majorDepartment) {
+    public Myinfo(InterestCompany interestCompany, String interestZone, String birthYYYY, String majorSchool, String majorDepartment,String interestTag) {
         this.interestCompany = interestCompany;
         this.interestZone = interestZone;
         this.birthYYYY = birthYYYY;
         this.majorSchool = majorSchool;
         this.majorDepartment = majorDepartment;
+        this.interestTag=interestTag;
     }
 }

@@ -14,5 +14,6 @@ public class AccountMyinfoUpdateRequest {
     private String birthYYYY; // 생년
     private String majorSchool; // 출신 학교
     private String majorDepartment; // 학과
+    private String interestTag;
 
 }

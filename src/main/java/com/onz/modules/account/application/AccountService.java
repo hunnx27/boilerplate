@@ -106,7 +106,7 @@ public class AccountService {
     public Account getNewUser(SignupRequest signupRequest) {
         Account user = Account.builder()
                 .userId(signupRequest.getSocialId())
-                .gubn(Gubn.of(signupRequest.getGubnCode()))
+                .gubn(signupRequest.getGubnCode()!=null? Gubn.of(signupRequest.getGubnCode()):null)
                 .provider(AuthProvider.of(signupRequest.getSnsTypeCode()))
                 .role(Role.USER)
                 .grade(gradeRepository.findByGrade("1"))
