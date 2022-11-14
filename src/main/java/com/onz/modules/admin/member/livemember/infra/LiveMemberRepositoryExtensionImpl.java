@@ -1,5 +1,6 @@
 package com.onz.modules.admin.member.livemember.infra;
 
+import com.onz.common.web.dto.response.enums.Role;
 import com.onz.common.web.dto.response.enums.State;
 import com.onz.common.exception.CustomException;
 import com.onz.modules.account.domain.Account;
@@ -171,6 +172,7 @@ public class LiveMemberRepositoryExtensionImpl extends QuerydslRepositorySupport
                 }
             }
         }
+        where.and(account.role.eq(Role.USER));
         //goe 이상 loe 이하
         return where;
     }

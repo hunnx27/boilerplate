@@ -581,8 +581,8 @@ VALUES (4, '4', '2022-11-02 13:21:03.031219000', 20000,
 
 INSERT INTO plates.account
 (id, created_at, deleted_at, is_delete, lasted_at, modified_at, gubn, birthyyyy, interest_company, interest_zone, major_department, major_school, password, `point`, `role`, sns_type, temp1, temp2, user_id, company_id, grade)
-VALUES(129, '2022-11-08 17:11:33.396843000', NULL, 'N', NULL, NULL, '', NULL, '', NULL, NULL, NULL, 'e7458011c47caa60555fee93c4fe4e5f', 0, 'ADMIN', 'L', 'dlghtkd1', 'itadmin', '31392f50b0cc1a109b11596c5d459106bf5a7448ebba719626087a542089fec73511006f8fbc3740a5fb620fbace5e6232d5ce733d97a470222b70659872b692', NULL, NULL);
+VALUES(1, '2022-11-08 17:11:33.396843000', NULL, 'N', NULL, NULL, '', NULL, '', NULL, NULL, NULL, 'e7458011c47caa60555fee93c4fe4e5f', 0, 'ADMIN', 'L', 'dlghtkd1', 'itadmin', '31392f50b0cc1a109b11596c5d459106bf5a7448ebba719626087a542089fec73511006f8fbc3740a5fb620fbace5e6232d5ce733d97a470222b70659872b692', NULL, NULL);
 INSERT INTO plates.admin
 (id, created_at, deleted_at, is_delete, lasted_at, modified_at, last_login, name, team, account_id)
-VALUES(130, '2022-11-08 17:11:33.422845000', NULL, 'N', NULL, NULL, NULL, '이호상', 'IT', 129);
+VALUES(130, '2022-11-08 17:11:33.422845000', NULL, 'N', NULL, NULL, NULL, '이호상', 'IT', 1);
 

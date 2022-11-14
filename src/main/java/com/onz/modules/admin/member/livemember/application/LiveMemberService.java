@@ -9,6 +9,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.streaming.SXSSFCell;
+import org.apache.poi.xssf.streaming.SXSSFRow;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -131,13 +135,24 @@ public class LiveMemberService {
         //전체회원을 받아온다
         List<LiveMemberResponseDto> liveMemberListResult = liveMemberRepository.findByLiveMember(liveMemberRequestDto);
 
-        Workbook wb = new XSSFWorkbook();
-
-
+        SXSSFWorkbook wb = new SXSSFWorkbook(100);
+        wb.setCompressTempFiles(true);
         String[] headerStrings = {"회원구분","ID(메일주소)","SNS타입","포인트","리뷰","연봉","면접","상담(질문)","상담(답변)","가입일"};
+        SXSSFSheet sheet = (SXSSFSheet) wb.createSheet();
+        // 행
+        SXSSFRow row = null;
+        // 셀
+        SXSSFCell cell = null;
+        // 셀 헤더 카운트
+        int index2 = 0;
+        // 행 카운트
+        row = sheet.createRow(0);
+        for(String head : headerStrings ) {
+            cell = row.createCell(index2++);
+            cell.setCellValue(head);
+        }
 
-        Sheet sheet = wbSetting(headerStrings,wb);
-
+        sheet.setRandomAccessWindowSize(100);
         Row bodyRow = null;
         Cell bodyCell = null;
         int index = 1;
@@ -145,13 +160,13 @@ public class LiveMemberService {
         for (LiveMemberResponseDto liveMemberResponseDto : liveMemberListResult) {
             bodyRow = sheet.createRow(index++);
             bodyCell = bodyRow.createCell(0);
-            bodyCell.setCellValue(liveMemberResponseDto.getGubnName());
+            bodyCell.setCellValue(liveMemberResponseDto.getGubnName()==null?"":liveMemberResponseDto.getGubnName());
             bodyCell = bodyRow.createCell(1);
-            bodyCell.setCellValue(liveMemberResponseDto.getUserId());
+            bodyCell.setCellValue(liveMemberResponseDto.getUserId()==null?"":liveMemberResponseDto.getUserId());
             bodyCell = bodyRow.createCell(2);
-            bodyCell.setCellValue(liveMemberResponseDto.getSnsTypeName());
+            bodyCell.setCellValue(liveMemberResponseDto.getSnsTypeName()==null?"":liveMemberResponseDto.getSnsTypeName());
             bodyCell = bodyRow.createCell(3);
-            bodyCell.setCellValue(liveMemberResponseDto.getPoint());
+            bodyCell.setCellValue(liveMemberResponseDto.getPoint()==null?0:liveMemberResponseDto.getPoint());
             bodyCell = bodyRow.createCell(4);
             bodyCell.setCellValue(liveMemberResponseDto.getCompanyReviewCnt());
             bodyCell = bodyRow.createCell(5);
@@ -163,11 +178,11 @@ public class LiveMemberService {
             bodyCell = bodyRow.createCell(8);
             bodyCell.setCellValue(liveMemberResponseDto.getCounselACnt());
             bodyCell = bodyRow.createCell(9);
-            bodyCell.setCellValue(liveMemberResponseDto.getCreatedAt());
+            bodyCell.setCellValue(liveMemberResponseDto.getCreatedAt()==null?"":liveMemberResponseDto.getCreatedAt());
         }
 
         for (int i=0; i<headerStrings.length; i++){
-            sheet.autoSizeColumn(i);
+            sheet.trackAllColumnsForAutoSizing();
             sheet.setColumnWidth(i, (sheet.getColumnWidth(i))+(short)1024);
         }
         getFile(wb,response);

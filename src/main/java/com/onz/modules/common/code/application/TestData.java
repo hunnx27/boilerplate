@@ -1,6 +1,7 @@
 package com.onz.modules.common.code.application;
 
 import com.onz.common.web.dto.response.enums.YN;
+import com.onz.modules.account.application.AccountService;
 import com.onz.modules.common.code.domain.CommonCode;
 import com.onz.modules.common.code.infra.CommonJRepository;
 import com.onz.modules.common.code.infra.CommonRepository;
@@ -22,11 +23,10 @@ public class TestData {
     public static Map<String, Map<String,Object>> hi= new HashMap<>();
     private final CommonCodeSerivce commonCodeSerivce;
     private final CommonJRepository commonJRepository;
-
+    private final AccountService accountService;
     @PostConstruct
     public void init(){
         List<CommonCode> commonCode = commonJRepository.findAllByCode("SC");
-
         commonCode.stream().map(res->{
 //            if(res.getCodeSebu().charAt(0) == 'A'){
             if(res.getUseYn()!=null && res.getUseYn().equals(YN.Y)) {

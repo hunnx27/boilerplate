@@ -1,5 +1,6 @@
 package com.onz;
 
+import com.onz.modules.account.application.AccountService;
 import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.infra.CompanyRepository;
 import org.springframework.boot.SpringApplication;

@@ -106,7 +106,7 @@ public class AccountService {
     public Account getNewUser(SignupRequest signupRequest) {
         Account user = Account.builder()
                 .userId(signupRequest.getSocialId())
-                .gubn(signupRequest.getGubnCode()!=null? Gubn.of(signupRequest.getGubnCode()):null)
+                .gubn(signupRequest.getGubnCode() != null ? Gubn.of(signupRequest.getGubnCode()) : null)
                 .provider(AuthProvider.of(signupRequest.getSnsTypeCode()))
                 .role(Role.USER)
                 .grade(gradeRepository.findByGrade("1"))
@@ -126,7 +126,9 @@ public class AccountService {
     public void createMyPointHistories(Account account, PointTable pointTable) {
 //        Account account = accountRepository.findById(id).orElseGet(null);
 //        if(account != null){
-        updateGrade(account);
+        if (account.getPoint() != null) {
+            updateGrade(account);
+        }
         pointHistoryRepository.save(new PointHistory(account, pointTable));
 //        }
     }
@@ -139,14 +141,14 @@ public class AccountService {
         List<PointHistoryResponse> rs = pageList.get().map(PointHistoryResponse::new).collect(Collectors.toList());
         return new PageImpl<>(rs);
     }
-    public void updateGrade(Account account){
+
+    public void updateGrade(Account account) {
         Grade temp = gradeRepository.pointCheck(account);
         //Grade grade = gradeRepository.findByCode(temp);
-        if(!temp.getGrade().equals(account.getGrade().getGrade())) {
+        if (!temp.getGrade().equals(account.getGrade().getGrade())) {
             account.setGrade(temp);
             accountRepository.save(account);
         }
     }
-
 
 }

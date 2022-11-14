@@ -31,6 +31,9 @@ public class PointHistory extends BaseEntity {
     @Builder
     public PointHistory(Account account, PointTable pointTable) {
         this.account = account;
+        if(account.getPoint()==null&&pointTable.equals(PointTable.WELCOME_JOIN)){
+            account.setPoint(0);
+        }
         PointInfo pointinfo = new PointInfo(pointTable, account);
         this.pointInfo = pointinfo;
     }

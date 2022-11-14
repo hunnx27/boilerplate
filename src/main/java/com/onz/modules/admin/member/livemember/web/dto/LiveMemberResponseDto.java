@@ -26,7 +26,7 @@ public class LiveMemberResponseDto {
 
 
     @Getter
-    private Long point;
+    private Integer point;
 
     private ZonedDateTime createdAt;
 
@@ -41,7 +41,7 @@ public class LiveMemberResponseDto {
     @Getter
     private long counselACnt;
     @Getter
-    private String code;
+    private String grade;
 //    @Getter
 //    private long totalCompanyReviewCnt;
 //    @Getter

@@ -16,7 +16,7 @@ public class PointInfo {
     @Convert(converter = PointTableConverter.class)
     private PointTable code;
     private Integer totAmt;
-    private int amt;
+    private Integer amt;
     private String description;
 
 
