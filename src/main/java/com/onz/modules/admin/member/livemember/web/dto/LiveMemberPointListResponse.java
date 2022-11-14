@@ -14,12 +14,12 @@ public class LiveMemberPointListResponse {
     @Getter
     private ZonedDateTime createdAt;
     @Getter
-    private int amt;
+    private Integer amt;
 
     private PointTable code;
 
     @Getter
-    private long totAmt;
+    private Integer totAmt;
 
     private String codeName;
 

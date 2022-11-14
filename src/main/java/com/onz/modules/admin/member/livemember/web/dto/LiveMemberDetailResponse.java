@@ -52,7 +52,7 @@ public class LiveMemberDetailResponse {
     // total point 와 잔여포인트 개념 설계 다시 해야함
     private Integer ordersHistory;
 
-    private Long point;
+    private Integer point;
 
     //--- 기관 팔로잉 ---//
      
@@ -106,7 +106,7 @@ public class LiveMemberDetailResponse {
     /*
     String fromSchool, String major, String interestTag, YN notification, YN notificationNotice , Long totalPoint,Long stateA
      */
-    public LiveMemberDetailResponse(ZonedDateTime createdAt, Gubn gubn, AuthProvider snsType, String userId, ZonedDateTime modifiedAt, InterestCompany interestCompany, String interestZone,Integer ordersHistory, Long point, Long daycare, Long kinder, Long madeReview,
+    public LiveMemberDetailResponse(ZonedDateTime createdAt, Gubn gubn, AuthProvider snsType, String userId, ZonedDateTime modifiedAt, InterestCompany interestCompany, String interestZone,Integer ordersHistory, Integer point, Long daycare, Long kinder, Long madeReview,
                                     Long madeAmt, Long madeInterview, Long madeQCounselR, Long madeQCounselA, Long madeACounsel,
                                     Long reviewStateW, Long reviewStateR,Long reviewStateA
                                     ,Long amtStateW,Long amtStateR,Long amtStateA,

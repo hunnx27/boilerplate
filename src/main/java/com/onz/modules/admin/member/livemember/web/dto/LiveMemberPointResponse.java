@@ -15,9 +15,9 @@ public class LiveMemberPointResponse {
     // total point 와 잔여포인트 개념 설계 다시 해야함
     private Integer ordersHistory;
 
-    private Long point;
+    private Integer point;
 
-    public LiveMemberPointResponse(Integer ordersHistory, Long point) {
+    public LiveMemberPointResponse(Integer ordersHistory, Integer point) {
         this.ordersHistory = ordersHistory;
         this.point = point;
     }

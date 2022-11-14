@@ -14,7 +14,7 @@ public class LiveMemberExcelRequestDto {
     private Gubn gubn;
     private String userId;
     private AuthProvider snsType;
-    private long point;
+    private Integer point;
     private long companyReviewCnt;
     private long interviewReviewCnt;
     private long amtReviewCnt;

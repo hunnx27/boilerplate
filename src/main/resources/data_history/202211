@@ -3,7 +3,21 @@ Company 데이터 이관시 is_delete 가 null인상태
 UPDATE plates.company Set is_delete ="N" WHERE is_delete =NULL
  ...
 */
+/**
+Account 이관
+INSERT INTO plates.account
+( id, created_at, deleted_at, is_delete, lasted_at, modified_at, device_gubn,
+device_id, gubn, birthyyyy, interest_company, interest_tag, interest_zone,
+major_department, major_school, notice_yn, password, `point`, push_yn, `role`,
+sns_id, sns_type, temp1, temp2, user_id, company_id, grade)
+Select id,created_at ,deleted_at ,is_delete ,lasted_at ,modified_at
+,device_gubn ,device_id ,gubn ,birthyyyy ,interest_company , interest_tag
+,interest_zone
+,major_department ,major_school ,notice_yn ,password , `point`, push_yn ,NULL
+,sns_id ,sns_type,temp1 ,null ,user_id ,null ,null
+from plates.NewTable where 1=1;
 
+*/
 /**
 Account 데이터 이관시 Role USER
 UPDATE plates.account Set `role` ="USER" WHERE 1=1
