@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 public enum ProcessT {
     W("Wait", "승인대기"),
     A("Accept", "접수"),
-    R("Reject", "처리완료")
+    C("Complete", "처리완료")
     ;
     private static final Map<String, String> CODE_MAP = Collections.unmodifiableMap(
             Stream.of(values()).collect(Collectors.toMap(ProcessT::getCode, ProcessT::name)));

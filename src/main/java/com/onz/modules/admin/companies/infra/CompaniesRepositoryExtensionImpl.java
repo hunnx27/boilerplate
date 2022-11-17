@@ -333,9 +333,7 @@ public class CompaniesRepositoryExtensionImpl extends QuerydslRepositorySupport 
     @Override
     public List<CompaniesFixResponseDto> findByCompaniesFixList(CompaniesFixRequestDto companiesFixRequestDto, Pageable pageable) {
         // Q클래스 정의
-        QCompanyReview companyReview = QCompanyReview.companyReview;
-        QInterviewReview interviewReview = QInterviewReview.interviewReview;
-        QYearAmtReview amtReview = QYearAmtReview.yearAmtReview;
+
         QCompany company = QCompany.company;
         QAccount account = QAccount.account;
         QCompanies companies = QCompanies.companies;
@@ -352,7 +350,7 @@ public class CompaniesRepositoryExtensionImpl extends QuerydslRepositorySupport 
                                 company.zonecode,
                                 account.userId,
                                 companies.createDt,
-                                companies.state
+                                companies.process
                         ))
                 .where(where);
         JPQLQuery<CompaniesFixResponseDto> query = getQuerydsl().applyPagination(pageable, result);
@@ -383,7 +381,7 @@ public class CompaniesRepositoryExtensionImpl extends QuerydslRepositorySupport 
                                 company.officeName,
                                 company.zonecode,
                                 companies.apprId,
-                                companies.state,
+                                companies.process,
                                 companies.apprTxt
                         )
                 )

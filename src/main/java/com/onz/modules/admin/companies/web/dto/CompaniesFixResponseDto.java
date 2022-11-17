@@ -1,6 +1,7 @@
 package com.onz.modules.admin.companies.web.dto;
 
 import com.onz.common.web.dto.response.enums.InterestCompany;
+import com.onz.common.web.dto.response.enums.ProcessT;
 import com.onz.common.web.dto.response.enums.State;
 import com.onz.modules.company.domain.enums.EstablishmentType;
 import lombok.Getter;
@@ -29,10 +30,11 @@ public class CompaniesFixResponseDto {
     private String userId;
     //요청일
 
-    private ZonedDateTime requestEdt;
+    private ZonedDateTime createDt;
+
     private String requestEdtStr;
 
-    private State state;
+    private ProcessT process;
     private String stateName;
 
     public String getInterestCompany() {
@@ -48,18 +50,18 @@ public class CompaniesFixResponseDto {
             establishmentTypeName = this.establishmentType.getName();
         }return establishmentTypeName;
     }
-    public String getRequestEdt(){
+    public String getCreateDt(){
         String requestEdtStr = "";
-        if(this.requestEdt!=null){
+        if(this.createDt!=null){
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            requestEdtStr = this.requestEdt.format(formatter);
+            requestEdtStr = this.createDt.format(formatter);
         }
         return requestEdtStr;
     }
-    public String getState(){
+    public String getProcess(){
         String isDeleteN ="";
-        if(this.state!=null&& this.stateName==null){
-            isDeleteN=this.state.name();
+        if(this.process!=null&& this.stateName==null){
+            isDeleteN=this.process.name();
         }return isDeleteN;
     }
 }

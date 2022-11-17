@@ -2,6 +2,7 @@ package com.onz.modules.admin.companies.web.dto;
 
 import com.onz.common.web.dto.response.enums.Gubn;
 import com.onz.common.web.dto.response.enums.InterestCompany;
+import com.onz.common.web.dto.response.enums.ProcessT;
 import com.onz.common.web.dto.response.enums.State;
 import com.onz.modules.company.domain.enums.EstablishmentType;
 import lombok.Getter;
@@ -24,6 +25,6 @@ public class CompaniesFixDetailResponseDto {
     private String zonecode;
     //처리현황
     private String apprId;
-    private State state;
+    private ProcessT process;
     private String apprTxt;
 }
