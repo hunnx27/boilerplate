@@ -15,6 +15,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 
 @Getter
@@ -24,7 +25,7 @@ import java.time.ZonedDateTime;
 public class YearAmtReview extends BaseEntity {
     @Id
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JsonBackReference

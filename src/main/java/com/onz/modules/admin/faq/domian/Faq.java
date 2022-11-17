@@ -19,7 +19,7 @@ import java.time.ZonedDateTime;
 @Entity
 public class Faq {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String userId;
     @Enumerated(EnumType.STRING)

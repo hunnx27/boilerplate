@@ -1,8 +1,10 @@
 package com.onz.modules.review.infra;
 
 import com.onz.modules.company.domain.Company;
+import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.review.domain.dto.ReviewAllDto;
 import com.onz.modules.review.web.dto.FindEstaRequestDto;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -50,7 +52,7 @@ public class ReviewRepositoryExtensionImpl extends QuerydslRepositorySupport imp
 //        String query = FIND_ALL_IDS;
         // 기관리뷰
         String query1 = FIND_ONE_IDS;
-        String where1 = " AND cr.state= A ";
+        String where1 = " AND cr.state= 'A' AND cr.company_id != -1 AND cr.account_id != -1 ";
         Map<String, Object> params = new HashMap<>();
         if (findEstaRequestDto.getSido()!=null) {
             //전체검색 시도가 11,22 일떄
@@ -88,7 +90,7 @@ public class ReviewRepositoryExtensionImpl extends QuerydslRepositorySupport imp
         query1 += where1;
         // 인터뷰리뷰
         String query2 = FIND_TWO_IDS;
-        String where2 = " AND ir.state= A ";
+        String where2 = " AND ir.state= 'A' AND ir.company_id != -1 AND ir.account_id != -1 ";
         if (findEstaRequestDto.getSido()!=null) {
             //전체검색 시도가 11,22 일떄
             if (findEstaRequestDto.getGungu() == null) {//군구가 널이라면 11  11000          }
@@ -125,7 +127,7 @@ public class ReviewRepositoryExtensionImpl extends QuerydslRepositorySupport imp
         query2 += where2;
         // 연봉리뷰
         String query3 = FIND_THR_IDS;
-        String where3 = " AND yar.state = A ";
+        String where3 = " AND yar.state = 'A' AND yar.company_id != -1 AND yar.account_id != -1  ";
         if (findEstaRequestDto.getSido()!=null) {
             //전체검색 시도가 11,22 일떄
             if (findEstaRequestDto.getGungu() == null) {//군구가 널이라면 11  11000          }
@@ -164,11 +166,15 @@ public class ReviewRepositoryExtensionImpl extends QuerydslRepositorySupport imp
         String query = query1 + " UNION ALL " + query2 + " UNION ALL " + query3 + " ORDER BY createdAt DESC ";
 //        String query = query1;
         Query nativequery = em
-                .createNativeQuery(query, "reviewUnion");
+                .createNativeQuery(query, "reviewUnion")
+                .setFirstResult(pageable.getPageNumber() * pageable.getPageSize())
+                .setMaxResults(pageable.getPageSize());
+
 
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             nativequery.setParameter(entry.getKey(), entry.getValue());
         }
+
         List<ReviewAllDto> resultList = nativequery.getResultList();
 //        resultList.stream().map(res -> {
 //            if (res.getZonecode() != null) {

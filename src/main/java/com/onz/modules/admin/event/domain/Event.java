@@ -23,7 +23,7 @@ import java.util.List;
 @Entity
 public class Event {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; //아이디
 
     private String title; // 이벤트명

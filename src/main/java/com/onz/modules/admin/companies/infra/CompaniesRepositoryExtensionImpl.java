@@ -370,7 +370,7 @@ public class CompaniesRepositoryExtensionImpl extends QuerydslRepositorySupport 
         QAccount account = QAccount.account;
         BooleanBuilder where = new BooleanBuilder();
         where.and(companies.id.eq(id));
-        where.and(companies.fixOption.eq(FixOption.FIX));
+        where.and(companies.fixOption.eq(FixOption.F));
         JPQLQuery<CompaniesFixDetailResponseDto> result = from(companies).select(
                         Projections.fields(CompaniesFixDetailResponseDto.class,
                                 companies.id,

@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Entity
 public class CounselComment extends BaseEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "id", name="answer_counsel_id")

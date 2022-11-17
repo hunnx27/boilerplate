@@ -22,7 +22,7 @@ import java.time.ZonedDateTime;
 public class Notice {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -26,7 +26,7 @@ import java.util.List;
 public class InterviewReview extends BaseEntity {
     @Id
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     //모의수업 인덱스 1,3

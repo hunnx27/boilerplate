@@ -1,5 +1,6 @@
 package com.onz.modules.admin.companies.web.dto;
 
+import com.onz.common.web.dto.response.enums.ProcessT;
 import com.onz.common.web.dto.response.enums.State;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CompaniesFixUpdateRequestDto {
-    private State state;
+    private ProcessT process;
     private String adminTxt;
 }
 //    modi_dt	처리날자

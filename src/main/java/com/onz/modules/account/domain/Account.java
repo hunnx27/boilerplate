@@ -33,7 +33,7 @@ import java.util.Objects;
 public class Account extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull

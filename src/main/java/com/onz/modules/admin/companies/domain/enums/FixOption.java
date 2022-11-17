@@ -10,8 +10,8 @@ import java.util.stream.Stream;
 @Getter
 @AllArgsConstructor
 public enum FixOption {
-    ADD("A", "추가"),
-    FIX("F", "수정");
+    A("ADD", "추가"),
+    F("FIX", "수정");
 
     private String code;
     private String name;

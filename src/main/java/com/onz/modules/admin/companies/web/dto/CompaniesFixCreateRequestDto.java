@@ -13,6 +13,6 @@ import java.time.ZonedDateTime;
 @Setter
 @NoArgsConstructor
 public class CompaniesFixCreateRequestDto {
-    private Long companyId;
     private String fixText;
+    private Long companyId;
 }

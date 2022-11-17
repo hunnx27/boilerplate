@@ -95,7 +95,7 @@ public class ReviewResponseDto extends ReviewCommonResponseDto{
         this.itemTest2 = reviewAll.getItem_2()!=null&&"Y".equals(reviewAll.getItem_2())? "O" : "X";
         this.itemTest3 = reviewAll.getItem_3()!=null&&"Y".equals(reviewAll.getItem_3())? "O" : "X";
         if(reviewAll.getItem_5()!=null) {
-            String test = String.valueOf(reviewAll.getItem_5().charAt(3));
+            String test = String.valueOf(reviewAll.getItem_5());
             switch (test) {
                 case "1":
                     this.itemMood = "여유";

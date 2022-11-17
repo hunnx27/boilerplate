@@ -99,7 +99,7 @@ import java.util.List;
 public class Company extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Convert(converter = InterestCompanyConverter.class)
     private InterestCompany interestCompany;

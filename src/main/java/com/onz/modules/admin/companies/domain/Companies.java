@@ -1,6 +1,7 @@
 package com.onz.modules.admin.companies.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.onz.common.web.dto.response.enums.ProcessT;
 import com.onz.common.web.dto.response.enums.State;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.admin.companies.domain.enums.FixOption;
@@ -22,53 +23,46 @@ import java.time.ZonedDateTime;
 public class Companies {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     //Account 에서 받아오기
+
     @CreationTimestamp
     @Column(updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private ZonedDateTime createDt;
+
     private String fixText;
-    private String userId;
     //기관정보
     //company에서 받아오기
 
     //처리현황 adminid는 account에서 받아오기
     private String apprId;
+
     @Enumerated(EnumType.STRING)
-    private State state;
+    private ProcessT process;
+
     private String apprTxt;
     private ZonedDateTime apprDt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "accountId")
     private Account account;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "companyId")
     private Company company;
 
     @Enumerated(EnumType.STRING)
     private FixOption fixOption;
-    @Builder
-    public Companies(Long id, String fixText, String apprId, State state, String apprTxt, Account account, Company company,String userId,FixOption fixOption) {
-        this.id = id;
+
+    @Builder(builderMethodName = "CompanyB")
+    public Companies(String fixText , ProcessT process, Company company, Account account,FixOption fixOption) {
         this.fixText = fixText;
-        this.apprId = apprId;
-        this.state = state;
-        this.apprTxt = apprTxt;
+        this.process=process;
         this.account = account;
-        this.company = company;
-        this.userId=userId;
+        this.company =company;
         this.fixOption=fixOption;
-    }
-    @Builder
-    public Companies(String fixText,State state,Account account,ZonedDateTime createDt,FixOption fixOption){
-        this.fixText=fixText;
-        this.state=state;
-        this.account=account;
-        this.createDt=createDt;
-        this.fixOption= fixOption;
     }
 
     public Companies(Companies companies) {
@@ -78,7 +72,9 @@ public class Companies {
         this.apprId = companies.getApprId();
         this.apprTxt = companies.getApprTxt();
         this.account = companies.getAccount();
+        this.company=companies.getCompany();
         this.company = companies.getCompany();
+        this.process= companies.getProcess();
     }
 
 

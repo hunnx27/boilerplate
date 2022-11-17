@@ -27,7 +27,7 @@ import java.time.ZonedDateTime;
 public class CommonCode {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
     @Column(unique = true)
     private Long id;

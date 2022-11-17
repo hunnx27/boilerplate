@@ -12,7 +12,6 @@ import java.time.ZonedDateTime;
 @Setter
 @NoArgsConstructor
 public class CompaniesCreateRequestDto {
-
     private String txt;
 
 }

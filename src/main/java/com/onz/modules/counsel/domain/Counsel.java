@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @Entity
 public class Counsel extends BaseEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Convert(converter = GubnConverter.class)
     private Gubn gubn = Gubn.PARENT;

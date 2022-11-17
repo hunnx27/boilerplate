@@ -248,8 +248,12 @@ public class ReviewService {
                 Map<String, String> map = new HashMap<>();
                 for (int i = 0; i < one.length; i++) {
                     String key = one[i];
-                    String value = two[i];
-
+                    String value ;
+                    try {
+                        value = two[i];
+                    }catch (ArrayIndexOutOfBoundsException e) {
+                        value = "0";
+                    }
 
                     map.put(key, value);
                     total += Integer.parseInt(value);
