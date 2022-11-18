@@ -26,6 +26,7 @@ public class CounselComment extends BaseEntity {
     private Account account;
     @Convert(converter = GubnConverter.class)
     private Gubn gubn;
+
     private String txt;
 
 
