@@ -4,11 +4,16 @@ import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
 import com.onz.modules.admin.companies.web.dto.CompaniesResponseDto;
 import com.onz.modules.admin.event.application.EventService;
+import com.onz.modules.admin.event.domain.EventItem;
 import com.onz.modules.admin.event.web.dto.EventCreateRequestDto;
+import com.onz.modules.admin.event.web.dto.EventInitUserCRequestDto;
+import com.onz.modules.admin.event.web.dto.EventItemListResponseDto;
 import com.onz.modules.admin.event.web.dto.EventSearchRequestDto;
 import com.onz.modules.admin.notice.web.dto.NoticeRequestDto;
 import com.onz.modules.admin.notice.web.dto.NoticeSearchRequestDto;
 import com.onz.modules.auth.web.dto.UserPrincipal;
+import com.onz.modules.follower.web.dto.FollowerFindCompanyResponseDto;
+import com.onz.modules.review.web.dto.AmtRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,9 +23,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -34,10 +43,11 @@ public class EventController {
             @ApiResponse(responseCode = "200", description = "등록 완료", content = @Content(schema = @Schema(implementation = EventCreateRequestDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = EventCreateRequestDto.class)))
     })
-    @PostMapping("/admin/event")
-    public void create(@AuthenticationPrincipal UserPrincipal me, EventCreateRequestDto eventCreateRequestdto) {
+    @PostMapping(value = "/admin/event",consumes = {MediaType.APPLICATION_JSON_VALUE,
+            MediaType.MULTIPART_FORM_DATA_VALUE})
+    public void create(@AuthenticationPrincipal UserPrincipal me, EventCreateRequestDto eventCreateRequestdto ,@RequestPart (value = "files", required = false) List<MultipartFile> files) {
         try {
-            eventService.create(eventCreateRequestdto, me);
+            eventService.create(eventCreateRequestdto, me, files);
             ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
         } catch (Exception e) {
             throw e;
@@ -76,9 +86,9 @@ public class EventController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
     })
     @PutMapping("/admin/event/{id}")
-    public ResponseEntity<ApiR<?>> eventSearchDetailfix(@PathVariable Long id, EventCreateRequestDto eventCreateRequestDto, @AuthenticationPrincipal UserPrincipal me) {
+    public ResponseEntity<ApiR<?>> eventSearchDetailfix(@PathVariable Long id, EventCreateRequestDto eventCreateRequestDto, @AuthenticationPrincipal UserPrincipal me,List<MultipartFile> files) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(eventService.eventSearchDetailfix(id,eventCreateRequestDto,me)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(eventService.eventSearchDetailfix(id,eventCreateRequestDto,me,files)));
         } catch (CustomException e) {
             throw e;
         }
@@ -93,6 +103,34 @@ public class EventController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(eventService.eventSearchDelete(id,me)));
         } catch (CustomException e) {
+            throw e;
+        }
+    }
+
+    @Operation(summary = "이벤트 참여  ", description = " 이벤트 삭제 입니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
+    })
+    @PostMapping("/event/{id}")
+    public void eventInitUser(Long id, @AuthenticationPrincipal UserPrincipal me, EventInitUserCRequestDto eventInitUserCRequestDto){
+        try{
+            eventService.eventInitUser(id,me,eventInitUserCRequestDto);
+        }catch (CustomException e){
+            throw e;
+        }
+    }
+
+    @Operation(summary = "이벤트 참여자 조회", description = "참가자를 검색합니다..")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "팔로우 검색 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
+    })
+    @GetMapping("/event/{id}")
+    public List<EventItemListResponseDto> eventAccountList(@PathVariable Long id) {
+        try {
+            return eventService.eventAccountList(id);
+        } catch (Exception e) {
             throw e;
         }
     }

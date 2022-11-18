@@ -12,8 +12,6 @@ import java.util.List;
 
 @Data
 public class EventCreateRequestDto {
-    List<MultipartFile> files;
-
     private String startDt;
     private String endDt;
     private String deviceGubn;

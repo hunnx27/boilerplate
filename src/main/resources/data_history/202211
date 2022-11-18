@@ -258,3 +258,34 @@ WHERE cs.qna_gubn ="Q"
 
 
 */
+
+/*
+
+INSERT INTO event_item
+(
+id,account_id,event_id  ,answer  ,phone  ,create_dt  ,chu  ,temp
+)
+SELECT nt.idx_no ,IFNULL((SELECT id from account a where a.user_id  = nt.id),-1),IFNULL((SELECT id from event e where e.id  = nt.gubn),-1)
+,nt.answer ,nt.phone ,create_dt,nt.chu ,nt.temp
+FROM NewTable nt
+WHERE 1=1
+
+update event
+set submit_popup_location =
+        case  submit_popup_location
+            when '0' then concat(null)
+            else submit_popup_location
+        end
+
+update event
+set button_landing =
+        case  button_landing
+            when '0' then concat(null)
+            else button_landing
+        end
+
+INSERT INTO plates.event
+(button_landing, content, create_dt, device_gubn, end_dt, facebook_landing_url, img_url, landing_url, notice_id, popup_show_option, start_dt, submit_popup, submit_popup_location, title, use_yn)
+VALUES(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"삭제된 이벤트","N");
+
+**/

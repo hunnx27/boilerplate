@@ -1,5 +1,6 @@
 package com.onz.modules.admin.event.infra;
 
+import com.onz.common.web.dto.response.enums.YN;
 import com.onz.modules.admin.event.domain.QEvent;
 import com.onz.modules.admin.event.web.dto.EventSearchRequestDto;
 import com.onz.modules.admin.event.web.dto.EventSearchResponseDto;
@@ -40,6 +41,7 @@ public class EventRepositoryExtensionImpl  extends QuerydslRepositorySupport imp
                                     QEvent event) {
 
         BooleanBuilder where = new BooleanBuilder();
+        where.and(event.useYn.eq(YN.valueOf(YN.Y.name())));
         if(eventSearchRequestDto.getTxt()!=null){
             where.and(event.content.contains(eventSearchRequestDto.getTxt()));
             where.or(event.title.contains(eventSearchRequestDto.getTxt()));
