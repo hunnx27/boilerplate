@@ -59,7 +59,24 @@ public class ReviewController extends BaseApiController {
             throw e;
         }
     }
-
+    /*
+    모든 내 리뷰 보기
+     */
+    @Operation(summary = "내가 작성한 리뷰 ", description = "모든 종류의 리뷰를 검색합니다...")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = ReviewResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = ReviewResponseDto.class)))
+    })
+    @GetMapping("/reviews/my")
+    public ResponseEntity<ApiR<?>> findByAllMyReview( @AuthenticationPrincipal UserPrincipal me,
+                                                    @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
+                                                            Pageable pageable) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(reviewService.findByAllMyReview(me,pageable)));
+        } catch (Exception e) {
+            throw e;
+        }
+    }
     /*
     AMT
      */

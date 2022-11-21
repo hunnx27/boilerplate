@@ -90,7 +90,18 @@ public class CounselService {
         List<CounselListResponse> result = list.stream().map(counsel -> new CounselListResponse(counsel, account)).collect(Collectors.toList());
         return result;
     }
-
+    public List<CounselListResponse> myqList(Pageable pageable, UserPrincipal me,String option) {
+        Account account = accountService.findOne(me.getId());
+        List<Counsel> list = counselRepository.findMyqCounselList(account,pageable,option);
+        List<CounselListResponse> result = list.stream().map(counsel -> new CounselListResponse(counsel, account)).collect(Collectors.toList());
+        return result;
+    }
+    public List<CounselListResponse> myaList(Pageable pageable, UserPrincipal me,String option) {
+        Account account = accountService.findOne(me.getId());
+        List<Counsel> list = counselRepository.findMyaCounselList(account,pageable,option);
+        List<CounselListResponse> result = list.stream().map(counsel -> new CounselListResponse(counsel, account)).collect(Collectors.toList());
+        return result;
+    }
     public CounselDetailResponse detail(Long id, UserPrincipal me) {
         Counsel counsel = counselRepository.findById(id).orElse(null);
         CounselDetailResponse result = null;

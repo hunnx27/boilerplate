@@ -1,6 +1,7 @@
 package com.onz.modules.review.application;
 
 import com.onz.common.web.dto.response.enums.YN;
+import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.review.domain.dto.ReviewAllDto;
 import com.onz.modules.review.infra.CompanyReviewRepository;
 import com.onz.modules.review.infra.InterviewReviewRepository;
@@ -286,6 +287,58 @@ public class ReviewService {
         return array;
     }
 
+    public List<ReviewResponseDto> findByAllMyReview(UserPrincipal me, Pageable pageable) {
+        List<ReviewAllDto> list = reviewRepository.findByAllMyReview(me, pageable);
+//        List<ReviewAll>  >> List<ReviewResponseDto>
+        List<ReviewResponseDto> array = list.stream().map(res -> {
+            ReviewResponseDto aaa = new ReviewResponseDto(res);
+
+            aaa.setImpCost(res.getImpCost());
+            if (res.getEtcItems() != null && !"".equals(res.getEtcItems())) {
+                System.out.println(res.getId());
+                String[] one = res.getEtcItems().split(",");
+                String[] two = res.getEtcAmt().split(",");
+                int total = 0;
+                Map<String, String> map = new HashMap<>();
+                for (int i = 0; i < one.length; i++) {
+                    String key = one[i];
+                    String value ;
+                    try {
+                        value = two[i];
+                    }catch (ArrayIndexOutOfBoundsException e) {
+                        value = "0";
+                    }
+
+                    map.put(key, value);
+                    total += Integer.parseInt(value);
+
+                    switch (key) {
+                        case "1":
+                            aaa.setImpCost(value);
+                            break;
+                        case "2":
+                            aaa.setWorkCost(value);
+                            break;
+                        case "3":
+                            aaa.setAddCost(value);
+                            break;
+                        case "4":
+                            aaa.setEtcCost(value);
+                            break;
+                    }
+                    aaa.setTotalCost((long) total);
+                }
+            }
+            List<DistinctAddressResponse> addressList = addressRepository.findDistinctBySigunguCode(res.getZonecode());
+            if (addressList.size() > 0) {
+                DistinctAddressResponse address = addressList.get(0);
+                String mapsidogunguName = address.getSidoName() + " " + address.getSigunguName();
+                aaa.setMapsidogunguName(mapsidogunguName);
+            }
+            return aaa;
+        }).collect(Collectors.toList());
+        return array;
+    }
 
     public void create(Company company) {
         companyRepository.save(company);

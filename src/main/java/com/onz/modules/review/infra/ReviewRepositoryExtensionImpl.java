@@ -1,5 +1,6 @@
 package com.onz.modules.review.infra;
 
+import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.company.domain.Company;
 import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.review.domain.dto.ReviewAllDto;
@@ -254,5 +255,52 @@ public class ReviewRepositoryExtensionImpl extends QuerydslRepositorySupport imp
         //em.createQuery(query, RESPONSE_DTO.class)
 //        for(Object o : r)
 //        {
+    }
+
+    public List<ReviewAllDto> findByAllMyReview(UserPrincipal me, Pageable pageable) {
+        //FIND_ALL_IDS
+//        String query = FIND_ALL_IDS;
+        // 기관리뷰
+        String query1 = FIND_ONE_IDS;
+        String where1 = " AND cr.state= 'A' AND cr.company_id != -1 AND cr.account_id != -1 ";
+        Map<String, Object> params = new HashMap<>();
+            if(me.getUserId()!=null){
+                where1 += " AND cr.account_id = :inter ";
+                params.put("inter",me.getId());
+            }
+        query1 += where1;
+        // 인터뷰리뷰
+        String query2 = FIND_TWO_IDS;
+        String where2 = " AND ir.state= 'A' AND ir.company_id != -1 AND ir.account_id != -1 ";
+        if(me.getUserId()!=null){
+            where2 += " AND ir.account_id = :inter ";
+            params.put("inter",me.getId());
+        }
+        query2 += where2;
+        // 연봉리뷰
+        String query3 = FIND_THR_IDS;
+        String where3 = " AND yar.state = 'A' AND yar.company_id != -1 AND yar.account_id != -1  ";
+        if(me.getUserId()!=null){
+            where3 += " AND yar.account_id = :inter ";
+            params.put("inter",me.getId());
+        }
+        query3 += where3;
+
+        String query = query1 + " UNION ALL " + query2 + " UNION ALL " + query3 + " ORDER BY createdAt DESC ";
+//        String query = query1;
+        Query nativequery = em
+                .createNativeQuery(query, "reviewUnion")
+                .setFirstResult(pageable.getPageNumber() * pageable.getPageSize())
+                .setMaxResults(pageable.getPageSize());
+
+
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            nativequery.setParameter(entry.getKey(), entry.getValue());
+        }
+
+        List<ReviewAllDto> resultList = nativequery.getResultList();
+
+
+        return resultList;
     }
 }

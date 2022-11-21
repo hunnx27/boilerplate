@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CounselState {
     R("Ready", "답변요청"),
-    A("Adopted","답변완료")
+    A("Adopted","채택")
     ;
 
     String code;

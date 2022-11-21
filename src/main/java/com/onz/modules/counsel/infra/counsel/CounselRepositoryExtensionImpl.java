@@ -1,6 +1,7 @@
 package com.onz.modules.counsel.infra.counsel;
 
 import com.onz.common.web.dto.response.enums.YN;
+import com.onz.modules.account.domain.Account;
 import com.onz.modules.counsel.domain.Counsel;
 import com.onz.modules.counsel.domain.QCounsel;
 import com.onz.modules.counsel.domain.enums.CounselState;
@@ -9,6 +10,9 @@ import com.onz.modules.counsel.domain.enums.QnaItem;
 import com.onz.modules.counsel.web.dto.request.counsel.CounselSearchRequest;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Pageable;
@@ -74,6 +78,77 @@ public class CounselRepositoryExtensionImpl extends QuerydslRepositorySupport im
         return fetchResults.getResults();
     }
 
+    @Override
+    public List<Counsel> findMyqCounselList(Account account, Pageable pageable,String option) {
+        QCounsel counsel = QCounsel.counsel;
+        QCounsel childCounsel = new QCounsel("childCounsel");
+        BooleanBuilder where = new BooleanBuilder();
+        where.and(counsel.account.id.eq(account.getId()));
+        where.and(counsel.qnaGubn.eq(QnaGubn.Q));
+        switch (option){
+            case "ALL":
+                break;
+            case "A":
+                where.and(counsel.counselState.eq(CounselState.A));
+                where.and(
+                        JPAExpressions
+                                .select(childCounsel.count())
+                                .from(childCounsel)
+                                .where(childCounsel.parentCounsel.id.eq(counsel.id))
+                                .gt(0L));
+                break;
+            case "R":
+                where.and(counsel.counselState.eq(CounselState.R));
+                where.and(
+                        JPAExpressions
+                                .select(childCounsel.count())
+                                .from(childCounsel)
+                                .where(childCounsel.parentCounsel.id.eq(counsel.id))
+                                .gt(0L));
+                break;
+            case"N":
+               where.and(
+
+                               JPAExpressions
+                                       .select(childCounsel.count())
+                                       .from(childCounsel)
+                                       .where(childCounsel.parentCounsel.id.eq(counsel.id))
+                                       .eq(0L));
+            default:
+                break;
+        }
+        where.and(counsel.isDelete.eq(YN.N));
+        JPQLQuery<Counsel> result = from(counsel).where(where);
+        JPQLQuery<Counsel> query = getQuerydsl().applyPagination(pageable, result);
+        QueryResults<Counsel> fetchResults = query.fetchResults();
+        return fetchResults.getResults();
+    }
+    @Override
+    public List<Counsel> findMyaCounselList(Account account, Pageable pageable,String option){
+        QCounsel counsel = QCounsel.counsel;
+        BooleanBuilder where = new BooleanBuilder();
+        where.and(counsel.account.id.eq(account.getId()));
+        where.and(counsel.qnaGubn.eq(QnaGubn.A));
+        switch (option){
+            case "ALL":
+                break;
+            case "A": //채택
+                where.and(counsel.counselState.eq(CounselState.A));
+                break;
+            case "R"://완료
+                where.and(counsel.parentCounsel.counselState.eq(CounselState.A));
+                break;
+            case"N"://진행중
+                where.and(counsel.parentCounsel.counselState.eq(CounselState.R));
+            default:
+                break;
+        }
+        where.and(counsel.isDelete.eq(YN.N));
+        JPQLQuery<Counsel> result = from(counsel).where(where);
+        JPQLQuery<Counsel> query = getQuerydsl().applyPagination(pageable, result);
+        QueryResults<Counsel> fetchResults = query.fetchResults();
+        return fetchResults.getResults();
+    }
     @Override
     public long countAdoptedAnswer(Long answerId, Long accountId) {
         QCounsel counsel = QCounsel.counsel;

@@ -72,6 +72,36 @@ public class CounselController extends BaseApiController {
         }
     }
 
+    @Operation(summary = "내가 작성한 상담질문 목록 조회", description = "변수를 이용하여 counsel 레코드를 생성합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "상담 목록 조회 완료", content = @Content(schema = @Schema(implementation = CounselListResponse.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselListResponse.class)))
+    })
+    @GetMapping("/counsel/my/q")
+    public ResponseEntity<ApiR<?>> myqList(@AuthenticationPrincipal UserPrincipal me, Pageable pageable,String option) {
+        try {
+            List<CounselListResponse> result = counselService.myqList(pageable, me,option);
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(result));
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+
+    @Operation(summary = "내가 작성한 상담답변 목록 조회", description = "변수를 이용하여 counsel 레코드를 생성합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "상담 목록 조회 완료", content = @Content(schema = @Schema(implementation = CounselListResponse.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselListResponse.class)))
+    })
+    @GetMapping("/counsel/my/a")
+    public ResponseEntity<ApiR<?>> myaList(@AuthenticationPrincipal UserPrincipal me, Pageable pageable,String option) {
+        try {
+            List<CounselListResponse> result = counselService.myaList(pageable, me,option);
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(result));
+        } catch (Exception e) {
+            throw e;
+        }
+    }
     @Operation(summary = "상담 조회", description = "변수를 이용하여 counsel 레코드를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "상담 조회 완료", content = @Content(schema = @Schema(implementation = CounselDetailResponse.class))),
