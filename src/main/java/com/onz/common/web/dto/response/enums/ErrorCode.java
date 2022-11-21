@@ -25,7 +25,7 @@ public enum ErrorCode {
     NOT_FOLLOW(HttpStatus.NOT_FOUND, "팔로우 중이지 않습니다"),
     NOT_FOUND(HttpStatus.NOT_FOUND, "데이터를 찾을 수 없습니다"),
     /* 406 NOT_ACCEPTABLE : 허용되지 않은 요청값 */
-
+    NOT_REQUESTED_SATISFIABLE(HttpStatus.REQUESTED_RANGE_NOT_SATISFIABLE, "요청을 충족할 수 없습니다. 잘못된 요청입니다"),
     NOT_ACCEPTABLE(HttpStatus.NOT_ACCEPTABLE, "Not Acceptable"),
 
     /* 409 CONFLICT : Resource 의 현재 상태와 충돌. 보통 중복된 데이터 존재 */

@@ -69,6 +69,9 @@ public class CounselService {
 
     public void create(CounselQCreateRequest counselQCreateRequest, UserPrincipal me) {
         Account account = accountService.findOne(me.getId());
+        if(counselQCreateRequest.getTxt().equals("null")||counselQCreateRequest.getInterestCompanyName()==null||counselQCreateRequest.getQnaItem()==null){
+            throw new CustomException(ErrorCode.NOT_REQUESTED_SATISFIABLE);
+        }
         Counsel counsel = new Counsel(counselQCreateRequest, account);
         accountService.createMyPointHistories(account, PointTable.COUNCEL_QUESTION_REGIST);
         Counsel saved = counselRepository.save(counsel);
@@ -82,6 +85,7 @@ public class CounselService {
                 e.printStackTrace();
             }
         }
+
     }
 
     public List<CounselListResponse> list(CounselSearchRequest counselSearchRequest, Pageable pageable, UserPrincipal me) {
