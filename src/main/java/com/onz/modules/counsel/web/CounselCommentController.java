@@ -2,6 +2,7 @@ package com.onz.modules.counsel.web;
 
 import com.onz.common.web.ApiR;
 import com.onz.common.web.BaseApiController;
+import com.onz.modules.account.domain.Account;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.counsel.domain.CounselComment;
 import com.onz.modules.counsel.web.dto.request.counselComment.CounselCommentCreateRequest;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -60,13 +62,9 @@ public class CounselCommentController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselCommentCreateRequest.class)))
     })
     @PostMapping("/counsel/comment")
-    public void createComment(@AuthenticationPrincipal UserPrincipal me, CounselCommentCreateRequest counselCommentCreateRequest) {
-        try {
-            counselCommentService.create(counselCommentCreateRequest, me);
-            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
-        }catch (Exception e){
-            throw e;
-        }
+    public ResponseEntity<?> createComment(@AuthenticationPrincipal UserPrincipal me, @RequestBody @Validated CounselCommentCreateRequest counselCommentCreateRequest) {
+        return ResponseEntity.ok().body(counselCommentService.create(counselCommentCreateRequest, me));
+
     }
 
     @Operation(summary = "상담 답변 댓글 수정하기", description = "N번째 상담에 작성된 답글 수정하기.")

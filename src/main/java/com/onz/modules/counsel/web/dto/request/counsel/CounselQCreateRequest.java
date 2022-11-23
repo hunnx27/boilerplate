@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -15,11 +19,13 @@ import java.util.List;
 @NoArgsConstructor
 public class CounselQCreateRequest {
 
-    List<MultipartFile> files;
     private String addedTagData;
+    @NotNull(message="반드시 입력해야 합니다.")
     private InterestCompany interestCompanyName; // 관심 기관
     private String relatedZone;
+    @NotNull(message="반드시 입력해야 합니다.")
     private QnaItem qnaItem;
+    @NotNull(message="반드시 입력해야 합니다.")
     private String txt;
     private YN shortOpenYn;
 

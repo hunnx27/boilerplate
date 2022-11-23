@@ -41,12 +41,6 @@ public class InterviewService {
         Long companyId = interviewRequestDto.getCompanyId();
         Account account = accountService.findOne(me.getId());
         Company company = companyRepository.findById(companyId).orElse(null);
-//        List<InterviewResponseDto> interviews=InterviewReview;
-//        for(InterviewResponseDto interview : interviews){
-//            InterviewReviews interviewReviews = new InterviewReviews().getInterviewReview();
-//            // ..save()
-//        }
-
         InterviewReview interviewReview = new InterviewReview(interviewRequestDto, company,account);
         InterviewReview mom = interviewReviewRepository.save(interviewReview);
         accountService.createMyPointHistories(account, PointTable.INTERVIEW_REGIST);

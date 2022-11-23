@@ -45,7 +45,7 @@ public class UserLoginService {
     private final JwtProvider jwtProvider;
 
 
-    public ResponseEntity<ApiR<?>> login(HttpServletResponse response, @RequestBody LoginRequest loginRequest) throws CustomException, ParseException {
+    public AuthResponse login(HttpServletResponse response, @RequestBody LoginRequest loginRequest) throws CustomException, ParseException {
         Account accountId = accountRepository.findByEncodedUserId2(MysqlSHA2Util.getSHA512(loginRequest.getUserId())).get();
         if (accountId == null) {
             throw new CustomException(ErrorCode.MEMBER_NOT_FOUND, new String[]{loginRequest.getUserId()});
@@ -76,7 +76,7 @@ public class UserLoginService {
                     response.setHeader("Authorization", token);
                     CookieUtils.addCookie(response, "Authorization", token, 180);
                     log.info(token);
-                    return ResponseEntity.ok(ApiR.createSuccess(new AuthResponse(token)));
+                    return new AuthResponse(token);
                 }
             } else {
                 throw new CustomException(ErrorCode.INVALID_PASSWORD);

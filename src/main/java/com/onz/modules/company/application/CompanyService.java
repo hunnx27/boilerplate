@@ -7,6 +7,7 @@ import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.web.dto.reponse.CompanyDetailResponse;
 import com.onz.modules.company.web.dto.reponse.CompanyJipyoResponse;
 import com.onz.modules.company.web.dto.reponse.CompanySearchResponse;
+import com.onz.modules.company.web.dto.request.CompanyCreateRequest;
 import com.onz.modules.company.web.dto.request.CompanySearchRequest;
 import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
 import com.onz.modules.company.infra.CompanyRepository;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,13 +41,16 @@ public class CompanyService {
         return companyRepository.list(searchRequest);
     }
 
-    public void create(Company company) {
+    public Company create(CompanyCreateRequest createRequest) {
+        Company company = new Company(createRequest);
         companyRepository.save(company);
+        return company;
     }
 
-    public void update(Long id, CompanyUpdateRequest updateRequest) {
+    public Company update(Long id, CompanyUpdateRequest updateRequest) {
         Company company = companyRepository.findById(id).orElseThrow();
         companyRepository.update(id,updateRequest);
+        return company;
     }
 
     public CompanyDetailResponse findOne(Long id) {

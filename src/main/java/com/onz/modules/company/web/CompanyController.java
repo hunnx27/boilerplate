@@ -28,6 +28,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,6 +58,7 @@ public class CompanyController extends BaseApiController {
             throw e;
         }
     }
+ // admin으로 옮겨야함
 
 
     @Operation(summary = "기관이름으로 검색하기", description = "기관 이름으로 레코드를 불러옵니다..")
@@ -72,26 +74,16 @@ public class CompanyController extends BaseApiController {
 
     @Operation(summary = "기관 생성하기", description = "기관 레코드를 생성합니다..")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "생성 완료", content = @Content(schema = @Schema(implementation = CompanyCreateRequest.class))), @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanyCreateRequest.class)))})
-    @PostMapping("/company")
-    public void create(@RequestBody CompanyCreateRequest createRequest) {
-        try {
-            companyService.create(modelMapper.map(createRequest, Company.class));
-            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
-        } catch (Exception e) {
-            throw e;
-        }
+    @PostMapping("/admin/company")
+    public ResponseEntity<?> create(@RequestBody @Validated CompanyCreateRequest createRequest) {
+        return ResponseEntity.ok(companyService.create(createRequest));
     }
 
     @Operation(summary = "기관 이름 수정하기", description = "기관 레코드를 수정합니다..")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "수정 완료", content = @Content(schema = @Schema(implementation = CompanyUpdateRequest.class))), @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanyUpdateRequest.class)))})
-    @PatchMapping("/company/{id}")
-    public void update(@PathVariable Long id, @RequestBody CompanyUpdateRequest updateRequest) {
-        try {
-            companyService.update(id,updateRequest);
-            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
-        } catch (Exception e) {
-            throw e;
-        }
+    @PatchMapping("/admin/company/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Validated CompanyUpdateRequest updateRequest) {
+        return ResponseEntity.ok(companyService.update(id,updateRequest));
     }
 
     @Operation(summary = "단일 기관 불러오기", description = "단일 기관 레코드를 불러옵니다..")

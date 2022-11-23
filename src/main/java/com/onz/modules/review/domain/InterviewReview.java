@@ -98,7 +98,6 @@ public class InterviewReview extends BaseEntity {
     @Builder
     public InterviewReview(InterviewRequestDto interviewRequestDto, Company company, Account account) {
 //        this.reviewOrder=interviewRequestDto.getInterviewOrder();
-        this.txtAdmin = interviewRequestDto.getTxtAdmin();
         this.company = company;
         this.workExp= interviewRequestDto.getWorkExp();
 //        this.interviews=interviewRequestDto.getInterview();
@@ -125,7 +124,6 @@ public class InterviewReview extends BaseEntity {
 //        this.interviewAA=interviewAA;
 //        this.interviewA=interviewA;
 //        this.interviewQA=interviewQA;
-        this.txtAdmin = interviewRequestDto.getTxtAdmin();
         this.company = getCompany();
         this.state=getState();
     }

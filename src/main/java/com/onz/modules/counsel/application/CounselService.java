@@ -31,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,25 +68,22 @@ public class CounselService {
         CounselService.this.counselRepository.save(counsel);
     }
 
-    public void create(CounselQCreateRequest counselQCreateRequest, UserPrincipal me) {
+    public Counsel create(CounselQCreateRequest counselQCreateRequest, UserPrincipal me,List<MultipartFile> files) {
         Account account = accountService.findOne(me.getId());
-        if(counselQCreateRequest.getTxt().equals("null")||counselQCreateRequest.getInterestCompanyName()==null||counselQCreateRequest.getQnaItem()==null){
-            throw new CustomException(ErrorCode.NOT_REQUESTED_SATISFIABLE);
-        }
         Counsel counsel = new Counsel(counselQCreateRequest, account);
         accountService.createMyPointHistories(account, PointTable.COUNCEL_QUESTION_REGIST);
         Counsel saved = counselRepository.save(counsel);
 
         // Image File Upload
-        if (counselQCreateRequest.getFiles() != null && counselQCreateRequest.getFiles().size() > 0) {
+        if (files != null && files.size() > 0) {
             try {
-                List<AttachDto> rs = fileUtil.uploadFiles(counselQCreateRequest.getFiles(), saved.getId());
+                List<AttachDto> rs = fileUtil.uploadFiles(files, saved.getId());
                 saved.setImages(rs);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
+    return counsel;
     }
 
     public List<CounselListResponse> list(CounselSearchRequest counselSearchRequest, Pageable pageable, UserPrincipal me) {
@@ -182,7 +180,7 @@ public class CounselService {
         return result;
     }
 
-    public void createAnswer(CounselACreateRequest counselACreateRequest, UserPrincipal me) {
+    public Counsel createAnswer(CounselACreateRequest counselACreateRequest, UserPrincipal me) {
         Account account = accountService.findOne(me.getId());
         Long parentCounselId = counselACreateRequest.getParentCounselId();
         if (parentCounselId != -1) {
@@ -203,6 +201,7 @@ public class CounselService {
                 e.printStackTrace();
             }
         }
+        return saved;
     }
 
     public Counsel updateAnswer(Long id, CounselAUpdateRequest counselAUpdateRequest, UserPrincipal me) {

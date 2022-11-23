@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -37,13 +38,8 @@ public class NoticeController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
     })
     @PostMapping("/admin/notice")
-    public void create(@AuthenticationPrincipal UserPrincipal me, @RequestBody NoticeRequestDto noticeRequestDto) {
-        try {
-            noticeService.create(noticeRequestDto, me);
-            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
-        } catch (Exception e) {
-            throw e;
-        }
+    public ResponseEntity<?> create(@AuthenticationPrincipal UserPrincipal me, @RequestBody @Validated NoticeRequestDto noticeRequestDto) {
+        return ResponseEntity.ok(noticeService.create(noticeRequestDto,me));
     }
 
     @Operation(summary = "공지사항 검색  ", description = "공지사항 검색 입니다...")

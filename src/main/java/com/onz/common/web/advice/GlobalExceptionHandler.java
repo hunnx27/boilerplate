@@ -4,9 +4,12 @@ import com.onz.common.web.dto.response.enums.ErrorCode;
 import com.onz.common.web.dto.response.ErrorResponse;
 import com.onz.common.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -56,12 +59,22 @@ public class GlobalExceptionHandler {
      * @valid  유효성체크에 통과하지 못하면  MethodArgumentNotValidException 이 발생한다.
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> methodValidException(MethodArgumentNotValidException e, HttpServletRequest request){
-        log.warn("MethodArgumentNotValidException 발생!!! url:{}, trace:{}",request.getRequestURI(), e.getStackTrace());
-        String bindResultCode = e.getBindingResult().getFieldError().getCode();
-        ErrorCode errorCdoe = ErrorCode.valueOf(bindResultCode);
+    public ResponseEntity<String> methodValidException(MethodArgumentNotValidException e, HttpServletRequest request){
+//        log.warn("MethodArgumentNotValidException 발생!!! url:{}",request.getRequestURI());
+        BindingResult bindingResult = e.getBindingResult();
+        StringBuilder builder = new StringBuilder();
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+            builder.append("[");
+            builder.append(fieldError.getField());
+            builder.append("](은)는 ");
+            builder.append(fieldError.getDefaultMessage());
+            builder.append(" 입력된 값: [");
+            builder.append(fieldError.getRejectedValue());
+            builder.append("]\n");
+        }
 
-        return ErrorResponse.toResponseEntity(errorCdoe);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(builder.toString());
+//       return builder.toString();
     }
 
     /**

@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -125,13 +126,8 @@ public class CompaniesController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
     })
     @PostMapping("/help/companies/fix")
-    public void CompanyFix(@AuthenticationPrincipal UserPrincipal me, @RequestBody CompaniesFixCreateRequestDto companiesFixCreateRequestDto) {
-        try {
-            companiesService.CompanyFix(companiesFixCreateRequestDto, me);
-            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
-        } catch (Exception e) {
-            throw e;
-        }
+    public ResponseEntity<?> CompanyFix(@AuthenticationPrincipal UserPrincipal me, @RequestBody @Validated CompaniesFixCreateRequestDto companiesFixCreateRequestDto) {
+        return ResponseEntity.ok().body(companiesService.CompanyFix(companiesFixCreateRequestDto, me));
     }
 
     @Operation(summary = "기업 정보 수정요청 승인", description = "수정합니다..")
@@ -153,13 +149,8 @@ public class CompaniesController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
     })
     @PostMapping("/help/companies/request")
-    public void CompanyAdd(@AuthenticationPrincipal UserPrincipal me, @RequestBody CompaniesCreateRequestDto companiesCreateRequestDto) {
-        try {
-            companiesService.CompanyAdd(companiesCreateRequestDto, me);
-            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
-        } catch (Exception e) {
-            throw e;
-        }
+    public ResponseEntity<?> CompanyAdd(@AuthenticationPrincipal UserPrincipal me, @RequestBody @Validated CompaniesCreateRequestDto companiesCreateRequestDto) {
+        return ResponseEntity.ok(companiesService.CompanyAdd(companiesCreateRequestDto,me));
     }
     @Operation(summary = "기업 추가 요청 승인", description = "수정합니다..")
     @ApiResponses(value = {

@@ -100,6 +100,8 @@ public class YearAmtReview extends BaseEntity {
         this.etcYn = amtRequestDto.getEtcYn();
         this.etcAmt = amtRequestDto.getEtcAmt();
         this.state=State.W;
+        this.annYn=YN.N;
+        this.topchoiceYn=YN.N;
         this.etcItems = amtRequestDto.getEtcItems();
         this.company=company;
         this.zonecode=company.getZonecode();
@@ -119,9 +121,14 @@ public class YearAmtReview extends BaseEntity {
         this.workExpOpenYn = amtRequestDto.getWorkExpOpenYn();
         this.amt = amtRequestDto.getAmt();
         this.endAtmYn = amtRequestDto.getEndAtmYn();
-        this.etcYn = amtRequestDto.getEtcYn();
-        this.etcAmt = amtRequestDto.getEtcAmt();
-        this.etcItems = amtRequestDto.getEtcItems();
+        this.etcYn = amtRequestDto.getEtcYn()==null? YN.N : amtRequestDto.getEtcYn();
+        if( etcYn.equals(YN.Y)){
+            this.etcAmt = amtRequestDto.getEtcAmt();
+            this.etcItems = amtRequestDto.getEtcItems();
+        }else{
+            this.etcAmt=null;
+            this.etcItems = null;
+        }
         this.company = getCompany();
     }
 }

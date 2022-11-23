@@ -28,6 +28,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -44,12 +45,8 @@ public class AccountController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AccountCreateRequest.class)))
     })
     @PostMapping("/accounts")
-    public ResponseEntity<ApiR<Account>> create(@RequestBody AccountCreateRequest accountCreateRequest) {
-        try {
-            return accountService.create(modelMapper.map(accountCreateRequest, Account.class));
-        } catch (Exception e) {
-            throw e;
-        }
+    public ResponseEntity<?> create(@RequestBody @Validated AccountCreateRequest accountCreateRequest) {
+        return ResponseEntity.ok().body(accountService.create(modelMapper.map(accountCreateRequest, Account.class)));
     }
 
     @Operation(summary = "계정 목록 조회", description = "변수를 이용하여 accounts 레코드를 리스트를 조회합니다.")

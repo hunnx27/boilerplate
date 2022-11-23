@@ -1,6 +1,8 @@
 package com.onz.modules.review.application;
 
+import com.onz.common.exception.CustomException;
 import com.onz.common.util.dto.AttachDto;
+import com.onz.common.web.dto.response.enums.ErrorCode;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.common.pointHistory.domain.enums.PointTable;
@@ -22,6 +24,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,7 +41,7 @@ public class CompanyReviewService {
     private final AddressRepository addressRepository;
     private final FileUtil fileUtil;
 
-    public CompanyReview create(CompanyReviewRequestDto companyReviewRequestDto, UserPrincipal me) {
+    public CompanyReview create(CompanyReviewRequestDto companyReviewRequestDto, UserPrincipal me ,List<MultipartFile> files) {
         Long companyId = companyReviewRequestDto.getCompanyId();
         Account account = accountService.findOne(me.getId());
         Company company = companyRepository.findById(companyId).orElse(null);
@@ -45,9 +49,9 @@ public class CompanyReviewService {
         CompanyReview saved = companyReviewRepository.save(companyReview);
         accountService.createMyPointHistories(account, PointTable.REVIEW_REGIST);
         // Image File Upload
-        if (companyReviewRequestDto.getFiles() != null && companyReviewRequestDto.getFiles().size() > 0) {
+        if (files != null && files.size() > 0) {
             try {
-                List<AttachDto> rs = fileUtil.uploadFiles(companyReviewRequestDto.getFiles(), saved.getId());
+                List<AttachDto> rs = fileUtil.uploadFiles(files, saved.getId());
                 saved.setImages(rs);
             } catch (Exception e) {
                 e.printStackTrace();

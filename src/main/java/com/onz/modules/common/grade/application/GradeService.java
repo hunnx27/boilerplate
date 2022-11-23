@@ -27,7 +27,7 @@ public class GradeService {
     private final GradeRepository gradeRepository;
     private final FileUtil fileUtil;
 
-    public void create(GradeCreateRequestDto gradeCreateRequestDto,List<MultipartFile> iconUrl) {
+    public Grade create(GradeCreateRequestDto gradeCreateRequestDto,List<MultipartFile> iconUrl) {
         Grade grade = new Grade(gradeCreateRequestDto);
         grade.setCreateDt(ZonedDateTime.now());
         if (iconUrl != null && iconUrl.size() > 0) {
@@ -39,6 +39,7 @@ public class GradeService {
             }
         }
         gradeRepository.save(grade);
+        return grade;
     }
 
     public List<GradeListResponseDto> list() {

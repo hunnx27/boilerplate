@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,13 +36,8 @@ public class GradeController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = GradeCreateRequestDto.class)))
     })
     @PostMapping(value = "/admin/grade",consumes = "multipart/form-data")
-    public void create(@AuthenticationPrincipal UserPrincipal me, GradeCreateRequestDto gradeCreateRequestDto, @RequestPart (value = "files", required = true) List<MultipartFile> iconUrl) {
-        try {
-            gradeService.create(gradeCreateRequestDto,iconUrl);
-            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
-        } catch (Exception e) {
-            throw e;
-        }
+    public ResponseEntity<?> create(@AuthenticationPrincipal UserPrincipal me, @RequestPart(name = "data") @Validated GradeCreateRequestDto gradeCreateRequestDto, @RequestPart (value = "files", required = true) List<MultipartFile> iconUrl) {
+        return ResponseEntity.ok(gradeService.create(gradeCreateRequestDto,iconUrl));
     }
 
     @Operation(summary = "등급 리스트", description = "등급 코드를 불러옵니다..")

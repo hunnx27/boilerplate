@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -33,7 +34,7 @@ public class MenuController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
     })
     @PostMapping("/admin/menu")
-    public void create(@AuthenticationPrincipal UserPrincipal me, @RequestBody MenuRequsetDto menuRequsetDto) {
+    public void create(@AuthenticationPrincipal UserPrincipal me, @RequestBody @Validated MenuRequsetDto menuRequsetDto) {
         try {
             menuService.create(menuRequsetDto, me);
             ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
@@ -47,10 +48,10 @@ public class MenuController extends BaseApiController {
             @ApiResponse(responseCode = "200", description = "메인메뉴 선택", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
     })
-    @GetMapping("/admin/menu")
-    public ResponseEntity<ApiR<?>> selectMenu(Long mainCode) {
+    @GetMapping("/menu/{id}")
+    public ResponseEntity<ApiR<?>> selectMenu(@PathVariable Long id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(menuService.selectMenu(mainCode)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(menuService.selectMenu(id)));
         } catch (Exception e) {
             throw e;
         }
@@ -61,7 +62,7 @@ public class MenuController extends BaseApiController {
             @ApiResponse(responseCode = "200", description = "메뉴전체읽기성공", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
     })
-    @GetMapping("/admin/menu/all")
+    @GetMapping("/menu/all")
     public ResponseEntity<ApiR<?>> allMenu() {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(menuService.allMenu()));

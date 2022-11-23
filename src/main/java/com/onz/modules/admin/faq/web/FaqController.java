@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -32,22 +33,18 @@ public class FaqController {
 
     @Operation(summary = "FAQ 등록", description = "FAQ 등록합니다..")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "등록 완료", content = @Content(schema = @Schema(implementation = EventCreateRequestDto.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = EventCreateRequestDto.class)))
+            @ApiResponse(responseCode = "200", description = "등록 완료", content = @Content(schema = @Schema(implementation = FaqCreateRequestDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = FaqCreateRequestDto.class)))
     })
     @PostMapping("/admin/faq")
-    public void create(@AuthenticationPrincipal UserPrincipal me, FaqCreateRequestDto faqCreateRequestDto) {
-        try {
-            faqService.create(faqCreateRequestDto, me);
-            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
-        } catch (Exception e) {
-            throw e;
-        }
+    public ResponseEntity<?> create(@AuthenticationPrincipal UserPrincipal me, @RequestBody @Validated FaqCreateRequestDto faqCreateRequestDto) {
+        return ResponseEntity.ok(faqService.create(faqCreateRequestDto,me));
     }
+
     @Operation(summary = "FAQ 검색  ", description = "FAQ 검색 입니다...")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = FaqSearchRequestDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = FaqSearchRequestDto.class)))
     })
     @GetMapping("/admin/faq")
     public ResponseEntity<ApiR<?>> faqSearch(FaqSearchRequestDto faqSearchRequestDto, Pageable pageable) {
@@ -73,8 +70,8 @@ public class FaqController {
     }
     @Operation(summary = "FAQ 업데이트  ", description = "FAQ 업데이트 입니다...")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
+            @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = FaqCreateRequestDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = FaqCreateRequestDto.class)))
     })
     @PutMapping("/admin/faq/{id}")
     public ResponseEntity<ApiR<?>> faqSearchDetailfix(@PathVariable Long id, FaqCreateRequestDto faqCreateRequestDto, @AuthenticationPrincipal UserPrincipal me) {

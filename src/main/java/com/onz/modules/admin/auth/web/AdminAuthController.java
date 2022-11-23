@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +37,7 @@ public class AdminAuthController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = ReviewResponseDto.class)))
     })
     @PostMapping("/admin/login")
-    public ResponseEntity<ApiR<?>> loginAdmin(HttpServletResponse response, @RequestBody AdminLonginRequestDto adminRequestDto) {
+    public ResponseEntity<ApiR<?>> loginAdmin(HttpServletResponse response, @RequestBody @Validated AdminLonginRequestDto adminRequestDto) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(adminAuthService.loginAdmin(response,adminRequestDto)));
         } catch (CustomException e) {
@@ -50,11 +51,7 @@ public class AdminAuthController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = ReviewResponseDto.class)))
     })
     @PostMapping("/admin/signup")
-    public ResponseEntity<ApiR<Admin>> createAdmin(@RequestBody AdminCreateRequestDto createRequestDto){
-        try {
-            return adminAuthService.createAdmin(createRequestDto);
-        }catch (CustomException e){
-            throw e;
-        }
+    public ResponseEntity<?> createAdmin(@Validated @RequestBody AdminCreateRequestDto createRequestDto){
+        return ResponseEntity.ok().body(adminAuthService.createAdmin(createRequestDto));
     }
 }

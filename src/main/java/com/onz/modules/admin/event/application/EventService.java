@@ -56,7 +56,7 @@ public class EventService {
     private final AccountService accountService;
     private final EventItemRepository eventItemRepository;
 
-    public ResponseEntity<ApiR<?>> create(EventCreateRequestDto eventCreateRequestdto, UserPrincipal me, List<MultipartFile> files) {
+    public Event create(EventCreateRequestDto eventCreateRequestdto, UserPrincipal me, List<MultipartFile> files) {
         Event event = new Event(eventCreateRequestdto);
         // Image File Upload
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -132,7 +132,7 @@ public class EventService {
         LocalDate temp = LocalDate.parse(LocalDate.now().format(formatter));
         event.setCreateDt(temp.atStartOfDay(ZoneId.of("Asia/Seoul")));
         eventRepository.save(event);
-        return null;
+        return event;
     }
 
     public List<EventSearchResponseDto> eventSearch(EventSearchRequestDto eventSearchRequestDto, Pageable pageable) {
@@ -222,7 +222,7 @@ public class EventService {
     }
 
     //이벤트 참여 api
-    public void eventInitUser(Long id, UserPrincipal me, EventInitUserCRequestDto eventInitUserCRequestDto) {
+    public Event eventInitUser(Long id, UserPrincipal me, EventInitUserCRequestDto eventInitUserCRequestDto) {
         Account account = accountService.findOne(me.getId());
         Event event = findOne(id);
         EventItem check = eventItemRepository.findByEventIdAndAccountId(id, me.getId());
@@ -243,6 +243,7 @@ public class EventService {
         } else {
             throw new CustomException(ErrorCode.INVALID_AUTH_TOKEN);
         }
+        return event;
     }
 
     public List<EventItemListResponseDto> eventAccountList(Long id) {

@@ -33,12 +33,12 @@ import java.util.Optional;
 @Transactional
 public class FaqService {
     private final FaqRepository faqRepository;
-    public ResponseEntity<ApiR<?>> create(FaqCreateRequestDto faqCreateRequestDto, UserPrincipal me) {
+    public Faq create(FaqCreateRequestDto faqCreateRequestDto, UserPrincipal me) {
         Faq faq = new Faq(faqCreateRequestDto);
         faq.setUserId(me.getUserId());
         faq.setCreateDt(ZonedDateTime.now());
         faqRepository.save(faq);
-        return null;
+        return faq;
     }
     public List<FaqSearchResponseDto> faqSearch(FaqSearchRequestDto faqSearchRequestDto, Pageable pageable) {
         List<FaqSearchResponseDto> list = faqRepository.findFaqSearch(faqSearchRequestDto, pageable);

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -14,8 +15,11 @@ import java.util.List;
 public class CounselACreateRequest {
 
     List<MultipartFile> files;
+    @NotNull(message="반드시 입력해야 합니다.")
     private String txt;
+    @NotNull(message="반드시 입력해야 합니다.")
     private Long parentCounselId;
+    @NotNull(message="반드시 입력해야 합니다.")
     private Counsel parentCounsel;
 
     // 자동처리

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -15,20 +16,30 @@ import java.util.List;
 @NoArgsConstructor
 public class CompanyReviewRequestDto extends BaseEntity {
 
-    List<MultipartFile> files;
-
+    @NotNull(message="반드시 입력해야 합니다.")
     private String txt;
+    @NotNull(message="반드시 입력해야 합니다.")
     private Long companyId;
+    @NotNull(message="반드시 입력해야 합니다.")
     private Long workExp;
     private YN WorkExpOpenYn;
+    @NotNull(message="반드시 입력해야 합니다.")
     private String itemB1;
+    @NotNull(message="반드시 입력해야 합니다.")
     private String itemB2;
+    @NotNull(message="반드시 입력해야 합니다.")
     private String itemB3;
+    @NotNull(message="반드시 입력해야 합니다.")
     private String itemC1;
+    @NotNull(message="반드시 입력해야 합니다.")
     private String itemC2;
+    @NotNull(message="반드시 입력해야 합니다.")
     private String itemC3;
+    @NotNull(message="반드시 입력해야 합니다.")
     private String itemD1;
+    @NotNull(message="반드시 입력해야 합니다.")
     private String itemD2;
+    @NotNull(message="반드시 입력해야 합니다.")
     private String likeCode;
 
 }

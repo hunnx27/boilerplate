@@ -12,8 +12,10 @@ import com.onz.modules.company.domain.enums.CharItem;
 import com.onz.modules.company.domain.enums.CharItemConverter;
 import com.onz.modules.company.domain.enums.EstablishmentType;
 import com.onz.modules.company.domain.enums.EstablishmentTypeConverter;
+import com.onz.modules.company.web.dto.request.CompanyCreateRequest;
 import com.onz.modules.review.domain.dto.ReviewAllDto;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -96,6 +98,7 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
+@NoArgsConstructor
 public class Company extends BaseEntity {
 
     @Id
@@ -133,4 +136,9 @@ public class Company extends BaseEntity {
     private String faxNum;
     private String homepage;
     private String syncCode;
+
+    public Company(CompanyCreateRequest companyCreateRequest) {
+        this.interestCompany = InterestCompany.valueOf(companyCreateRequest.getCode());
+        this.officeName=companyCreateRequest.getName();
+    }
 }

@@ -23,9 +23,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -47,14 +50,9 @@ public class CounselController extends BaseApiController {
             @ApiResponse(responseCode = "200", description = "상담 생성 완료", content = @Content(schema = @Schema(implementation = CounselQCreateRequest.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselQCreateRequest.class)))
     })
-    @PostMapping("/counsel")
-    public void create(@AuthenticationPrincipal UserPrincipal me, CounselQCreateRequest counselQCreateRequest) {
-        try {
-            counselService.create(counselQCreateRequest, me);
-            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
-        } catch (Exception e) {
-            throw e;
-        }
+    @PostMapping(value = "/counsel",consumes = "multipart/form-data")
+    public ResponseEntity<?> create(@AuthenticationPrincipal UserPrincipal me, @RequestPart (value = "files", required = false) List<MultipartFile> files, @RequestPart(name="data") @Validated CounselQCreateRequest counselQCreateRequest) {
+        return ResponseEntity.ok().body(counselService.create(counselQCreateRequest, me, files));
     }
 
     @Operation(summary = "상담 목록 조회", description = "변수를 이용하여 counsel 레코드를 생성합니다.")
@@ -191,13 +189,9 @@ public class CounselController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselACreateRequest.class)))
     })
     @PostMapping("/counsel/answer")
-    public void createAnswer(@AuthenticationPrincipal UserPrincipal me, CounselACreateRequest counselACreateRequest) {
-        try {
-            counselService.createAnswer(counselACreateRequest, me);
-            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
-        } catch (Exception e) {
-            throw e;
-        }
+    public ResponseEntity<?> createAnswer(@AuthenticationPrincipal UserPrincipal me,@RequestBody @Validated CounselACreateRequest counselACreateRequest) {
+        return ResponseEntity.ok().body(counselService.createAnswer(counselACreateRequest, me));
+
     }
 
     @Operation(summary = "상담 답변 수정", description = "변수를 이용하여 counsel 레코드에 답변을 수정합니다.")

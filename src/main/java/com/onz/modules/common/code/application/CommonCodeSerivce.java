@@ -43,7 +43,7 @@ public class CommonCodeSerivce {
         return commonRepository.findById(id);
     }
 
-    public void create(CommonCodeInitRequestDto initRequestDto) {
+    public CommonCode create(CommonCodeInitRequestDto initRequestDto) {
         CommonCode commonCode = CommonCode.builder()
                 .codeName(initRequestDto.getCodeName())
                 .codeSebu(initRequestDto.getCodeSebu())
@@ -51,6 +51,7 @@ public class CommonCodeSerivce {
                 .useYn(YN.Y)
                 .build();
         commonJRepository.save(commonCode);
+        return commonCode;
     }
 
     public List<CommonCodeInitResponseDto> allCommonCode() {

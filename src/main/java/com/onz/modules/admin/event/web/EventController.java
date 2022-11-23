@@ -26,6 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,15 +44,9 @@ public class EventController {
             @ApiResponse(responseCode = "200", description = "등록 완료", content = @Content(schema = @Schema(implementation = EventCreateRequestDto.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = EventCreateRequestDto.class)))
     })
-    @PostMapping(value = "/admin/event",consumes = {MediaType.APPLICATION_JSON_VALUE,
-            MediaType.MULTIPART_FORM_DATA_VALUE})
-    public void create(@AuthenticationPrincipal UserPrincipal me, EventCreateRequestDto eventCreateRequestdto ,@RequestPart (value = "files", required = false) List<MultipartFile> files) {
-        try {
-            eventService.create(eventCreateRequestdto, me, files);
-            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
-        } catch (Exception e) {
-            throw e;
-        }
+    @PostMapping(value = "/admin/event",consumes = "multipart/form-data")
+    public ResponseEntity<?> create(@AuthenticationPrincipal UserPrincipal me, @RequestPart(name = "data") @Validated EventCreateRequestDto eventCreateRequestdto , @RequestPart (value = "files", required = false) List<MultipartFile> files) {
+        return ResponseEntity.ok(eventService.create(eventCreateRequestdto,me,files));
     }
 
     @Operation(summary = "이벤트 검색  ", description = "이벤트 검색 입니다...")
@@ -113,12 +108,8 @@ public class EventController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
     })
     @PostMapping("/event/{id}")
-    public void eventInitUser(Long id, @AuthenticationPrincipal UserPrincipal me, EventInitUserCRequestDto eventInitUserCRequestDto){
-        try{
-            eventService.eventInitUser(id,me,eventInitUserCRequestDto);
-        }catch (CustomException e){
-            throw e;
-        }
+    public ResponseEntity<?> eventInitUser(Long id, @AuthenticationPrincipal UserPrincipal me, @RequestBody @Validated EventInitUserCRequestDto eventInitUserCRequestDto){
+        return ResponseEntity.ok(eventService.eventInitUser(id,me,eventInitUserCRequestDto));
     }
 
     @Operation(summary = "이벤트 참여자 조회", description = "참가자를 검색합니다..")

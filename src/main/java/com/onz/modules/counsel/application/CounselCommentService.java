@@ -33,7 +33,7 @@ public class CounselCommentService {
     private final CounselRepository counselRepository;
     private final FileUtil fileUtil;
 
-    public void create(CounselCommentCreateRequest counselCommentCreateRequest, UserPrincipal me) {
+    public CounselComment create(CounselCommentCreateRequest counselCommentCreateRequest, UserPrincipal me) {
         // 댓글 등록자 설정
         Account account = accountService.findOne(me.getId());
         // 답변 설정
@@ -41,6 +41,7 @@ public class CounselCommentService {
         CounselComment counselComment = new CounselComment(counselCommentCreateRequest, account);
         CounselComment saved = counselCommentRepository.save(counselComment);
         accountService.createMyPointHistories(account, PointTable.COUNCEL_ANSWER_REGIST);
+        return saved;
     }
 
     public List<CounselCommentListResponse> commentList(Long answerId, Pageable pageable, UserPrincipal me){
