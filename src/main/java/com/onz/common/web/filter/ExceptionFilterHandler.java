@@ -29,6 +29,7 @@ public class ExceptionFilterHandler extends OncePerRequestFilter {
             setErrorResponse(e.getErrorCode(), response, e.getArgs());
         } catch(Exception e) {
             log.error("Spring Security Filter Chain Exception:", e);
+
             setErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR_DETAIL, response, new String[]{e.getMessage()});
         }
 

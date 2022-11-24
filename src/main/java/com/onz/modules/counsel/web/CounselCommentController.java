@@ -22,6 +22,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,8 +63,9 @@ public class CounselCommentController extends BaseApiController {
             @ApiResponse(responseCode = "200", description = "답변 추가 완료", content = @Content(schema = @Schema(implementation = CounselCommentCreateRequest.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselCommentCreateRequest.class)))
     })
-    @PostMapping("/counsel/comment")
-    public ResponseEntity<?> createComment(@AuthenticationPrincipal UserPrincipal me, @RequestBody @Validated CounselCommentCreateRequest counselCommentCreateRequest) {
+    @PostMapping(value = "/counsel/comment",consumes = "application/json")
+    public ResponseEntity<?> createComment(@AuthenticationPrincipal UserPrincipal me,@RequestBody @Validated CounselCommentCreateRequest counselCommentCreateRequest) {
+//        @RequestBody -> 삭제
         return ResponseEntity.ok().body(counselCommentService.create(counselCommentCreateRequest, me));
 
     }

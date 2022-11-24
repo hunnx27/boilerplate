@@ -15,7 +15,10 @@ import com.onz.modules.counsel.web.dto.response.counselComment.CounselCommentDet
 import com.onz.modules.counsel.web.dto.response.counselComment.CounselCommentListResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +36,7 @@ public class CounselCommentService {
     private final CounselRepository counselRepository;
     private final FileUtil fileUtil;
 
-    public CounselComment create(CounselCommentCreateRequest counselCommentCreateRequest, UserPrincipal me) {
+    public ResponseEntity<?> create(CounselCommentCreateRequest counselCommentCreateRequest, UserPrincipal me) {
         // 댓글 등록자 설정
         Account account = accountService.findOne(me.getId());
         // 답변 설정
@@ -41,7 +44,7 @@ public class CounselCommentService {
         CounselComment counselComment = new CounselComment(counselCommentCreateRequest, account);
         CounselComment saved = counselCommentRepository.save(counselComment);
         accountService.createMyPointHistories(account, PointTable.COUNCEL_ANSWER_REGIST);
-        return saved;
+        return ResponseEntity.ok().body(HttpStatus.OK);
     }
 
     public List<CounselCommentListResponse> commentList(Long answerId, Pageable pageable, UserPrincipal me){

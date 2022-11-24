@@ -50,7 +50,8 @@ public class CounselController extends BaseApiController {
             @ApiResponse(responseCode = "200", description = "상담 생성 완료", content = @Content(schema = @Schema(implementation = CounselQCreateRequest.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselQCreateRequest.class)))
     })
-    @PostMapping(value = "/counsel",consumes = "multipart/form-data")
+    @PostMapping(value = "/counsel",consumes = {
+            MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> create(@AuthenticationPrincipal UserPrincipal me, @RequestPart (value = "files", required = false) List<MultipartFile> files, @RequestPart(name="data") @Validated CounselQCreateRequest counselQCreateRequest) {
         return ResponseEntity.ok().body(counselService.create(counselQCreateRequest, me, files));
     }
@@ -189,8 +190,9 @@ public class CounselController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselACreateRequest.class)))
     })
     @PostMapping("/counsel/answer")
-    public ResponseEntity<?> createAnswer(@AuthenticationPrincipal UserPrincipal me,@RequestBody @Validated CounselACreateRequest counselACreateRequest) {
-        return ResponseEntity.ok().body(counselService.createAnswer(counselACreateRequest, me));
+    public ResponseEntity<?> createAnswer(@AuthenticationPrincipal UserPrincipal me, @RequestPart(name = "data") @Validated CounselACreateRequest counselACreateRequest, List<MultipartFile> files) {
+        return ResponseEntity.ok().body(counselService.createAnswer(counselACreateRequest, me,files));
+//        counselService.createAnswer(counselACreateRequest,me);
 
     }
 

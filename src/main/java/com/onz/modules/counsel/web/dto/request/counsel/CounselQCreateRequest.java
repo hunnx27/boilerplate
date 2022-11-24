@@ -20,12 +20,9 @@ import java.util.List;
 public class CounselQCreateRequest {
 
     private String addedTagData;
-    @NotNull(message="반드시 입력해야 합니다.")
     private InterestCompany interestCompanyName; // 관심 기관
     private String relatedZone;
-    @NotNull(message="반드시 입력해야 합니다.")
     private QnaItem qnaItem;
-    @NotNull(message="반드시 입력해야 합니다.")
     private String txt;
     private YN shortOpenYn;
 

@@ -29,6 +29,8 @@ import com.onz.modules.counsel.web.dto.response.counsel.CounselListResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -68,7 +70,8 @@ public class CounselService {
         CounselService.this.counselRepository.save(counsel);
     }
 
-    public Counsel create(CounselQCreateRequest counselQCreateRequest, UserPrincipal me,List<MultipartFile> files) {
+//    public Counsel create(CounselQCreateRequest counselQCreateRequest, UserPrincipal me,List<MultipartFile> files) {
+public Counsel create(CounselQCreateRequest counselQCreateRequest, UserPrincipal me,List<MultipartFile> files) {
         Account account = accountService.findOne(me.getId());
         Counsel counsel = new Counsel(counselQCreateRequest, account);
         accountService.createMyPointHistories(account, PointTable.COUNCEL_QUESTION_REGIST);
@@ -180,7 +183,7 @@ public class CounselService {
         return result;
     }
 
-    public Counsel createAnswer(CounselACreateRequest counselACreateRequest, UserPrincipal me) {
+    public ResponseEntity<?> createAnswer(CounselACreateRequest counselACreateRequest, UserPrincipal me,List<MultipartFile> files) {
         Account account = accountService.findOne(me.getId());
         Long parentCounselId = counselACreateRequest.getParentCounselId();
         if (parentCounselId != -1) {
@@ -191,17 +194,16 @@ public class CounselService {
         }
         Counsel counsel = new Counsel(counselACreateRequest, account);
         Counsel saved = counselRepository.save(counsel);
-
         // Image File Upload
-        if (counselACreateRequest.getFiles() != null && counselACreateRequest.getFiles().size() > 0) {
+        if (files != null && files.size() > 0) {
             try {
-                List<AttachDto> rs = fileUtil.uploadFiles(counselACreateRequest.getFiles(), saved.getId());
+                List<AttachDto> rs = fileUtil.uploadFiles(files, saved.getId());
                 saved.setImages(rs);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return saved;
+        return ResponseEntity.ok().body(HttpStatus.OK);
     }
 
     public Counsel updateAnswer(Long id, CounselAUpdateRequest counselAUpdateRequest, UserPrincipal me) {
