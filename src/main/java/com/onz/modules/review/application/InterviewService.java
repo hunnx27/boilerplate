@@ -1,5 +1,7 @@
 package com.onz.modules.review.application;
 
+import com.onz.common.exception.CustomException;
+import com.onz.common.web.dto.response.enums.ErrorCode;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.common.pointHistory.domain.enums.PointTable;
@@ -68,8 +70,11 @@ public class InterviewService {
         }).collect(Collectors.toList());
         return array;
     }
-    public InterviewReviewDetailResponseDto interviewReviewDetail(@PathVariable Long id) {
+    public InterviewReviewDetailResponseDto interviewReviewDetail(Long id,Long companyId) {
         InterviewReview interviewReview = interviewReviewRepository.findById(id).orElse(null);
+        if(!(interviewReview != null ? interviewReview.getCompany().getId() : null).equals(companyId)){
+            throw new CustomException(ErrorCode.NOT_FOUND);
+        }
         InterviewReviewDetailResponseDto result = new InterviewReviewDetailResponseDto(interviewReview);
         return result;
     }

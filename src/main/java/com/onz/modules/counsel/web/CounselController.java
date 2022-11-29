@@ -234,14 +234,10 @@ public class CounselController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselAAdoptRequest.class)))
     })
     @PutMapping("/counsel/answer/{id}/adopt")
-    public void updateAnswerAdopt(@AuthenticationPrincipal UserPrincipal
-                                          up, @RequestBody CounselAAdoptRequest counselAAdoptRequest, @PathVariable Long id) {
-        try {
-            Counsel counsel = counselService.updateAnswerAdopt(id, counselAAdoptRequest, up);
-            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(new CounselDetailResponse(counsel)));
-        } catch (Exception e) {
-            throw e;
-        }
+    public ResponseEntity<?> updateAnswerAdopt(@AuthenticationPrincipal UserPrincipal
+                                          up, @RequestBody @Validated CounselAAdoptRequest counselAAdoptRequest, @PathVariable Long id) {
+        Counsel counsel = counselService.updateAnswerAdopt(id, counselAAdoptRequest, up);
+        return ResponseEntity.ok().body(counsel);
     }
 
     @Operation(summary = "상담 답변의 댓글 추천하기", description = "counsel 레코드의 answer에 작성된 답변을 추천합니다.")

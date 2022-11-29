@@ -92,6 +92,7 @@ public class AccountController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AccountUpdateRequest.class)))
     })
     @PutMapping("/accounts/{id}")
+    @Deprecated
     public void update(@AuthenticationPrincipal UserPrincipal up,
                        @RequestBody AccountUpdateRequest accountUpdateRequest) {
         try {
@@ -154,7 +155,7 @@ public class AccountController extends BaseApiController {
         }
     }
 
-    @Operation(summary = "현재 접속한 계정 정보 조회", description = "변수를 이용하여 접속한 계정의 레코드를 조회합니다.")
+    @Operation(summary = "현재 접속한 계정 정보수정", description = "변수를 이용하여 접속한 계정의 레코드를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "접속한 계정의 정보 조회 완료", content = @Content(schema = @Schema(implementation = AccountMyinfoUpdateRequest.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AccountMyinfoUpdateRequest.class)))

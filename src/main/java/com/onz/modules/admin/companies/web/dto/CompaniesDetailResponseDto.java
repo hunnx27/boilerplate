@@ -17,7 +17,7 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 public class CompaniesDetailResponseDto {
     private Long id;
-    private String companyName;
+    private String officeName;
     private ZonedDateTime createdAt;
     private ZonedDateTime modifiedAt;
 

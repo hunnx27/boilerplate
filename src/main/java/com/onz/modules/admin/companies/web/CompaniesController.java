@@ -10,6 +10,9 @@ import com.onz.modules.admin.member.livemember.web.dto.LiveMemberDetailResponse;
 import com.onz.modules.admin.member.livemember.web.dto.LiveMemberRequestDto;
 import com.onz.modules.admin.member.livemember.web.dto.LiveMemberResponseDto;
 import com.onz.modules.auth.web.dto.UserPrincipal;
+import com.onz.modules.company.application.CompanyService;
+import com.onz.modules.company.web.dto.request.CompanyCreateRequest;
+import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
 import com.onz.modules.review.web.dto.AmtRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CompaniesController {
 
     private final CompaniesService companiesService;
-
+    private final CompanyService companyService;
     @Operation(summary = "기관 검색 관리 ", description = "기관 검색 입니다...")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
@@ -97,7 +100,7 @@ public class CompaniesController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class)))
     })
     @GetMapping("/admin/companies/fix")
-    public ResponseEntity<ApiR<?>> companiesSearch(CompaniesFixRequestDto companiesFixRequestDto, Pageable pageable) {
+    public ResponseEntity<ApiR<?>> companiesSearch(@RequestBody CompaniesFixRequestDto companiesFixRequestDto, Pageable pageable) {
 //        liveMemberService.liveMember(response,liveMemberRequestDto);
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companiesService.companiesFixSearch(companiesFixRequestDto,pageable)));
@@ -120,15 +123,6 @@ public class CompaniesController {
         }
     }
 
-    @Operation(summary = "기업 정보 수정요청", description = "요청을 등록합니다..")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "등록 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
-    })
-    @PostMapping("/help/companies/fix")
-    public ResponseEntity<?> CompanyFix(@AuthenticationPrincipal UserPrincipal me, @RequestBody @Validated CompaniesFixCreateRequestDto companiesFixCreateRequestDto) {
-        return ResponseEntity.ok().body(companiesService.CompanyFix(companiesFixCreateRequestDto, me));
-    }
 
     @Operation(summary = "기업 정보 수정요청 승인", description = "수정합니다..")
     @ApiResponses(value = {
@@ -143,15 +137,6 @@ public class CompaniesController {
             throw e;
         }
     }
-    @Operation(summary = "기업 추가 요청", description = "요청을 등록합니다..")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "등록 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
-    })
-    @PostMapping("/help/companies/request")
-    public ResponseEntity<?> CompanyAdd(@AuthenticationPrincipal UserPrincipal me, @RequestBody @Validated CompaniesCreateRequestDto companiesCreateRequestDto) {
-        return ResponseEntity.ok(companiesService.CompanyAdd(companiesCreateRequestDto,me));
-    }
     @Operation(summary = "기업 추가 요청 승인", description = "수정합니다..")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "등록 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
@@ -165,4 +150,19 @@ public class CompaniesController {
             throw e;
         }
     }
+    //테스트어린이집
+    @Operation(summary = "기관 생성하기", description = "기관 레코드를 생성합니다..")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "생성 완료", content = @Content(schema = @Schema(implementation = CompanyCreateRequest.class))), @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanyCreateRequest.class)))})
+    @PostMapping("/admin/company")
+    public ResponseEntity<?> create(@RequestBody @Validated CompanyCreateRequest createRequest) {
+        return ResponseEntity.ok(companyService.create(createRequest));
+    }
+
+    @Operation(summary = "기관 이름 수정하기", description = "기관 레코드를 수정합니다..")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "수정 완료", content = @Content(schema = @Schema(implementation = CompanyUpdateRequest.class))), @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanyUpdateRequest.class)))})
+    @PutMapping("/admin/company/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Validated CompanyUpdateRequest updateRequest) {
+        return ResponseEntity.ok(companyService.update(id,updateRequest));
+    }
+
 }

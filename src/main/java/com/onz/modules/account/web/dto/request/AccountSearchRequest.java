@@ -7,6 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AccountSearchRequest {
 
-    private String name;
     private String userId;
 }

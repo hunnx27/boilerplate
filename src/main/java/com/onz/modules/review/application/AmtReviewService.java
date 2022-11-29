@@ -113,8 +113,11 @@ public class AmtReviewService {
         }).collect(Collectors.toList());
         return array;
     }
-    public AmtReviewDetailResponseDto amtReviewDetail(@PathVariable Long id) {
+    public AmtReviewDetailResponseDto amtReviewDetail(Long companyId, Long id) {
         YearAmtReview yearAmtReview = amtReviewRepository.findById(id).orElse(null);
+        if(!(yearAmtReview != null ? yearAmtReview.getCompany().getId() : null).equals(companyId)){
+            throw new CustomException(ErrorCode.NOT_FOUND);
+        }
         AmtReviewDetailResponseDto result = new AmtReviewDetailResponseDto(yearAmtReview);
         return result;
     }

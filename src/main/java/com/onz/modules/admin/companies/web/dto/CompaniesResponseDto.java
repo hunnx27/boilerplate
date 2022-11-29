@@ -44,14 +44,24 @@ public class CompaniesResponseDto {
     private long jipyoScore;
 
     public String getInterestCompany() {
-        String interestCompanyName = this.interestCompany.getDesc();
+        String interestCompanyName;
+        if(interestCompany==null){
+            interestCompanyName = "";
+        }else{
+            interestCompanyName=interestCompany.getDesc();
+        }
         if(this.interestCompany !=null && this.interestCompanyName==null){
             interestCompanyName=this.interestCompany.getDesc();
         }return interestCompanyName;
     }
 
     public String getEstablishmentType() {
-        String establishmentTypeName = this.establishmentType.getName();
+        String establishmentTypeName;
+        if(establishmentType==null){
+            establishmentTypeName = "";
+        }else{
+            establishmentTypeName = this.establishmentType.getName();
+        }
         if(this.establishmentType !=null&& this.establishmentTypeName==null){
             establishmentTypeName = this.establishmentType.getName();
         }return establishmentTypeName;

@@ -3,6 +3,7 @@ package com.onz.modules.admin.auth.application;
 import com.onz.common.web.dto.response.enums.ErrorCode;
 import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
+import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.account.domain.Admin;
 import com.onz.modules.account.infra.AccountRepository;
@@ -39,19 +40,20 @@ public class AdminAuthService {
     private final AccountRepository accountRepository;
     private final AdminAuthRepository adminAuthRepository;
     private final JwtProvider jwtProvider;
+    private final AccountService accountService;
     private final UserDetailsService userDetailsService;
 
     public ResponseEntity<ApiR<?>> loginAdmin(HttpServletResponse response, AdminLonginRequestDto adminRequestDto) throws CustomException {
-        Account accountId = accountRepository.findByEncodedUserId2(MysqlSHA2Util.getSHA512(adminRequestDto.getUserID())).get();
+        Account accountId = accountRepository.findByEncodedUserId2(MysqlSHA2Util.getSHA512(adminRequestDto.getUserId())).get();
         if (accountId == null) {
-            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND, new String[]{adminRequestDto.getUserID()});
+            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND, new String[]{adminRequestDto.getUserId()});
         } else {
             if (accountId.getPassword().equals(MD5Utils.getMD5(adminRequestDto.getPassWord()))) {
                 if (accountId.getRole().name().equals("USER")) {
-                    throw new CustomException(ErrorCode.NOT_ACCEPTABLE, new String[]{adminRequestDto.getUserID()});
+                    throw new CustomException(ErrorCode.NOT_ACCEPTABLE, new String[]{adminRequestDto.getUserId()});
                 } else {
                     UserPrincipal.create(accountId);
-                    UserDetails principal = userDetailsService.loadUserByUsername(MysqlSHA2Util.getSHA512(adminRequestDto.getUserID()));
+                    UserDetails principal = userDetailsService.loadUserByUsername(MysqlSHA2Util.getSHA512(adminRequestDto.getUserId()));
                     Authentication authentication = new UsernamePasswordAuthenticationToken(principal, principal.getPassword(), principal.getAuthorities());
                     SecurityContext context = SecurityContextHolder.createEmptyContext();
                     context.setAuthentication(authentication);

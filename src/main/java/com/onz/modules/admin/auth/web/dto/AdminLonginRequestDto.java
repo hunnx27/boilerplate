@@ -7,7 +7,8 @@ import javax.validation.constraints.NotNull;
 @Getter
 public class AdminLonginRequestDto {
      @NotNull(message = " 반드시 입력해야 합니다")
-     private String passWord;
+     private String userId;
      @NotNull(message = " 반드시 입력해야 합니다")
-     private String userID;
+     private String passWord;
+
 }

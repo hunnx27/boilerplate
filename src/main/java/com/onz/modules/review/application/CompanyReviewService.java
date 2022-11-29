@@ -76,8 +76,11 @@ public class CompanyReviewService {
         return array;
     }
 
-    public CompanyReviewDetailResponseDto companyReviewDetail(@PathVariable Long id) {
+    public CompanyReviewDetailResponseDto companyReviewDetail(Long id,Long companyId) {
         CompanyReview companyReview = companyReviewRepository.findById(id).orElse(null);
+        if(!(companyReview != null ? companyReview.getCompany().getId() : null).equals(companyId)){
+            throw new CustomException(ErrorCode.NOT_FOUND);
+        }
         CompanyReviewDetailResponseDto result = new CompanyReviewDetailResponseDto(companyReview);
         return result;
     }

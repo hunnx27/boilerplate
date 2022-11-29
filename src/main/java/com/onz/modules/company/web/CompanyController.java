@@ -2,6 +2,10 @@ package com.onz.modules.company.web;
 
 import com.onz.common.web.ApiR;
 import com.onz.common.web.BaseApiController;
+import com.onz.modules.admin.companies.application.CompaniesService;
+import com.onz.modules.admin.companies.web.dto.CompaniesCreateRequestDto;
+import com.onz.modules.admin.companies.web.dto.CompaniesFixCreateRequestDto;
+import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.company.application.CompanyService;
 import com.onz.modules.company.domain.Company;
 import com.onz.modules.company.web.dto.reponse.*;
@@ -13,6 +17,7 @@ import com.onz.modules.review.application.CompanyReviewService;
 import com.onz.modules.review.application.InterviewService;
 import com.onz.modules.review.application.ReviewService;
 import com.onz.modules.review.domain.YearAmtReview;
+import com.onz.modules.review.web.dto.AmtRequestDto;
 import com.onz.modules.review.web.dto.CompanyReviewDetailResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,6 +33,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,11 +45,11 @@ import java.util.List;
 public class CompanyController extends BaseApiController {
 
     private final CompanyService companyService;
-    private final ModelMapper modelMapper;
     private final ReviewService reviewService;
     private final InterviewService interviewService;
     private final CompanyReviewService companyReviewService;
     private final AmtReviewService amtReviewService;
+    private final CompaniesService companiesService;
 
     /**
      * Company API
@@ -64,7 +70,7 @@ public class CompanyController extends BaseApiController {
     @Operation(summary = "기관이름으로 검색하기", description = "기관 이름으로 레코드를 불러옵니다..")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "불러오기 완료", content = @Content(schema = @Schema(implementation = CompanySearchRequest.class))), @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanySearchRequest.class)))})
     @GetMapping("/companies/search")
-    public ResponseEntity<ApiR<Page<CompanySearchResponse>>> search(CompanySearchRequest companySearchRequest, @PageableDefault(size = 20, sort = "officeName", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<?> search(@RequestBody CompanySearchRequest companySearchRequest, @PageableDefault(size = 20, sort = "officeName", direction = Sort.Direction.ASC) Pageable pageable) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companyService.search(companySearchRequest, pageable)));
         } catch (Exception e) {
@@ -72,19 +78,26 @@ public class CompanyController extends BaseApiController {
         }
     }
 
-    @Operation(summary = "기관 생성하기", description = "기관 레코드를 생성합니다..")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "생성 완료", content = @Content(schema = @Schema(implementation = CompanyCreateRequest.class))), @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanyCreateRequest.class)))})
-    @PostMapping("/admin/company")
-    public ResponseEntity<?> create(@RequestBody @Validated CompanyCreateRequest createRequest) {
-        return ResponseEntity.ok(companyService.create(createRequest));
+    @Operation(summary = "기업 정보 수정요청", description = "요청을 등록합니다..")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "등록 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
+    })
+    @PostMapping("/companies/fix")
+    public ResponseEntity<?> CompanyFix(@AuthenticationPrincipal UserPrincipal me, @RequestBody @Validated CompaniesFixCreateRequestDto companiesFixCreateRequestDto) {
+        return ResponseEntity.ok().body(companiesService.CompanyFix(companiesFixCreateRequestDto, me));
     }
 
-    @Operation(summary = "기관 이름 수정하기", description = "기관 레코드를 수정합니다..")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "수정 완료", content = @Content(schema = @Schema(implementation = CompanyUpdateRequest.class))), @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CompanyUpdateRequest.class)))})
-    @PatchMapping("/admin/company/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Validated CompanyUpdateRequest updateRequest) {
-        return ResponseEntity.ok(companyService.update(id,updateRequest));
+    @Operation(summary = "기업 추가 요청", description = "요청을 등록합니다..")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "등록 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
+    })
+    @PostMapping("/companies/request")
+    public ResponseEntity<?> CompanyAdd(@AuthenticationPrincipal UserPrincipal me, @RequestBody @Validated CompaniesCreateRequestDto companiesCreateRequestDto) {
+        return ResponseEntity.ok(companiesService.CompanyAdd(companiesCreateRequestDto,me));
     }
+
 
     @Operation(summary = "단일 기관 불러오기", description = "단일 기관 레코드를 불러옵니다..")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "불러오기 완료", content = @Content(schema = @Schema(implementation = PathVariable.class))), @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PathVariable.class)))})
@@ -135,7 +148,7 @@ public class CompanyController extends BaseApiController {
     @GetMapping("/companies/{companyId}/review/amts/{id}")
     public ResponseEntity<ApiR<?>> amtReviewDetail(@PathVariable Long companyId, @PathVariable Long id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(amtReviewService.amtReviewDetail(id)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(amtReviewService.amtReviewDetail(companyId,id)));
         } catch (Exception e) {
             throw e;
         }
@@ -193,7 +206,7 @@ public class CompanyController extends BaseApiController {
     @GetMapping("/companies/{companyId}/review/interviews/{id}")
     public ResponseEntity<ApiR<?>> interviewReviewDetail(@PathVariable Long companyId, @PathVariable Long id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(interviewService.interviewReviewDetail(id)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(interviewService.interviewReviewDetail(id,companyId)));
         } catch (Exception e) {
             throw e;
         }
@@ -219,7 +232,7 @@ public class CompanyController extends BaseApiController {
     @GetMapping("/companies/{companyId}/review/companies/{id}")
     public ResponseEntity<ApiR<?>> companyReviewDetail(@PathVariable Long companyId, @PathVariable Long id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companyReviewService.companyReviewDetail(id)));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(companyReviewService.companyReviewDetail(id,companyId)));
         } catch (Exception e) {
             throw e;
         }
