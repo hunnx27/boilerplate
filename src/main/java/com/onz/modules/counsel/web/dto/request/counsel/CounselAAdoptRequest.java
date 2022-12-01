@@ -17,10 +17,10 @@ import java.util.List;
 @NoArgsConstructor
 public class
 CounselAAdoptRequest {
-    @NotNull(message = "내용을 입력해주세요.")
-    @Size(min = 6,message = "를 3글자 이상 입력해주세요")
+    @NotNull(message = "는 필수 값 입니다.")
+    @Size(min = 3,message = "3글자 이상 입력")
     private String commentTxt;
-    @Min(value = 1,message = "숫자만 입력됩니다.")
+    @NotNull(message = "는 필수 값 입니다.")
     private Long parentCounselId;
     private Counsel parentCounsel;
     private Long answerAccountId;

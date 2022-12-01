@@ -9,7 +9,6 @@ import com.onz.common.util.dto.AttachDto;
 import com.onz.modules.account.application.AccountService;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.auth.web.dto.UserPrincipal;
-import com.onz.modules.common.pointHistory.domain.PointHistory;
 import com.onz.modules.common.pointHistory.domain.enums.PointTable;
 import com.onz.modules.company.web.dto.reponse.CounselSearchCountDto;
 import com.onz.modules.counsel.domain.Counsel;
@@ -38,10 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.onz.modules.common.pointHistory.domain.enums.PointTable.COUNCEL_SELECT;
 
 @Slf4j
 @Service
@@ -95,7 +91,7 @@ public Counsel create(CounselQCreateRequest counselQCreateRequest, UserPrincipal
         List<CounselListResponse> result = list.stream().map(counsel -> new CounselListResponse(counsel, account)).collect(Collectors.toList());
         return result;
     }
-    public List<CounselListResponse> myqList(Pageable pageable, UserPrincipal me,String option) {
+    public List<CounselListResponse> myqList(Pageable pageable, UserPrincipal me, String option) {
         Account account = accountService.findOne(me.getId());
         List<Counsel> list = counselRepository.findMyqCounselList(account,pageable,option);
         List<CounselListResponse> result = list.stream().map(counsel -> new CounselListResponse(counsel, account)).collect(Collectors.toList());
@@ -117,7 +113,7 @@ public Counsel create(CounselQCreateRequest counselQCreateRequest, UserPrincipal
         return result;
     }
 
-    public CounselDetailResponse updateCounsel(Long id, CounselQUpdateRequest counselQUpdateRequest, UserPrincipal me) {
+    public CounselDetailResponse updateCounsel(Long id, CounselQUpdateRequest counselQUpdateRequest, List<MultipartFile> files, UserPrincipal me) {
         Account account = accountService.findOne(me.getId());
         Counsel counsel = counselRepository.findById(id).get();
         counsel.updateCounsel(counselQUpdateRequest, account);
@@ -127,9 +123,9 @@ public Counsel create(CounselQCreateRequest counselQCreateRequest, UserPrincipal
         //TODO 검증필요
         //TODO 검증필요
         // Image File Upload
-        if (counselQUpdateRequest.getFiles() != null && counselQUpdateRequest.getFiles().size() > 0) {
+        if (files != null && files.size() > 0) {
             try {
-                List<AttachDto> rs = fileUtil.uploadFiles(counselQUpdateRequest.getFiles(), saved.getId());
+                List<AttachDto> rs = fileUtil.uploadFiles(files, saved.getId());
                 saved.setImages(rs);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -206,7 +202,7 @@ public Counsel create(CounselQCreateRequest counselQCreateRequest, UserPrincipal
         return ResponseEntity.ok().body(HttpStatus.OK);
     }
 
-    public Counsel updateAnswer(Long id, CounselAUpdateRequest counselAUpdateRequest, UserPrincipal me) {
+    public Counsel updateAnswer(Long id, CounselAUpdateRequest counselAUpdateRequest, UserPrincipal me,List<MultipartFile> files) {
         Account account = accountService.findOne(me.getId());
         Counsel counsel = counselRepository.findById(id).get();
         counsel.updateAnswerCounsel(counselAUpdateRequest, account);
@@ -216,9 +212,9 @@ public Counsel create(CounselQCreateRequest counselQCreateRequest, UserPrincipal
         //TODO 검증필요
         //TODO 검증필요
         // Image File Upload
-        if (counselAUpdateRequest.getFiles() != null && counselAUpdateRequest.getFiles().size() > 0) {
+        if (files != null &&files.size() > 0) {
             try {
-                List<AttachDto> rs = fileUtil.uploadFiles(counselAUpdateRequest.getFiles(), saved.getId());
+                List<AttachDto> rs = fileUtil.uploadFiles(files, saved.getId());
                 saved.setImages(rs);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -236,22 +232,25 @@ public Counsel create(CounselQCreateRequest counselQCreateRequest, UserPrincipal
         return counsel;
     }
 
-    public Counsel updateAnswerAdopt(Long id, CounselAAdoptRequest counselAAdoptRequest, UserPrincipal me) {
+    public ResponseEntity<?> updateAnswerAdopt(Long id, CounselAAdoptRequest counselAAdoptRequest, UserPrincipal me) {
         Account account = accountService.findOne(me.getId());
         Counsel counsel = counselRepository.findById(id).get();
         Counsel parent = counselRepository.findById(counselAAdoptRequest.getParentCounselId()).orElseGet(null);
+        if(parent.getCounselState().equals(CounselState.A)){
+            throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
+        }
         Account answer = accountService.findOne(counsel.getAccount().getId());
         accountService.createMyPointHistories(account, PointTable.COUNCEL_SELECT);
         accountService.createMyPointHistories(answer, PointTable.COUNCEL_CHOSEN);
         parent.updateCounselAdopted();
         counselAAdoptRequest.setParentCounsel(parent);
         counsel.updateAnswerAdopt(counselAAdoptRequest);
-        Counsel saved = counselRepository.save(counsel);
-        return saved;
+        counselRepository.save(counsel);
+        return ResponseEntity.ok().body(HttpStatus.OK);
     }
 
     // 추천하기
-    public void recommendAnswer(Long id, UserPrincipal me) {
+    public ResponseEntity<?> recommendAnswer(Long id, UserPrincipal me) {
         Account account = accountService.findOne(me.getId());
         Counsel answerCounsel = counselRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
         if(answerCounsel!=null){
@@ -263,10 +262,10 @@ public Counsel create(CounselQCreateRequest counselQCreateRequest, UserPrincipal
                 throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
             }
         }
-
+        return ResponseEntity.ok(HttpStatus.OK);
     }
     // 신고하기
-    public void noticeAnswer(Long id, UserPrincipal me) {
+    public ResponseEntity<?> noticeAnswer(Long id, UserPrincipal me) {
         Account account = accountService.findOne(me.getId());
         Counsel answerCounsel = counselRepository.findById(id).orElseThrow(()->new CustomException(ErrorCode.NOT_FOUND));
         if(answerCounsel!=null){
@@ -278,6 +277,7 @@ public Counsel create(CounselQCreateRequest counselQCreateRequest, UserPrincipal
                 throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
             }
         }
+        return  ResponseEntity.ok(HttpStatus.OK);
     }
 
     /**
@@ -285,27 +285,15 @@ public Counsel create(CounselQCreateRequest counselQCreateRequest, UserPrincipal
      */
 
     public List<CounselListResponse> search(String tag) {
-        List<Counsel> counsel = counselRepository.findAll();
-        List<CounselListResponse> result = counsel.stream().map(res -> {
-            if (null == res.getInputTag()) {
-
-            } else {
-                String temp = res.getInputTag().replaceAll(" ","");
-                String date[] = temp.split("#");
-                System.out.println(date);
-                for (int i = 0; i < date.length; i++) {
-                    if (date[i].equals(tag)) {
-                        return new CounselListResponse(res);
-                    }
-                }
-            }
-            return null;
+        List<Counsel> counsel = counselRepository.findCounselTag(tag);
+        return counsel.stream().map(res->{
+            CounselListResponse aaa = new CounselListResponse(res);
+            return aaa;
         }).collect(Collectors.toList());
-        return result;
     }
 
     public CounselSearchCountDto tagmoa(String gubn) {
-        List gubnCodeList = Arrays.stream(Gubn.values()).map(gubn1 -> gubn1.name()).collect(Collectors.toList());
+        List<String> gubnCodeList = Arrays.stream(Gubn.values()).map(Enum::name).collect(Collectors.toList());
         String gubnCode = Gubn.TEACHER.getCode();
         if(gubnCodeList.contains(gubn)){
             gubnCode = Gubn.valueOf(gubn).getCode();
@@ -321,6 +309,8 @@ public Counsel create(CounselQCreateRequest counselQCreateRequest, UserPrincipal
         List<Counsel> counsel = counselRepository.findAll();
         final String finalGubnCode = gubnCode;
         List<Counsel> result = counsel.stream().map(res -> {
+            if(res.getId()!=-1) {
+                if (res.getGubn() != null) {
                     if (res.getGubn().getCode().equals(finalGubnCode)) {
                         if (res.getQnaItem() == null) {
                         } else {
@@ -374,10 +364,10 @@ public Counsel create(CounselQCreateRequest counselQCreateRequest, UserPrincipal
                             }
                         }
                     }
+                }
+            }
                     return res;
-                }).
-
-                collect(Collectors.toList());
+                }).collect(Collectors.toList());
         CounselSearchCountDto counselSearchCountDto = new CounselSearchCountDto();
         if (finalGubnCode.equals("I")) {
             qnaList.add(CounselSearchCountDto.QnaItemInfo.builder().item(QnaItem.QI01).cnt(q1).build());
@@ -386,6 +376,7 @@ public Counsel create(CounselQCreateRequest counselQCreateRequest, UserPrincipal
             qnaList.add(CounselSearchCountDto.QnaItemInfo.builder().item(QnaItem.QI04).cnt(q4).build());
             qnaList.add(CounselSearchCountDto.QnaItemInfo.builder().item(QnaItem.QI05).cnt(q5).build());
             qnaList.add(CounselSearchCountDto.QnaItemInfo.builder().item(QnaItem.QI06).cnt(q6).build());
+            qnaList.add(CounselSearchCountDto.QnaItemInfo.builder().item(QnaItem.QI07).cnt(q7).build());
             counselSearchCountDto.setQnaList(qnaList);
         } else if (finalGubnCode.equals("S")) {
             qnaList.add(CounselSearchCountDto.QnaItemInfo.builder().item(QnaItem.QS01).cnt(q1).build());
@@ -394,7 +385,7 @@ public Counsel create(CounselQCreateRequest counselQCreateRequest, UserPrincipal
             qnaList.add(CounselSearchCountDto.QnaItemInfo.builder().item(QnaItem.QS04).cnt(q4).build());
             qnaList.add(CounselSearchCountDto.QnaItemInfo.builder().item(QnaItem.QS05).cnt(q5).build());
             qnaList.add(CounselSearchCountDto.QnaItemInfo.builder().item(QnaItem.QS06).cnt(q6).build());
-            qnaList.add(CounselSearchCountDto.QnaItemInfo.builder().item(QnaItem.QS07).cnt(q7).build());
+
             counselSearchCountDto.setQnaList(qnaList);
         }
 

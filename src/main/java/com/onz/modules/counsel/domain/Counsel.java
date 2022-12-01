@@ -141,7 +141,6 @@ public class Counsel extends BaseEntity {
     public void updateAnswerAdopt(CounselAAdoptRequest req){
         this.counselState = CounselState.A;
         this.commentTxt = req.getCommentTxt();
-        this.parentCounsel = req.getParentCounsel();
     }
     public void updateCounselAdopted(){
         this.counselState = CounselState.A;

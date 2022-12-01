@@ -1,5 +1,5 @@
 /**
-Company 데이터 이관시 is_delete 가 null인상태
+Company 데이터 이관시 is_delete 가 null인상태카페24
 UPDATE plates.company Set is_delete ="N" WHERE is_delete =NULL
  ...
 */
@@ -125,21 +125,69 @@ where q_3 != ''
 
 INSERT into plates.counsel
 (
-id ,gubn ,account_id ,job_gubn ,txt ,qna_gubn ,counsel_state ,counsel_state_at ,
-open_yn ,created_at ,image1 ,image2 ,image3 ,image4 ,image5 ,input_tag ,report_cnt ,comment_txt ,
-parent_counsel_id ,interest_company ,related_zone ,
-is_delete ,short_open_yn
+id ,
+gubn ,
+account_id ,
+job_gubn ,
+txt ,
+qna_gubn ,
+counsel_state ,
+counsel_state_at ,
+open_yn ,
+created_at ,
+image1 ,
+image2 ,
+image3 ,
+image4 ,
+image5 ,
+input_tag ,
+report_cnt ,
+comment_txt ,
+parent_counsel_id ,
+interest_company ,
+related_zone ,
+is_delete ,
+short_open_yn,
+qna_item
 )
-SELECTidx_no ,gubn ,
+SELECT
+idx_no ,
+gubn ,
 IFNULL((SELECT id from plates.account a where a.user_id=nt.id),-1),
-job_gubn ,txt,qna_gubn ,state ,state_date ,open_yn ,create_dt ,
-image_1 ,image_2 ,image_3 ,image_4 ,image_5 ,
-input_tag  ,report_cnt ,comment_txt ,q_code,code_1,ci,
-del_yn,short_open_yn
-FROM NewTable nt
+job_gubn ,
+txt,
+qna_gubn ,
+state ,
+state_date ,
+open_yn ,
+create_dt ,
+image_1 ,
+image_2 ,
+image_3 ,
+image_4 ,
+image_5 ,
+input_tag  ,
+report_cnt ,
+comment_txt ,
+q_code,
+code_1,
+ci,
+del_yn,
+short_open_yn,
+CASE WHEN gubn = "I" THEN CONCAT("QI",qna_item_cd)
+WHEN gubn="S"THEN CONCAT("QS",qna_item_cd)
+ELSE null
+END
+FROM plates.NewTable nt
 WHERE 1=1
 
+
+
+
 /* counsel_coment
+init 하기전에 -1 칼럼 넣기 위해 PK제거
+ALTER TABLE plates.counsel_comment DROP PRIMARY KEY;
+ALTER TABLE plates.counsel_comment ADD PRIMARY KEY (id);
 
 
 INSERT INTO plates.counsel
@@ -150,7 +198,7 @@ INSERT INTO counsel_comment
 (
 id,answer_counsel_id ,account_id ,gubn ,txt,created_at ,modified_at ,is_delete
 )
-SELECT idx_no ,IFNULL((SELECT cs.parent_counsel_id  from counsel cs where cs.parent_counsel_id = nt.a_no),-1) ,IFNULL((SELECT id from account a where nt.id=a.user_id),-1) , gubn, txt ,create_dt,modi_dt,use_yn
+SELECT idx_no ,IFNULL((SELECT cs.id  from counsel cs where cs.id = nt.a_no),-1) ,IFNULL((SELECT id from account a where nt.id=a.user_id),-1) , gubn, txt ,create_dt,modi_dt,use_yn
 FROM NewTable nt
 WHERE 1=1
 

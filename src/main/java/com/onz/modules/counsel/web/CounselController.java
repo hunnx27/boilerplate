@@ -77,7 +77,7 @@ public class CounselController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselListResponse.class)))
     })
     @GetMapping("/counsel/my/q")
-    public ResponseEntity<ApiR<?>> myqList(@AuthenticationPrincipal UserPrincipal me, Pageable pageable,String option) {
+    public ResponseEntity<ApiR<?>> myqList(@AuthenticationPrincipal UserPrincipal me, Pageable pageable,@RequestBody String option) {
         try {
             List<CounselListResponse> result = counselService.myqList(pageable, me,option);
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(result));
@@ -93,7 +93,7 @@ public class CounselController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselListResponse.class)))
     })
     @GetMapping("/counsel/my/a")
-    public ResponseEntity<ApiR<?>> myaList(@AuthenticationPrincipal UserPrincipal me, Pageable pageable,String option) {
+    public ResponseEntity<ApiR<?>> myaList(@AuthenticationPrincipal UserPrincipal me, Pageable pageable,@RequestBody String option) {
         try {
             List<CounselListResponse> result = counselService.myaList(pageable, me,option);
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(result));
@@ -122,16 +122,15 @@ public class CounselController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselDetailResponse.class)))
     })
     @PutMapping("/counsel/{id}")
-    public void updateCounsel(@AuthenticationPrincipal UserPrincipal up, CounselQUpdateRequest
-            counselQUpdateRequest, @PathVariable Long id) {
+    public void updateCounsel(@AuthenticationPrincipal UserPrincipal up, @RequestPart(name="data") @Validated CounselQUpdateRequest
+            counselQUpdateRequest, @RequestPart (value = "files", required = false) List<MultipartFile> files, @PathVariable Long id) {
         try {
-            CounselDetailResponse counselDetail = counselService.updateCounsel(id, counselQUpdateRequest, up);
+            CounselDetailResponse counselDetail = counselService.updateCounsel(id, counselQUpdateRequest,files, up);
             ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(counselDetail));
         } catch (Exception e) {
             throw e;
         }
     }
-
     @Operation(summary = "상담 삭제", description = "변수를 이용하여 counsel 레코드를 삭제합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "상담 삭제 완료", content = @Content(schema = @Schema(implementation = CounselDetailResponse.class))),
@@ -202,10 +201,10 @@ public class CounselController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = CounselAUpdateRequest.class)))
     })
     @PutMapping("/counsel/answer/{id}")
-    public void updateAnswer(@AuthenticationPrincipal UserPrincipal up, CounselAUpdateRequest
-            counselAUpdateRequest, @PathVariable Long id) {
+    public void updateAnswer(@AuthenticationPrincipal UserPrincipal up,@RequestPart(name="data") @Validated CounselAUpdateRequest
+            counselAUpdateRequest, @RequestPart (value = "files", required = false) List<MultipartFile> files, @PathVariable Long id) {
         try {
-            Counsel counsel = counselService.updateAnswer(id, counselAUpdateRequest, up);
+            Counsel counsel = counselService.updateAnswer(id, counselAUpdateRequest, up,files);
             ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(new CounselDetailResponse(counsel)));
         } catch (Exception e) {
             throw e;
@@ -235,9 +234,8 @@ public class CounselController extends BaseApiController {
     })
     @PutMapping("/counsel/answer/{id}/adopt")
     public ResponseEntity<?> updateAnswerAdopt(@AuthenticationPrincipal UserPrincipal
-                                          up, @RequestBody @Validated CounselAAdoptRequest counselAAdoptRequest, @PathVariable Long id) {
-        Counsel counsel = counselService.updateAnswerAdopt(id, counselAAdoptRequest, up);
-        return ResponseEntity.ok().body(counsel);
+                                          up, @RequestBody @Validated  CounselAAdoptRequest counselAAdoptRequest, @PathVariable Long id) {
+        return ResponseEntity.ok().body(counselService.updateAnswerAdopt(id, counselAAdoptRequest, up));
     }
 
     @Operation(summary = "상담 답변의 댓글 추천하기", description = "counsel 레코드의 answer에 작성된 답변을 추천합니다.")
@@ -246,10 +244,9 @@ public class CounselController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = UserPrincipal.class)))
     })
     @PostMapping("/counsel/answer/{id}/recommend")
-    public void recommendAnswer(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long id) {
+    public ResponseEntity<?> recommendAnswer(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long id) {
         try {
-            counselService.recommendAnswer(id, me);
-            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
+            return ResponseEntity.status(HttpStatus.OK).body(counselService.recommendAnswer(id, me));
         } catch (Exception e) {
             throw e;
         }
@@ -261,24 +258,23 @@ public class CounselController extends BaseApiController {
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = Long.class)))
     })
     @PostMapping("/counsel/answer/{id}/notice")
-    public void noticeAnswer(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long id) {
+    public ResponseEntity<?> noticeAnswer(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long id) {
         try {
-            counselService.noticeAnswer(id, me);
-            ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccessWithNoContent());
+            return ResponseEntity.status(HttpStatus.OK).body(counselService.noticeAnswer(id, me));
         } catch (Exception e) {
             throw e;
         }
     }
 
+    @Deprecated
     @Operation(summary = "상담 검색", description = "태그를 이용해 상담을 검색합니다 #를제외함.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "접속한 계정의 포인트 조회 완료", content = @Content(schema = @Schema(implementation = PointHistoryResponse.class))),
             @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = PointHistoryResponse.class)))
     })
-    @GetMapping("/counsel/search/{id}")
+    @GetMapping("/counsel/search")
     public ResponseEntity<ApiR<?>> search(String tag) {
         try {
-
             return ResponseEntity.ok(ApiR.createSuccess(counselService.search(tag)));
         } catch (Exception e) {
             throw e;
@@ -291,13 +287,13 @@ public class CounselController extends BaseApiController {
     })
     @GetMapping("/counsel/search/gubn/{gubn}")
     public ResponseEntity<ApiR<?>> tagMoa(@PathVariable String gubn) {
-        try{
+        try {
             CounselSearchCountDto result = counselService.tagmoa(gubn);
             return ResponseEntity.status(HttpStatus.OK).body(ApiR.createSuccess(result));
-        }catch (Exception e){
-            throw  e;
+        } catch (Exception e) {
+            throw e;
         }
-    }
+    } // FIXME ADMIN api같음
 //    @Operation(summary = "3243424", description = "테스트중")
 //    @ApiResponses(value = {
 //            @ApiResponse(responseCode = "200", description = "접속한 계정의 포인트 조회 완료", content = @Content(schema = @Schema(implementation = PointHistoryResponse.class))),

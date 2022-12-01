@@ -161,5 +161,13 @@ public class CounselRepositoryExtensionImpl extends QuerydslRepositorySupport im
         return result.fetchCount();
     }
 
-
+    @Override
+    public List<Counsel> findCounselTag(String tag) {
+        QCounsel counsel = QCounsel.counsel;
+        BooleanBuilder where = new BooleanBuilder();
+        where.and(counsel.isDelete.eq(YN.N)); // 삭제안된글
+        where.and(counsel.inputTag.contains(tag));
+        JPQLQuery<Counsel> result = from(counsel).where(where);
+        return result.fetch();
+    }
 }

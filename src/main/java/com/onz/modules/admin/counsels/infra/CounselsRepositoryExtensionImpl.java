@@ -245,10 +245,6 @@ public class CounselsRepositoryExtensionImpl extends QuerydslRepositorySupport i
                                 .then(1)
                                 .otherwise(0).sum().as("QS06"),
                         new CaseBuilder()
-                                .when(counsel.qnaItem.in(QnaItem.QS07))
-                                .then(1)
-                                .otherwise(0).sum().as("QS07"),
-                        new CaseBuilder()
                                 .when(counsel.qnaItem.in(QnaItem.QI01))
                                 .then(1)
                                 .otherwise(0).sum().as("QI01"),
@@ -271,7 +267,11 @@ public class CounselsRepositoryExtensionImpl extends QuerydslRepositorySupport i
                         new CaseBuilder()
                                 .when(counsel.qnaItem.in(QnaItem.QI06))
                                 .then(1)
-                                .otherwise(0).sum().as("QI06")
+                                .otherwise(0).sum().as("QI06"),
+                        new CaseBuilder()
+                                .when(counsel.qnaItem.in(QnaItem.QI07))
+                                .then(1)
+                                .otherwise(0).sum().as("QI07")
                 )).from(counsel).where(where).fetchOne();
     }
     public CountEvent findcount2(TagRequestDto tagRequestDto) {
@@ -307,10 +307,6 @@ public class CounselsRepositoryExtensionImpl extends QuerydslRepositorySupport i
                                 .then(1)
                                 .otherwise(0).sum().as("QS06"),
                         new CaseBuilder()
-                                .when(counsel.qnaItem.in(QnaItem.QS07))
-                                .then(1)
-                                .otherwise(0).sum().as("QS07"),
-                        new CaseBuilder()
                                 .when(counsel.qnaItem.in(QnaItem.QI01))
                                 .then(1)
                                 .otherwise(0).sum().as("QI01"),
@@ -333,7 +329,11 @@ public class CounselsRepositoryExtensionImpl extends QuerydslRepositorySupport i
                         new CaseBuilder()
                                 .when(counsel.qnaItem.in(QnaItem.QI06))
                                 .then(1)
-                                .otherwise(0).sum().as("QI06")
+                                .otherwise(0).sum().as("QI06"),
+                        new CaseBuilder()
+                                .when(counsel.qnaItem.in(QnaItem.QI07))
+                                .then(1)
+                                .otherwise(0).sum().as("QI07")
                 )).from(counsel).where(where).fetchOne();
     }
     public List<CounselAnswerListResponseDto> findByAnswer(Long answerId){

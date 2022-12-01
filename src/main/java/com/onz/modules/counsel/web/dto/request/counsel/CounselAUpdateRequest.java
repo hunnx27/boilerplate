@@ -5,17 +5,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class CounselAUpdateRequest {
-
-    List<MultipartFile> files;
+    @NotNull(message = "는 필수 값 입니다.")
+    @Size(min = 3,message = "3글자 이상 입력")
     private String txt;
-    private Long parentCounselId;
-
     // 자동처리
 //    @Convert(converter = GubnConverter.class)
 //    private Gubn gubn;
