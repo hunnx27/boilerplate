@@ -2,6 +2,7 @@ package com.onz.modules.admin.companies.web;
 
 import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
+import com.onz.common.web.BaseApiController;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.admin.companies.application.CompaniesService;
 import com.onz.modules.admin.companies.domain.Companies;
@@ -13,6 +14,8 @@ import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.company.application.CompanyService;
 import com.onz.modules.company.web.dto.request.CompanyCreateRequest;
 import com.onz.modules.company.web.dto.request.CompanyUpdateRequest;
+import com.onz.modules.follower.application.FollowerService;
+import com.onz.modules.follower.web.dto.FollowerFindCompanyResponseDto;
 import com.onz.modules.review.web.dto.AmtRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,14 +32,16 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
 @Tag(name = "어드민 제어", description = "어드민 제어관련 api")
-public class CompaniesController {
+public class CompaniesController  extends BaseApiController {
 
     private final CompaniesService companiesService;
     private final CompanyService companyService;
+    private final FollowerService followerService;
     @Operation(summary = "기관 검색 관리 ", description = "기관 검색 입니다...")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "완료", content = @Content(schema = @Schema(implementation = CompaniesResponseDto.class))),
@@ -165,4 +170,17 @@ public class CompaniesController {
         return ResponseEntity.ok(companyService.update(id,updateRequest));
     }
 
+    @Operation(summary = "기관>회원-팔로우", description = "팔로우를 검색합니다..")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "팔로우 검색 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
+    })
+    @GetMapping("/admin/companies/{id}/follower")
+    public List<FollowerFindCompanyResponseDto> findCompanyFollower(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long id) {
+        try {
+            return followerService.findCompanyFollower(me, id);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 }

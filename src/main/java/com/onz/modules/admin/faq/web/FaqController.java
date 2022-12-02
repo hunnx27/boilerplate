@@ -2,6 +2,7 @@ package com.onz.modules.admin.faq.web;
 
 import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
+import com.onz.common.web.BaseApiController;
 import com.onz.modules.admin.companies.web.dto.CompaniesResponseDto;
 import com.onz.modules.admin.event.web.dto.EventCreateRequestDto;
 import com.onz.modules.admin.event.web.dto.EventSearchRequestDto;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @Tag(name = "어드민 FAQ 제어", description = "어드민 FAQ 제어관련 api")
-public class FaqController {
+public class FaqController  extends BaseApiController {
     private final FaqService faqService;
 
     @Operation(summary = "FAQ 등록", description = "FAQ 등록합니다..")

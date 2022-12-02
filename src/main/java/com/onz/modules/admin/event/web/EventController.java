@@ -2,6 +2,7 @@ package com.onz.modules.admin.event.web;
 
 import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
+import com.onz.common.web.BaseApiController;
 import com.onz.modules.admin.companies.web.dto.CompaniesResponseDto;
 import com.onz.modules.admin.event.application.EventService;
 import com.onz.modules.admin.event.domain.EventItem;
@@ -35,7 +36,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @Tag(name = "어드민 이벤트 제어", description = "어드민 이벤트 제어관련 api")
-public class EventController {
+public class EventController  extends BaseApiController {
 
         private final EventService eventService;
 

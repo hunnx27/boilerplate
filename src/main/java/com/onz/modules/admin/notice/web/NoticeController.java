@@ -2,6 +2,7 @@ package com.onz.modules.admin.notice.web;
 
 import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
+import com.onz.common.web.BaseApiController;
 import com.onz.modules.admin.companies.web.dto.CompaniesResponseDto;
 import com.onz.modules.admin.counsels.web.dto.CounselsRequestDto;
 import com.onz.modules.admin.menu.application.MenuService;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @Tag(name = "어드민 메세지 제어", description = "어드민 메세지 제어관련 api")
-public class NoticeController {
+public class NoticeController  extends BaseApiController {
 
     private final NoticeService noticeService;
 

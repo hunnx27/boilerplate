@@ -33,7 +33,7 @@ public class InterviewListResponseDto extends ReviewCommonResponseDto {
             default: this.itemMood = "-";break;
         }
         this.q_1 = interviewReview.getTopQ1();
-        this.establishmentTypeName=interviewReview.getCompany().getEstablishmentType().getName();
+        this.establishmentTypeName=interviewReview.getCompany().getEstablishmentType()!=null?interviewReview.getCompany().getEstablishmentType().getName():"";
         this.companyName = interviewReview.getCompany().getOfficeName();
         this.workExp = interviewReview.getWorkExp();
         this.workExpOpenYn = interviewReview.getWorkExpOpenYn();

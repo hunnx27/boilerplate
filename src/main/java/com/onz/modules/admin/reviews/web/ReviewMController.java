@@ -2,6 +2,7 @@ package com.onz.modules.admin.reviews.web;
 
 import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
+import com.onz.common.web.BaseApiController;
 import com.onz.modules.account.domain.Account;
 import com.onz.modules.admin.companies.web.dto.CompaniesFixUpdateRequestDto;
 import com.onz.modules.admin.member.livemember.web.dto.LiveMemberDetailResponse;
@@ -29,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "어드민 제어", description = "어드민을 제어하는 api.")
-public class ReviewMController {
+public class ReviewMController  extends BaseApiController {
 
     private final ReviewMService reviewMService;
 

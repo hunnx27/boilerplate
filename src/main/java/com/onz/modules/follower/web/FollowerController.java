@@ -1,6 +1,7 @@
 package com.onz.modules.follower.web;
 
 import com.onz.common.web.ApiR;
+import com.onz.common.web.BaseApiController;
 import com.onz.modules.auth.web.dto.UserPrincipal;
 import com.onz.modules.follower.application.FollowerService;
 import com.onz.modules.follower.web.dto.FollowerFindAccountResponseDto;
@@ -24,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @Tag(name = "팔로우 제어", description = "팔로우 제어하는 api.")
-public class FollowerController {
+public class FollowerController extends BaseApiController {
     private final FollowerService followerService;
     @Operation(summary = "팔로우 등록", description = "팔로우를 등록합니다..")
     @ApiResponses(value = {
@@ -40,30 +41,6 @@ public class FollowerController {
         }
     }
 
-    @Operation(summary = "회원>기관-팔로우", description = "팔로우를 검색합니다..")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "팔로우 검색 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
-    })
-    @GetMapping("/admin/liveMember/{id}/follower")
-    public List<FollowerFindAccountResponseDto> findAccountFollower(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long id) {
-        try {
-            return followerService.findAccountFollower(me, id);
-        } catch (Exception e) {
-            throw e;
-        }
-    }
-    @Operation(summary = "기관>회원-팔로우", description = "팔로우를 검색합니다..")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "팔로우 검색 완료", content = @Content(schema = @Schema(implementation = AmtRequestDto.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AmtRequestDto.class)))
-    })
-    @GetMapping("/admin/companies/{id}/follower")
-    public List<FollowerFindCompanyResponseDto> findCompanyFollower(@AuthenticationPrincipal UserPrincipal me, @PathVariable Long id) {
-        try {
-            return followerService.findCompanyFollower(me, id);
-        } catch (Exception e) {
-            throw e;
-        }
-    }
+
+
 }

@@ -2,6 +2,7 @@ package com.onz.modules.admin.counsels.web;
 
 import com.onz.common.exception.CustomException;
 import com.onz.common.web.ApiR;
+import com.onz.common.web.BaseApiController;
 import com.onz.modules.admin.companies.web.dto.CompaniesRequestDto;
 import com.onz.modules.admin.companies.web.dto.CompaniesResponseDto;
 import com.onz.modules.admin.counsels.application.CounselsService;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @Tag(name = "어드민 제어", description = "어드민 제어관련 api")
-public class CounselsController {
+public class CounselsController  extends BaseApiController {
 
     private final CounselsService counselsService;
 

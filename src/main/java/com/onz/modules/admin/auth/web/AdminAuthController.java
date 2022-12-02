@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 @RestController
 @Tag(name = "어드민 제어", description = "어드민을 제어하는 api.")
-public class AdminAuthController {
+public class AdminAuthController extends BaseApiController {
 
     private final AdminAuthService adminAuthService;
 
